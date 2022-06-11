@@ -73,3 +73,21 @@ The main chassis has been assembled, except for the ESC. The second layer is not
 The servo requires a voltage input of 5-7.4V, and the ESC has an output of 6V on the wire to the "receiver". Since we are not using a receiver the 6V power and ground wires on the ESC connector must be removed,leaving a single pin for the PWM input. The servo should not be driven directly from the Jetson Nano since it will only take 5 volts and may draw a lot of current. There are two voltage regulators - one to power the Jetson Nano at 5V and the other can be used to power the servo at 7.4V. Therefore, the connections to the servo and ESC must be modified. The BEC in the ESC must be completely bypassed and the 7.4V input for the servo must be separated to the voltage regulator and the PWM pin for both have to go to the Jetson Nano.
 
 Banana plugs will be soldered to the ESC's ABC connections, to make it removable. A 3-way splitter will be made by soldering 3 16 gauge wire together into one connector.
+'
+***
+
+# 6/7/22
+
+### Updates:
+* Soldered ESC to motor and power
+* Tested motor
+
+The motor is too high kV, so it runs way too fast and does not seem to have maximum torque at low RPM. Switching out the motor for a lower kV motor will be better since having a finer range of speed and higher initial torque is better for this application.
+
+Initial tests resulted in the motor starting at full speed and sending the wheels flying off - the clamps for the left wheel weren't tight enough. There's also silicone lubricant everywhere. A higher reduction probably would also help. Since we are using the smallest spur gear we can, we plan to buy a bigger differential gear and put in a smaller spur gear for lower speed and better torque.
+
+***
+
+# 6/11/22
+
+###
