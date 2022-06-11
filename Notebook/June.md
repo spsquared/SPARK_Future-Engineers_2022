@@ -90,4 +90,29 @@ Initial tests resulted in the motor starting at full speed and sending the wheel
 
 # 6/11/22
 
-###
+### Updates:
+* Changed positions for mounts
+* Assembled/soldered parts on upper platform
+* Designed mount for camera
+
+The upper platform (platform, Jetson NANO, VRMs) has been soldered and assembled. There is a custom connector for the servo and ESC, with 7.4V running to the servo and their respective PWM pins running to pins 32 and 33 on the Jetson. The platform is mounted in the back where the body posts would be and the front on top of the servo bracket.
+
+![Car front left](./June/6-11-22-c.jpg)
+![Car front right](./June/6-11-22-d.jpg)
+![Car rear left](./June/6-11-22-e.jpg)
+
+### Changes to parts
+
+![Platform V3](./June/6-11-22-a.png)
+#### Changes include:
+* Standoff positions moved to allow easier wiring
+* Ribs moved on top, now 3mm
+* More cutouts on top for better wiring
+* Expanded extra surface on top for more space
+
+![Camera mount](./June/6-11-22-b.png)
+
+#### Camera mount
+* Features mounting holes for 1 camera configuration and mounting holes for a 2 camera configuration
+* Mounts to the front of the car where the bumper would be
+* Has holes for LED headlights if needed
