@@ -116,3 +116,14 @@ The upper platform (platform, Jetson NANO, VRMs) has been soldered and assembled
 * Features mounting holes for 1 camera configuration and mounting holes for a 2 camera configuration
 * Mounts to the front of the car where the bumper would be
 * Has holes for LED headlights if needed
+
+***
+
+# 6/17/22
+
+### Updates:
+* New 80-tooth diff gear arrived
+* Larger wheels being designed
+* 40mm fan arrived
+
+The new 90-tooth diff gear arrived, and upon installing, it became apparent that it doesn't fit. Or rather, it barely fits and will get stuck at even the slightest tilt. We'll have to buy a new 84 tooth gear. We have some larger wheels in development to accomodate the new gear. These won't be foam tires and will have a tread, but it shouldn't affect handling.
