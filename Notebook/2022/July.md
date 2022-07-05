@@ -33,6 +33,7 @@ You cannot play this video here. Click the link below to view it online.
 </video>
 </div>
 
-[Link to video](./July/7-4-22-a.mp4)
+[Link to video (download)](./July/7-4-22-a.mp4)  
+[Link to video (view)](https://raw.githubusercontent.com/definitely-nobody-is-here/SPARK_Future-Engineers_2022/blob/master/Notebook/2022/July/7-4-22-a.mp4)
 
 #
