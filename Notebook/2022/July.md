@@ -26,7 +26,13 @@ Meanwhile, work was being done to test the GPIO. We plan to use the [jetson-gpio
 
 Below is an HTML embed of a video. If it doesn't work, just click the link.
 
+<div>
 <video width="480" height="270">
-    <source src="./July/7-4-22-a.mp4" type="video/mp4">
-    <a href="./July/7-4-22-a.mp4">You cannot preview this video. Click here to view the video in a browser.</a>
+<source src="./July/7-4-22-a.mp4" type="video/mp4">
+You cannot play this video here. Click the link below to view it online.
 </video>
+</div>
+
+[Link to video](./July/7-4-22-a.mp4)
+
+#
