@@ -29,11 +29,11 @@ Below is an HTML embed of a video. If it doesn't work, just click the link.
 <div>
 <video width="480" height="270">
 <source src="./July/7-4-22-a.mp4" type="video/mp4">
-You cannot play this video here. Click the link below to view it online.
+You cannot play this video here. Click the link below to download it.
 </video>
 </div>
 
 [Link to video (download)](./July/7-4-22-a.mp4)  
-[Link to video (view)](https://raw.githubusercontent.com/definitely-nobody-is-here/SPARK_Future-Engineers_2022/blob/master/Notebook/2022/July/7-4-22-a.mp4)
+[Link to video (download 2)](https://raw.githubusercontent.com/definitely-nobody-is-here/SPARK_Future-Engineers_2022/master/Notebook/2022/July/7-4-22-a.mp4)
 
 #
