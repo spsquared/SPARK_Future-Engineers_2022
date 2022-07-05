@@ -28,5 +28,5 @@ Below is an HTML embed of a video. If it doesn't work, just click the link.
 
 <video width="480" height="270">
     <source src="./July/7-4-22-a.mp4" type="video/mp4">
-    <a href="./July/7-4-22-a.mp4">You cannot preview this video</a>
+    <a href="./July/7-4-22-a.mp4">You cannot preview this video. Click here to view the video in a browser.</a>
 </video>
