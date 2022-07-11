@@ -6,11 +6,11 @@ def main():
     GPIO.setwarnings(False)
     GPIO.cleanup()
     GPIO.setmode(GPIO.BOARD)
-    GPIO.setup([32, 33], GPIO.OUT)
+    GPIO.setup([12, 13], GPIO.OUT)
 
     try:
-        t = GPIO.PWM(32, 50)
-        s = GPIO.PWM(33, 50)
+        t = GPIO.PWM(12, 50)
+        s = GPIO.PWM(13, 50)
         throttle = 0
         thrT = 1
         steering = 0

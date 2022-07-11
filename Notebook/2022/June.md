@@ -20,20 +20,20 @@ Most of the materials have arrived. Still waiting on ESC and a few bits of hardw
 
 ### Waiting on delivery:
 * [HobbyWing QUICRUN 10BL60 Brushless ESC](https://www.hobbywingdirect.com/products/quicrun-wp-10bl60)
-* [NVIDIA Jetson Nano](https://developer.nvidia.com/embedded/jetson-nano-developer-kit)
+* [NVIDIA Jetson NANO](https://developer.nvidia.com/embedded/jetson-NANO-developer-kit)
 * Some hardware (M3 spacers, standoffs)
 
 ### Progress:
 The main chassis has been assembled, except for the ESC. The second layer is not finalized as not all the parts have arrived.
 
-[Spec sheet for Jetson Nano](https://developer.download.nvidia.com/assets/embedded/secure/jetson/Nano/docs/NV_Jetson_Nano_Developer_Kit_User_Guide.pdf?aJ8W6GWivAd7V9OS_o_qsSn7KA77QyiE0PEwfwRWNeehVAX9npbFyM8k9_gv23UKbhmdqrOPE5fmew42qneyc7aQuFmsc3kmDEYXGVIkD1VZQqRESb1ckKkN1tgdD8N23PqjXjPDW5a5W5Tmm1hMIftq4S3DHkGNtKmrRz6JtQRNGpfv7O_eLdTq8whnvaFBcaU&t=eyJscyI6ImdzZW8iLCJsc2QiOiJodHRwczpcL1wvd3d3Lmdvb2dsZS5jb21cLyJ9)
+[Spec sheet for Jetson NANO](https://developer.download.nvidia.com/assets/embedded/secure/jetson/NANO/docs/NV_Jetson_NANO_Developer_Kit_User_Guide.pdf?aJ8W6GWivAd7V9OS_o_qsSn7KA77QyiE0PEwfwRWNeehVAX9npbFyM8k9_gv23UKbhmdqrOPE5fmew42qneyc7aQuFmsc3kmDEYXGVIkD1VZQqRESb1ckKkN1tgdD8N23PqjXjPDW5a5W5Tmm1hMIftq4S3DHkGNtKmrRz6JtQRNGpfv7O_eLdTq8whnvaFBcaU&t=eyJscyI6ImdzZW8iLCJsc2QiOiJodHRwczpcL1wvd3d3Lmdvb2dsZS5jb21cLyJ9)
 
 ***
 
 # 6/4/22
 
 ### Updates:
-* Jetson Nano has arrived
+* Jetson NANO has arrived
 * Arducam arrived
 * The voltage regulators have been replaced with slightly larger ones
 * ESC is still in shipping
@@ -52,15 +52,15 @@ The main chassis has been assembled, except for the ESC. The second layer is not
 * 2x unknown DC to DC voltage regulator
 * [Savox SV1260MG - Mini Digital High Voltage Servo 7.4V](https://www.savoxusa.com/products/savsv1260mg-mini-digital-high-voltage)
 * [Woltechz LiPo Battery Charger/Balance/Discharger 1S-6S DC/AC Power Supply for NiMH/NiCD/Li-PO/Li-Fe/Li-ion/PB Packs](https://www.amazon.com/Sky-toy-ST-B6AC-Discharger-Connectors/dp/B07KDSGJFD)
-* [NVIDIA Jetson Nano](https://developer.nvidia.com/embedded/jetson-nano-developer-kit)
-* [Arducam IMX219 Fixed Focus Camera Module for Nvidia Jetson Nano](https://www.arducam.com/product/b0191-arducam-imx219-visible-light-fixed-focus-camera-module-nvidia-jetson-nano-raspberry-pi-compute-module/)
+* [NVIDIA Jetson NANO](https://developer.nvidia.com/embedded/jetson-NANO-developer-kit)
+* [Arducam IMX219 Fixed Focus Camera Module for Nvidia Jetson NANO](https://www.arducam.com/product/b0191-arducam-imx219-visible-light-fixed-focus-camera-module-nvidia-jetson-NANO-raspberry-pi-compute-module/)
 
 ***
 
 # 6/5/22
 
 ### Updates:
-* CAD model for changes made - The Jetson Nano is now rotated 90 degrees to prevent the Arducam's ribbon cable from twisting
+* CAD model for changes made - The Jetson NANO is now rotated 90 degrees to prevent the Arducam's ribbon cable from twisting
 * Voltage regulators have been rotated to make soldering easier
 * ESC has arrived
 
@@ -70,7 +70,7 @@ The main chassis has been assembled, except for the ESC. The second layer is not
 * [XT 60 battery connectors](https://www.amazon.com/OOOUSE-XT60-Connector-Pairs-pairs/dp/B005FAPYXS) need to be purchased to match connectors on battery
 * Special connectors for the servo and ESC have to be made (More to elaborate)
 
-The servo requires a voltage input of 5-7.4V, and the ESC has an output of 6V on the wire to the "receiver". Since we are not using a receiver the 6V power and ground wires on the ESC connector must be removed,leaving a single pin for the PWM input. The servo should not be driven directly from the Jetson Nano since it will only take 5 volts and may draw a lot of current. There are two voltage regulators - one to power the Jetson Nano at 5V and the other can be used to power the servo at 7.4V. Therefore, the connections to the servo and ESC must be modified. The BEC in the ESC must be completely bypassed and the 7.4V input for the servo must be separated to the voltage regulator and the PWM pin for both have to go to the Jetson Nano.
+The servo requires a voltage input of 5-7.4V, and the ESC has an output of 6V on the wire to the "receiver". Since we are not using a receiver the 6V power and ground wires on the ESC connector must be removed,leaving a single pin for the PWM input. The servo should not be driven directly from the Jetson NANO since it will only take 5 volts and may draw a lot of current. There are two voltage regulators - one to power the Jetson NANO at 5V and the other can be used to power the servo at 7.4V. Therefore, the connections to the servo and ESC must be modified. The BEC in the ESC must be completely bypassed and the 7.4V input for the servo must be separated to the voltage regulator and the PWM pin for both have to go to the Jetson NANO.
 
 Banana plugs will be soldered to the ESC's ABC connections, to make it removable. A 3-way splitter will be made by soldering 3 16 gauge wire together into one connector.
 '
