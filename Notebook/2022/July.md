@@ -24,14 +24,7 @@ We used the [guide](http://www.yahboom.net/study/jetson-NANO) supplied by Yahboo
 
 Meanwhile, work was being done to test the GPIO. We plan to use the [jetson-gpio](https://github.com/NVIDIA/jetson-gpio) library to control the pins. It installed fine, but we were unable to actually control any of the pins. We eventually found that the BCM and BOARD pinouts were slightly different, and we were able to turn on and off LEDs with the GPIO. Whether the PWM pins work or not is to be found, but we will need to find the correct pinout for this carrier board or we will not even be able to find the pins.
 
-Below is an HTML embed of a video. If it doesn't work, just click the link.
-
-<div>
-<video width="480" height="270">
-<source src="./July/7-4-22-a.mp4" type="video/mp4">
-You cannot play this video here. Click the link below to download it.
-</video>
-</div>
+Below are links to the video.
 
 [Link to video (download)](./July/7-4-22-a.mp4)  
 [Link to video (download 2)](https://raw.githubusercontent.com/definitely-nobody-is-here/SPARK_Future-Engineers_2022/master/Notebook/2022/July/7-4-22-a.mp4)
@@ -49,3 +42,33 @@ On 7/7/22 we discovered that the Jetson NANO wouldn't boot anymore. Once plugged
 In other news, a refresh for the platform is to be done, with changes to improve wire management and the addition of an LED display to monitor voltage and a WIFI/Bluetooth card and antennas. We will have to start shaving weight if we keep adding more things, however. We're approaching the limit at 1.4kg. The WIFI and Bluetooth antennas won't be used in competition since they serve no use, so they must be easily removable. We started by testing the coaxial connector attachement points, which were modeled specifically for our connectors.
 
 ![Platform V4](./July/7-9-22-a.png)
+
+# 7/10/22
+We encountered the meminit error again after changing out the NANO and platform.
+
+### Updates
+* Rebuilt top platform with new NANO and platform
+* WiFi added
+* PWM works
+
+##### New platform
+
+![Rebuilt platform](./July/7-10-22-a.JPG)
+
+##### PWM
+
+We managed to use PWM. Initially the io config program (jetson-io.py) would crash every time, so we weren't able to enable PWM. After a lot of editing and changing files that should not be changed, we managed to enter the menu for GPIO configuration. The issue was caused by the board reporting a slightly different version than the library supported, being a revision of the board and therefore technically not supported. It reported as p3448-0000-b00+p3449-0002-b00 while the closest supported board was p3448-0000-b00+p3449-0000-b00. This is because our Developer Kit is the slightly updated version of that board. We were able to bypass the files by copying and renaming a .dtb file in `/boot/dtb` and then hardcoding some parameters in `/opt/nvidia/Utils/dtb.py`. And after that, we were able to enable PWM.
+
+The PWM works, as shown in the video below of the PWM changing the effective voltage being read by the multimeter.
+
+[Link to video (download)](./July/7-10-22-c.mp4)
+[Link to video (download 2)](https://raw.githubusercontent.com/definitely-nobody-is-here/SPARK_Future-Engineers_2022/master/Notebook/2022/July/7-10-22-c.mp4)
+
+As can be seen in the video linked below (twice) the PWM works to control both the servo and ESC, but with no accuraccy.
+
+[Link to video (download)](./July/7-10-22-b.mp4)
+[Link to video (download 2)](https://raw.githubusercontent.com/definitely-nobody-is-here/SPARK_Future-Engineers_2022/master/Notebook/2022/July/7-10-22-b.mp4)
+
+A major issue is that if done wrong, the motor will actually draw so much current that the voltage drops low enough to make the NANO shut down. Of course we will electronically limit the current draw of the motor so this doesn't happen, and it's not like we will go that fast anyways.
+
+A slightly less major issue is the issue of calibration. The servo and ESC have an acceptable range of pulse width, and so we must change the min and max duty cycles to be able to control them.
