@@ -72,3 +72,11 @@ As can be seen in the video linked below (twice) the PWM works to control both t
 A major issue is that if done wrong, the motor will actually draw so much current that the voltage drops low enough to make the NANO shut down. Of course we will electronically limit the current draw of the motor so this doesn't happen, and it's not like we will go that fast anyways.
 
 A slightly less major issue is the issue of calibration. The servo and ESC have an acceptable range of pulse width, and so we must change the min and max duty cycles to be able to control them.
+
+# 7/14/22
+We got the PWM values!
+
+The min and max PWM values have a suprisingly narrow range. The steering has a range of 15% (at 100Hz), and the throttle goes backwards in the range of 15%-30%, and 30
+% to 45% is the forwards range. At 100% throttle the motor still draws enough current to make everything shut down, so we limited it to about 30%, which is still too fast anyways. There is one problem: The motor has very little torque at low RPM, even though it is supposed to be a sensored motor. We have the highest reduction ratio we can fit on the car, so we can only limit throttle at this point. There is also a slight rattle coming from the gears - perhaps something is a bit loose.
+
+Below is a video of the steering
