@@ -13,9 +13,9 @@ def main():
         # t = GPIO.PWM(32, 200)
         # s = GPIO.PWM(33, 200)
         throttle = 0
-        thrT = 1
-        steering = 0
-        steT = 2
+        # thrT = 1
+        # steering = 0
+        # steT = 2
         # below 30 is backwards until 15
         # thrMAX = 32
         # thrMIN = 30
@@ -25,17 +25,17 @@ def main():
         # s.start((steering/100)*((strMAX-strMIN)/2)+((strMIN+strMAX)/2))
         drive.start()
         while True:
-            time.sleep(0.02)
-            if throttle <= 0:
-                thrT = 1
-            elif throttle >= 100:
-                thrT = -1
-            if steering <= -100:
-                steT = 1
-            elif steering >= 100:
-                steT = -1
-            throttle += thrT
-            steering += steT
+            # time.sleep(0.02)
+            # if throttle <= 0:
+            #     thrT = 1
+            # elif throttle >= 100:
+            #     thrT = -1
+            # if steering <= -100:
+            #     steT = 1
+            # elif steering >= 100:
+            #     steT = -1
+            # throttle += thrT
+            # steering += steT
             throttle = int(input("throttle: "))
             drive.throttle(throttle)
             # drive.steer(steering)

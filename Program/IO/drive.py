@@ -56,8 +56,8 @@ def stop():
 
 def steer(steering):
     global targetSteering
-    targetSteering = -steering
+    targetSteering = max(-100, min(-steering, 100))
 
 def throttle(throttle):
     global targetThrottle
-    targetThrottle = throttle
+    targetThrottle = max(0, min(throttle, 100))
