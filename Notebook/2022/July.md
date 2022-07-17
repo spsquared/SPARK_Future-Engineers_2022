@@ -80,3 +80,8 @@ The min and max PWM values have a suprisingly narrow range. The steering has a r
 % to 45% is the forwards range. At 100% throttle the motor still draws enough current to make everything shut down, so we limited it to about 30%, which is still too fast anyways. There is one problem: The motor has very little torque at low RPM, even though it is supposed to be a sensored motor. We have the highest reduction ratio we can fit on the car, so we can only limit throttle at this point. There is also a slight rattle coming from the gears - perhaps something is a bit loose.
 
 Below is a video of the steering
+
+insert videos here
+
+# 7/16/22
+Trying to get some sort of control. We ended up disabling the ui to prevent the "NvRmMemInit" error, but now we discover a new issue. We have to log in to the Jetson NANO in order to use SSH, meaning we still have to use a screen and a mouse and keyboard to boot. In other news, we cut some foam board for the walls of the map.

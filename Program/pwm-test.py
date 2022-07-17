@@ -24,7 +24,26 @@ def main():
         # t.start((throttle/100)*(thrMAX-thrMIN)+thrMIN)
         # s.start((steering/100)*((strMAX-strMIN)/2)+((strMIN+strMAX)/2))
         drive.start()
+        print('w = throttle up')
+        print('s = throttle down')
+        print('a = steer left')
+        print('d = steer right')
+        print('q = reset steering')
+        steering = 0
+        throttle = 0
         while True:
+            letter = input('')
+            if (letter == 'w'):
+                throttle += 10
+            elif (letter == 's'):
+                throttle -= 10
+            elif (letter == 'a'):
+                steering += 10
+            elif (letter == 'd'):
+                steering -= 10
+            elif (letter == 'q'):
+                steering = 0
+            print('throttle:', throttle, 'steering:', steering)
             # time.sleep(0.02)
             # if throttle <= 0:
             #     thrT = 1
@@ -36,8 +55,6 @@ def main():
             #     steT = -1
             # throttle += thrT
             # steering += steT
-            throttle = int(input("throttle: "))
-            drive.throttle(throttle)
             # drive.steer(steering)
             # print(throttle, steering)
             # t.ChangeDutyCycle((throttle/100)*(thrMAX-thrMIN)+thrMIN)
