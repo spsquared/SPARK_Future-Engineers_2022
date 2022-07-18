@@ -85,3 +85,11 @@ insert videos here
 
 # 7/16/22
 Trying to get some sort of control. We ended up disabling the ui to prevent the "NvRmMemInit" error, but now we discover a new issue. We have to log in to the Jetson NANO in order to use SSH, meaning we still have to use a screen and a mouse and keyboard to boot. In other news, we cut some foam board for the walls of the map.
+
+# 7/17/22
+We can now stream 5fps video to Jupyter Notebook! We got these images:
+
+![Blue watermelon](./July/7-17-22-a.png)
+![Cyan greps](./July/7-17-22-b.png)
+
+The color format is BGR so so the red and blue color channels are swapped - not that it matters, since we don't really care about color.

@@ -28,7 +28,7 @@ def main():
         print('s = throttle down')
         print('a = steer left')
         print('d = steer right')
-        print('q = reset steering')
+        print('x = reset steering')
         steering = 0
         throttle = 0
         while True:
@@ -38,12 +38,14 @@ def main():
             elif (letter == 's'):
                 throttle -= 10
             elif (letter == 'a'):
-                steering += 10
-            elif (letter == 'd'):
                 steering -= 10
-            elif (letter == 'q'):
+            elif (letter == 'd'):
+                steering += 10
+            elif (letter == 'x'):
                 steering = 0
             print('throttle:', throttle, 'steering:', steering)
+            drive.throttle(throttle)
+            drive.steer(steering)
             # time.sleep(0.02)
             # if throttle <= 0:
             #     thrT = 1
