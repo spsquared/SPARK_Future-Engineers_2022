@@ -36,6 +36,7 @@ def start():
     #     global running
     #     while running:
     #         time.sleep(0.01)
+    #         # possibly add smoothing if neccessary
     #         currThrottle = targetThrottle
     #         currSteering = targetSteering
     #         t.ChangeDutyCycle((currThrottle/100)*(thrMAX-thrMIN)+thrMIN)
