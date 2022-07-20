@@ -32,22 +32,22 @@ def trim(trim):
 def start():
     t.start(thrMIN)
     s.start((strMIN+strMAX)/2)
-    def loop():
-        global running
-        while running:
-            time.sleep(0.01)
-            currThrottle = targetThrottle
-            currSteering = targetSteering
-            t.ChangeDutyCycle((currThrottle/100)*(thrMAX-thrMIN)+thrMIN)
-            s.ChangeDutyCycle((currSteering/100)*((strMAX-strMIN)/2)+((strMIN+strMAX)/2)+(strTRIM/10))
-    global controlThread
-    controlThread = Thread(target = loop)
-    controlThread.start()
+    # def loop():
+    #     global running
+    #     while running:
+    #         time.sleep(0.01)
+    #         currThrottle = targetThrottle
+    #         currSteering = targetSteering
+    #         t.ChangeDutyCycle((currThrottle/100)*(thrMAX-thrMIN)+thrMIN)
+    #         s.ChangeDutyCycle((currSteering/100)*((strMAX-strMIN)/2)+((strMIN+strMAX)/2)+(strTRIM/10))
+    # global controlThread
+    # controlThread = Thread(target = loop)
+    # controlThread.start()
 
 def stop():
     global running
     running = False
-    controlThread.join()
+    # controlThread.join()
     t.ChangeDutyCycle(0)
     s.ChangeDutyCycle(0)
     t.stop()
@@ -57,7 +57,9 @@ def stop():
 def steer(steering):
     global targetSteering
     targetSteering = max(-100, min(-steering, 100))
+    s.ChangeDutyCycle((targetSteering/100)*((strMAX-strMIN)/2)+((strMIN+strMAX)/2)+(strTRIM/10))
 
 def throttle(throttle):
     global targetThrottle
     targetThrottle = max(0, min(throttle, 100))
+    t.ChangeDutyCycle((targetThrottle/100)*(thrMAX-thrMIN)+thrMIN)
