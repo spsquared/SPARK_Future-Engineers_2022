@@ -3,10 +3,7 @@ from threading import Thread
 import time
 
 # setup
-GPIO.setwarnings(False)
-GPIO.cleanup()
-GPIO.setmode(GPIO.BOARD)
-GPIO.setup([32, 33], GPIO.OUT)
+GPIO.setup([5, 32, 33], GPIO.OUT)
 t = GPIO.PWM(32, 200)
 s = GPIO.PWM(33, 200)
 
@@ -23,6 +20,7 @@ currSteering = 0
 thrAcceleration = 1
 strAcceleration = 10
 running = True
+blinkThread = None
 controlThread = None
 
 def trim(trim):
@@ -43,17 +41,27 @@ def start():
     #         s.ChangeDutyCycle((currSteering/100)*((strMAX-strMIN)/2)+((strMIN+strMAX)/2)+(strTRIM/10))
     # global controlThread
     # controlThread = Thread(target = loop)
+    def blink():
+        global running
+        while running:
+            GPIO.output(5, GPIO.HIGH)
+            time.sleep(0.5)
+            GPIO.output(5, GPIO.LOW)
+            time.sleep(0.5)
+    global blinkThread
+    blinkThread = Thread(target = blink)
     # controlThread.start()
+    blinkThread.start()
 
 def stop():
     global running
     running = False
     # controlThread.join()
+    blinkThread.join()
     t.ChangeDutyCycle(0)
     s.ChangeDutyCycle(0)
     t.stop()
     s.stop()
-    GPIO.cleanup()
 
 def steer(steering):
     global targetSteering
