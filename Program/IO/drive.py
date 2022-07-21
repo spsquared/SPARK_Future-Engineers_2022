@@ -3,7 +3,7 @@ from threading import Thread
 import time
 
 # setup
-GPIO.setup([5, 32, 33], GPIO.OUT)
+GPIO.setup([13, 32, 33], GPIO.OUT)
 t = GPIO.PWM(32, 200)
 s = GPIO.PWM(33, 200)
 
@@ -28,35 +28,35 @@ def trim(trim):
     strTRIM = trim
 
 def start():
+    global controlThread
+    global blinkThread
     t.start(thrMIN)
     s.start((strMIN+strMAX)/2)
-    # def loop():
-    #     global running
-    #     while running:
-    #         time.sleep(0.01)
-    #         # possibly add smoothing if neccessary
-    #         currThrottle = targetThrottle
-    #         currSteering = targetSteering
-    #         t.ChangeDutyCycle((currThrottle/100)*(thrMAX-thrMIN)+thrMIN)
-    #         s.ChangeDutyCycle((currSteering/100)*((strMAX-strMIN)/2)+((strMIN+strMAX)/2)+(strTRIM/10))
-    # global controlThread
-    # controlThread = Thread(target = loop)
+    def loop():
+        global running
+        while running:
+            time.sleep(0.02)
+            # possibly add smoothing if neccessary
+            currThrottle = targetThrottle
+            currSteering = targetSteering
+            t.ChangeDutyCycle((currThrottle/100)*(thrMAX-thrMIN)+thrMIN)
+            s.ChangeDutyCycle((currSteering/100)*((strMAX-strMIN)/2)+((strMIN+strMAX)/2)+(strTRIM/10))
+    controlThread = Thread(target = loop)
     def blink():
         global running
         while running:
-            GPIO.output(5, GPIO.HIGH)
+            GPIO.output(13, GPIO.HIGH)
             time.sleep(0.5)
-            GPIO.output(5, GPIO.LOW)
+            GPIO.output(13, GPIO.LOW)
             time.sleep(0.5)
-    global blinkThread
     blinkThread = Thread(target = blink)
-    # controlThread.start()
+    controlThread.start()
     blinkThread.start()
 
 def stop():
     global running
     running = False
-    # controlThread.join()
+    controlThread.join()
     blinkThread.join()
     t.ChangeDutyCycle(0)
     s.ChangeDutyCycle(0)
@@ -66,9 +66,7 @@ def stop():
 def steer(steering):
     global targetSteering
     targetSteering = max(-100, min(-steering, 100))
-    s.ChangeDutyCycle((targetSteering/100)*((strMAX-strMIN)/2)+((strMIN+strMAX)/2)+(strTRIM/10))
 
 def throttle(throttle):
     global targetThrottle
     targetThrottle = max(0, min(throttle, 100))
-    t.ChangeDutyCycle((targetThrottle/100)*(thrMAX-thrMIN)+thrMIN)

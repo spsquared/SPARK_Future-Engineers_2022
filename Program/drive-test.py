@@ -1,10 +1,7 @@
-import Jetson.GPIO as GPIO
-import time
 from IO import io
 from IO import drive
 
 def main():
-
     try:
         drive.start()
         print('w = throttle up')
@@ -31,6 +28,7 @@ def main():
             drive.steer(steering)
     except KeyboardInterrupt:
         drive.stop()
+        io.close()
 
 if __name__ == '__main__':
     main()
