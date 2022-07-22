@@ -24,10 +24,11 @@ def main():
                 right = 0
             drive.throttle(forward)
             drive.steer(left+right)
+            print(forward)
         server.addCallback('key', control)
     except KeyboardInterrupt:
-        drive.stop()
         server.close()
+        drive.stop()
         io.close()
 
 if __name__ == '__main__':
