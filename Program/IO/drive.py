@@ -8,10 +8,11 @@ t = GPIO.PWM(32, 200)
 s = GPIO.PWM(33, 200)
 
 # pwm min max and speed
+thrBACK = 26
 thrMIN = 30
-thrMAX = 35
-strMAX = 45
-strMIN = 30
+thrMAX = 31
+strMAX = 47
+strMIN = 28
 strTRIM = 8
 targetThrottle = 0
 targetSteering = 0
@@ -38,7 +39,8 @@ def start():
             # possibly add smoothing if neccessary
             currThrottle = targetThrottle
             currSteering = targetSteering
-            t.ChangeDutyCycle((currThrottle/100)*(thrMAX-thrMIN)+thrMIN)
+            if (currThrottle < 0): t.ChangeDutyCycle((currThrottle/100)*(thrMIN-thrBACK)+thrMIN)
+            else: t.ChangeDutyCycle((currThrottle/100)*(thrMAX-thrMIN)+thrMIN)
             s.ChangeDutyCycle((currSteering/100)*((strMAX-strMIN)/2)+((strMIN+strMAX)/2)+(strTRIM/10))
     __controlThread = Thread(target = __loop)
     def __blink():
@@ -68,4 +70,4 @@ def steer(steering):
 
 def throttle(throttle):
     global targetThrottle
-    targetThrottle = max(0, min(throttle, 100))
+    targetThrottle = max(-100, min(throttle, 100))
