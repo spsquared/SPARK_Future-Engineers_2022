@@ -93,3 +93,6 @@ We can now stream 5fps video to Jupyter Notebook! We got these images:
 ![Cyan greps](./July/7-17-22-b.png)
 
 The color format is BGR so so the red and blue color channels are swapped - not that it matters, since we don't really care about color.
+
+# 7/21/22
+Small update - working on integrating camera and control code into packages for actual use, as well as a WiFi card swap so we can stream the video live while testing. We encountered some driver issues along the way and used the answer posted on [this thread](https://forums.developer.nvidia.com/t/intel-9260-wifi-on-jetson-nano-jetbot/73360/74) by "idcrook" on 7/24/2019.
