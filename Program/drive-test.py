@@ -1,33 +1,33 @@
 from IO import io
 from IO import drive
+from Util import server
 
 def main():
     try:
         drive.start()
-        print('w = throttle up')
-        print('s = throttle down')
-        print('a = steer left')
-        print('d = steer right')
-        print('x = reset steering')
-        steering = 0
-        throttle = 0
-        while True:
-            letter = input('')
-            if (letter == 'w'):
-                throttle += 10
-            elif (letter == 's'):
-                throttle -= 10
-            elif (letter == 'a'):
-                steering -= 10
-            elif (letter == 'd'):
-                steering += 10
-            elif (letter == 'x'):
-                steering = 0
-            print('throttle:', throttle, 'steering:', steering)
-            drive.throttle(throttle)
-            drive.steer(steering)
+        def control(data):
+            forward = 0
+            left = 0
+            right = 0
+            key = data['key']
+            if (key == 'w'):
+                forward = 20
+            elif (key == 'W'):
+                forward = 0
+            elif (key == 'a'):
+                left = -100
+            elif (key == 'A'):
+                left = 0
+            elif (key == 'd'):
+                right = 100
+            elif (key == 'D'):
+                right = 0
+            drive.throttle(forward)
+            drive.steer(left+right)
+        server.addCallback('key', control)
     except KeyboardInterrupt:
         drive.stop()
+        server.close()
         io.close()
 
 if __name__ == '__main__':
