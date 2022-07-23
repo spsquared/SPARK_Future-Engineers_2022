@@ -3,7 +3,7 @@ from PIL import Image
 from threading import Thread
 import time
 
-__camera = CSICamera(width=1280, height=720, capture_width=1280, capture_height=720, capture_fps=30)
+__camera = CSICamera(width=224, height=224, capture_width=1080, capture_height=720, capture_fps=30)
 __running = False
 __currentImage = [[]]
 __thread = None
