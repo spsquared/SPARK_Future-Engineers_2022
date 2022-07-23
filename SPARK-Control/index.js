@@ -122,3 +122,7 @@ setInterval(function() {
         send('joystick', {throttle: throttle, steering: steering});
     }
 }, 100);
+
+document.getElementById('captureButton').onclick = function(e) {
+    send('capture', {});
+};
