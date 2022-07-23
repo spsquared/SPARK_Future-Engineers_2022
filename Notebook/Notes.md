@@ -27,7 +27,7 @@ ExecStart=-/sbin/agetty -o '-p -f nano' -a nano --noclear %I $TERM
 ## running a script on startup
 create `jupyter-autostart.sh` in the home directory with these contents:
 ```
-jupyter notebook --port=8888 --no-browser --allow-root
+jupyter notebook --no-browser --allow-root
 ```
 create `jupyter-autostart.service` in `/etc/systemd/system` with these contents:
 ```

@@ -4,7 +4,7 @@ import json as JSON
 from threading import Thread
 
 callbacks = {}
-def addCallback(event, cb):
+def addListener(event, cb):
     if event in callbacks:
         callbacks[event].append(cb)
     else:
@@ -21,14 +21,14 @@ def close():
 async def __server(websocket, path):
     global __running
     try:
-        await websocket.send('connected yay')
+        await websocket.send('Connected!')
         while (True):
             json = await websocket.recv()
             res = JSON.loads(json)
             if res['event'] in callbacks:
                 for cb in callbacks[res['event']]:
                     cb(res['data'])
-    except ConnectionClosedOK:
+    except websockets.exceptions.ConnectionClosedOK:
         return
 
 def __start():

@@ -10,7 +10,7 @@ __right = 0
 def main():
     try:
         drive.start()
-        def control(data):
+        def keys(data):
             global __forward, __backward, __left, __right
             key = data['key']
             if key == 'w':
@@ -18,7 +18,7 @@ def main():
             elif key == 'W':
                 __forward = 0
             elif key == 's':
-                __backward = -50
+                __backward = -100
             elif key == 'S':
                 __backward = 0
             elif key == 'a':
@@ -31,7 +31,11 @@ def main():
                 __right = 0
             drive.throttle(__forward+__backward)
             drive.steer(__left+__right)
-        server.addCallback('key', control)
+        def joystick(data):
+            drive.throttle(data['throttle'])
+            drive.steer(data['steering'])
+        server.addListener('key', keys)
+        server.addListener('joystick', joystick)
     except KeyboardInterrupt:
         server.close()
         drive.stop()

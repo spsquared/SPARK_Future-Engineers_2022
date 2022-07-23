@@ -8,7 +8,7 @@ t = GPIO.PWM(32, 200)
 s = GPIO.PWM(33, 200)
 
 # pwm min max and speed
-thrBACK = 26
+thrBACK = 28
 thrMIN = 30
 thrMAX = 31
 strMAX = 47
