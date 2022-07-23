@@ -1,20 +1,16 @@
 const socket = new WebSocket('ws://192.168.1.151:4040');
 
-function send(event, data) {
-    socket.send(JSON.stringify({
-        event: event,
-        data: data
-    }));
-};
-
 const log = document.getElementById('eventLogBody');
+var connected = false;
 socket.onmessage = function(e) {
+    console.log(e)
     const div = document.createElement('div');
     div.classList.add('logBlock');
     div.innerText = e.data;
     log.appendChild(div);
 };
 socket.onopen = function() {
+    connected = true;
     document.onkeydown = function(e) {
         const key = e.key.toLowerCase();
         send('key', {key: key});
@@ -27,37 +23,92 @@ socket.onopen = function() {
 socket.onclose = function() {
     const div = document.createElement('div');
     div.classList.add('logBlock');
-    div.innerText = 'oh no disconnected';
+    div.innerText = 'Connection closed';
+    div.style.backgroundColor = 'red';
     log.appendChild(div)
 };
+function send(event, data) {
+    if (connected) {
+        socket.send(JSON.stringify({
+            event: event,
+            data: data
+        }));
+    }
+};
 
-const joystick = document.getElementById('joystickWrapper');
+const joystick = document.getElementById('joystickBody');
 const joystickPin = document.getElementById('joystickPin');
+const sliderX = document.getElementById('sliderX');
+const sliderY = document.getElementById('sliderY');
 
 var grabbing = false;
+var grabbingtouch = false;
 var angle = 0;
 var distance = 0;
 joystick.onmousedown = function(e) {
     grabbing = true;
 };
+joystick.addEventListener('touchstart', function(e) {
+    grabbingtouch = true;
+});
 document.onmouseup = function(e) {
     grabbing = false;
     joystickPin.style.right = '150px';
     joystickPin.style.bottom = '150px';
+    sliderX.style.bottom = '190px';
+    sliderY.style.right = '190px';
     angle = 0;
     distance = 0;
     send('joystick', {throttle: 0, steering: 0});
 };
+document.addEventListener('touchend', function(e) {
+    grabbingtouch = false;
+    joystickPin.style.right = '150px';
+    joystickPin.style.bottom = '150px';
+    sliderX.style.bottom = '190px';
+    sliderY.style.right = '190px';
+    angle = 0;
+    distance = 0;
+    send('joystick', {throttle: 0, steering: 0});
+});
+document.addEventListener('touchcancel', function(e) {
+    grabbingtouch = false;
+    joystickPin.style.right = '150px';
+    joystickPin.style.bottom = '150px';
+    sliderX.style.bottom = '190px';
+    sliderY.style.right = '190px';
+    angle = 0;
+    distance = 0;
+    send('joystick', {throttle: 0, steering: 0});
+});
 document.onmousemove = function(e) {
     if (grabbing) {
         var x = e.clientX-window.innerWidth+200;
         var y = e.clientY-window.innerHeight+200;
         angle = Math.atan2(y, x);
         distance = Math.min(150, Math.sqrt(Math.pow(x, 2)+Math.pow(y, 2)));
-        joystickPin.style.right = 150-(Math.cos(angle)*distance) + 'px';
         joystickPin.style.bottom = 150-(Math.sin(angle)*distance) + 'px';
+        joystickPin.style.right = 150-(Math.cos(angle)*distance) + 'px';
+        sliderX.style.bottom = 190-(Math.sin(angle)*distance) + 'px';
+        sliderY.style.right = 190-(Math.cos(angle)*distance) + 'px';
     }
 };
+document.addEventListener('touchmove', function(e) {
+    if (grabbingtouch) {
+        for (var i in e.touches) {
+            if (joystick.contains(e.touches[i].target)) {
+                var x = e.touches[i].clientX-window.innerWidth+200;
+                var y = e.touches[i].clientY-window.innerHeight+200;
+                angle = Math.atan2(y, x);
+                distance = Math.min(150, Math.sqrt(Math.pow(x, 2)+Math.pow(y, 2)));
+                joystickPin.style.bottom = 150-(Math.sin(angle)*distance) + 'px';
+                joystickPin.style.right = 150-(Math.cos(angle)*distance) + 'px';
+                sliderX.style.bottom = 190-(Math.sin(angle)*distance) + 'px';
+                sliderY.style.right = 190-(Math.cos(angle)*distance) + 'px';
+            }
+        }
+    }
+});
 setInterval(function() {
     if (angle != 0 || distance != 0) {
         var angle2 = angle;

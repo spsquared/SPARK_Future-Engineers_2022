@@ -3,12 +3,18 @@ import websockets
 import json as JSON
 from threading import Thread
 
-callbacks = {}
+__callbacks = {}
+__connections = []
 def addListener(event, cb):
-    if event in callbacks:
-        callbacks[event].append(cb)
+    global __callbacks
+    if event in __callbacks:
+        __callbacks[event].append(cb)
     else:
-        callbacks[event] = [cb]
+        __callbacks[event] = [cb]
+def broadcast(data):
+    global __connections
+    for socket in __connections:
+        socket.send(data)
 
 __running = True
 __thread = None
@@ -19,16 +25,19 @@ def close():
     __thread.join()
 
 async def __server(websocket, path):
-    global __running
+    global __running, __callbacks, __connections
+    index = len(__connections)
+    __connections.append(websocket)
     try:
         await websocket.send('Connected!')
         while (True):
             json = await websocket.recv()
             res = JSON.loads(json)
-            if res['event'] in callbacks:
-                for cb in callbacks[res['event']]:
+            if res['event'] in __callbacks:
+                for cb in __callbacks[res['event']]:
                     cb(res['data'])
     except websockets.exceptions.ConnectionClosedOK:
+        __connections[index] = None
         return
 
 def __start():

@@ -1,7 +1,8 @@
-from turtle import backward
+import asyncio
 from IO import io
 from IO import drive
 from Util import server
+import time
 
 __forward = 0
 __backward = 0
@@ -36,6 +37,9 @@ def main():
             drive.steer(data['steering'])
         server.addListener('key', keys)
         server.addListener('joystick', joystick)
+        while (True):
+            msg = input()
+            server.broadcast(msg)
     except KeyboardInterrupt:
         server.close()
         drive.stop()

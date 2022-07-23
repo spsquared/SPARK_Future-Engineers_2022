@@ -7,7 +7,7 @@ body {
     position: absolute;
     top: 0px;
     left: 0px;
-    width: 50%;
+    width: 400px;
     height: 100%;
     border-right: 2px solid black;
     padding: 16px 16px;
@@ -25,19 +25,19 @@ body {
 }
 .logBlock {
     width: 100%;
-    background-color: lightslategray;
+    background-color: lightgray;
     padding: 4px 16px;
     margin-top: 8px;
 }
 
-#joystickWrapper {
+#joystickBody {
     position: absolute;
     bottom: 0px;
     right: 0px;
     width: 400px;
     height: 400px;
     border-radius: 50%;
-    background-color: #000000AA;
+    background-color: grey;
     user-select: none;
 }
 #joystickPin {
@@ -49,4 +49,31 @@ body {
     border-radius: 50%;
     background-color: lightgray;
     cursor: move;
+    z-index: 1;
+}
+#sliderX {
+    position: absolute;
+    bottom: 190px;
+    right: 0px;
+    width: 400px;
+    height: 20px;
+    background-color: black;
+}
+#sliderY {
+    position: absolute;
+    bottom: 0px;
+    right: 190px;
+    width: 20px;
+    height: 400px;
+    background-color: black;
+}
+#joystickMask {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(transparent 199px, white 200px);
+    pointer-events: none;
+    z-index: 1;
 }
