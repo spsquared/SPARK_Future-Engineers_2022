@@ -44,6 +44,8 @@ def start():
                 else: t.ChangeDutyCycle((currThrottle/100)*(thrMAX-thrMIN)+thrMIN)
                 s.ChangeDutyCycle((currSteering/100)*((strMAX-strMIN)/2)+((strMIN+strMAX)/2)+(strTRIM/10))
         except:
+            t.stop()
+            s.stop()
             return
     __controlThread = Thread(target = __loop)
     def __blink():
