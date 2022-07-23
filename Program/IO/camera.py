@@ -11,6 +11,8 @@ __thread = None
 def start():
     global __running, __camera, __thread
     __camera.running = True
+    while __camera.isReady == False:
+        time.sleep(0.1)
     __running = True
     def __capture():
         global __running, __camera, __currentImage
@@ -23,9 +25,10 @@ def start():
         return
 
 def stop():
-    global __running, __thread
+    global __running, __camera, __thread
     __running = False
     __thread.join()
+    __camera.release()
 
 __index = 0
 def capture():
