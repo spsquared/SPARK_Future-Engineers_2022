@@ -1,6 +1,5 @@
 from jetcam.csi_camera import CSICamera
 from PIL import Image
-import datetime
 from threading import Thread
 import time
 
@@ -32,6 +31,6 @@ __index = 0
 def capture():
     global __currentImage, __index
     img = Image.fromarray(__currentImage)
-    img.save('./../image_out/' + str(__index) + ' ' + str(datetime.datetime.now()) + '.png')
+    img.save('./../image_out/' + str(__index) + '.png')
     __index += 1
     return img

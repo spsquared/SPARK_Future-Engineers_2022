@@ -34,14 +34,17 @@ def start():
     s.start((strMIN+strMAX)/2)
     def __loop():
         global __running
-        while __running:
-            time.sleep(0.02)
-            # possibly add smoothing if neccessary
-            currThrottle = targetThrottle
-            currSteering = targetSteering
-            if (currThrottle < 0): t.ChangeDutyCycle((currThrottle/100)*(thrMIN-thrBACK)+thrMIN)
-            else: t.ChangeDutyCycle((currThrottle/100)*(thrMAX-thrMIN)+thrMIN)
-            s.ChangeDutyCycle((currSteering/100)*((strMAX-strMIN)/2)+((strMIN+strMAX)/2)+(strTRIM/10))
+        try:
+            while __running:
+                time.sleep(0.02)
+                # possibly add smoothing if neccessary
+                currThrottle = targetThrottle
+                currSteering = targetSteering
+                if (currThrottle < 0): t.ChangeDutyCycle((currThrottle/100)*(thrMIN-thrBACK)+thrMIN)
+                else: t.ChangeDutyCycle((currThrottle/100)*(thrMAX-thrMIN)+thrMIN)
+                s.ChangeDutyCycle((currSteering/100)*((strMAX-strMIN)/2)+((strMIN+strMAX)/2)+(strTRIM/10))
+        except:
+            return
     __controlThread = Thread(target = __loop)
     def __blink():
         global __running
