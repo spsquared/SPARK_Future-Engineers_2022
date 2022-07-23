@@ -1,15 +1,37 @@
 from jetcam.csi_camera import CSICamera
-import time
 from PIL import Image
 import datetime
+from threading import Thread
+import time
 
-camera = CSICamera(width=224, height=224, capture_width=1080, capture_height=720, capture_fps=30)
-camera.running = True
+__camera = CSICamera(width=1280, height=720, capture_width=1280, capture_height=720, capture_fps=30)
+__running = False
+__currentImage = [[]]
+__thread = None
 
-index = 1
+def start():
+    global __running, __camera, __thread
+    __camera.running = True
+    __running = True
+    def __capture():
+        global __running, __camera, __currentImage
+        while __running:
+            __currentImage = __camera.value
+    try:
+        __thread = Thread(target = __capture)
+        __thread.start()
+    except KeyboardInterrupt:
+        return
 
-while True:
-    array = camera.value
-    image = Image.fromarray(array)
-    image.save('./../images/' + str(index) + ' ' + str(datetime.datetime.now()) + '.png')
-    # time.sleep(0.02)
+def stop():
+    global __running, __thread
+    __running = False
+    __thread.join()
+
+__index = 0
+def capture():
+    global __currentImage, __index
+    img = Image.fromarray(__currentImage)
+    img.save('./../image_out/' + str(__index) + ' ' + str(datetime.datetime.now()) + '.png')
+    __index += 1
+    return img

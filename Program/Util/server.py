@@ -42,12 +42,15 @@ async def __server(websocket, path):
 
 def __start():
     global __running, __server
-    __running = True
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    server = websockets.serve(__server, '192.168.1.151', 4040)
-    loop.run_until_complete(server)
-    loop.run_forever()
+    try:
+        __running = True
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        server = websockets.serve(__server, '192.168.1.151', 4040)
+        loop.run_until_complete(server)
+        loop.run_forever()
+    except KeyboardInterrupt:
+        return
 
 try:
     __thread = Thread(target = __start)
