@@ -11,8 +11,6 @@ __thread = None
 def start():
     global __running, __camera, __thread
     __camera.running = True
-    while __camera.isReady == False:
-        time.sleep(0.1)
     __running = True
     def __capture():
         global __running, __camera, __currentImage
@@ -22,6 +20,7 @@ def start():
         __thread = Thread(target = __capture)
         __thread.start()
     except KeyboardInterrupt:
+        __camera.release()
         return
 
 def stop():

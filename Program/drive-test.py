@@ -1,7 +1,7 @@
 import asyncio
 from IO import io
 from IO import drive
-# from IO import camera
+from IO import camera
 from Util import server
 
 __forward = 0
@@ -11,7 +11,7 @@ __right = 0
 def main():
     try:
         drive.start()
-        # camera.start()
+        camera.start()
         def keys(data):
             global __forward, __backward, __left, __right
             key = data['key']
@@ -37,7 +37,7 @@ def main():
             drive.throttle(data['throttle'])
             drive.steer(data['steering'])
         def capture(data):
-            # camera.capture()
+            camera.capture()
             return
         server.addListener('key', keys)
         server.addListener('joystick', joystick)
@@ -48,7 +48,7 @@ def main():
     except KeyboardInterrupt:
         server.close()
         drive.stop()
-        # camera.stop()
+        camera.stop()
         io.close()
 
 if __name__ == '__main__':
