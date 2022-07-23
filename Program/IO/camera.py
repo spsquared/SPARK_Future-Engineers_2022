@@ -22,7 +22,6 @@ def start():
         __thread = Thread(target = __capture)
         __thread.start()
     except KeyboardInterrupt:
-        __camera.release()
         return
 
 def stop():

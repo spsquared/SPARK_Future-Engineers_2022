@@ -13,8 +13,8 @@ def addListener(event, cb):
         __callbacks[event] = [cb]
 def broadcast(data):
     global __connections
-    for socket in __connections:
-        socket.send(data)
+    # for socket in __connections:
+    #     socket.send(data)
 
 __running = True
 __thread = None
@@ -42,8 +42,8 @@ async def __server(websocket, path):
 
 def __start():
     global __running, __server
+    __running = True
     try:
-        __running = True
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         server = websockets.serve(__server, '192.168.1.151', 4040)
@@ -52,7 +52,5 @@ def __start():
     except KeyboardInterrupt:
         return
 
-try:
-    __thread = Thread(target = __start)
-    __thread.start()
-except KeyboardInterrupt: True
+__thread = Thread(target = __start)
+__thread.start()

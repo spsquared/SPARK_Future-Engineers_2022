@@ -34,20 +34,14 @@ def start():
     s.start((strMIN+strMAX)/2)
     def __loop():
         global __running
-        try:
-            while __running:
-                time.sleep(0.02)
-                # possibly add smoothing if neccessary
-                currThrottle = targetThrottle
-                currSteering = targetSteering
-                if (currThrottle < 0): t.ChangeDutyCycle((currThrottle/100)*(thrMIN-thrBACK)+thrMIN)
-                else: t.ChangeDutyCycle((currThrottle/100)*(thrMAX-thrMIN)+thrMIN)
-                s.ChangeDutyCycle((currSteering/100)*((strMAX-strMIN)/2)+((strMIN+strMAX)/2)+(strTRIM/10))
-        except:
-            t.stop()
-            s.stop()
-            return
-    __controlThread = Thread(target = __loop)
+        while __running:
+            time.sleep(0.02)
+            # possibly add smoothing if neccessary
+            currThrottle = targetThrottle
+            currSteering = targetSteering
+            if (currThrottle < 0): t.ChangeDutyCycle((currThrottle/100)*(thrMIN-thrBACK)+thrMIN)
+            else: t.ChangeDutyCycle((currThrottle/100)*(thrMAX-thrMIN)+thrMIN)
+            s.ChangeDutyCycle((currSteering/100)*((strMAX-strMIN)/2)+((strMIN+strMAX)/2)+(strTRIM/10))
     def __blink():
         global __running
         while __running:
@@ -55,9 +49,14 @@ def start():
             time.sleep(0.5)
             GPIO.output(13, GPIO.LOW)
             time.sleep(0.5)
-    __blinkThread = Thread(target = __blink)
-    __controlThread.start()
-    __blinkThread.start()
+    try:
+        __controlThread = Thread(target = __loop)
+        __blinkThread = Thread(target = __blink)
+        __controlThread.start()
+        __blinkThread.start()
+    except KeyboardInterrupt:
+        t.stop()
+        s.stop()
 
 def stop():
     global __running

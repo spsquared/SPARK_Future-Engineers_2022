@@ -3,7 +3,6 @@ const socket = new WebSocket('ws://192.168.1.151:4040');
 const log = document.getElementById('eventLogBody');
 var connected = false;
 socket.onmessage = function(e) {
-    console.log(e)
     const div = document.createElement('div');
     div.classList.add('logBlock');
     div.innerText = e.data;
