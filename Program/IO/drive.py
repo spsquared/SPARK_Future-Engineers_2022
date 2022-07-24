@@ -47,9 +47,6 @@ def start():
         try:
             controlThread = Thread(target = loop)
             controlThread.start()
-        except KeyboardInterrupt:
-            t.stop()
-            s.stop()
         except:
             io.error()
         return True

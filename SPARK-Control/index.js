@@ -33,7 +33,7 @@ socket.onclose = function() {
         newsocket.onopen = socket.onopen;
         newsocket.onclose = socket.onclose;
         socket = newsocket;
-    }, 5000);
+    }, 10000);
 };
 function send(event, data) {
     if (connected) {

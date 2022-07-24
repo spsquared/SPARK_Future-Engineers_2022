@@ -11,18 +11,18 @@ thread = None
 
 def start():
     global running, camera, thread
-    camera.running = True
     running = True
     def __capture():
         global running, camera, currentImage
         while running:
+            start = time.time()
+            camera.read()
             currentImage = camera.value
+            print(max(0.0125-(time.time()-start), 0))
+            time.sleep(max(0.0125-(time.time()-start), 0))
     try:
         thread = Thread(target = __capture)
         thread.start()
-    except KeyboardInterrupt:
-        camera.release()
-        return
     except:
         io.error()
 
@@ -35,12 +35,12 @@ def stop():
 index = 0
 def capture():
     global currentImage, index
-    try:
-        cv2.imwrite('../image_out/' + index + '.png')
-        index += 1
-        return currentImage
-    except:
-        io.error()
+    # try:
+    cv2.imwrite('../image_out/' + index + '.png')
+    index += 1
+    return currentImage
+    # except:
+    #     io.error()
 
 streamThread = None
 streaming = False
@@ -55,8 +55,6 @@ def beginSaveStream():
         try:
             streamThread = Thread(target = loop)
             streamThread.start()
-        except KeyboardInterrupt:
-            return
         except:
             io.error()
         return True

@@ -47,12 +47,15 @@ def main():
                 msg = input()
                 server.broadcast(msg)
             except KeyboardInterrupt:
-                break
-    except KeyboardInterrupt:
-        server.close()
-        drive.stop()
-        camera.stop()
-        io.close()
+                server.close()
+                drive.stop()
+                camera.stop()
+                io.close()
+                return
+            except:
+                io.error()
+    except:
+        io.error()
 
 if __name__ == '__main__':
     main()

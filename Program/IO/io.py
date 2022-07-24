@@ -20,8 +20,8 @@ def setup():
         try:
             thread = Thread(target = blink)
             thread.start()
-        except KeyboardInterrupt:
-            return True
+        except:
+            error()
         return True
     return False
 
@@ -40,11 +40,8 @@ def error():
                 time.sleep(0.05)
                 GPIO.output(13, GPIO.LOW)
                 time.sleep(0.55)
-        try:
-            thread = Thread(target = blink)
-            thread.start()
-        except KeyboardInterrupt:
-            return True
+        thread = Thread(target = blink)
+        thread.start()
         return True
     return False
 

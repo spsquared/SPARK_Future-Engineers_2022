@@ -23,8 +23,11 @@ thread = None
 
 def close():
     global running, thread
-    running = False
-    thread.join()
+    if running == True:
+        running = False
+        thread.join()
+        return True
+    return False
 
 async def __server(websocket, path):
     global sendlist
@@ -72,14 +75,11 @@ async def __server(websocket, path):
 def __start():
     global running, __server
     running = True
-    try:
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        server = websockets.serve(__server, '192.168.1.151', 4040)
-        loop.run_until_complete(server)
-        loop.run_forever()
-    except KeyboardInterrupt:
-        return
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    server = websockets.serve(__server, '192.168.1.151', 4040)
+    loop.run_until_complete(server)
+    loop.run_forever()
 
 thread = Thread(target = __start)
 thread.start()
