@@ -31,14 +31,13 @@ def stop():
     thread.join()
     camera.release()
 
-index = 0
-def capture(server):
-    global currentImage, index
+def capture(server = None):
+    global currentImage
     try:
-        cv2.imwrite('image_out/' + str(index) + '.png', currentImage)
-        index += 1
+        name = str(round(time.time()*1000))
+        cv2.imwrite('image_out/' + name + '.png', currentImage)
         if server != None:
-            server.broadcast('message', 'Captured ' + str(index) + '.png')
+            server.broadcast('message', 'Captured ' + name + '.png')
             # server.broadcast('capture', currentImage.tolist())
         return currentImage
     except:
@@ -46,15 +45,18 @@ def capture(server):
 
 streamThread = None
 streaming = False
-def startSaveStream(server):
+totalCaptured = 0
+def startSaveStream(server = None):
     global streamThread, streaming
     if streaming == False:
+        streaming = True
         def loop():
-            global currentImage, index, streaming
+            global currentImage, streaming, totalCaptured
             while streaming:
                 start = time.time()
-                cv2.imwrite('image_out/' + str(index) + '.png', currentImage)
-                index += 1
+                name = str(round(time.time()*1000))
+                cv2.imwrite('image_out/' + name + '.png', currentImage)
+                totalCaptured += 1
                 time.sleep(max(0.05-(time.time()-start), 0))
         try:
             streamThread = Thread(target = loop)
@@ -65,11 +67,12 @@ def startSaveStream(server):
             server.broadcast('message', 'Began save stream')
         return True
     return False
-def stopSaveStream(server):
-    global streamThread, streaming
+def stopSaveStream(server = None):
+    global streamThread, streaming, totalCaptured
     if streaming == True:
         streaming = False
         streamThread.join()
+        totalCaptured = 0
         if server != None:
             server.broadcast('message', 'Ended save stream')
         return True

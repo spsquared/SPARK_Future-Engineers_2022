@@ -40,10 +40,10 @@ def main():
             camera.capture(server)
             return
         def captureStream(data):
-            if data.state == True:
-                camera.startSaveStream()
+            if data['state'] == True:
+                camera.startSaveStream(server)
             else:
-                camera.stopSaveStream()
+                camera.stopSaveStream(server)
         server.addListener('key', keys)
         server.addListener('joystick', joystick)
         server.addListener('capture', capture)

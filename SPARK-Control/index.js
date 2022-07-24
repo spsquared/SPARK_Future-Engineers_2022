@@ -86,8 +86,8 @@ document.onmouseup = function(e) {
     }
 };
 document.addEventListener('touchend', function(e) {
-    if (grabbing) {
-        grabbing = false;
+    if (grabbingtouch) {
+        grabbingtouch = false;
         joystickPin.style.right = '150px';
         joystickPin.style.bottom = '150px';
         sliderX.style.bottom = '190px';
@@ -98,8 +98,8 @@ document.addEventListener('touchend', function(e) {
     }
 }, {passive: true});
 document.addEventListener('touchcancel', function(e) {
-    if (grabbing) {
-        grabbing = false;
+    if (grabbingtouch) {
+        grabbingtouch = false;
         joystickPin.style.right = '150px';
         joystickPin.style.bottom = '150px';
         sliderX.style.bottom = '190px';
