@@ -17,12 +17,11 @@ def start():
         global running, camera, currentImage
         while running:
             start = time.time()
-            print(camera.value)
             currentImage = camera.value
             time.sleep(max(0.0125-(time.time()-start), 0))
     # try:
-        thread = Thread(target = __capture)
-        thread.start()
+    thread = Thread(target = __capture)
+    thread.start()
     # except:
     #     io.error()
 
