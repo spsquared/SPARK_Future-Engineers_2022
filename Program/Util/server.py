@@ -13,10 +13,10 @@ def addListener(event, cb):
         callbacks[event].append(cb)
     else:
         callbacks[event] = [cb]
-def broadcast(data):
+def broadcast(event, data):
     global sendlist
     for arr in sendlist:
-        arr.append(data)
+        arr.append(JSON.dumps({'event': event, 'data': data}))
 
 running = True
 thread = None
@@ -67,10 +67,10 @@ async def __server(websocket, path):
     except websockets.exceptions.ConnectionClosedError:
         connected = False
         del sendlist[index]
-    except:
-        connected = False
-        del sendlist[index]
-        io.error()
+    # except:
+    #     connected = False
+    #     del sendlist[index]
+    #     io.error()
 
 def __start():
     global running, __server

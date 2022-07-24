@@ -9,7 +9,7 @@ __backward = 0
 __left = 0
 __right = 0
 def main():
-    try:
+    # try:
         drive.start()
         camera.start()
         def keys(data):
@@ -37,25 +37,26 @@ def main():
             drive.throttle(data['throttle'])
             drive.steer(data['steering'])
         def capture(data):
-            camera.capture()
+            camera.capture(server)
             return
         server.addListener('key', keys)
         server.addListener('joystick', joystick)
         server.addListener('capture', capture)
-        while (True):
-            try:
+        try:
+            while (True):
                 msg = input()
-                server.broadcast(msg)
-            except KeyboardInterrupt:
-                server.close()
-                drive.stop()
-                camera.stop()
-                io.close()
-                return
-            except:
-                io.error()
-    except:
-        io.error()
+                if input != '':
+                    server.broadcast('message', msg)
+        except KeyboardInterrupt:
+            server.close()
+            drive.stop()
+            camera.stop()
+            io.close()
+            return
+        except:
+            io.error()
+    # except:
+    #     io.error()
 
 if __name__ == '__main__':
     main()

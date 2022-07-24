@@ -46,5 +46,6 @@ def error():
     return False
 
 def close():
+    GPIO.output([11, 13], GPIO.LOW)
     GPIO.cleanup()
     return True

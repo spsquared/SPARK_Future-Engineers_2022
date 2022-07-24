@@ -2,39 +2,6 @@ socket = new WebSocket('ws://192.168.1.151:4040');
 
 const log = document.getElementById('eventLogBody');
 var connected = false;
-socket.onmessage = function(e) {
-    const div = document.createElement('div');
-    div.classList.add('logBlock');
-    div.innerText = e.data;
-    log.appendChild(div);
-};
-socket.onopen = function() {
-    connected = true;
-    const div = document.createElement('div');
-    div.classList.add('logBlock');
-    div.innerText = 'Connected!';
-    div.style.backgroundColor = 'lime';
-    log.appendChild(div);
-};
-socket.onclose = function() {
-    connected = false;
-    const div = document.createElement('div');
-    div.classList.add('logBlock');
-    div.innerText = 'Connection closed';
-    div.style.backgroundColor = 'red';
-    log.appendChild(div)
-    setTimeout(function() {
-        const div = document.createElement('div');
-        div.classList.add('logBlock');
-        div.innerText = 'Attempting to reconnect...';
-        log.appendChild(div)
-        var newsocket = new WebSocket('ws://192.168.1.151:4040');
-        newsocket.onmessage = socket.onmessage;
-        newsocket.onopen = socket.onopen;
-        newsocket.onclose = socket.onclose;
-        socket = newsocket;
-    }, 10000);
-};
 function send(event, data) {
     if (connected) {
         socket.send(JSON.stringify({
@@ -42,6 +9,42 @@ function send(event, data) {
             data: data
         }));
     }
+};
+function appendLog(text, color) {
+    const div = document.createElement('div');
+    div.classList.add('logBlock');
+    div.innerText = text;
+    div.style.backgroundColor = color ?? '';
+    log.appendChild(div);
+};
+socket.onmessage = function(e) {
+    var event = JSON.parse(e.data).event
+    var data = JSON.parse(e.data).data
+    switch (event) {
+        case 'message':
+            appendLog(data);
+            break;
+        case 'capture':
+            console.log(data)
+            break;
+        
+    }
+};
+socket.onopen = function() {
+    connected = true;
+    appendLog('Connected!', 'lime');
+};
+socket.onclose = function() {
+    connected = false;
+    appendLog('Connection closed', 'red');
+    setTimeout(function() {
+        appendLog('Attempting to reconnect...');
+        var newsocket = new WebSocket('ws://192.168.1.151:4040');
+        newsocket.onmessage = socket.onmessage;
+        newsocket.onopen = socket.onopen;
+        newsocket.onclose = socket.onclose;
+        socket = newsocket;
+    }, 10000);
 };
 
 // keys
@@ -135,11 +138,6 @@ document.addEventListener('touchmove', function(e) {
         }
     }
 }, {passive: true});
-setInterval(function() {
-    if (throttle != 0 || steering != 0) {
-        send('joystick', {throttle: throttle, steering: steering});
-    }
-}, 50);
 
 // controllers
 function updateControllers() {
@@ -162,6 +160,13 @@ function updateControllers() {
 setInterval(function() {
     updateControllers()
 }, 25);
+
+// send
+setInterval(function() {
+    if (throttle != 0 || steering != 0) {
+        send('joystick', {throttle: throttle, steering: steering});
+    }
+}, 50);
 
 // capture
 document.getElementById('captureButton').onclick = function(e) {

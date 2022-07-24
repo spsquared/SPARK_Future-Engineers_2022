@@ -6,25 +6,25 @@ import time
 
 camera = CSICamera(width=320, height=180, capture_width=1280, capture_height=720, capture_fps=120)
 running = False
-currentImage = [[]]
+currentImage = "hi"
 thread = None
 
 def start():
     global running, camera, thread
+    camera.running = True
     running = True
     def __capture():
         global running, camera, currentImage
         while running:
             start = time.time()
-            camera.read()
+            print(camera.value)
             currentImage = camera.value
-            print(max(0.0125-(time.time()-start), 0))
             time.sleep(max(0.0125-(time.time()-start), 0))
-    try:
+    # try:
         thread = Thread(target = __capture)
         thread.start()
-    except:
-        io.error()
+    # except:
+    #     io.error()
 
 def stop():
     global running, camera, thread
@@ -33,11 +33,14 @@ def stop():
     camera.release()
 
 index = 0
-def capture():
+def capture(server):
     global currentImage, index
     # try:
-    cv2.imwrite('../image_out/' + index + '.png')
+    print(currentImage)
+    cv2.imwrite('../image_out/' + str(index) + '.png', currentImage)
     index += 1
+    if server != None:
+        server.broadcast('capture', currentImage)
     return currentImage
     # except:
     #     io.error()
@@ -50,8 +53,10 @@ def beginSaveStream():
         def loop():
             global currentImage, index, streaming
             while streaming:
-                cv2.imwrite('../image_out/' + index + '.png')
+                start = time.time()
+                cv2.imwrite('../image_out/' + str(index) + '.png', currentImage)
                 index += 1
+                time.sleep(max(0.025-(time.time()-start), 0))
         try:
             streamThread = Thread(target = loop)
             streamThread.start()
