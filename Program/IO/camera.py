@@ -46,7 +46,7 @@ def capture(server):
 
 streamThread = None
 streaming = False
-def beginSaveStream(server):
+def startSaveStream(server):
     global streamThread, streaming
     if streaming == False:
         def loop():
@@ -65,7 +65,7 @@ def beginSaveStream(server):
             server.broadcast('message', 'Began save stream')
         return True
     return False
-def endSaveStream(server):
+def stopSaveStream(server):
     global streamThread, streaming
     if streaming == True:
         streaming = False

@@ -172,5 +172,17 @@ setInterval(function() {
 document.getElementById('captureButton').onclick = function(e) {
     send('capture', {});
 };
+streaming = false;
+document.getElementById('captureStreamButton').onclick = function(e) {
+    streaming = !streaming;
+    send('captureStream', {state: streaming});
+    if (streaming) {
+        document.getElementById('captureStreamButton').innerText = 'STOP CAPTURE STREAM';
+        document.getElementById('captureStreamButton').style.backgroundColor = 'lightcoral';
+    } else {
+        document.getElementById('captureStreamButton').innerText = 'START CAPTURE STREAM';
+        document.getElementById('captureStreamButton').style.backgroundColor = 'lightgreen';
+    }
+};
 function slowconvert(arr) {
 }

@@ -39,9 +39,15 @@ def main():
         def capture(data):
             camera.capture(server)
             return
+        def captureStream(data):
+            if data.state == True:
+                camera.startSaveStream()
+            else:
+                camera.stopSaveStream()
         server.addListener('key', keys)
         server.addListener('joystick', joystick)
         server.addListener('capture', capture)
+        server.addListener('captureStream', captureStream)
         try:
             while (True):
                 msg = input()

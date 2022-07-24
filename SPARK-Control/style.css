@@ -74,19 +74,34 @@ div {
     position: absolute;
     top: 0px;
     right: 0px;
-    width: 200px;
+    width: 300px;
     align-content: center;
 }
 #captureButton {
-    width: 168px;
+    width: 268px;
     height: 32px;
     margin: 16px 16px;
+    margin-bottom: 0px;
+    font: 28px sans-serif black;
+    font-weight: bolder;
+    background-color: lightskyblue;
+    border: 4px outset darkgray;
+    cursor: pointer;
+}
+#captureButton:active {
+    border-style: inset;
+}
+#captureStreamButton {
+    width: 268px;
+    height: 32px;
+    margin: 16px 16px;
+    margin-bottom: 0px;
     font: 28px sans-serif black;
     font-weight: bolder;
     background-color: lightgreen;
     border: 4px outset darkgray;
     cursor: pointer;
 }
-#captureButton:active {
+#captureStreamButton:active {
     border-style: inset;
 }

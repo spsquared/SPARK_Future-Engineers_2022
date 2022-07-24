@@ -109,6 +109,12 @@ Progress in code includes a better server and control page. This makes developme
 Issues we ran into:
 * The camera could not initialize, since it was "busy". The Jupyter kernel was continuing to use teh camera even after releasing it. We solved this by restarting Jupyter lab every time we needed to use the camera again. In the future the camera will be integrated with everything else.
 
+Some images we got:
+![Green obstacle](./July/7-24-22-a.png)
+![Blurry blue obstacle](./July/7-24-22-b.png)
+
+Many of them are very blurry because the frame times are so long and we're turning so fast that there ends up being a lot of movement in the time the camera is doing the exposure.
+
 # 7/24/22
 The manual drive script now has controller support, making data collection easier. We were able to get images saved from the program. More importantly, we got some AI object detection working.
 
