@@ -47,9 +47,9 @@ async def __server(websocket, path):
             global sendlist, running
             while connected and running:
                 if len(sendlist[index]) > 0:
-                    msg = sendlist[index][0]
+                    data = sendlist[index][0]
                     del sendlist[index][0]
-                    await websocket.send(msg)
+                    await websocket.send(data)
                 else:
                     time.sleep(0.1)
         def send2():

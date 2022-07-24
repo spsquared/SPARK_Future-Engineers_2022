@@ -18,14 +18,14 @@ function appendLog(text, color) {
     log.appendChild(div);
 };
 socket.onmessage = function(e) {
-    var event = JSON.parse(e.data).event
-    var data = JSON.parse(e.data).data
+    var event = JSON.parse(e.data).event;
+    var data = JSON.parse(e.data).data;
     switch (event) {
         case 'message':
             appendLog(data);
             break;
         case 'capture':
-            console.log(data)
+            slowconvert(data);
             break;
         
     }
@@ -172,3 +172,5 @@ setInterval(function() {
 document.getElementById('captureButton').onclick = function(e) {
     send('capture', {});
 };
+function slowconvert(arr) {
+}
