@@ -1,5 +1,5 @@
 # July 2022
-SPARK USEL Future Engineers Engineering Notebooks
+SPARK WRO 2022 Future Engineers Engineering Notebooks
 
 ***
 
