@@ -62,8 +62,8 @@ const sliderY = document.getElementById('sliderY');
 
 var grabbing = false;
 var grabbingtouch = false;
-var angle = 0;
-var distance = 0;
+var throttle = 0;
+var steering = 0;
 joystick.onmousedown = function(e) {
     grabbing = true;
 };
@@ -102,45 +102,60 @@ document.addEventListener('touchcancel', function(e) {
 }, {passive: true});
 document.onmousemove = function(e) {
     if (grabbing) {
-        var x = e.clientX-window.innerWidth+200;
-        var y = e.clientY-window.innerHeight+200;
-        angle = Math.atan2(y, x);
-        distance = Math.min(150, Math.sqrt(Math.pow(x, 2)+Math.pow(y, 2)));
-        joystickPin.style.bottom = 150-(Math.sin(angle)*distance) + 'px';
-        joystickPin.style.right = 150-(Math.cos(angle)*distance) + 'px';
-        sliderX.style.bottom = 190-(Math.sin(angle)*distance) + 'px';
-        sliderY.style.right = 190-(Math.cos(angle)*distance) + 'px';
+        var x = Math.max(-150, Math.min(e.clientX-window.innerWidth+200, 150));
+        var y = Math.max(-150, Math.min(e.clientY-window.innerHeight+200, 150));
+        throttle = Math.round(x*0.75);
+        steering = Math.round(y*0.75);
+        joystickPin.style.bottom = 150-y + 'px';
+        joystickPin.style.right = 150-x + 'px';
+        sliderX.style.bottom = 190-y + 'px';
+        sliderY.style.right = 190-x + 'px';
     }
 };
 document.addEventListener('touchmove', function(e) {
     if (grabbingtouch) {
         for (var i in e.touches) {
             if (joystick.contains(e.touches[i].target)) {
-                var x = e.touches[i].clientX-window.innerWidth+200;
-                var y = e.touches[i].clientY-window.innerHeight+200;
-                angle = Math.atan2(y, x);
-                distance = Math.min(150, Math.sqrt(Math.pow(x, 2)+Math.pow(y, 2)));
-                joystickPin.style.bottom = 150-(Math.sin(angle)*distance) + 'px';
-                joystickPin.style.right = 150-(Math.cos(angle)*distance) + 'px';
-                sliderX.style.bottom = 190-(Math.sin(angle)*distance) + 'px';
-                sliderY.style.right = 190-(Math.cos(angle)*distance) + 'px';
+                var x = Math.max(-150, Math.min(e.touches[i].clientX-window.innerWidth+200, 150));
+                var y = Math.max(-150, Math.min(e.touches[i].clientY-window.innerHeight+200, 150));
+                throttle = Math.round(x*0.75);
+                steering = Math.round(y*0.75);
+                joystickPin.style.bottom = 150-y + 'px';
+                joystickPin.style.right = 150-x + 'px';
+                sliderX.style.bottom = 190-y + 'px';
+                sliderY.style.right = 190-x + 'px';
+                break;
             }
         }
     }
 }, {passive: true});
 setInterval(function() {
-    if (angle != 0 || distance != 0) {
-        var angle2 = angle;
-        var distance2 = distance;
-        if (angle > 0) {
-            angle2 *= -1;
-            distance2 *= -1;
-        }
-        var steering = Math.round(Math.max(-Math.PI/3, Math.min(angle2+Math.PI/2, Math.PI/3))*300/Math.PI);
-        var throttle = Math.round(distance2/1.5, 2)
+    if (throttle != 0 || steering != 0) {
         send('joystick', {throttle: throttle, steering: steering});
     }
 }, 100);
+
+// controllers
+function updateControllers() {
+    var controllers = navigator.getGamepads();
+    for (var i in controllers) {
+        if (controllers[i] instanceof Gamepad) {
+            var controller = controllers[i];
+            throttle = Math.round(controller.axes[1]*-100);
+            steering = Math.round(controller.axes[2]*100);
+            // buttons.clicking = controller.buttons[0].pressed;
+            // buttons.interacting = controller.buttons[3].pressed;
+            joystickPin.style.bottom = 150-(controller.axes[1]*150) + 'px';
+            joystickPin.style.right = 150-(controller.axes[2]*150) + 'px';
+            sliderX.style.bottom = 190-(controller.axes[1]*150) + 'px';
+            sliderY.style.right = 190-(controller.axes[2]*150) + 'px';
+            break;
+        }
+    }
+};
+setInterval(function() {
+    updateControllers()
+}, 50);
 
 // capture
 document.getElementById('captureButton').onclick = function(e) {
