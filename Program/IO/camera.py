@@ -1,66 +1,70 @@
 from jetcam.csi_camera import CSICamera
-from PIL import Image
+import cv2
 from threading import Thread
 from IO import io
 import time
 
-__camera = CSICamera(width=320, height=180, capture_width=1280, capture_height=720, capture_fps=120)
-__running = False
-__currentImage = [[]]
-__thread = None
+camera = CSICamera(width=320, height=180, capture_width=1280, capture_height=720, capture_fps=120)
+running = False
+currentImage = [[]]
+thread = None
 
 def start():
-    global __running, __camera, __thread
-    __camera.running = True
-    __running = True
+    global running, camera, thread
+    camera.running = True
+    running = True
     def __capture():
-        global __running, __camera, __currentImage
-        while __running:
-            __currentImage = __camera.value
+        global running, camera, currentImage
+        while running:
+            currentImage = camera.value
     try:
-        __thread = Thread(target = __capture)
-        __thread.start()
+        thread = Thread(target = __capture)
+        thread.start()
     except KeyboardInterrupt:
-        __camera.release()
+        camera.release()
         return
     except:
         io.error()
 
 def stop():
-    global __running, __camera, __thread
-    __running = False
-    __thread.join()
-    __camera.release()
+    global running, camera, thread
+    running = False
+    thread.join()
+    camera.release()
 
-__index = 0
+index = 0
 def capture():
-    global __currentImage, __index
+    global currentImage, index
     try:
-        img = Image.fromarray(__currentImage)
-        img.save('../image_out/' + str(__index) + '.png')
-        __index += 1
-        return img
+        cv2.imwrite('../image_out/' + index + '.png')
+        index += 1
+        return currentImage
     except:
         io.error()
 
-__streamThread = None
-__streaming = False
+streamThread = None
+streaming = False
 def beginSaveStream():
-    global __streamThread, __streaming
-    if __streaming == False:
+    global streamThread, streaming
+    if streaming == False:
         def loop():
-            global __currentImage, __index, __streaming
-            while __streaming:
-                img = Image.fromarray(__currentImage)
-                img.save('../image_out/' + str(__index) + '.png')
+            global currentImage, index, streaming
+            while streaming:
+                cv2.imwrite('../image_out/' + index + '.png')
+                index += 1
         try:
-            __streamThread = Thread(target = loop)
-            __streamThread.start()
+            streamThread = Thread(target = loop)
+            streamThread.start()
         except KeyboardInterrupt:
             return
         except:
             io.error()
+        return True
+    return False
 def endSaveStream():
-    global __streamThread, __streaming
-    __streaming = False
-    __streamThread.join()
+    global streamThread, streaming
+    if streaming == True:
+        streaming = False
+        streamThread.join()
+        return True
+    return False
