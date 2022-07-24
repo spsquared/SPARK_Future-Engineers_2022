@@ -71,41 +71,47 @@ joystick.addEventListener('touchstart', function(e) {
     grabbingtouch = true;
 }, {passive: true});
 document.onmouseup = function(e) {
-    grabbing = false;
-    joystickPin.style.right = '150px';
-    joystickPin.style.bottom = '150px';
-    sliderX.style.bottom = '190px';
-    sliderY.style.right = '190px';
-    angle = 0;
-    distance = 0;
-    send('joystick', {throttle: 0, steering: 0});
+    if (grabbing) {
+        grabbing = false;
+        joystickPin.style.right = '150px';
+        joystickPin.style.bottom = '150px';
+        sliderX.style.bottom = '190px';
+        sliderY.style.right = '190px';
+        throttle = 0;
+        steering = 0;
+        send('joystick', {throttle: 0, steering: 0});
+    }
 };
 document.addEventListener('touchend', function(e) {
-    grabbingtouch = false;
-    joystickPin.style.right = '150px';
-    joystickPin.style.bottom = '150px';
-    sliderX.style.bottom = '190px';
-    sliderY.style.right = '190px';
-    angle = 0;
-    distance = 0;
-    send('joystick', {throttle: 0, steering: 0});
+    if (grabbing) {
+        grabbing = false;
+        joystickPin.style.right = '150px';
+        joystickPin.style.bottom = '150px';
+        sliderX.style.bottom = '190px';
+        sliderY.style.right = '190px';
+        throttle = 0;
+        steering = 0;
+        send('joystick', {throttle: 0, steering: 0});
+    }
 }, {passive: true});
 document.addEventListener('touchcancel', function(e) {
-    grabbingtouch = false;
-    joystickPin.style.right = '150px';
-    joystickPin.style.bottom = '150px';
-    sliderX.style.bottom = '190px';
-    sliderY.style.right = '190px';
-    angle = 0;
-    distance = 0;
-    send('joystick', {throttle: 0, steering: 0});
+    if (grabbing) {
+        grabbing = false;
+        joystickPin.style.right = '150px';
+        joystickPin.style.bottom = '150px';
+        sliderX.style.bottom = '190px';
+        sliderY.style.right = '190px';
+        throttle = 0;
+        steering = 0;
+        send('joystick', {throttle: 0, steering: 0});
+    }
 }, {passive: true});
 document.onmousemove = function(e) {
     if (grabbing) {
         var x = Math.max(-150, Math.min(e.clientX-window.innerWidth+200, 150));
         var y = Math.max(-150, Math.min(e.clientY-window.innerHeight+200, 150));
-        throttle = Math.round(x*0.75);
-        steering = Math.round(y*0.75);
+        throttle = Math.round(-y*2/3);
+        steering = Math.round(x*2/3);
         joystickPin.style.bottom = 150-y + 'px';
         joystickPin.style.right = 150-x + 'px';
         sliderX.style.bottom = 190-y + 'px';
@@ -118,8 +124,8 @@ document.addEventListener('touchmove', function(e) {
             if (joystick.contains(e.touches[i].target)) {
                 var x = Math.max(-150, Math.min(e.touches[i].clientX-window.innerWidth+200, 150));
                 var y = Math.max(-150, Math.min(e.touches[i].clientY-window.innerHeight+200, 150));
-                throttle = Math.round(x*0.75);
-                steering = Math.round(y*0.75);
+                throttle = Math.round(-y*2/3);
+                steering = Math.round(x*2/3);
                 joystickPin.style.bottom = 150-y + 'px';
                 joystickPin.style.right = 150-x + 'px';
                 sliderX.style.bottom = 190-y + 'px';
@@ -133,7 +139,7 @@ setInterval(function() {
     if (throttle != 0 || steering != 0) {
         send('joystick', {throttle: throttle, steering: steering});
     }
-}, 100);
+}, 50);
 
 // controllers
 function updateControllers() {
@@ -155,7 +161,7 @@ function updateControllers() {
 };
 setInterval(function() {
     updateControllers()
-}, 50);
+}, 25);
 
 // capture
 document.getElementById('captureButton').onclick = function(e) {

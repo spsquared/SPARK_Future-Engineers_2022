@@ -97,9 +97,21 @@ The color format is BGR so so the red and blue color channels are swapped - not 
 # 7/21/22
 Small update - working on integrating camera and control code into packages for actual use, as well as a WiFi card swap so we can stream the video live while testing. We encountered some driver issues along the way and used the answer posted on [this thread](https://forums.developer.nvidia.com/t/intel-9260-wifi-on-jetson-nano-jetbot/73360/74) by "idcrook" on 7/24/2019.
 
+Jupyter lab also isn't working somehow.
+
 # 7/23/22
 Today we gathered training photos for the AI. To do this, we drove the car around the course manually using a control app we designed while continuously saving pictures to a folder.
 
 The control app is a local HTML page that uses a WebSocket to connect to the car, which we added a WebSocket server to. The app currently can be used to control the car with WASD or a (very difficult to use) joystick, and there is a log on the left side, which is currently non-functional. There are plans to use the app to allow us to view and debug what the AI is doing as the program is running using a live stream.
 
 Progress in code includes a better server and control page. This makes development easier since it allows us to collect training data much faster when everything is integrated into one app.
+
+Issues we ran into:
+* The camera could not initialize, since it was "busy". The Jupyter kernel was continuing to use teh camera even after releasing it. We solved this by restarting Jupyter lab every time we needed to use the camera again. In the future the camera will be integrated with everything else.
+
+# 7/24/22
+The manual drive script now has controller support, making data collection easier.
+
+Issues we ran into:
+* Python script can't save the image, saying "File not found" even though we aren't looking for a file.
+* The steering lock broke off again - the metal screws going into nylon caused the threads to strip and the steering locks fell off due to the servo continuously bashing them with the steering arms. The first time we simply used nylon spacers and the original metal screws to solve the issue, but they broke off again. We will be using long nylon screws into nylon spacers from now on.
