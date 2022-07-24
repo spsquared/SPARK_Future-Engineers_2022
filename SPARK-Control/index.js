@@ -1,4 +1,4 @@
-const socket = new WebSocket('ws://192.168.1.151:4040');
+socket = new WebSocket('ws://192.168.1.151:4040');
 
 const log = document.getElementById('eventLogBody');
 var connected = false;
@@ -10,14 +10,11 @@ socket.onmessage = function(e) {
 };
 socket.onopen = function() {
     connected = true;
-    document.onkeydown = function(e) {
-        const key = e.key.toLowerCase();
-        send('key', {key: key});
-    };
-    document.onkeyup = function(e) {
-        const key = e.key.toUpperCase();
-        send('key', {key: key});
-    };
+    const div = document.createElement('div');
+    div.classList.add('logBlock');
+    div.innerText = 'Connected!';
+    div.style.backgroundColor = 'lime';
+    log.appendChild(div);
 };
 socket.onclose = function() {
     const div = document.createElement('div');
@@ -25,6 +22,17 @@ socket.onclose = function() {
     div.innerText = 'Connection closed';
     div.style.backgroundColor = 'red';
     log.appendChild(div)
+    setTimeout(function() {
+        const div = document.createElement('div');
+        div.classList.add('logBlock');
+        div.innerText = 'Attempting to reconnect...';
+        log.appendChild(div)
+        var newsocket = new WebSocket('ws://192.168.1.151:4040');
+        newsocket.onmessage = socket.onmessage;
+        newsocket.onopen = socket.onopen;
+        newsocket.onclose = socket.onclose;
+        socket = newsocket;
+    }, 5000);
 };
 function send(event, data) {
     if (connected) {
@@ -35,6 +43,17 @@ function send(event, data) {
     }
 };
 
+// keys
+document.onkeydown = function(e) {
+    const key = e.key.toLowerCase();
+    send('key', {key: key});
+};
+document.onkeyup = function(e) {
+    const key = e.key.toUpperCase();
+    send('key', {key: key});
+};
+
+// joystick
 const joystick = document.getElementById('joystickBody');
 const joystickPin = document.getElementById('joystickPin');
 const sliderX = document.getElementById('sliderX');
@@ -49,7 +68,7 @@ joystick.onmousedown = function(e) {
 };
 joystick.addEventListener('touchstart', function(e) {
     grabbingtouch = true;
-});
+}, {passive: true});
 document.onmouseup = function(e) {
     grabbing = false;
     joystickPin.style.right = '150px';
@@ -69,7 +88,7 @@ document.addEventListener('touchend', function(e) {
     angle = 0;
     distance = 0;
     send('joystick', {throttle: 0, steering: 0});
-});
+}, {passive: true});
 document.addEventListener('touchcancel', function(e) {
     grabbingtouch = false;
     joystickPin.style.right = '150px';
@@ -79,7 +98,7 @@ document.addEventListener('touchcancel', function(e) {
     angle = 0;
     distance = 0;
     send('joystick', {throttle: 0, steering: 0});
-});
+}, {passive: true});
 document.onmousemove = function(e) {
     if (grabbing) {
         var x = e.clientX-window.innerWidth+200;
@@ -107,7 +126,7 @@ document.addEventListener('touchmove', function(e) {
             }
         }
     }
-});
+}, {passive: true});
 setInterval(function() {
     if (angle != 0 || distance != 0) {
         var angle2 = angle;
@@ -122,6 +141,7 @@ setInterval(function() {
     }
 }, 100);
 
+// capture
 document.getElementById('captureButton').onclick = function(e) {
     send('capture', {});
 };

@@ -1,9 +1,10 @@
 import Jetson.GPIO as GPIO
 from threading import Thread
+import io
 import time
 
 # setup
-GPIO.setup([13, 32, 33], GPIO.OUT)
+GPIO.setup([11, 32, 33], GPIO.OUT)
 t = GPIO.PWM(32, 200)
 s = GPIO.PWM(33, 200)
 
@@ -32,7 +33,7 @@ def start():
     global __controlThread, __blinkThread
     t.start(thrMIN)
     s.start((strMIN+strMAX)/2)
-    def __loop():
+    def loop():
         global __running
         while __running:
             time.sleep(0.02)
@@ -42,21 +43,23 @@ def start():
             if (currThrottle < 0): t.ChangeDutyCycle((currThrottle/100)*(thrMIN-thrBACK)+thrMIN)
             else: t.ChangeDutyCycle((currThrottle/100)*(thrMAX-thrMIN)+thrMIN)
             s.ChangeDutyCycle((currSteering/100)*((strMAX-strMIN)/2)+((strMIN+strMAX)/2)+(strTRIM/10))
-    def __blink():
+    def blink():
         global __running
         while __running:
-            GPIO.output(13, GPIO.HIGH)
+            GPIO.output(11, GPIO.HIGH)
             time.sleep(0.5)
-            GPIO.output(13, GPIO.LOW)
+            GPIO.output(11, GPIO.LOW)
             time.sleep(0.5)
     try:
-        __controlThread = Thread(target = __loop)
-        __blinkThread = Thread(target = __blink)
+        __controlThread = Thread(target = loop)
+        __blinkThread = Thread(target = blink)
         __controlThread.start()
         __blinkThread.start()
     except KeyboardInterrupt:
         t.stop()
         s.stop()
+    except:
+        io.error()
 
 def stop():
     global __running

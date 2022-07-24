@@ -2,9 +2,10 @@ import asyncio
 import websockets
 import json as JSON
 from threading import Thread
+import time
 
 __callbacks = {}
-__connections = []
+__sendlist = []
 def addListener(event, cb):
     global __callbacks
     if event in __callbacks:
@@ -12,9 +13,9 @@ def addListener(event, cb):
     else:
         __callbacks[event] = [cb]
 def broadcast(data):
-    global __connections
-    # for socket in __connections:
-    #     socket.send(data)
+    global __sendlist
+    for arr in __sendlist:
+        arr.append(data)
 
 __running = True
 __thread = None
@@ -25,19 +26,38 @@ def close():
     __thread.join()
 
 async def __server(websocket, path):
-    global __running, __callbacks, __connections
-    index = len(__connections)
-    __connections.append(websocket)
+    global __sendlist
+    index = len(__sendlist)
+    __sendlist.append([])
     try:
-        await websocket.send('Connected!')
-        while (True):
-            json = await websocket.recv()
-            res = JSON.loads(json)
-            if res['event'] in __callbacks:
-                for cb in __callbacks[res['event']]:
-                    cb(res['data'])
+        async def recieve():
+            global __callbacks, __running
+            while (__running):
+                json = await websocket.recv()
+                res = JSON.loads(json)
+                if res['event'] in __callbacks:
+                    for cb in __callbacks[res['event']]:
+                        cb(res['data'])
+        async def send():
+            global __sendlist, __running
+            while (__running):
+                if len(__sendlist[index]) > 0:
+                    msg = __sendlist[index][0]
+                    del __sendlist[index][0]
+                    await websocket.send(msg)
+                else:
+                    time.sleep(0.1)
+        def send2():
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            loop.run_until_complete(send())
+            loop.close()
+        sendThread = Thread(target = send2)
+        sendThread.start()
+        await recieve()
+        sendThread.join()
     except websockets.exceptions.ConnectionClosedOK:
-        __connections[index] = None
+        del __sendlist[index]
         return
 
 def __start():

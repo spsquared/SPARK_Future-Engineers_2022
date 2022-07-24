@@ -1,5 +1,5 @@
-import asyncio
 from IO import io
+io.setup()
 from IO import drive
 from IO import camera
 from Util import server
@@ -42,9 +42,12 @@ def main():
         server.addListener('key', keys)
         server.addListener('joystick', joystick)
         server.addListener('capture', capture)
-        # while (True):
-        #     msg = input()
-        #     server.broadcast(msg)
+        while (True):
+            try:
+                msg = input()
+                server.broadcast(msg)
+            except KeyboardInterrupt:
+                break
     except KeyboardInterrupt:
         server.close()
         drive.stop()
