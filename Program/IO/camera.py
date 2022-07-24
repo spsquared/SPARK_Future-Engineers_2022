@@ -35,11 +35,10 @@ index = 0
 def capture(server):
     global currentImage, index
     # try:
-    print(currentImage)
     cv2.imwrite('../image_out/' + str(index) + '.png', currentImage)
     index += 1
     if server != None:
-        server.broadcast('capture', currentImage)
+        server.broadcast('capture', currentImage.tolist())
     return currentImage
     # except:
     #     io.error()
