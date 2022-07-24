@@ -34,12 +34,12 @@ def stop():
 index = 0
 def capture(server):
     global currentImage, index
-    #     server.broadcast('capture', currentImage.tolist())
     try:
         cv2.imwrite('image_out/' + str(index) + '.png', currentImage)
         index += 1
         if server != None:
             server.broadcast('message', 'Captured ' + str(index) + '.png')
+            # server.broadcast('capture', currentImage.tolist())
         return currentImage
     except:
         io.error()

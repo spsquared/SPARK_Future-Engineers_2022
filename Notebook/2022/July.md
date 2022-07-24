@@ -110,9 +110,11 @@ Issues we ran into:
 * The camera could not initialize, since it was "busy". The Jupyter kernel was continuing to use teh camera even after releasing it. We solved this by restarting Jupyter lab every time we needed to use the camera again. In the future the camera will be integrated with everything else.
 
 # 7/24/22
-The manual drive script now has controller support, making data collection easier. We were able to get images saved
+The manual drive script now has controller support, making data collection easier. We were able to get images saved from the program. More importantly, we got some AI object detection working.
 
 Issues we ran into:
 * Python script can't save the image, saying "File not found" even though we aren't looking for a file.
 * The steering lock broke off again - the metal screws going into nylon caused the threads to strip and the steering locks fell off due to the servo continuously bashing them with the steering arms. The first time we simply used nylon spacers and the original metal screws to solve the issue, but they broke off again. We will be using long nylon screws into nylon spacers from now on.
 * Strange errors when trying to send images to control app
+
+How does one AI?
