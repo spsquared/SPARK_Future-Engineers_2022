@@ -34,18 +34,19 @@ def stop():
 index = 0
 def capture(server):
     global currentImage, index
-    # try:
-    cv2.imwrite('image_out/' + str(index) + '.png', currentImage)
-    index += 1
-    # if server != None:
     #     server.broadcast('capture', currentImage.tolist())
-    return currentImage
-    # except:
-    #     io.error()
+    try:
+        cv2.imwrite('image_out/' + str(index) + '.png', currentImage)
+        index += 1
+        if server != None:
+            server.broadcast('message', 'Captured ' + str(index) + '.png')
+        return currentImage
+    except:
+        io.error()
 
 streamThread = None
 streaming = False
-def beginSaveStream():
+def beginSaveStream(server):
     global streamThread, streaming
     if streaming == False:
         def loop():
@@ -60,12 +61,16 @@ def beginSaveStream():
             streamThread.start()
         except:
             io.error()
+        if server != None:
+            server.broadcast('message', 'Began save stream')
         return True
     return False
-def endSaveStream():
+def endSaveStream(server):
     global streamThread, streaming
     if streaming == True:
         streaming = False
         streamThread.join()
+        if server != None:
+            server.broadcast('message', 'Ended save stream')
         return True
     return False
