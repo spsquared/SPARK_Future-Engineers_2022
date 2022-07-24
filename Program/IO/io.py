@@ -17,9 +17,13 @@ def error():
         def blink():
             while True:
                 GPIO.output(13, GPIO.HIGH)
-                time.sleep(0.5)
+                time.sleep(0.05)
                 GPIO.output(13, GPIO.LOW)
-                time.sleep(0.5)
+                time.sleep(0.1)
+                GPIO.output(13, GPIO.HIGH)
+                time.sleep(0.05)
+                GPIO.output(13, GPIO.LOW)
+                time.sleep(0.55)
         try:
             thread = Thread(target = blink)
             thread.start()

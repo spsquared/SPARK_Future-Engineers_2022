@@ -17,6 +17,7 @@ socket.onopen = function() {
     log.appendChild(div);
 };
 socket.onclose = function() {
+    connected = false;
     const div = document.createElement('div');
     div.classList.add('logBlock');
     div.innerText = 'Connection closed';

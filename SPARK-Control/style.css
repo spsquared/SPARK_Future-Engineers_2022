@@ -1,6 +1,8 @@
 body {
-    font-size: 20px;
     overflow: hidden;
+}
+div {
+    font-family: sans-serif;
 }
 
 #eventLog {
@@ -9,17 +11,17 @@ body {
     left: 0px;
     width: 400px;
     height: 100%;
-    border-right: 2px solid black;
+    border-right: 4px solid black;
     padding: 16px 16px;
-    font: 32px black Sans-Serif;
+    font: 32px black sans-serif;
 }
 #eventLogBody {
     position: absolute;
     top: 64px;
     left: 0px;
     width: 100%;
-    height: calc(100% - 98px);
-    border-top: 2px solid black;
+    height: calc(100% - 96px);
+    border-top: 4px solid black;
     font-size: 20px;
     overflow-y: scroll;
 }
@@ -89,5 +91,12 @@ body {
     width: 168px;
     height: 32px;
     margin: 16px 16px;
-    font: 28px Sans-Serif black;
+    font: 28px sans-serif black;
+    font-weight: bolder;
+    background-color: lightgreen;
+    border: 4px outset darkgray;
+    cursor: pointer;
+}
+#captureButton:active {
+    border-style: inset;
 }

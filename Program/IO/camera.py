@@ -1,7 +1,7 @@
 from jetcam.csi_camera import CSICamera
 from PIL import Image
 from threading import Thread
-import io
+from IO import io
 import time
 
 __camera = CSICamera(width=320, height=180, capture_width=1280, capture_height=720, capture_fps=120)
@@ -35,22 +35,32 @@ def stop():
 __index = 0
 def capture():
     global __currentImage, __index
-    img = Image.fromarray(__currentImage)
-    img.save('./image_out/' + str(__index) + '.png')
-    __index += 1
-    return img
+    try:
+        img = Image.fromarray(__currentImage)
+        img.save('../image_out/' + str(__index) + '.png')
+        __index += 1
+        return img
+    except:
+        io.error()
 
 __streamThread = None
+__streaming = False
 def beginSaveStream():
-    global __streamThread
-    if __streamThread != None:
+    global __streamThread, __streaming
+    if __streaming == False:
         def loop():
-            global __currentImage, __index
-            while True:
+            global __currentImage, __index, __streaming
+            while __streaming:
                 img = Image.fromarray(__currentImage)
-                img.save('./image_out/' + str(__index) + '.png')
+                img.save('../image_out/' + str(__index) + '.png')
         try:
             __streamThread = Thread(target = loop)
             __streamThread.start()
         except KeyboardInterrupt:
             return
+        except:
+            io.error()
+def endSaveStream():
+    global __streamThread, __streaming
+    __streaming = False
+    __streamThread.join()

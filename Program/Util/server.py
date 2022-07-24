@@ -2,6 +2,7 @@ import asyncio
 import websockets
 import json as JSON
 from threading import Thread
+from IO import io
 import time
 
 __callbacks = {}
@@ -29,10 +30,11 @@ async def __server(websocket, path):
     global __sendlist
     index = len(__sendlist)
     __sendlist.append([])
+    connected = True
     try:
         async def recieve():
             global __callbacks, __running
-            while (__running):
+            while connected and __running:
                 json = await websocket.recv()
                 res = JSON.loads(json)
                 if res['event'] in __callbacks:
@@ -40,7 +42,7 @@ async def __server(websocket, path):
                         cb(res['data'])
         async def send():
             global __sendlist, __running
-            while (__running):
+            while connected and __running:
                 if len(__sendlist[index]) > 0:
                     msg = __sendlist[index][0]
                     del __sendlist[index][0]
@@ -57,8 +59,15 @@ async def __server(websocket, path):
         await recieve()
         sendThread.join()
     except websockets.exceptions.ConnectionClosedOK:
+        connected = False
         del __sendlist[index]
-        return
+    except websockets.exceptions.ConnectionClosedError:
+        connected = False
+        del __sendlist[index]
+    except:
+        connected = False
+        del __sendlist[index]
+        io.error()
 
 def __start():
     global __running, __server

@@ -1,6 +1,6 @@
 import Jetson.GPIO as GPIO
 from threading import Thread
-import io
+from IO import io
 import time
 
 # setup
