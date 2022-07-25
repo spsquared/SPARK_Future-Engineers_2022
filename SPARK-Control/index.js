@@ -140,7 +140,7 @@ document.addEventListener('touchmove', function(e) {
 }, {passive: true});
 
 // controllers
-trim = 0
+trim = 10
 function updateControllers() {
     var controllers = navigator.getGamepads();
     for (var i in controllers) {
