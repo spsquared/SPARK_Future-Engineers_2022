@@ -3,8 +3,9 @@ from threading import Thread
 import time
 
 finInit = False
+thread = None
 def setup():
-    global finInit
+    global finInit, thread
     if finInit == False:
         GPIO.setwarnings(False)
         GPIO.cleanup()
@@ -46,6 +47,8 @@ def error():
     return False
 
 def close():
+    global thread
+    thread.join()
     GPIO.output([11, 13], GPIO.LOW)
     GPIO.cleanup()
     return True

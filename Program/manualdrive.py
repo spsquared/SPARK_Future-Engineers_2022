@@ -54,10 +54,7 @@ def main():
                 if input != '':
                     server.broadcast('message', msg)
         except KeyboardInterrupt:
-            server.close()
-            drive.stop()
-            camera.stop()
-            io.close()
+            True
         except:
             io.error()
     except KeyboardInterrupt:

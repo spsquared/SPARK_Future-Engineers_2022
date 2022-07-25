@@ -14,23 +14,22 @@ def start():
     camera.running = True
     running = True
     def __capture():
-        global running, camera, currentImage
-        while running:
-            start = time.time()
-            currentImage = camera.value
-            time.sleep(max(0.0125-(time.time()-start), 0))
-    try:
-        thread = Thread(target = __capture)
-        thread.start()
-    except:
-        print('camera borked')
-        io.error()
+        try:
+            global running, camera, currentImage
+            while running:
+                start = time.time()
+                currentImage = camera.value
+                time.sleep(max(0.0125-(time.time()-start), 0))
+        except:
+            io.error()
+    thread = Thread(target = __capture)
+    thread.start()
 
 def stop():
     global running, camera, thread
     running = False
     thread.join()
-    camera.release()
+    camera.running = False
 
 def capture(server = None):
     global currentImage
