@@ -15,7 +15,10 @@ function appendLog(text, color) {
     div.classList.add('logBlock');
     div.innerText = text;
     div.style.backgroundColor = color ?? '';
+    var scroll = false;
+    if (log.scrollTop + log.clientHeight >= log.scrollHeight - 5) scroll = true;
     log.appendChild(div);
+    if (scroll) log.scrollTop = log.scrollHeight;
 };
 socket.onmessage = function(e) {
     var event = JSON.parse(e.data).event;

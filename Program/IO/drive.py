@@ -1,6 +1,7 @@
 import Jetson.GPIO as GPIO
 from threading import Thread
 from IO import io
+import math
 import time
 
 # setup
@@ -9,16 +10,18 @@ t = GPIO.PWM(32, 200)
 s = GPIO.PWM(33, 200)
 
 # pwm min max and speed
-thrBACK = 28
+thrBACK = 29
 thrMIN = 30
 thrMAX = 31
 strMAX = 47
 strMIN = 28
 strTRIM = 8
+thrFeaFREQ = 30
 targetThrottle = 0
 targetSteering = 0
 currThrottle = 0
 currSteering = 0
+tickrate = 50
 thrAcceleration = 1
 strAcceleration = 10
 running = False
@@ -27,7 +30,7 @@ controlThread = None
 def trim(trim):
     global strTRIM
     strTRIM = trim
-
+ 
 def start():
     global controlThread, running
     if running == False:
@@ -35,15 +38,21 @@ def start():
         t.start(thrMIN)
         s.start((strMIN+strMAX)/2)
         def loop():
-            global running, t, s
+            global running, t, s, currThrottle, currSteering, targetThrottle, targetSteering, thrFeaFREQ, thrFeaACT, tickrate
+            timer = 0
             while running:
-                time.sleep(0.02)
-                # possibly add smoothing if neccessary
-                currThrottle = targetThrottle
+                start = time.time()
+                thrFeaACT = math.floor(abs(targetThrottle)/10)/10
+                if timer > 1: timer = 0
+                if timer <= thrFeaACT and abs(targetThrottle) > 10: currThrottle = (abs(targetThrottle)/targetThrottle)*100
+                else: currThrottle = 0
                 currSteering = targetSteering
+                print(currThrottle, targetThrottle, thrFeaACT)
                 if (currThrottle < 0): t.ChangeDutyCycle((currThrottle/100)*(thrMIN-thrBACK)+thrMIN)
                 else: t.ChangeDutyCycle((currThrottle/100)*(thrMAX-thrMIN)+thrMIN)
                 s.ChangeDutyCycle((currSteering/100)*((strMAX-strMIN)/2)+((strMIN+strMAX)/2)+(strTRIM/10))
+                timer += thrFeaFREQ/tickrate
+                time.sleep(max((1/tickrate)-(time.time()-start), 0))
         try:
             controlThread = Thread(target = loop)
             controlThread.start()

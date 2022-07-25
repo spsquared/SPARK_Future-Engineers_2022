@@ -69,4 +69,7 @@ iface eth0 inet static
 
 ***
 
-##
+## Killing a runaway python process
+```
+pkill -9 -f path/to/file/scriptnamehere.py
+```
