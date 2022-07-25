@@ -2,18 +2,20 @@ import Jetson.GPIO as GPIO
 from threading import Thread
 import time
 
-finInit = False
+running = False
 thread = None
 def setup():
-    global finInit, thread
-    if finInit == False:
+    global running, thread
+    if running == False:
+        running = True
         GPIO.setwarnings(False)
         GPIO.cleanup()
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup([11, 13], GPIO.OUT)
         GPIO.output([11, 13], GPIO.LOW)
         def blink():
-            while True:
+            global running
+            while running:
                 GPIO.output(11, GPIO.HIGH)
                 time.sleep(0.5)
                 GPIO.output(11, GPIO.LOW)
@@ -47,8 +49,11 @@ def error():
     return False
 
 def close():
-    global thread
-    thread.join()
-    GPIO.output([11, 13], GPIO.LOW)
-    GPIO.cleanup()
-    return True
+    global thread, running
+    if running == True:
+        running = False
+        thread.join()
+        GPIO.output([11, 13], GPIO.LOW)
+        GPIO.cleanup()
+        return True
+    return False

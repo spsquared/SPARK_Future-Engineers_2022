@@ -16,12 +16,12 @@ thrMAX = 31
 strMAX = 47
 strMIN = 28
 strTRIM = 8
-thrFeaFREQ = 20
+thrFeaFREQ = 15
 targetThrottle = 0
 targetSteering = 0
 currThrottle = 0
 currSteering = 0
-tickrate = 100
+tickrate = 150
 thrAcceleration = 1
 strAcceleration = 10
 running = False
@@ -30,7 +30,7 @@ controlThread = None
 def trim(trim):
     global strTRIM
     strTRIM = trim
- 
+
 def start():
     global controlThread, running
     if running == False:
@@ -43,7 +43,7 @@ def start():
                 timer = 0
                 while running:
                     start = time.time()
-                    thrFeaACT = math.floor(abs(targetThrottle)/10)/10
+                    thrFeaACT = math.floor(abs(targetThrottle)/20)/40
                     if timer > 1: timer = 0
                     if timer <= thrFeaACT and targetThrottle > 10: currThrottle = (abs(targetThrottle)/targetThrottle)*100
                     elif targetThrottle < -10: currThrottle = targetThrottle
