@@ -1,66 +1,79 @@
 from jetcam.csi_camera import CSICamera
-from PIL import Image
+import cv2
 from threading import Thread
 from IO import io
 import time
 
-__camera = CSICamera(width=320, height=180, capture_width=1280, capture_height=720, capture_fps=120)
-__running = False
-__currentImage = [[]]
-__thread = None
+camera = CSICamera(width=320, height=180, capture_width=1280, capture_height=720, capture_fps=120)
+running = False
+currentImage = "hi"
+thread = None
 
 def start():
-    global __running, __camera, __thread
-    __camera.running = True
-    __running = True
+    global running, camera, thread
+    camera.running = True
+    running = True
     def __capture():
-        global __running, __camera, __currentImage
-        while __running:
-            __currentImage = __camera.value
+        global running, camera, currentImage
+        while running:
+            start = time.time()
+            currentImage = camera.value
+            time.sleep(max(0.0125-(time.time()-start), 0))
     try:
-        __thread = Thread(target = __capture)
-        __thread.start()
-    except KeyboardInterrupt:
-        __camera.release()
-        return
+        thread = Thread(target = __capture)
+        thread.start()
     except:
         io.error()
 
 def stop():
-    global __running, __camera, __thread
-    __running = False
-    __thread.join()
-    __camera.release()
+    global running, camera, thread
+    running = False
+    thread.join()
+    camera.release()
 
-__index = 0
-def capture():
-    global __currentImage, __index
+def capture(server = None):
+    global currentImage
     try:
-        img = Image.fromarray(__currentImage)
-        img.save('../image_out/' + str(__index) + '.png')
-        __index += 1
-        return img
+        name = str(round(time.time()*1000))
+        cv2.imwrite('image_out/' + name + '.png', currentImage)
+        if server != None:
+            server.broadcast('message', 'Captured ' + name + '.png')
+            # server.broadcast('capture', currentImage.tolist())
+        return currentImage
     except:
         io.error()
 
-__streamThread = None
-__streaming = False
-def beginSaveStream():
-    global __streamThread, __streaming
-    if __streaming == False:
+streamThread = None
+streaming = False
+totalCaptured = 0
+def startSaveStream(server = None):
+    global streamThread, streaming
+    if streaming == False:
+        streaming = True
         def loop():
-            global __currentImage, __index, __streaming
-            while __streaming:
-                img = Image.fromarray(__currentImage)
-                img.save('../image_out/' + str(__index) + '.png')
+            global currentImage, streaming, totalCaptured
+            while streaming:
+                start = time.time()
+                name = str(round(time.time()*1000))
+                cv2.imwrite('image_out/' + name + '.png', currentImage)
+                totalCaptured += 1
+                time.sleep(max(0.05-(time.time()-start), 0))
         try:
-            __streamThread = Thread(target = loop)
-            __streamThread.start()
-        except KeyboardInterrupt:
-            return
+            streamThread = Thread(target = loop)
+            streamThread.start()
         except:
             io.error()
-def endSaveStream():
-    global __streamThread, __streaming
-    __streaming = False
-    __streamThread.join()
+        if server != None:
+            server.broadcast('message', 'Began save stream')
+        return True
+    return False
+def stopSaveStream(server = None):
+    global streamThread, streaming, totalCaptured
+    if streaming == True:
+        streaming = False
+        streamThread.join()
+        totalCaptured = 0
+        if server != None:
+            server.broadcast('message', 'Ended save stream')
+        return True
+    return False

@@ -21,55 +21,48 @@ currThrottle = 0
 currSteering = 0
 thrAcceleration = 1
 strAcceleration = 10
-__running = True
-__blinkThread = None
-__controlThread = None
+running = False
+controlThread = None
 
 def trim(trim):
     global strTRIM
     strTRIM = trim
 
 def start():
-    global __controlThread, __blinkThread
-    t.start(thrMIN)
-    s.start((strMIN+strMAX)/2)
-    def loop():
-        global __running
-        while __running:
-            time.sleep(0.02)
-            # possibly add smoothing if neccessary
-            currThrottle = targetThrottle
-            currSteering = targetSteering
-            if (currThrottle < 0): t.ChangeDutyCycle((currThrottle/100)*(thrMIN-thrBACK)+thrMIN)
-            else: t.ChangeDutyCycle((currThrottle/100)*(thrMAX-thrMIN)+thrMIN)
-            s.ChangeDutyCycle((currSteering/100)*((strMAX-strMIN)/2)+((strMIN+strMAX)/2)+(strTRIM/10))
-    def blink():
-        global __running
-        while __running:
-            GPIO.output(11, GPIO.HIGH)
-            time.sleep(0.5)
-            GPIO.output(11, GPIO.LOW)
-            time.sleep(0.5)
-    try:
-        __controlThread = Thread(target = loop)
-        __blinkThread = Thread(target = blink)
-        __controlThread.start()
-        __blinkThread.start()
-    except KeyboardInterrupt:
-        t.stop()
-        s.stop()
-    except:
-        io.error()
+    global controlThread, running
+    if running == False:
+        running = True
+        t.start(thrMIN)
+        s.start((strMIN+strMAX)/2)
+        def loop():
+            global running, t, s
+            while running:
+                time.sleep(0.02)
+                # possibly add smoothing if neccessary
+                currThrottle = targetThrottle
+                currSteering = targetSteering
+                if (currThrottle < 0): t.ChangeDutyCycle((currThrottle/100)*(thrMIN-thrBACK)+thrMIN)
+                else: t.ChangeDutyCycle((currThrottle/100)*(thrMAX-thrMIN)+thrMIN)
+                s.ChangeDutyCycle((currSteering/100)*((strMAX-strMIN)/2)+((strMIN+strMAX)/2)+(strTRIM/10))
+        try:
+            controlThread = Thread(target = loop)
+            controlThread.start()
+        except:
+            io.error()
+        return True
+    return False
 
 def stop():
-    global __running
-    __running = False
-    __controlThread.join()
-    __blinkThread.join()
-    t.ChangeDutyCycle(0)
-    s.ChangeDutyCycle(0)
-    t.stop()
-    s.stop()
+    global running, controlThread
+    if running == True:
+        running = False
+        controlThread.join()
+        t.ChangeDutyCycle(0)
+        s.ChangeDutyCycle(0)
+        t.stop()
+        s.stop()
+        return True
+    return False
 
 def steer(steering):
     global targetSteering

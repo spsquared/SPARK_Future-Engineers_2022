@@ -37,22 +37,32 @@ def main():
             drive.throttle(data['throttle'])
             drive.steer(data['steering'])
         def capture(data):
-            camera.capture()
+            camera.capture(server)
             return
+        def captureStream(data):
+            if data['state'] == True:
+                camera.startSaveStream(server)
+            else:
+                camera.stopSaveStream(server)
         server.addListener('key', keys)
         server.addListener('joystick', joystick)
         server.addListener('capture', capture)
-        while (True):
-            try:
+        server.addListener('captureStream', captureStream)
+        try:
+            while (True):
                 msg = input()
-                server.broadcast(msg)
-            except KeyboardInterrupt:
-                break
-    except KeyboardInterrupt:
-        server.close()
-        drive.stop()
-        camera.stop()
-        io.close()
+                if input != '':
+                    server.broadcast('message', msg)
+        except KeyboardInterrupt:
+            server.close()
+            drive.stop()
+            camera.stop()
+            io.close()
+            return
+        except:
+            io.error()
+    except:
+        io.error()
 
 if __name__ == '__main__':
     main()

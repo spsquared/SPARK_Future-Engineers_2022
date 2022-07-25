@@ -5,48 +5,51 @@ from threading import Thread
 from IO import io
 import time
 
-__callbacks = {}
-__sendlist = []
+callbacks = {}
+sendlist = []
 def addListener(event, cb):
-    global __callbacks
-    if event in __callbacks:
-        __callbacks[event].append(cb)
+    global callbacks
+    if event in callbacks:
+        callbacks[event].append(cb)
     else:
-        __callbacks[event] = [cb]
-def broadcast(data):
-    global __sendlist
-    for arr in __sendlist:
-        arr.append(data)
+        callbacks[event] = [cb]
+def broadcast(event, data):
+    global sendlist
+    for arr in sendlist:
+        arr.append(JSON.dumps({'event': event, 'data': data}))
 
-__running = True
-__thread = None
+running = True
+thread = None
 
 def close():
-    global __running, __thread
-    __running = False
-    __thread.join()
+    global running, thread
+    if running == True:
+        running = False
+        thread.join()
+        return True
+    return False
 
 async def __server(websocket, path):
-    global __sendlist
-    index = len(__sendlist)
-    __sendlist.append([])
+    global sendlist
+    index = len(sendlist)
+    sendlist.append([])
     connected = True
     try:
         async def recieve():
-            global __callbacks, __running
-            while connected and __running:
+            global callbacks, running
+            while connected and running:
                 json = await websocket.recv()
                 res = JSON.loads(json)
-                if res['event'] in __callbacks:
-                    for cb in __callbacks[res['event']]:
+                if res['event'] in callbacks:
+                    for cb in callbacks[res['event']]:
                         cb(res['data'])
         async def send():
-            global __sendlist, __running
-            while connected and __running:
-                if len(__sendlist[index]) > 0:
-                    msg = __sendlist[index][0]
-                    del __sendlist[index][0]
-                    await websocket.send(msg)
+            global sendlist, running
+            while connected and running:
+                if len(sendlist[index]) > 0:
+                    data = sendlist[index][0]
+                    del sendlist[index][0]
+                    await websocket.send(data)
                 else:
                     time.sleep(0.1)
         def send2():
@@ -60,26 +63,23 @@ async def __server(websocket, path):
         sendThread.join()
     except websockets.exceptions.ConnectionClosedOK:
         connected = False
-        del __sendlist[index]
+        del sendlist[index]
     except websockets.exceptions.ConnectionClosedError:
         connected = False
-        del __sendlist[index]
+        del sendlist[index]
     except:
         connected = False
-        del __sendlist[index]
+        del sendlist[index]
         io.error()
 
 def __start():
-    global __running, __server
-    __running = True
-    try:
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        server = websockets.serve(__server, '192.168.1.151', 4040)
-        loop.run_until_complete(server)
-        loop.run_forever()
-    except KeyboardInterrupt:
-        return
+    global running, __server
+    running = True
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    server = websockets.serve(__server, '192.168.1.151', 4040)
+    loop.run_until_complete(server)
+    loop.run_forever()
 
-__thread = Thread(target = __start)
-__thread.start()
+thread = Thread(target = __start)
+thread.start()

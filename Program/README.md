@@ -1,4 +1,4 @@
-# SPARK USEL Future Engineers Program Documentation
+# SPARK WRO 2022 Future Engineers Program Documentation
 
 This is the documentation for all the source code used for the USEL Future Engineers 2022 season.
 

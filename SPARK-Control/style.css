@@ -38,8 +38,8 @@ div {
     right: 0px;
     width: 400px;
     height: 400px;
-    border-radius: 50%;
     background-color: grey;
+    clip-path: inset(0 0 0 0 round 50px 50px 50px 50px);
     user-select: none;
 }
 #joystickPin {
@@ -69,34 +69,39 @@ div {
     height: 400px;
     background-color: black;
 }
-#joystickMask {
-    position: absolute;
-    bottom: 0px;
-    right: 0px;
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(transparent 199px, white 200px);
-    pointer-events: none;
-    z-index: 1;
-}
 
 #captureBody {
     position: absolute;
     top: 0px;
     right: 0px;
-    width: 200px;
+    width: 300px;
     align-content: center;
 }
 #captureButton {
-    width: 168px;
+    width: 268px;
     height: 32px;
     margin: 16px 16px;
+    margin-bottom: 0px;
+    font: 28px sans-serif black;
+    font-weight: bolder;
+    background-color: lightskyblue;
+    border: 4px outset darkgray;
+    cursor: pointer;
+}
+#captureButton:active {
+    border-style: inset;
+}
+#captureStreamButton {
+    width: 268px;
+    height: 32px;
+    margin: 16px 16px;
+    margin-bottom: 0px;
     font: 28px sans-serif black;
     font-weight: bolder;
     background-color: lightgreen;
     border: 4px outset darkgray;
     cursor: pointer;
 }
-#captureButton:active {
+#captureStreamButton:active {
     border-style: inset;
 }
