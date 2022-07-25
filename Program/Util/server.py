@@ -67,6 +67,9 @@ async def __server(websocket, path):
     except websockets.exceptions.ConnectionClosedError:
         connected = False
         del sendlist[index]
+    except KeyboardInterrupt:
+        connected = False
+        del sendlist[index]
     except:
         connected = False
         del sendlist[index]

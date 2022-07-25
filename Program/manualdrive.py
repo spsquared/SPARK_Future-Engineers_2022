@@ -58,9 +58,13 @@ def main():
             drive.stop()
             camera.stop()
             io.close()
-            return
         except:
             io.error()
+    except KeyboardInterrupt:
+        server.close()
+        drive.stop()
+        camera.stop()
+        io.close()
     except:
         io.error()
 

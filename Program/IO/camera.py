@@ -23,6 +23,7 @@ def start():
         thread = Thread(target = __capture)
         thread.start()
     except:
+        print('camera borked')
         io.error()
 
 def stop():
@@ -51,18 +52,18 @@ def startSaveStream(server = None):
     if streaming == False:
         streaming = True
         def loop():
-            global currentImage, streaming, totalCaptured
-            while streaming:
-                start = time.time()
-                name = str(round(time.time()*1000))
-                cv2.imwrite('image_out/' + name + '.png', currentImage)
-                totalCaptured += 1
-                time.sleep(max(0.1-(time.time()-start), 0))
-        try:
+            try:
+                global currentImage, streaming, totalCaptured
+                while streaming:
+                    start = time.time()
+                    name = str(round(time.time()*1000))
+                    cv2.imwrite('image_out/' + name + '.png', currentImage)
+                    totalCaptured += 1
+                    time.sleep(max(0.1-(time.time()-start), 0))
+            except:
+                io.error()
             streamThread = Thread(target = loop)
             streamThread.start()
-        except:
-            io.error()
         if server != None:
             server.broadcast('message', 'Began save stream')
         return True
