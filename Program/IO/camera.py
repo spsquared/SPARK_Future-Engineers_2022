@@ -57,7 +57,7 @@ def startSaveStream(server = None):
                 name = str(round(time.time()*1000))
                 cv2.imwrite('image_out/' + name + '.png', currentImage)
                 totalCaptured += 1
-                time.sleep(max(0.05-(time.time()-start), 0))
+                time.sleep(max(0.1-(time.time()-start), 0))
         try:
             streamThread = Thread(target = loop)
             streamThread.start()

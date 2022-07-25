@@ -116,7 +116,7 @@ Some images we got:
 Many of them are very blurry because the frame times are so long and we're turning so fast that there ends up being a lot of movement in the time the camera is doing the exposure.
 
 # 7/24/22
-The manual drive script now has controller support, making data collection easier. We were able to get images saved from the program. More importantly, we got some AI object detection working.
+The manual drive script now has controller support, making data collection easier. We were able to get images saved from the program. More importantly, we got some AI wall detection working.
 
 Issues we ran into:
 * Python script can't save the image, saying "File not found" even though we aren't looking for a file.
