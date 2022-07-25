@@ -124,3 +124,6 @@ Issues we ran into:
 * Strange errors when trying to send images to control app
 
 We found out that going backwards, the ESC doesn't have as big of a dead zone, and so we can move slower backwards. To take advantage of this feature, we would like to switch the motor to running in the opposite direction, but the ESC doesn't seem to have that feature. However, we think we can "feather" the throttle by quickly alternating between the target throttle and the actual throttle. If done correctly, we can get the slow speed that we currently are unable to use. To be simple, we PWM the PWM to bypass the minimum throttle feature on the ESC.
+
+# 7/25/22
+Today we tuned the speed. To "feather" the throttle, we convert the inputted throttle into an active time, a decimal out of 1, where 1 is full power and 0 being no power. That is the active time out of a frequency, so the higher the frequency, the smoother the output is. We can also adjust the drag brake force, which slows the car down in the inactive time. The resulting output alternates between two different PWM states.
