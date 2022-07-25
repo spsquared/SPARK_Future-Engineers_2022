@@ -140,13 +140,14 @@ document.addEventListener('touchmove', function(e) {
 }, {passive: true});
 
 // controllers
+trim = 0
 function updateControllers() {
     var controllers = navigator.getGamepads();
     for (var i in controllers) {
         if (controllers[i] instanceof Gamepad) {
             var controller = controllers[i];
             throttle = Math.round(controller.axes[1]*-100);
-            steering = Math.round(controller.axes[2]*100);
+            steering = Math.round(controller.axes[2]*100)-trim;
             // buttons.clicking = controller.buttons[0].pressed;
             // buttons.interacting = controller.buttons[3].pressed;
             joystickPin.style.bottom = 150-(controller.axes[1]*150) + 'px';

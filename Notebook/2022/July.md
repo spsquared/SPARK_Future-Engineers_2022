@@ -123,4 +123,4 @@ Issues we ran into:
 * The steering lock broke off again - the metal screws going into nylon caused the threads to strip and the steering locks fell off due to the servo continuously bashing them with the steering arms. The first time we simply used nylon spacers and the original metal screws to solve the issue, but they broke off again. We will be using long nylon screws into nylon spacers from now on.
 * Strange errors when trying to send images to control app
 
-How does one AI?
+We found out that going backwards, the ESC doesn't have as big of a dead zone, and so we can move slower backwards. To take advantage of this feature, we would like to switch the motor to running in the opposite direction, but the ESC doesn't seem to have that feature.
