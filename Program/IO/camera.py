@@ -6,7 +6,7 @@ import time
 
 # camera module for capturing input data
 
-camera = CSICamera(width=320, height=180, capture_width=1280, capture_height=720, capture_fps=120)
+camera = CSICamera(width=272, height=154, capture_width=3264, capture_height=1848)
 running = False
 currentImage = [[[]]]
 thread = None
