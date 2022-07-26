@@ -49,7 +49,7 @@ def main():
         server.addListener('capture', capture)
         server.addListener('captureStream', captureStream)
         try:
-            while (True):
+            while True:
                 msg = input()
                 if input != '':
                     server.broadcast('message', msg)
@@ -59,8 +59,8 @@ def main():
             io.error()
     except KeyboardInterrupt:
         server.close()
-        drive.stop()
         camera.stop()
+        drive.stop()
         io.close()
     except:
         io.error()
