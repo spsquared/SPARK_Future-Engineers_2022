@@ -28,7 +28,10 @@ socket.onmessage = function(e) {
             appendLog(data);
             break;
         case 'capture':
-            slowconvert(data);
+            // slowconvert(data);
+            break;
+        case 'colors':
+            setColors(data);
             break;
         
     }
@@ -188,5 +191,67 @@ document.getElementById('captureStreamButton').onclick = function(e) {
         document.getElementById('captureStreamButton').style.backgroundColor = 'lightgreen';
     }
 };
-function slowconvert(arr) {
-}
+
+// temp test stuff
+document.getElementById('captureButton2').onclick = function(e) {
+    arr = [
+        [
+            document.getElementById('redR').value,
+            document.getElementById('redG').value,
+            document.getElementById('redB').value,
+            document.getElementById('redT').value,
+        ],
+        [
+            document.getElementById('greenR').value,
+            document.getElementById('greenG').value,
+            document.getElementById('greenB').value,
+            document.getElementById('greenT').value,
+        ],
+        [
+            document.getElementById('blueR').value,
+            document.getElementById('blueG').value,
+            document.getElementById('blueB').value,
+            document.getElementById('blueT').value,
+        ],
+    ]
+    send('capturefilter', arr);
+};
+document.getElementById('redR').oninput();
+document.getElementById('redG').oninput();
+document.getElementById('redB').oninput();
+document.getElementById('redT').oninput();
+document.getElementById('greenR').oninput();
+document.getElementById('greenG').oninput();
+document.getElementById('greenB').oninput();
+document.getElementById('greenT').oninput();
+document.getElementById('blueR').oninput();
+document.getElementById('blueG').oninput();
+document.getElementById('blueB').oninput();
+document.getElementById('blueT').oninput();
+
+function setColors(colors) {
+    document.getElementById('redR').value = colors[0][0];
+    document.getElementById('redG').value = colors[0][1];
+    document.getElementById('redB').value = colors[0][2];
+    document.getElementById('redT').value = colors[0][3];
+    document.getElementById('greenR').value = colors[1][0];
+    document.getElementById('greenG').value = colors[1][1];
+    document.getElementById('greenB').value = colors[1][2];
+    document.getElementById('greenT').value = colors[1][3];
+    document.getElementById('blueR').value = colors[1][0];
+    document.getElementById('blueG').value = colors[1][1];
+    document.getElementById('blueB').value = colors[1][2];
+    document.getElementById('blueT').value = colors[1][3];
+    document.getElementById('redR').oninput();
+    document.getElementById('redG').oninput();
+    document.getElementById('redB').oninput();
+    document.getElementById('redT').oninput();
+    document.getElementById('greenR').oninput();
+    document.getElementById('greenG').oninput();
+    document.getElementById('greenB').oninput();
+    document.getElementById('greenT').oninput();
+    document.getElementById('blueR').oninput();
+    document.getElementById('blueG').oninput();
+    document.getElementById('blueB').oninput();
+    document.getElementById('blueT').oninput();
+};

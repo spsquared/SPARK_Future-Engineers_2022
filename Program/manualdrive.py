@@ -40,27 +40,31 @@ def main():
             drive.throttle(data['throttle'])
             drive.steer(data['steering'])
         def capture(data):
-            # camera.capture(server)
-            start = time.time()
-            print('started')
-            image = filter.filter(camera.read())
-            print(time.time()-start)
-            cv2.imwrite('image_filtertest/' + str(round(time.time()*1000)) + '.png', image)
-            server.broadcast('message', 'Captured filtered image')
-            return
+            camera.capture(server)
         def captureStream(data):
             if data['state'] == True:
                 camera.startSaveStream(server)
             else:
                 camera.stopSaveStream(server)
+        def capturefilter(data):
+            filter.setColors(data)
+            start = time.time()
+            image = filter.filter(camera.read())
+            server.broadcast('message', time.time()-start)
+            cv2.imwrite('image_filtertest/' + str(round(time.time()*1000)) + '.png', image)
+            server.broadcast('message', 'Captured filtered image')
         server.addListener('key', keys)
         server.addListener('joystick', joystick)
         server.addListener('capture', capture)
         server.addListener('captureStream', captureStream)
+        server.addListener('capturefilter', capturefilter)
         try:
             while True:
                 msg = input()
-                if input != '':
+                if msg == 'reset':
+                    server.broadcast('colors', filter.getColors())
+                    print(filter.getColors())
+                elif msg != '':
                     server.broadcast('message', msg)
         except KeyboardInterrupt:
             True

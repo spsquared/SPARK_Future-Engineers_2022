@@ -15,7 +15,78 @@
     </div>
     <div id="captureBody">
         <button id="captureButton">CAPTURE</button><br>
+        <button id="captureButton2">CAPTURE2</button><br>
         <button id="captureStreamButton">START CAPTURE STREAM</button>
+    </div>
+    <div id="temp">
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <input type="range" class="slider" min="0" max="255" id="redR" value="140" oninput="document.getElementById('redRindicator').innerText = this.value;">
+                    </td>
+                    <td>
+                        <input type="range" class="slider" min="0" max="255" id="greenR" value="10" oninput="document.getElementById('greenRindicator').innerText = this.value;">
+                    </td>
+                    <td>
+                        <input type="range" class="slider" min="0" max="255" id="blueR" value="55" oninput="document.getElementById('blueRindicator').innerText = this.value;">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="range" class="slider" min="0" max="255" id="redG" value="60" oninput="document.getElementById('redGindicator').innerText = this.value;">
+                    </td>
+                    <td>
+                        <input type="range" class="slider" min="0" max="255" id="greenG" value="90" oninput="document.getElementById('greenGindicator').innerText = this.value;">
+                    </td>
+                    <td>
+                        <input type="range" class="slider" min="0" max="255" id="blueG" value="55" oninput="document.getElementById('blueGindicator').innerText = this.value;">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="range" class="slider" min="0" max="255" id="redB" value="60" oninput="document.getElementById('redBindicator').innerText = this.value;">
+                    </td>
+                    <td>
+                        <input type="range" class="slider" min="0" max="255" id="greenB" value="70" oninput="document.getElementById('greenBindicator').innerText = this.value;">
+                    </td>
+                    <td>
+                        <input type="range" class="slider" min="0" max="255" id="blueB" value="60" oninput="document.getElementById('blueBindicator').innerText = this.value;">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="range" class="slider" min="0" max="255" id="redT" value="15" oninput="document.getElementById('redTindicator').innerText = this.value;">
+                    </td>
+                    <td>
+                        <input type="range" class="slider" min="0" max="255" id="greenT" value="12" oninput="document.getElementById('greenTindicator').innerText = this.value;">
+                    </td>
+                    <td>
+                        <input type="range" class="slider" min="0" max="255" id="blueT" value="12" oninput="document.getElementById('blueTindicator').innerText = this.value;">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span id="redRindicator">a</span>
+                        <span id="redGindicator">s</span>
+                        <span id="redBindicator">d</span>
+                        <span id="redTindicator">f</span>
+                    </td>
+                    <td>
+                        <span id="greenRindicator">a</span>
+                        <span id="greenGindicator">s</span>
+                        <span id="greenBindicator">d</span>
+                        <span id="greenTindicator">f</span>
+                    </td>
+                    <td>
+                        <span id="blueRindicator">a</span>
+                        <span id="blueGindicator">s</span>
+                        <span id="blueBindicator">d</span>
+                        <span id="blueTindicator">f</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
     <div id="joystickBody">
         <div id="joystickPin"></div>

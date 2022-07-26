@@ -105,3 +105,13 @@ div {
 #captureStreamButton:active {
     border-style: inset;
 }
+
+#temp {
+    position: absolute;
+    top: 0px;
+    left: 450px;
+}
+
+.slider {
+    width: 255px;
+}

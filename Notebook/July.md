@@ -127,3 +127,16 @@ We found out that going backwards, the ESC doesn't have as big of a dead zone, a
 
 # 7/25/22
 Today we tuned the speed. To "feather" the throttle, we convert the inputted throttle into an active time, a decimal out of 1, where 1 is full power and 0 being no power. That is the active time out of a frequency, so the higher the frequency, the smoother the output is. We can also adjust the drag brake force, which slows the car down in the inactive time. The resulting output alternates between two different PWM states.
+
+# 7/26/22
+We began sampling colors for the filter in preparation for training the AI. To do this, we created a simple spreadsheet to hold all the RGB values we sampled, which also had the benefit of being able to automatically calculate the average, median, mode, and range, which we can use to set the target RGB values and tolerances accordingly.
+
+After sampling 12 random images from our first set of training data, we were able to get the following:
+
+Original image:
+
+![Benchmark image, unfiltered](./July/7-26-22-a.png)
+
+First filtered image:
+
+![Benchmark image, filtered](./July/7-26-22-b.png)
