@@ -15,74 +15,78 @@
     </div>
     <div id="captureBody">
         <button id="captureButton">CAPTURE</button><br>
-        <button id="captureButton2">CAPTURE2</button><br>
+        <button id="captureFilterButton">CAPTURE FILTERED</button><br>
         <button id="captureStreamButton">START CAPTURE STREAM</button>
     </div>
-    <div id="temp">
+    <div id="filterAdjust">
+        <div style="font-size: 32px; font-weight: bold;">Adjust Filter:</div>
         <table>
             <tbody>
                 <tr>
                     <td>
-                        <input type="range" class="slider" min="0" max="255" id="redR" value="140" oninput="document.getElementById('redRindicator').innerText = this.value;">
+                        <input type="range" class="slider sliderR" min="0" max="255" step="5" id="redR" value="115" oninput="document.getElementById('redRindicator').innerText = this.value;">
                     </td>
                     <td>
-                        <input type="range" class="slider" min="0" max="255" id="greenR" value="10" oninput="document.getElementById('greenRindicator').innerText = this.value;">
+                        <input type="range" class="slider sliderR" min="0" max="255" step="5" id="greenR" value="-5" oninput="document.getElementById('greenRindicator').innerText = this.value;">
                     </td>
                     <td>
-                        <input type="range" class="slider" min="0" max="255" id="blueR" value="55" oninput="document.getElementById('blueRindicator').innerText = this.value;">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="range" class="slider" min="0" max="255" id="redG" value="60" oninput="document.getElementById('redGindicator').innerText = this.value;">
-                    </td>
-                    <td>
-                        <input type="range" class="slider" min="0" max="255" id="greenG" value="90" oninput="document.getElementById('greenGindicator').innerText = this.value;">
-                    </td>
-                    <td>
-                        <input type="range" class="slider" min="0" max="255" id="blueG" value="55" oninput="document.getElementById('blueGindicator').innerText = this.value;">
+                        <input type="range" class="slider sliderR" min="0" max="255" step="5" id="blueR" value="50" oninput="document.getElementById('blueRindicator').innerText = this.value;">
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <input type="range" class="slider" min="0" max="255" id="redB" value="60" oninput="document.getElementById('redBindicator').innerText = this.value;">
+                        <input type="range" class="slider sliderG" min="0" max="255" step="5" id="redG" value="60" oninput="document.getElementById('redGindicator').innerText = this.value;">
                     </td>
                     <td>
-                        <input type="range" class="slider" min="0" max="255" id="greenB" value="70" oninput="document.getElementById('greenBindicator').innerText = this.value;">
+                        <input type="range" class="slider sliderG" min="0" max="255" step="5" id="greenG" value="90" oninput="document.getElementById('greenGindicator').innerText = this.value;">
                     </td>
                     <td>
-                        <input type="range" class="slider" min="0" max="255" id="blueB" value="60" oninput="document.getElementById('blueBindicator').innerText = this.value;">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="range" class="slider" min="0" max="255" id="redT" value="15" oninput="document.getElementById('redTindicator').innerText = this.value;">
-                    </td>
-                    <td>
-                        <input type="range" class="slider" min="0" max="255" id="greenT" value="12" oninput="document.getElementById('greenTindicator').innerText = this.value;">
-                    </td>
-                    <td>
-                        <input type="range" class="slider" min="0" max="255" id="blueT" value="12" oninput="document.getElementById('blueTindicator').innerText = this.value;">
+                        <input type="range" class="slider sliderG" min="0" max="255" step="5" id="blueG" value="50" oninput="document.getElementById('blueGindicator').innerText = this.value;">
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <span id="redRindicator">a</span>
-                        <span id="redGindicator">s</span>
-                        <span id="redBindicator">d</span>
-                        <span id="redTindicator">f</span>
+                        <input type="range" class="slider sliderB" min="0" max="255" step="5" id="redB" value="60" oninput="document.getElementById('redBindicator').innerText = this.value;">
                     </td>
                     <td>
-                        <span id="greenRindicator">a</span>
-                        <span id="greenGindicator">s</span>
-                        <span id="greenBindicator">d</span>
-                        <span id="greenTindicator">f</span>
+                        <input type="range" class="slider sliderB" min="0" max="255" step="5" id="greenB" value="65" oninput="document.getElementById('greenBindicator').innerText = this.value;">
                     </td>
                     <td>
-                        <span id="blueRindicator">a</span>
-                        <span id="blueGindicator">s</span>
-                        <span id="blueBindicator">d</span>
-                        <span id="blueTindicator">f</span>
+                        <input type="range" class="slider sliderB" min="0" max="255" step="5" id="blueB" value="50" oninput="document.getElementById('blueBindicator').innerText = this.value;">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="range" class="slider sliderT" min="0" max="255" step="5" id="redT" value="20" oninput="document.getElementById('redTindicator').innerText = this.value;">
+                    </td>
+                    <td>
+                        <input type="range" class="slider sliderT" min="0" max="255" step="5" id="greenT" value="30" oninput="document.getElementById('greenTindicator').innerText = this.value;">
+                    </td>
+                    <td>
+                        <input type="range" class="slider sliderT" min="0" max="255" step="5" id="blueT" value="25" oninput="document.getElementById('blueTindicator').innerText = this.value;">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>RGBT: </span>
+                        <span id="redRindicator">0</span>
+                        <span id="redGindicator">0</span>
+                        <span id="redBindicator">0</span>
+                        <span id="redTindicator">0</span>
+                    </td>
+                    <td>
+                        <span>RGBT: </span>
+                        <span id="greenRindicator">0</span>
+                        <span id="greenGindicator">0</span>
+                        <span id="greenBindicator">0</span>
+                        <span id="greenTindicator">0</span>
+                    </td>
+                    <td>
+                        <span>RGBT: </span>
+                        <span id="blueRindicator">0</span>
+                        <span id="blueGindicator">0</span>
+                        <span id="blueBindicator">0</span>
+                        <span id="blueTindicator">0</span>
                     </td>
                 </tr>
             </tbody>

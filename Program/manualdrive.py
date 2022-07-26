@@ -53,11 +53,14 @@ def main():
             server.broadcast('message', time.time()-start)
             cv2.imwrite('image_filtertest/' + str(round(time.time()*1000)) + '.png', image)
             server.broadcast('message', 'Captured filtered image')
+        def colors(data):
+            filter.setColors(data)
         server.addListener('key', keys)
         server.addListener('joystick', joystick)
         server.addListener('capture', capture)
         server.addListener('captureStream', captureStream)
-        server.addListener('capturefilter', capturefilter)
+        server.addListener('colors', colors)
+        server.addListener('captureFilter', capturefilter)
         try:
             while True:
                 msg = input()

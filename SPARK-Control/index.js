@@ -25,6 +25,7 @@ socket.onmessage = function(e) {
     var data = JSON.parse(e.data).data;
     switch (event) {
         case 'message':
+            playSound();
             appendLog(data);
             break;
         case 'capture':
@@ -51,6 +52,12 @@ socket.onclose = function() {
         newsocket.onclose = socket.onclose;
         socket = newsocket;
     }, 10000);
+};
+async function playSound() {
+    var ping = new Audio('ping.mp3');
+    ping.addEventListener('loadeddata', function() {
+        ping.play();
+    });
 };
 
 // keys
@@ -192,66 +199,99 @@ document.getElementById('captureStreamButton').onclick = function(e) {
     }
 };
 
-// temp test stuff
-document.getElementById('captureButton2').onclick = function(e) {
+// filtered capture (ignore the terrible coding practices this was intended to be a temporary thing)
+const redR = document.getElementById('redR');
+const redG = document.getElementById('redG');
+const redB = document.getElementById('redB');
+const redT = document.getElementById('redT');
+const greenR = document.getElementById('greenR');
+const greenG = document.getElementById('greenG');
+const greenB = document.getElementById('greenB');
+const greenT = document.getElementById('greenT');
+const blueR = document.getElementById('blueR');
+const blueG = document.getElementById('blueG');
+const blueB = document.getElementById('blueB');
+const blueT = document.getElementById('blueT');
+document.getElementById('captureFilterButton').onclick = function(e) {
     arr = [
         [
-            document.getElementById('redR').value,
-            document.getElementById('redG').value,
-            document.getElementById('redB').value,
-            document.getElementById('redT').value,
+            redR.value,
+            redG.value,
+            redB.value,
+            redT.value,
         ],
         [
-            document.getElementById('greenR').value,
-            document.getElementById('greenG').value,
-            document.getElementById('greenB').value,
-            document.getElementById('greenT').value,
+            greenR.value,
+            greenG.value,
+            greenB.value,
+            greenT.value,
         ],
         [
-            document.getElementById('blueR').value,
-            document.getElementById('blueG').value,
-            document.getElementById('blueB').value,
-            document.getElementById('blueT').value,
+            blueR.value,
+            blueG.value,
+            blueB.value,
+            blueT.value,
         ],
     ]
-    send('capturefilter', arr);
+    send('captureFilter', arr);
 };
-document.getElementById('redR').oninput();
-document.getElementById('redG').oninput();
-document.getElementById('redB').oninput();
-document.getElementById('redT').oninput();
-document.getElementById('greenR').oninput();
-document.getElementById('greenG').oninput();
-document.getElementById('greenB').oninput();
-document.getElementById('greenT').oninput();
-document.getElementById('blueR').oninput();
-document.getElementById('blueG').oninput();
-document.getElementById('blueB').oninput();
-document.getElementById('blueT').oninput();
+redR.oninput();
+redG.oninput();
+redB.oninput();
+redT.oninput();
+greenR.oninput();
+greenG.oninput();
+greenB.oninput();
+greenT.oninput();
+blueR.oninput();
+blueG.oninput();
+blueB.oninput();
+blueT.oninput();
 
 function setColors(colors) {
-    document.getElementById('redR').value = colors[0][0];
-    document.getElementById('redG').value = colors[0][1];
-    document.getElementById('redB').value = colors[0][2];
-    document.getElementById('redT').value = colors[0][3];
-    document.getElementById('greenR').value = colors[1][0];
-    document.getElementById('greenG').value = colors[1][1];
-    document.getElementById('greenB').value = colors[1][2];
-    document.getElementById('greenT').value = colors[1][3];
-    document.getElementById('blueR').value = colors[1][0];
-    document.getElementById('blueG').value = colors[1][1];
-    document.getElementById('blueB').value = colors[1][2];
-    document.getElementById('blueT').value = colors[1][3];
-    document.getElementById('redR').oninput();
-    document.getElementById('redG').oninput();
-    document.getElementById('redB').oninput();
-    document.getElementById('redT').oninput();
-    document.getElementById('greenR').oninput();
-    document.getElementById('greenG').oninput();
-    document.getElementById('greenB').oninput();
-    document.getElementById('greenT').oninput();
-    document.getElementById('blueR').oninput();
-    document.getElementById('blueG').oninput();
-    document.getElementById('blueB').oninput();
-    document.getElementById('blueT').oninput();
+    redR.value = colors[0][0];
+    redG.value = colors[0][1];
+    redB.value = colors[0][2];
+    redT.value = colors[0][3];
+    greenR.value = colors[1][0];
+    greenG.value = colors[1][1];
+    greenB.value = colors[1][2];
+    greenT.value = colors[1][3];
+    blueR.value = colors[2][0];
+    blueG.value = colors[2][1];
+    blueB.value = colors[2][2];
+    blueT.value = colors[2][3];
+    redR.oninput();
+    redG.oninput();
+    redB.oninput();
+    redT.oninput();
+    greenR.oninput();
+    greenG.oninput();
+    greenB.oninput();
+    greenT.oninput();
+    blueR.oninput();
+    blueG.oninput();
+    blueB.oninput();
+    blueT.oninput();
+    arr = [
+        [
+            redR.value,
+            redG.value,
+            redB.value,
+            redT.value,
+        ],
+        [
+            greenR.value,
+            greenG.value,
+            greenB.value,
+            greenT.value,
+        ],
+        [
+            blueR.value,
+            blueG.value,
+            blueB.value,
+            blueT.value,
+        ],
+    ]
+    send('colors', arr);
 };

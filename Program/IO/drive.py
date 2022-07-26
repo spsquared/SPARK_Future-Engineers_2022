@@ -71,8 +71,6 @@ def stop():
     if running == True:
         running = False
         controlThread.join()
-        t.ChangeDutyCycle(0)
-        s.ChangeDutyCycle(0)
         t.stop()
         s.stop()
         return True

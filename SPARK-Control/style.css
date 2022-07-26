@@ -48,8 +48,10 @@ div {
     right: 150px;
     width: 100px;
     height: 100px;
+    border: 4px solid white;
     border-radius: 50%;
     background-color: lightgray;
+    transform: translate(4px, 4px);
     cursor: move;
     z-index: 1;
 }
@@ -91,6 +93,20 @@ div {
 #captureButton:active {
     border-style: inset;
 }
+#captureFilterButton {
+    width: 268px;
+    height: 32px;
+    margin: 16px 16px;
+    margin-bottom: 0px;
+    font: 28px sans-serif black;
+    font-weight: bolder;
+    background-color: gold;
+    border: 4px outset darkgray;
+    cursor: pointer;
+}
+#captureFilterButton:active {
+    border-style: inset;
+}
 #captureStreamButton {
     width: 268px;
     height: 32px;
@@ -106,12 +122,39 @@ div {
     border-style: inset;
 }
 
-#temp {
+#filterAdjust {
     position: absolute;
     top: 0px;
     left: 450px;
+    padding-top: 16px;
 }
-
 .slider {
-    width: 255px;
+    appearance: none;
+    width: 246px;
+    height: 12px;
+    background-color: lightgray;
+    border: 2px solid black;
+    margin-right: 2px;
+}
+.slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid black;
+    cursor: grab;
+}
+.slider::-webkit-slider-thumb:active {
+    cursor: grabbing;
+}
+.sliderR::-webkit-slider-thumb {
+    background-color: #FF0000;
+}
+.sliderG::-webkit-slider-thumb {
+    background-color: #00FF00;
+}
+.sliderB::-webkit-slider-thumb {
+    background-color: #0000FF;
+}
+.sliderT::-webkit-slider-thumb {
+    background-color: black;
 }

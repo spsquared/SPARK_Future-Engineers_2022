@@ -5,12 +5,18 @@ from IO import io
 # preprocessing filter module
 
 # colors
-red = [140, 60, 60]
-rTolerance = 15
-green = [10, 90, 70]
-gTolerance = 15
-wall = [55, 55, 60]
-wTolerance = 15
+red = [125, 60, 60]
+rTolerance = 30
+green = [-5, 90, 70]
+gTolerance = 30
+wall = [50, 50, 50]
+wTolerance = 25
+red2 = red
+rTolerance2 = rTolerance
+green2 = green
+gTolerance2 = gTolerance
+wall2 = wall
+wTolerance2 = wTolerance
 
 def filter(imgIn: numpy.ndarray):
     global red, rTolerance, green, gTolerance, wall, wTolerance
@@ -30,12 +36,13 @@ def filter(imgIn: numpy.ndarray):
         io.error()
     return imgOut
 
+
+# [
+# [r, g, b, tolerance]
+# [r, g, b, tolerance]
+# [r, g, b, tolerance]
+# ]
 def setColors(data):
-    # [
-    # [r, g, b, tolerance]
-    # [r, g, b, tolerance]
-    # [r, g, b, tolerance]
-    # ]
     global red, rTolerance, green, gTolerance, wall, wTolerance
     red = [int(data[0][0]), int(data[0][1]), int(data[0][2])]
     rTolerance = int(data[0][3])
@@ -44,9 +51,9 @@ def setColors(data):
     wall = [int(data[2][0]), int(data[2][1]), int(data[2][2])]
     wTolerance = int(data[2][3])
 def getColors():
-    global red, rTolerance, green, gTolerance, wall, wTolerance
+    global red2, rTolerance2, green2, gTolerance2, wall2, wTolerance2
     return [
-        [red[0], red[1], red[2], rTolerance],
-        [green[0], green[1], green[2], gTolerance],
-        [wall[0], red[1], wall[2], wTolerance],
+        [red2[0], red2[1], red2[2], rTolerance2],
+        [green2[0], green2[1], green2[2], gTolerance2],
+        [wall2[0], wall2[1], wall2[2], wTolerance2],
     ]

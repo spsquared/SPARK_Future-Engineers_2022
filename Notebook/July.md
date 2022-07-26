@@ -131,12 +131,18 @@ Today we tuned the speed. To "feather" the throttle, we convert the inputted thr
 # 7/26/22
 We began sampling colors for the filter in preparation for training the AI. To do this, we created a simple spreadsheet to hold all the RGB values we sampled, which also had the benefit of being able to automatically calculate the average, median, mode, and range, which we can use to set the target RGB values and tolerances accordingly.
 
-After sampling 12 random images from our first set of training data, we were able to get the following:
+After sampling 12 random images from our first set of training data, we made a filter with some base values and began tuning. The below scene is a good benchmark because it tests a lot of conditions: The traffic signals are facing straight forward or at a diagonal, while being placed really close and also further away, creating lots of contrast and including many cases in one scene.
 
 Original image:
 
-![Benchmark image, unfiltered](./July/7-26-22-a.png)
+![Benchmark image, no filter](./July/7-26-22-a.png)
 
 First filtered image:
 
-![Benchmark image, filtered](./July/7-26-22-b.png)
+![Benchmark image, initial filter](./July/7-26-22-b.png)
+
+Filtered image after tuning
+
+![Benchmark image, tuned filter](./July/7-26-22-c.png)
+
+The outputs are a bit noisy in some spots since the tolerance is a bit too high for comfort. The only real issue is the filtering script is so slow that it's almost unusable for testing, and literally unusable for actual runs. The time taken to apply the filter to one image is 3 seconds - even for the 272x154 images we use. We plan on writing the filter script in C to combat this, though.
