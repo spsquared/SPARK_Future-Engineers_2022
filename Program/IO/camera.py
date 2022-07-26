@@ -4,6 +4,8 @@ from threading import Thread
 from IO import io
 import time
 
+# camera module for capturing input data
+
 camera = CSICamera(width=320, height=180, capture_width=1280, capture_height=720, capture_fps=120)
 running = False
 currentImage = [[[]]]
@@ -69,8 +71,8 @@ def startSaveStream(server = None):
                     time.sleep(max(0.1-(time.time()-start), 0))
             except:
                 io.error()
-            streamThread = Thread(target = loop)
-            streamThread.start()
+        streamThread = Thread(target = loop)
+        streamThread.start()
         if server != None:
             server.broadcast('message', 'Began save stream')
         return True

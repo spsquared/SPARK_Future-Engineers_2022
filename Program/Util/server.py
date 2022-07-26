@@ -1,20 +1,23 @@
 import asyncio
 import websockets
 import json as JSON
+import typing
 from threading import Thread
 from IO import io
 import time
 
+# WebSocket server module for testing only
+
 # listeners and broadcast
 callbacks = {}
 sendlist = []
-def addListener(event, cb):
+def addListener(event: str, cb: typing.Callable[[typing.Any], None]):
     global callbacks
     if event in callbacks:
         callbacks[event].append(cb)
     else:
         callbacks[event] = [cb]
-def broadcast(event, data):
+def broadcast(event: str, data: typing.Any):
     global sendlist
     for arr in sendlist:
         arr.append(JSON.dumps({'event': event, 'data': data}))

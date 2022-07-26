@@ -4,6 +4,8 @@ from IO import io
 import math
 import time
 
+# drive module for controlling throttle and steering output
+
 # setup
 GPIO.setup([11, 32, 33], GPIO.OUT)
 t = GPIO.PWM(32, 200)
@@ -77,14 +79,14 @@ def stop():
     return False
 
 # inputs
-def steer(steering):
+def steer(steering: int):
     global targetSteering
     targetSteering = max(-100, min(-steering, 100))
 
-def throttle(throttle):
+def throttle(throttle: int):
     global targetThrottle
     targetThrottle = max(-100, min(throttle, 100))
 
-def trim(trim):
+def trim(trim: int):
     global strTRIM
     strTRIM = trim

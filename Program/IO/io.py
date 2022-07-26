@@ -2,6 +2,8 @@ import Jetson.GPIO as GPIO
 from threading import Thread
 import time
 
+# general io module
+
 running = False
 thread = None
 def setup():
@@ -29,6 +31,16 @@ def setup():
         return True
     return False
 
+def close():
+    global thread, running
+    if running == True:
+        running = False
+        thread.join()
+        GPIO.output([11, 13], GPIO.LOW)
+        GPIO.cleanup()
+        return True
+    return False
+
 # error indicator
 errorRunning = False
 def error():
@@ -47,15 +59,5 @@ def error():
                 time.sleep(0.55)
         thread = Thread(target = blink)
         thread.start()
-        return True
-    return False
-
-def close():
-    global thread, running
-    if running == True:
-        running = False
-        thread.join()
-        GPIO.output([11, 13], GPIO.LOW)
-        GPIO.cleanup()
         return True
     return False

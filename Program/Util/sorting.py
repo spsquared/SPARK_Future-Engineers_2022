@@ -1,3 +1,6 @@
+from numpy import ndarray
+
+
 redColors = [75,75,100]
 greenColors = [50,75,40]
 

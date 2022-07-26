@@ -3,6 +3,9 @@ io.setup()
 from IO import drive
 from IO import camera
 from Util import server
+from CV import filter
+import cv2
+import time
 
 __forward = 0
 __backward = 0
@@ -37,7 +40,13 @@ def main():
             drive.throttle(data['throttle'])
             drive.steer(data['steering'])
         def capture(data):
-            camera.capture(server)
+            # camera.capture(server)
+            start = time.time()
+            print('started')
+            image = filter.filter(camera.read())
+            print(time.time()-start)
+            cv2.imwrite('image_filtertest/' + str(round(time.time()*1000)) + '.png', image)
+            server.broadcast('message', 'Captured filtered image')
             return
         def captureStream(data):
             if data['state'] == True:
