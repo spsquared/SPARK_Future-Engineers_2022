@@ -16,24 +16,23 @@ thrMAX = 31
 strMAX = 47
 strMIN = 28
 strTRIM = 8
+# throttle feathering
 thrFeaFREQ = 10
 targetThrottle = 0
 targetSteering = 0
 currThrottle = 0
 currSteering = 0
+# PID control loop
 tickrate = 200
-thrAcceleration = 1
-strAcceleration = 10
+strkP = 1
+strkD = 0
 running = False
 controlThread = None
-
-def trim(trim):
-    global strTRIM
-    strTRIM = trim
 
 def start():
     global controlThread, running
     if running == False:
+        # begin
         running = True
         t.start(thrMIN)
         s.start((strMIN+strMAX)/2)
@@ -43,15 +42,19 @@ def start():
                 timer = 0
                 while running:
                     start = time.time()
+                    # convert throttle to active time
                     thrFeaACT = math.floor(abs(targetThrottle)/20)/50
                     if timer > 1: timer = 0
                     if timer <= thrFeaACT and targetThrottle > 10: currThrottle = 100
                     elif targetThrottle < -10: currThrottle = targetThrottle
                     else: currThrottle = 0
+                    # PID for steering (TODO)
                     currSteering = targetSteering
+                    # apply throttle and steering
                     if (currThrottle < 0): t.ChangeDutyCycle((currThrottle/100)*(thrMIN-thrBACK)+thrMIN)
                     else: t.ChangeDutyCycle((currThrottle/100)*(thrMAX-thrMIN)+thrMIN)
                     s.ChangeDutyCycle((currSteering/100)*((strMAX-strMIN)/2)+((strMIN+strMAX)/2)+(strTRIM/10))
+                    # advance timer
                     timer += thrFeaFREQ/tickrate
                     time.sleep(max((1/tickrate)-(time.time()-start), 0))
             except:
@@ -73,6 +76,7 @@ def stop():
         return True
     return False
 
+# inputs
 def steer(steering):
     global targetSteering
     targetSteering = max(-100, min(-steering, 100))
@@ -80,3 +84,7 @@ def steer(steering):
 def throttle(throttle):
     global targetThrottle
     targetThrottle = max(-100, min(throttle, 100))
+
+def trim(trim):
+    global strTRIM
+    strTRIM = trim

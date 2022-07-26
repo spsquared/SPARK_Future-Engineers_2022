@@ -13,6 +13,7 @@ def setup():
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup([11, 13], GPIO.OUT)
         GPIO.output([11, 13], GPIO.LOW)
+        # IO active indicator
         def blink():
             global running
             while running:
@@ -28,6 +29,7 @@ def setup():
         return True
     return False
 
+# error indicator
 errorRunning = False
 def error():
     global errorRunning

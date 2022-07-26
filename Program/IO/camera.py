@@ -6,7 +6,7 @@ import time
 
 camera = CSICamera(width=320, height=180, capture_width=1280, capture_height=720, capture_fps=120)
 running = False
-currentImage = "hi"
+currentImage = [[[]]]
 thread = None
 
 def start():
@@ -16,6 +16,7 @@ def start():
     def __capture():
         try:
             global running, camera, currentImage
+            # update loop that constantly updates the most recent image which can be read at any time
             while running:
                 start = time.time()
                 currentImage = camera.value
@@ -31,6 +32,12 @@ def stop():
     thread.join()
     camera.running = False
 
+# read current image
+def read():
+    global currentImage
+    return currentImage
+
+# single image save
 def capture(server = None):
     global currentImage
     try:
@@ -43,6 +50,7 @@ def capture(server = None):
     except:
         io.error()
 
+# save a stream of images at 10 fps
 streamThread = None
 streaming = False
 totalCaptured = 0
