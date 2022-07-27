@@ -1,4 +1,3 @@
-from operator import gt
 import numpy
 from IO import io
 
