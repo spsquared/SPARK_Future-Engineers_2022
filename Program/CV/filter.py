@@ -5,6 +5,7 @@ from IO import io
 # preprocessing filter module
 
 # colors
+# TODO - make tolerances apply for individual r g b
 red = [125, 60, 60]
 rTolerance = 30
 green = [-5, 90, 70]
@@ -35,7 +36,6 @@ def filter(imgIn: numpy.ndarray):
     except:
         io.error()
     return imgOut
-
 
 # [
 # [r, g, b, tolerance]
