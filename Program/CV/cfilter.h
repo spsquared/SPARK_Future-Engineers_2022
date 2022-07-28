@@ -1,2 +1,0 @@
-static PyObject *cfilter(PyObject *self, PyObject *args);
-static int *filter(int width, int height, int imgIn[height][width][3], int red[3], int rTolerance, int green[3], int gTolerance, int wall[3], int wTolerance);

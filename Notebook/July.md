@@ -146,3 +146,6 @@ Filtered image after tuning
 ![Benchmark image, tuned filter](./July/7-26-22-c.png)
 
 The outputs are a bit noisy in some spots since the tolerance is a bit too high for comfort. The only real issue is the filtering script is so slow that it's almost unusable for testing, and literally unusable for actual runs. The time taken to apply the filter to one image is 3 seconds - even for the 272x154 images we use. We plan on writing the filter script in C to combat this, though.
+
+# 7/28/22
+We won't be using C for the fast filter. It'll be easier to use CV2 to create image masks

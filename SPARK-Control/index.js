@@ -200,98 +200,49 @@ document.getElementById('captureStreamButton').onclick = function(e) {
 };
 
 // filtered capture (ignore the terrible coding practices this was intended to be a temporary thing)
-const redR = document.getElementById('redR');
-const redG = document.getElementById('redG');
-const redB = document.getElementById('redB');
-const redT = document.getElementById('redT');
-const greenR = document.getElementById('greenR');
-const greenG = document.getElementById('greenG');
-const greenB = document.getElementById('greenB');
-const greenT = document.getElementById('greenT');
-const blueR = document.getElementById('blueR');
-const blueG = document.getElementById('blueG');
-const blueB = document.getElementById('blueB');
-const blueT = document.getElementById('blueT');
+sliders = [
+    document.getElementById('redHMax'),
+    document.getElementById('greenHMax'),
+    document.getElementById('wallHMax'),
+    document.getElementById('redSMax'),
+    document.getElementById('greenSMax'),
+    document.getElementById('wallSMax'),
+    document.getElementById('redVMax'),
+    document.getElementById('greenVMax'),
+    document.getElementById('wallVMax'),
+    document.getElementById('redHMin'),
+    document.getElementById('greenHMin'),
+    document.getElementById('wallHMin'),
+    document.getElementById('redSMin'),
+    document.getElementById('greenSMin'),
+    document.getElementById('wallSMin'),
+    document.getElementById('redVMin'),
+    document.getElementById('greenVMin'),
+    document.getElementById('wallVMin'),
+];
 document.getElementById('captureFilterButton').onclick = function(e) {
-    arr = [
-        [
-            redR.value,
-            redG.value,
-            redB.value,
-            redT.value,
-        ],
-        [
-            greenR.value,
-            greenG.value,
-            greenB.value,
-            greenT.value,
-        ],
-        [
-            blueR.value,
-            blueG.value,
-            blueB.value,
-            blueT.value,
-        ],
-    ]
+    arr = [];
+    for (var i in sliders) {
+        arr.push(sliders[i].value);
+    }
     send('captureFilter', arr);
 };
-redR.oninput();
-redG.oninput();
-redB.oninput();
-redT.oninput();
-greenR.oninput();
-greenG.oninput();
-greenB.oninput();
-greenT.oninput();
-blueR.oninput();
-blueG.oninput();
-blueB.oninput();
-blueT.oninput();
-
+async function updateSlider(i) {
+    document.getElementById(sliders[i].id + 'indicator').value = sliders[i].value;
+    if (sliders[i].id.includes('H')) {
+        sliders[i].style.setProperty('--hue', sliders[i].value);
+        sliders[i+3].style.setProperty('--hue', sliders[i].value);
+        sliders[i+6].style.setProperty('--hue', sliders[i].value);
+    } else if (sliders[i].id.includes('S')) {
+        sliders[i].style.setProperty('--saturation', sliders[i].value + "%");
+    } else if (sliders[i].id.includes('V')) {
+        sliders[i].style.setProperty('--luminance', sliders[i].value + "%");
+    }
+};
 function setColors(colors) {
-    redR.value = colors[0][0];
-    redG.value = colors[0][1];
-    redB.value = colors[0][2];
-    redT.value = colors[0][3];
-    greenR.value = colors[1][0];
-    greenG.value = colors[1][1];
-    greenB.value = colors[1][2];
-    greenT.value = colors[1][3];
-    blueR.value = colors[2][0];
-    blueG.value = colors[2][1];
-    blueB.value = colors[2][2];
-    blueT.value = colors[2][3];
-    redR.oninput();
-    redG.oninput();
-    redB.oninput();
-    redT.oninput();
-    greenR.oninput();
-    greenG.oninput();
-    greenB.oninput();
-    greenT.oninput();
-    blueR.oninput();
-    blueG.oninput();
-    blueB.oninput();
-    blueT.oninput();
-    arr = [
-        [
-            redR.value,
-            redG.value,
-            redB.value,
-            redT.value,
-        ],
-        [
-            greenR.value,
-            greenG.value,
-            greenB.value,
-            greenT.value,
-        ],
-        [
-            blueR.value,
-            blueG.value,
-            blueB.value,
-            blueT.value,
-        ],
-    ]
-    send('colors', arr);
+    for (var i in colors) {
+        sliders[i].value = colors[i];
+        updateSlider(i);
+    }
+    send('colors', colors);
 };

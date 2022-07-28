@@ -129,9 +129,12 @@ div {
     padding-top: 16px;
 }
 .slider {
+    --hue: 0;
+    --saturation: 0%;
+    --luminance: 0%;
     appearance: none;
-    width: 246px;
-    height: 12px;
+    width: 196px;
+    height: 10px;
     background-color: lightgray;
     border: 2px solid black;
     margin-right: 2px;
@@ -146,15 +149,12 @@ div {
 .slider::-webkit-slider-thumb:active {
     cursor: grabbing;
 }
-.sliderR::-webkit-slider-thumb {
-    background-color: #FF0000;
+.sliderH::-webkit-slider-thumb {
+    background-color: hsl(var(--hue), 100%, 50%);
 }
-.sliderG::-webkit-slider-thumb {
-    background-color: #00FF00;
+.sliderS::-webkit-slider-thumb {
+    background-color: hsl(var(--hue), var(--saturation), 50%);
 }
-.sliderB::-webkit-slider-thumb {
-    background-color: #0000FF;
-}
-.sliderT::-webkit-slider-thumb {
-    background-color: black;
+.sliderV::-webkit-slider-thumb {
+    background-color: hsl(var(--hue), 100%, var(--luminance));
 }
