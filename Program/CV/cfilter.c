@@ -3,11 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-// dont forget to free the memory after using the arrays
-static PyObject *cFilter(PyObject *self, PyObject *args) {
-
-}
-
 static int *filter(int width, int height, int imgIn[height][width][3], int red[3], int rTolerance, int green[3], int gTolerance, int wall[3], int wTolerance)
 {
     int *imgOut[height][width][3];
@@ -30,4 +25,12 @@ static int *filter(int width, int height, int imgIn[height][width][3], int red[3
             }
         }
     }
+    free(width);
+    free(height);
+    free(red);
+    free(rTolerance);
+    free(green);
+    free(gTolerance);
+    free(wall);
+    free(wTolerance);
 }
