@@ -228,6 +228,7 @@ document.getElementById('captureFilterButton').onclick = function(e) {
     send('captureFilter', arr);
 };
 async function updateSlider(i) {
+    console.log(i)
     document.getElementById(sliders[i].id + 'indicator').value = sliders[i].value;
     if (sliders[i].id.includes('H')) {
         sliders[i].style.setProperty('--hue', sliders[i].value);
@@ -245,4 +246,12 @@ function setColors(colors) {
         updateSlider(i);
     }
     send('colors', colors);
+};
+
+// error
+window.onerror = function(err) {
+    appendLog(err, 'red')
+};
+document.onerror = function(err) {
+    appendLog(err, 'red')
 };

@@ -78,8 +78,8 @@ def main():
         camera.stop()
         drive.stop()
         io.close()
-    except:
-        io.error()
+    except Exception as err:
+        print(err)
 
 if __name__ == '__main__':
     main()

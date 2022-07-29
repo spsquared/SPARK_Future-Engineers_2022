@@ -77,9 +77,10 @@ async def __server(websocket, path):
     except KeyboardInterrupt:
         connected = False
         del sendlist[index]
-    except:
+    except Exception as err:
         connected = False
         del sendlist[index]
+        print(err)
         io.error()
 
 def __start():

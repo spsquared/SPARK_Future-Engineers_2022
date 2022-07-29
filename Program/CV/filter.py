@@ -7,12 +7,12 @@ import time
 # preprocessing filter module
 
 # colors
-rM = redMax = [0, 0, 0]
-rm = redMin = [0, 0, 0]
-gM = greenMax = [0, 0, 0]
-gm = greenMin = [0, 0, 0]
-wM = wallMax = [0, 0, 0]
-wm = wallMin = [0, 0, 0]
+rM = redMax = (255, 255, 255)
+rm = redMin = (0, 0, 0)
+gM = greenMax = (1, 1, 1)
+gm = greenMin = (0, 0, 0)
+wM = wallMax = (1, 1, 1)
+wm = wallMin = (0, 0, 0)
 
 # possibly filter with median filter (cv2)
 def filter(imgIn: numpy.ndarray):
@@ -21,15 +21,7 @@ def filter(imgIn: numpy.ndarray):
     rMask = cv2.inRange(hsvImg, redMin, redMax)
     gMask = cv2.inRange(hsvImg, greenMin, greenMax)
     wMask = cv2.inRange(hsvImg, wallMin, wallMax)
-def saveFilter(filterIn: numpy.ndarray):
-    width = len(filterIn)
-    height = len(filterIn[0])
-    imgOut = numpy.zeros(width, height, 3, int)
-    for y in range(width):
-        for x in range(height):
-            # 1 is 
-            return
-    cv2.imwrite('image_filtered/' + str(round(time.time()*1000)) + '.png', imgOut)
+    imgOut = cv2.merge((wMask, gMask, rMask))
     return imgOut
 
 def setColors(data):

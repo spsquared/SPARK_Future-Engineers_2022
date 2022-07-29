@@ -59,8 +59,8 @@ def start():
                     # advance timer
                     timer += thrFeaFREQ/tickrate
                     time.sleep(max((1/tickrate)-(time.time()-start), 0))
-            except:
-                io.error()
+            except Exception as err:
+                print(err)
         controlThread = Thread(target = loop)
         controlThread.start()
         return True

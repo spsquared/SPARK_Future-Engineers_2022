@@ -23,7 +23,8 @@ def start():
                 start = time.time()
                 currentImage = camera.value
                 time.sleep(max(0.0125-(time.time()-start), 0))
-        except:
+        except Exception as err:
+            print(err)
             io.error()
     thread = Thread(target = __capture)
     thread.start()
@@ -49,7 +50,8 @@ def capture(server = None):
             server.broadcast('message', 'Captured ' + name + '.png')
             # server.broadcast('capture', currentImage.tolist())
         return currentImage
-    except:
+    except Exception as err:
+        print(err)
         io.error()
 
 # save a stream of images at 10 fps
@@ -69,8 +71,8 @@ def startSaveStream(server = None):
                     cv2.imwrite('image_out/' + name + '.png', currentImage)
                     totalCaptured += 1
                     time.sleep(max(0.1-(time.time()-start), 0))
-            except:
-                io.error()
+            except Exception as err:
+                print(err)
         streamThread = Thread(target = loop)
         streamThread.start()
         if server != None:
