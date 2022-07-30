@@ -72,7 +72,7 @@ div {
     background-color: black;
 }
 
-#captureBody {
+#captureButtonBody {
     position: absolute;
     top: 0px;
     right: 0px;
@@ -129,9 +129,6 @@ div {
     padding-top: 16px;
 }
 .slider {
-    --hue: 0;
-    --saturation: 0%;
-    --luminance: 0%;
     appearance: none;
     width: 196px;
     height: 10px;
@@ -149,12 +146,63 @@ div {
 .slider::-webkit-slider-thumb:active {
     cursor: grabbing;
 }
-.sliderH::-webkit-slider-thumb {
-    background-color: hsl(var(--hue), 100%, 50%);
+.sliderR::-webkit-slider-thumb {
+    background-color: #FF0000;
 }
-.sliderS::-webkit-slider-thumb {
-    background-color: hsl(var(--hue), var(--saturation), 50%);
+.sliderG::-webkit-slider-thumb {
+    background-color: #00FF00;
 }
-.sliderV::-webkit-slider-thumb {
-    background-color: hsl(var(--hue), 100%, var(--luminance));
+.sliderB::-webkit-slider-thumb {
+    background-color: #0000FF;
+}
+
+#captureDisplayBody {
+    position: absolute;
+    bottom: 16px;
+    left: 450px;
+    width: 660px;
+    height: 312px;
+}
+#displayBack {
+    position: absolute;
+    bottom: 104px;
+    left: 0px;
+    width: 48px;
+    height: 100px;
+    background-color: lightgray;
+    font-size: 40px;
+    border: none;
+    cursor: pointer;
+}
+#displayBack:hover {
+    background-color: #E0E0E0;
+}
+#displayBack:active {
+    background-color: #CCCCCC;
+}
+#displayForwards {
+    position: absolute;
+    bottom: 104px;
+    right: 0px;
+    width: 48px;
+    height: 100px;
+    background-color: lightgray;
+    font-size: 40px;
+    border: none;
+    cursor: pointer;
+}
+#displayForwards:hover {
+    background-color: #E0E0E0;
+}
+#displayForwards:active {
+    background-color: #CCCCCC;
+}
+#displayImg {
+    position: absolute;
+    bottom: 0px;
+    left: 56px;
+    width: 544px;
+    height: 308px;
+    border: 2px solid black;
+    padding: 0px 0px;
 }

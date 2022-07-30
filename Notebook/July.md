@@ -148,4 +148,10 @@ Filtered image after tuning
 The outputs are a bit noisy in some spots since the tolerance is a bit too high for comfort. The only real issue is the filtering script is so slow that it's almost unusable for testing, and literally unusable for actual runs. The time taken to apply the filter to one image is 3 seconds - even for the 272x154 images we use. We plan on writing the filter script in C to combat this, though.
 
 # 7/28/22
-We won't be using C for the fast filter. It'll be easier to use CV2 to create image masks
+We won't be using C for the fast filter. It'll be easier to use CV2 to create image masks.
+
+# 7/29/22
+The last document was very short. To explain, we're using CV2 to preprocess the images now. Before, we would have a loop going through every pixel of the input image, checking the pixel values against the target. It was uselessly slow, taking 3-4 seconds for one image. We figured out how to speed this up using CV2's built-in `inRange` and `merge` functions. `inRange` will create a mask the same size as the image given to it and will check if the color values are within the bounds inputted. `merge` will take matrices and "merge" them together into another matrix of the same dimensions, but instead of numbers, it contains arrays. The new method can process the same image as much as 30 times faster than using loops.
+
+# 7/30/22
+HSV comes with it's own problems. While RGB is harder to use as a filter, red in HSV can range from 0 to 255, meaning since 0 and 255 are both red in that color space. As a result, it is really hard to filter red without adding lots of complexity. Black can also be a hard color to filter, since the hue can be anything, and so there's only value to filter by, since saturation is also all over the place.

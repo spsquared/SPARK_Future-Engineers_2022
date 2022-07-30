@@ -29,7 +29,7 @@ socket.onmessage = function(e) {
             appendLog(data);
             break;
         case 'capture':
-            // slowconvert(data);
+            addCapture(data);
             break;
         case 'colors':
             setColors(data);
@@ -201,24 +201,24 @@ document.getElementById('captureStreamButton').onclick = function(e) {
 
 // filtered capture (ignore the terrible coding practices this was intended to be a temporary thing)
 sliders = [
-    document.getElementById('redHMax'),
-    document.getElementById('greenHMax'),
-    document.getElementById('wallHMax'),
-    document.getElementById('redSMax'),
-    document.getElementById('greenSMax'),
-    document.getElementById('wallSMax'),
-    document.getElementById('redVMax'),
-    document.getElementById('greenVMax'),
-    document.getElementById('wallVMax'),
-    document.getElementById('redHMin'),
-    document.getElementById('greenHMin'),
-    document.getElementById('wallHMin'),
-    document.getElementById('redSMin'),
-    document.getElementById('greenSMin'),
-    document.getElementById('wallSMin'),
-    document.getElementById('redVMin'),
-    document.getElementById('greenVMin'),
-    document.getElementById('wallVMin'),
+    document.getElementById('redRMax'),
+    document.getElementById('greenRMax'),
+    document.getElementById('wallRMax'),
+    document.getElementById('redGMax'),
+    document.getElementById('greenGMax'),
+    document.getElementById('wallGMax'),
+    document.getElementById('redBMax'),
+    document.getElementById('greenBMax'),
+    document.getElementById('wallBMax'),
+    document.getElementById('redRMin'),
+    document.getElementById('greenRMin'),
+    document.getElementById('wallRMin'),
+    document.getElementById('redGMin'),
+    document.getElementById('greenGMin'),
+    document.getElementById('wallGMin'),
+    document.getElementById('redBMin'),
+    document.getElementById('greenBMin'),
+    document.getElementById('wallBMin'),
 ];
 document.getElementById('captureFilterButton').onclick = function(e) {
     arr = [];
@@ -227,28 +227,61 @@ document.getElementById('captureFilterButton').onclick = function(e) {
     }
     send('captureFilter', arr);
 };
-async function updateSlider(i) {
-    console.log(i)
-    document.getElementById(sliders[i].id + 'indicator').value = sliders[i].value;
-    if (sliders[i].id.includes('H')) {
-        sliders[i].style.setProperty('--hue', sliders[i].value);
-        sliders[i+3].style.setProperty('--hue', sliders[i].value);
-        sliders[i+6].style.setProperty('--hue', sliders[i].value);
-    } else if (sliders[i].id.includes('S')) {
-        sliders[i].style.setProperty('--saturation', sliders[i].value + "%");
-    } else if (sliders[i].id.includes('V')) {
-        sliders[i].style.setProperty('--luminance', sliders[i].value + "%");
-    }
+function updateSlider(i) {
+    document.getElementById(sliders[i].id + 'indicator').innerText = sliders[i].value;
 };
 function setColors(colors) {
     for (var i in colors) {
         sliders[i].value = colors[i];
         updateSlider(i);
     }
-    send('colors', colors);
+    arr = [];
+    for (var i in sliders) {
+        arr.push(sliders[i].value);
+    }
+    send('colors', arr);
+};
+// bad coding practices
+sliders[0].value = 160
+sliders[1].value = 40
+sliders[2].value = 65
+sliders[3].value = 70
+sliders[4].value = 115
+sliders[5].value = 70
+sliders[6].value = 70
+sliders[7].value = 95
+sliders[8].value = 80
+sliders[9].value = 110
+sliders[10].value = 0
+sliders[11].value = 40
+sliders[12].value = 50
+sliders[13].value = 70
+sliders[14].value = 35
+sliders[15].value = 40
+sliders[16].value = 55
+sliders[17].value = 25
+
+// capture display
+recentCaptures = [];
+index = 0;
+const displayImg = document.getElementById('displayImg');
+function addCapture(img) {
+    recentCaptures.unshift('data:image/png;base64,' + img);
+    if (recentCaptures.length > 10) recentCaptures.pop();
+    index = 0;
+    displayImg.src = recentCaptures[index];
+    console.log(recentCaptures[index])
+};
+function displayBack() {
+    index = Math.min(index+1, recentCaptures.length-1);
+    if (recentCaptures[index]) displayImg.src = recentCaptures[index];
+};
+function displayFront() {
+    index = Math.max(index-1, 0);
+    if (recentCaptures[index]) displayImg.src = recentCaptures[index];
 };
 
-// error
+// errors
 window.onerror = function(err) {
     appendLog(err, 'red')
 };

@@ -5,6 +5,7 @@ from IO import camera
 from Util import server
 from CV import filter
 import cv2
+import base64
 import time
 
 __forward = 0
@@ -40,7 +41,9 @@ def main():
             drive.throttle(data['throttle'])
             drive.steer(data['steering'])
         def capture(data):
-            camera.capture(server)
+            image = camera.capture(server)
+            encoded = base64.b64encode(image).decode()
+            server.broadcast('capture', encoded)
         def captureStream(data):
             if data['state'] == True:
                 camera.startSaveStream(server)
@@ -48,11 +51,12 @@ def main():
                 camera.stopSaveStream(server)
         def capturefilter(data):
             filter.setColors(data)
-            start = time.time()
             image = filter.filter(camera.read())
-            server.broadcast('message', time.time()-start)
-            cv2.imwrite('image_filtertest/' + str(round(time.time()*1000)) + '.png', image)
-            server.broadcast('message', 'Captured filtered image')
+            name = str(round(time.time()*1000))
+            cv2.imwrite('image_filtered/' + name + '.png', image)
+            server.broadcast('message', 'Captured (filtered) ' + name + '.png')
+            encoded = base64.b64encode(image).decode()
+            server.broadcast('capture', encoded)
         def colors(data):
             filter.setColors(data)
         server.addListener('key', keys)

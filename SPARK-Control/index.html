@@ -13,7 +13,7 @@
         <div style="font-weight: bold;">Log</div>
         <div id="eventLogBody"></div>
     </div>
-    <div id="captureBody">
+    <div id="captureButtonBody">
         <button id="captureButton">CAPTURE</button><br>
         <button id="captureFilterButton">CAPTURE FILTERED</button><br>
         <button id="captureStreamButton">START CAPTURE STREAM</button>
@@ -25,144 +25,149 @@
             <tbody>
                 <tr>
                     <td></td>
-                    <td>Red HSV</td>
+                    <td>Red RGB</td>
                     <td></td>
-                    <td>Green HSV</td>
+                    <td>Green RGB</td>
                     <td></td>
-                    <td>Wall HSV</td>
+                    <td>Wall RGB</td>
                 </tr>
                 <tr>
-                    <td>H max</td>
+                    <td>R max</td>
                     <td>
-                        <input type="range" class="slider sliderH" min="0" max="255" step="5" id="redHMax" value="0" oninput="updateSlider(0);">
+                        <input type="range" class="slider sliderR" min="0" max="255" step="5" id="redRMax" oninput="updateSlider(0);">
                     </td>
-                    <td>H max</td>
+                    <td>R max</td>
                     <td>
-                        <input type="range" class="slider sliderH" min="0" max="255" step="5" id="greenHMax" value="0" oninput="updateSlider(1);">
+                        <input type="range" class="slider sliderR" min="0" max="255" step="5" id="greenRMax" oninput="updateSlider(1);">
                     </td>
-                    <td>H max</td>
+                    <td>R max</td>
                     <td>
-                        <input type="range" class="slider sliderH" min="0" max="255" step="5" id="wallHMax" value="0" oninput="updateSlider(2);">
-                    </td>
-                </tr>
-                <tr>
-                    <td>S max</td>
-                    <td>
-                        <input type="range" class="slider sliderS" min="0" max="100" step="2" id="redSMax" value="0" oninput="updateSlider(3);">
-                    </td>
-                    <td>S max</td>
-                    <td>
-                        <input type="range" class="slider sliderS" min="0" max="100" step="2" id="greenSMax" value="0" oninput="updateSlider(4);">
-                    </td>
-                    <td>S max</td>
-                    <td>
-                        <input type="range" class="slider sliderS" min="0" max="100" step="2" id="wallSMax" value="0" oninput="updateSlider(5);">
+                        <input type="range" class="slider sliderR" min="0" max="255" step="5" id="wallRMax" oninput="updateSlider(2);">
                     </td>
                 </tr>
                 <tr>
-                    <td>V max</td>
+                    <td>G max</td>
                     <td>
-                        <input type="range" class="slider sliderV" min="0" max="100" step="2" id="redVMax" value="0" oninput="updateSlider(6);">
+                        <input type="range" class="slider sliderG" min="0" max="255" step="2" id="redGMax" oninput="updateSlider(3);">
                     </td>
-                    <td>V max</td>
+                    <td>G max</td>
                     <td>
-                        <input type="range" class="slider sliderV" min="0" max="100" step="2" id="greenVMax" value="0" oninput="updateSlider(7);">
+                        <input type="range" class="slider sliderG" min="0" max="255" step="2" id="greenGMax" oninput="updateSlider(4);">
                     </td>
-                    <td>V max</td>
+                    <td>G max</td>
                     <td>
-                        <input type="range" class="slider sliderV" min="0" max="100" step="2" id="wallVMax" value="0" oninput="updateSlider(8);">
-                    </td>
-                </tr>
-                <tr>
-                    <td>H min</td>
-                    <td>
-                        <input type="range" class="slider sliderH" min="0" max="255" step="5" id="redHMin" value="0" oninput="updateSlider(9);">
-                    </td>
-                    <td>H min</td>
-                    <td>
-                        <input type="range" class="slider sliderH" min="0" max="255" step="5" id="greenHMin" value="0" oninput="updateSlider(10);">
-                    </td>
-                    <td>H min</td>
-                    <td>
-                        <input type="range" class="slider sliderH" min="0" max="255" step="5" id="wallHMin" value="0" oninput="updateSlider(11);">
+                        <input type="range" class="slider sliderG" min="0" max="255" step="2" id="wallGMax" oninput="updateSlider(5);">
                     </td>
                 </tr>
                 <tr>
-                    <td>S min</td>
+                    <td>B max</td>
                     <td>
-                        <input type="range" class="slider sliderS" min="0" max="100" step="2" id="redSMin" value="0" oninput="updateSlider(12);">
+                        <input type="range" class="slider sliderB" min="0" max="255" step="2" id="redBMax" oninput="updateSlider(6);">
                     </td>
-                    <td>S min</td>
+                    <td>B max</td>
                     <td>
-                        <input type="range" class="slider sliderS" min="0" max="100" step="2" id="greenSMin" value="0" oninput="updateSlider(13);">
+                        <input type="range" class="slider sliderB" min="0" max="255" step="2" id="greenBMax" oninput="updateSlider(7);">
                     </td>
-                    <td>S min</td>
+                    <td>B max</td>
                     <td>
-                        <input type="range" class="slider sliderS" min="0" max="100" step="2" id="wallSMin" value="0" oninput="updateSlider(14);">
+                        <input type="range" class="slider sliderB" min="0" max="255" step="2" id="wallBMax" oninput="updateSlider(8);">
                     </td>
                 </tr>
                 <tr>
-                    <td>V min</td>
+                    <td>R min</td>
                     <td>
-                        <input type="range" class="slider sliderV" min="0" max="100" step="2" id="redVMin" value="0" oninput="updateSlider(15);">
+                        <input type="range" class="slider sliderR" min="0" max="255" step="5" id="redRMin" oninput="updateSlider(9);">
                     </td>
-                    <td>V min</td>
+                    <td>R min</td>
                     <td>
-                        <input type="range" class="slider sliderV" min="0" max="100" step="2" id="greenVMin" value="0" oninput="updateSlider(16);">
+                        <input type="range" class="slider sliderR" min="0" max="255" step="5" id="greenRMin" oninput="updateSlider(10);">
                     </td>
-                    <td>V min</td>
+                    <td>R min</td>
                     <td>
-                        <input type="range" class="slider sliderV" min="0" max="100" step="2" id="wallVMin" value="0" oninput="updateSlider(17);">
+                        <input type="range" class="slider sliderR" min="0" max="255" step="5" id="wallRMin" oninput="updateSlider(11);">
+                    </td>
+                </tr>
+                <tr>
+                    <td>G min</td>
+                    <td>
+                        <input type="range" class="slider sliderG" min="0" max="255" step="2" id="redGMin" oninput="updateSlider(12);">
+                    </td>
+                    <td>G min</td>
+                    <td>
+                        <input type="range" class="slider sliderG" min="0" max="255" step="2" id="greenGMin" oninput="updateSlider(13);">
+                    </td>
+                    <td>G min</td>
+                    <td>
+                        <input type="range" class="slider sliderG" min="0" max="255" step="2" id="wallGMin" oninput="updateSlider(14);">
+                    </td>
+                </tr>
+                <tr>
+                    <td>B min</td>
+                    <td>
+                        <input type="range" class="slider sliderB" min="0" max="255" step="2" id="redBMin" oninput="updateSlider(15);">
+                    </td>
+                    <td>B min</td>
+                    <td>
+                        <input type="range" class="slider sliderB" min="0" max="255" step="2" id="greenBMin" oninput="updateSlider(16);">
+                    </td>
+                    <td>B min</td>
+                    <td>
+                        <input type="range" class="slider sliderB" min="0" max="255" step="2" id="wallBMin" oninput="updateSlider(17);">
                     </td>
                 </tr>
                 <tr>
                     <td>Max:</td>
                     <td>
-                        <span>HSV: </span>
-                        <span id="redHMaxindicator">0</span>
-                        <span id="redSMaxindicator">0</span>
-                        <span id="redVMaxindicator">0</span>
+                        <span>RGB: </span>
+                        <span id="redRMaxindicator">0</span>
+                        <span id="redGMaxindicator">0</span>
+                        <span id="redBMaxindicator">0</span>
                     </td>
                     <td>Max:</td>
                     <td>
-                        <span>HSV: </span>
-                        <span id="greenHMaxindicator">0</span>
-                        <span id="greenSMaxindicator">0</span>
-                        <span id="greenVMaxindicator">0</span>
+                        <span>RGB: </span>
+                        <span id="greenRMaxindicator">0</span>
+                        <span id="greenGMaxindicator">0</span>
+                        <span id="greenBMaxindicator">0</span>
                     </td>
                     <td>Max:</td>
                     <td>
-                        <span>HSV: </span>
-                        <span id="blueHMaxindicator">0</span>
-                        <span id="blueSMaxindicator">0</span>
-                        <span id="blueVMaxindicator">0</span>
+                        <span>RGB: </span>
+                        <span id="blueRMaxindicator">0</span>
+                        <span id="blueGMaxindicator">0</span>
+                        <span id="blueBMaxindicator">0</span>
                     </td>
                 </tr>
                 <tr>
                     <td>Min:</td>
                     <td>
-                        <span>HSV: </span>
-                        <span id="redHMinindicator">0</span>
-                        <span id="redSMinindicator">0</span>
-                        <span id="redVMinindicator">0</span>
+                        <span>RGB: </span>
+                        <span id="redRMinindicator">0</span>
+                        <span id="redGMinindicator">0</span>
+                        <span id="redBMinindicator">0</span>
                     </td>
                     <td>Min:</td>
                     <td>
-                        <span>HSV: </span>
-                        <span id="greenHMinindicator">0</span>
-                        <span id="greenSMinindicator">0</span>
-                        <span id="greenVMinindicator">0</span>
+                        <span>RGB: </span>
+                        <span id="greenRMinindicator">0</span>
+                        <span id="greenGMinindicator">0</span>
+                        <span id="greenBMinindicator">0</span>
                     </td>
                     <td>Min:</td>
                     <td>
-                        <span>HSV: </span>
-                        <span id="blueHMinindicator">0</span>
-                        <span id="blueSMinindicator">0</span>
-                        <span id="blueVMinindicator">0</span>
+                        <span>RGB: </span>
+                        <span id="blueRMinindicator">0</span>
+                        <span id="blueGMinindicator">0</span>
+                        <span id="blueBMinindicator">0</span>
                     </td>
                 </tr>
             </tbody>
         </table>
+    </div>
+    <div id="captureDisplayBody">
+        <button id="displayBack" onclick="displayBack();">&#60</button>
+        <button id="displayForwards" onclick="displayFront();">&#62</button>
+        <img id="displayImg">
     </div>
     <div id="joystickBody">
         <div id="joystickPin"></div>
