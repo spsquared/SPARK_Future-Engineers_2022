@@ -1,18 +1,16 @@
-from turtle import heading
+from curses import raw
 import numpy
 import cv2
-from IO import io
-import time
 
-# preprocessing filter module
+# preprocessing filter module with cv prediction
 
 # colors
-rM = redMax = (1, 1, 1)
-rm = redMin = (0, 0, 0)
-gM = greenMax = (1, 1, 1)
-gm = greenMin = (0, 0, 0)
-wM = wallMax = (1, 1, 1)
-wm = wallMin = (0, 0, 0)
+rM = redMax = (190, 80, 80)
+rm = redMin = (105, 45, 35)
+gM = greenMax = (25, 140, 110)
+gm = greenMin = (0, 50, 45)
+wM = wallMax = (70, 80, 90)
+wm = wallMin = (20, 20, 20)
 
 # possibly filter with median filter (cv2)
 def filter(imgIn: numpy.ndarray):
@@ -20,8 +18,22 @@ def filter(imgIn: numpy.ndarray):
     rMask = cv2.inRange(imgIn, redMin, redMax)
     gMask = cv2.inRange(imgIn, greenMin, greenMax)
     wMask = cv2.inRange(imgIn, wallMin, wallMax)
-    imgOut = cv2.merge((wMask, gMask, rMask))
-    return imgOut
+    rawImg = cv2.merge((wMask, gMask, rMask))
+    filteredImg = cv2.medianBlur(rawImg, 5)
+    return filteredImg
+
+def predict(imgIn: numpy.ndarray):
+    global redMax, redMin, greenMax, greenMin, wallMax, wallMin
+    blobs = cv2.SimpleBlobDetector_create()
+    rMask = cv2.inRange(imgIn, redMin, redMax)
+    gMask = cv2.inRange(imgIn, greenMin, greenMax)
+    wMask = cv2.inRange(imgIn, wallMin, wallMax)
+    rImg = cv2.medianBlur(rMask, 5)
+    gImg = cv2.medianBlur(gMask, 5)
+    wImg = cv2.medianBlur(wMask, 5)
+    # add blob detection
+    redLocations = blobs.detect(rImg)
+    print(redLocations)
 
 def setColors(data):
     global redMax, redMin, greenMax, greenMin, wallMax, wallMin

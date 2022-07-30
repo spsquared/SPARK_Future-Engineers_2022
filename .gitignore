@@ -1,2 +1,5 @@
 # vscode
 .vscode/
+
+#jupyter notebook trash
+*.ipynb
