@@ -7,12 +7,12 @@ import time
 # preprocessing filter module
 
 # colors
-rM = redMax = (1, 1, 1)
-rm = redMin = (0, 0, 0)
-gM = greenMax = (1, 1, 1)
-gm = greenMin = (0, 0, 0)
-wM = wallMax = (1, 1, 1)
-wm = wallMin = (0, 0, 0)
+rM = redMax = (190, 80, 80)
+rm = redMin = (105, 45, 35)
+gM = greenMax = (25, 140, 110)
+gm = greenMin = (0, 50, 45)
+wM = wallMax = (70, 80, 90)
+wm = wallMin = (25, 25, 20)
 
 # possibly filter with median filter (cv2)
 def filter(imgIn: numpy.ndarray):
