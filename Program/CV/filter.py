@@ -1,7 +1,6 @@
+from curses import raw
 import numpy
 import cv2
-from IO import io
-import time
 
 # preprocessing filter module
 
@@ -11,7 +10,7 @@ rm = redMin = (105, 45, 35)
 gM = greenMax = (25, 140, 110)
 gm = greenMin = (0, 50, 45)
 wM = wallMax = (70, 80, 90)
-wm = wallMin = (25, 25, 20)
+wm = wallMin = (20, 20, 20)
 
 # possibly filter with median filter (cv2)
 def filter(imgIn: numpy.ndarray):
@@ -19,8 +18,16 @@ def filter(imgIn: numpy.ndarray):
     rMask = cv2.inRange(imgIn, redMin, redMax)
     gMask = cv2.inRange(imgIn, greenMin, greenMax)
     wMask = cv2.inRange(imgIn, wallMin, wallMax)
-    imgOut = cv2.merge((wMask, gMask, rMask))
-    return imgOut
+    rawImg = cv2.merge((wMask, gMask, rMask))
+    filteredImg = cv2.medianBlur(rawImg, 5)
+    return filteredImg
+
+def predict(imgIn: numpy.ndarray):
+    global redMax, redMin, greenMax, greenMin, wallMax, wallMin
+    rMask = cv2.inRange(imgIn, redMin, redMax)
+    gMask = cv2.inRange(imgIn, greenMin, greenMax)
+    wMask = cv2.inRange(imgIn, wallMin, wallMax)
+    # run blob detection on 3 masks
 
 def setColors(data):
     global redMax, redMin, greenMax, greenMin, wallMax, wallMin

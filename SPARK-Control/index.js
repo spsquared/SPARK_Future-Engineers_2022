@@ -271,7 +271,7 @@ var initcolors = [
     ],
     [
         70, 80, 90,
-        25, 25, 20
+        20, 20, 20
     ]
 ]
 sliders[0].value = initcolors[0][0];
