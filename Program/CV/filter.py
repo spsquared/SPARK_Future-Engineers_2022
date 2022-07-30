@@ -2,7 +2,7 @@ from curses import raw
 import numpy
 import cv2
 
-# preprocessing filter module
+# preprocessing filter module with cv prediction
 
 # colors
 rM = redMax = (190, 80, 80)

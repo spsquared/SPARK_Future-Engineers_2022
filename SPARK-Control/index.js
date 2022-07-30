@@ -13,7 +13,7 @@ function send(event, data) {
 function appendLog(text, color) {
     const div = document.createElement('div');
     div.classList.add('logBlock');
-    div.innerText = text;
+    div.innerHTML = text;
     div.style.backgroundColor = color ?? '';
     var scroll = false;
     if (log.scrollTop + log.clientHeight >= log.scrollHeight - 5) scroll = true;
