@@ -24,10 +24,16 @@ def filter(imgIn: numpy.ndarray):
 
 def predict(imgIn: numpy.ndarray):
     global redMax, redMin, greenMax, greenMin, wallMax, wallMin
+    blobs = cv2.SimpleBlobDetector_create()
     rMask = cv2.inRange(imgIn, redMin, redMax)
     gMask = cv2.inRange(imgIn, greenMin, greenMax)
     wMask = cv2.inRange(imgIn, wallMin, wallMax)
-    # run blob detection on 3 masks
+    rImg = cv2.medianBlur(rMask, 5)
+    gImg = cv2.medianBlur(gMask, 5)
+    wImg = cv2.medianBlur(wMask, 5)
+    # add blob detection
+    redLocations = blobs.detect(rImg)
+    print(redLocations)
 
 def setColors(data):
     global redMax, redMin, greenMax, greenMin, wallMax, wallMin

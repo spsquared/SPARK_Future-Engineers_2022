@@ -45,6 +45,7 @@ def main():
             encoded = base64.b64encode(image).decode()
             server.broadcast('capture', encoded)
         def captureStream(data):
+            # filter.predict(camera.capture(server))
             if data['state'] == True:
                 camera.startSaveStream(server)
             else:
