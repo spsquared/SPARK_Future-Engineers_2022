@@ -31,6 +31,7 @@ def setColors(data):
     redMin = (int(data[9]), int(data[12]), int(data[15]))
     greenMin = (int(data[10]), int(data[13]), int(data[16]))
     wallMin = (int(data[11]), int(data[14]), int(data[17]))
+    print('-- New ----------')
     print(redMax, redMin)
     print(greenMax, greenMin)
     print(wallMax, wallMin)

@@ -53,10 +53,28 @@ socket.onclose = function() {
         socket = newsocket;
     }, 10000);
 };
+var pendingsounds = [];
+var first = true;
 async function playSound() {
+    if (first) {
+        for (var i = 0; i < 10; i++) {
+            await new Promise(function(resolve, reject) {
+                var ping = new Audio('ping.mp3');
+                ping.preload = true;
+                ping.addEventListener('loadeddata', function() {
+                    pendingsounds.push(ping);
+                    resolve();
+                });
+            });
+        }
+        first = false;
+    }
+    pendingsounds[0].play();
+    pendingsounds.shift();
     var ping = new Audio('ping.mp3');
+    ping.preload = true;
     ping.addEventListener('loadeddata', function() {
-        ping.play();
+        pendingsounds.push(ping);
     });
 };
 
@@ -153,7 +171,7 @@ document.addEventListener('touchmove', function(e) {
 }, {passive: true});
 
 // controllers
-trim = 10
+var trim = 10
 function updateControllers() {
     var controllers = navigator.getGamepads();
     for (var i in controllers) {
@@ -200,7 +218,7 @@ document.getElementById('captureStreamButton').onclick = function(e) {
 };
 
 // filtered capture (ignore the terrible coding practices this was intended to be a temporary thing)
-sliders = [
+var sliders = [
     document.getElementById('redRMax'),
     document.getElementById('greenRMax'),
     document.getElementById('wallRMax'),
@@ -242,28 +260,31 @@ function setColors(colors) {
     send('colors', arr);
 };
 // bad coding practices
-sliders[0].value = 160
-sliders[1].value = 40
-sliders[2].value = 65
-sliders[3].value = 70
-sliders[4].value = 115
-sliders[5].value = 70
-sliders[6].value = 70
-sliders[7].value = 95
-sliders[8].value = 80
-sliders[9].value = 110
-sliders[10].value = 0
-sliders[11].value = 40
-sliders[12].value = 50
-sliders[13].value = 70
-sliders[14].value = 35
-sliders[15].value = 40
-sliders[16].value = 55
-sliders[17].value = 25
+sliders[0].value = 160;
+sliders[1].value = 40;
+sliders[2].value = 65;
+sliders[3].value = 70;
+sliders[4].value = 115;
+sliders[5].value = 70;
+sliders[6].value = 70;
+sliders[7].value = 95;
+sliders[8].value = 80;
+sliders[9].value = 110;
+sliders[10].value = 0;
+sliders[11].value = 40;
+sliders[12].value = 50;
+sliders[13].value = 70;
+sliders[14].value = 35;
+sliders[15].value = 40;
+sliders[16].value = 55;
+sliders[17].value = 25;
+for (var i in sliders) {
+    updateSlider(i);
+}
 
 // capture display
-recentCaptures = [];
-index = 0;
+var recentCaptures = [];
+var index = 0;
 const displayImg = document.getElementById('displayImg');
 function addCapture(img) {
     recentCaptures.unshift('data:image/png;base64,' + img);
