@@ -1,4 +1,3 @@
-from turtle import heading
 import numpy
 import cv2
 from IO import io
