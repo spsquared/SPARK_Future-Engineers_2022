@@ -7,7 +7,7 @@ import time
 # preprocessing filter module
 
 # colors
-rM = redMax = (255, 255, 255)
+rM = redMax = (1, 1, 1)
 rm = redMin = (0, 0, 0)
 gM = greenMax = (1, 1, 1)
 gm = greenMin = (0, 0, 0)
@@ -31,6 +31,13 @@ def setColors(data):
     redMin = (int(data[9]), int(data[12]), int(data[15]))
     greenMin = (int(data[10]), int(data[13]), int(data[16]))
     wallMin = (int(data[11]), int(data[14]), int(data[17]))
+
+    redMax = (int(data[6]), int(data[3]), int(data[0]))
+    greenMax = (int(data[7]), int(data[4]), int(data[1]))
+    wallMax = (int(data[8]), int(data[5]), int(data[2]))
+    redMin = (int(data[15]), int(data[12]), int(data[9]))
+    greenMin = (int(data[16]), int(data[13]), int(data[10]))
+    wallMin = (int(data[17]), int(data[14]), int(data[11]))
     print('-- New ----------')
     print(redMax, redMin)
     print(greenMax, greenMin)

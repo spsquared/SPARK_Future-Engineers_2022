@@ -260,24 +260,38 @@ function setColors(colors) {
     send('colors', arr);
 };
 // bad coding practices
-sliders[0].value = 160;
-sliders[1].value = 40;
-sliders[2].value = 65;
-sliders[3].value = 70;
-sliders[4].value = 115;
-sliders[5].value = 70;
-sliders[6].value = 70;
-sliders[7].value = 95;
-sliders[8].value = 80;
-sliders[9].value = 110;
-sliders[10].value = 0;
-sliders[11].value = 40;
-sliders[12].value = 50;
-sliders[13].value = 70;
-sliders[14].value = 35;
-sliders[15].value = 40;
-sliders[16].value = 55;
-sliders[17].value = 25;
+var initcolors = [
+    [
+        190, 80, 80,
+        105, 45, 35
+    ],
+    [
+        25, 140, 110,
+        0, 50, 45
+    ],
+    [
+        70, 80, 90,
+        25, 25, 20
+    ]
+]
+sliders[0].value = initcolors[0][0];
+sliders[1].value = initcolors[1][0];
+sliders[2].value = initcolors[2][0];
+sliders[3].value = initcolors[0][1];
+sliders[4].value = initcolors[1][1];
+sliders[5].value = initcolors[2][1];
+sliders[6].value = initcolors[0][2];
+sliders[7].value = initcolors[1][2];
+sliders[8].value = initcolors[2][2];
+sliders[9].value = initcolors[0][3];
+sliders[10].value = initcolors[1][3];
+sliders[11].value = initcolors[2][3];
+sliders[12].value = initcolors[0][4];
+sliders[13].value = initcolors[1][4];
+sliders[14].value = initcolors[2][4];
+sliders[15].value = initcolors[0][5];
+sliders[16].value = initcolors[1][5];
+sliders[17].value = initcolors[2][5];
 for (var i in sliders) {
     updateSlider(i);
 }
