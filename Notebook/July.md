@@ -157,3 +157,5 @@ The last document was very short. To explain, we're using CV2 to preprocess the 
 HSV comes with it's own problems. While RGB is harder to use as a filter, red in HSV can range from 0 to 255, meaning since 0 and 255 are both red in that color space. As a result, it is really hard to filter red without adding lots of complexity. Black can also be a hard color to filter, since the hue can be anything, and so there's only value to filter by, since saturation is also all over the place.
 
 We also applied a median blur to the output image to remove noise while preserving edges. The end result is a clean image showing the outlines of everything.
+
+With that working, we began the process of using blob detection for our algorithmic approach. Oh right. We're using two different approaches, in case one doesn't work. The first is more complex, using AI to decide the turning direction. The second is an algorithmic approach.
