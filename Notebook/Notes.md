@@ -25,19 +25,16 @@ ExecStart=-/sbin/agetty -o '-p -f nano' -a nano --noclear %I $TERM
 ***
 
 ## running a script on startup
-create `jupyter-autostart.sh` in the home directory with these contents:
-```
-jupyter notebook --no-browser --allow-root
-```
-create `jupyter-autostart.service` in `/etc/systemd/system` with these contents:
+get the directory of the script you want to run
+create `servicename.service` in `/etc/systemd/system` with these contents:
 ```
 [Service]
-ExecStart=/bin/bash /home/nano/jupyter-autostart.sh
+ExecStart=/bin/bash /path/to/file/scriptname.scriptextension
 ```
 then set the permissions and add it to startup
 ```
-sudo chmod 644 /etc/systemd/system/jupyter-autostart.service
-systemctl enable jupyter-autostart.service
+sudo chmod 644 /etc/systemd/system/servicename.service
+systemctl enable servicename.service
 ```
 
 ***
