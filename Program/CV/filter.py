@@ -12,6 +12,12 @@ gm = greenMin = (0, 50, 45)
 wM = wallMax = (70, 80, 90)
 wm = wallMin = (20, 20, 20)
 
+wallColors = [50,50,50]
+def checkWallColor(array):
+    if abs(array[0] - wallColors[0]) < 25 and abs(array[1] - wallColors[1]) < 25 and abs(array[2] - wallColors[2]) < 25:
+        return True
+    return False
+
 # possibly filter with median filter (cv2)
 def filter(imgIn: numpy.ndarray):
     global redMax, redMin, greenMax, greenMin, wallMax, wallMin
@@ -38,7 +44,25 @@ def predict(imgIn: numpy.ndarray):
     rKps = blobs.detect(rImg)
     gKps = blobs.detect(gImg)
     wKps = blobs.detect(wImg)
-    # add decision making to turn and stuff
+    croppedWMask = wMask[45:100,130:143]
+    wallHeights = numpy.count_nonzero(croppedWMask > 1,axis=0)
+    wallHeights2 = []
+    for i in range(len(wallHeights)):
+        if wallHeights[i] != 0:
+            wallHeights2.append(wallHeights[i])
+
+    wallHeight = statistics.median(wallHeights2)
+    # -3 = turn left a lot
+    # 3 = turn right a lot
+    for i in range(len(rKps)):
+        if 131 < rKps[i].pt[0] * 5 / 12 + rKps[i].pt[1] + rKps[i].sizeof:
+            return -2
+    for i in range(len(gKps)):
+        if 131 < (272 - gKps[i].pt[0]) * 5 / 12 + gKps[i].pt[1] + rKps[i].sizeof:
+            return 2
+    if wallHeight > 30:
+        return -2
+    return 0
 
 def setColors(data):
     global redMax, redMin, greenMax, greenMin, wallMax, wallMin
