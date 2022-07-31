@@ -171,7 +171,8 @@ document.addEventListener('touchmove', function(e) {
 }, {passive: true});
 
 // controllers
-var trim = 0
+var trim = 0;
+var trim2 = 0.1;
 var pressedbuttons = [];
 function updateControllers() {
     var controllers = navigator.getGamepads();
@@ -179,7 +180,7 @@ function updateControllers() {
         if (controllers[i] instanceof Gamepad) {
             var controller = controllers[i];
             throttle = Math.round(controller.axes[1]*-100);
-            steering = Math.round(controller.axes[2]*100)-trim;
+            steering = Math.round((controller.axes[2]-trim2)*100)-trim;
             if (controller.buttons[8].pressed && pressedbuttons.indexOf(8) == -1) {
                 document.getElementById('captureButton').onclick();
                 pressedbuttons.push(8);
