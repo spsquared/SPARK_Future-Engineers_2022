@@ -2,7 +2,6 @@ from jetcam.csi_camera import CSICamera
 import cv2
 from threading import Thread
 from IO import io
-from CV import io
 import time
 
 # camera module for capturing input data
