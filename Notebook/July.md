@@ -159,3 +159,6 @@ HSV comes with it's own problems. While RGB is harder to use as a filter, red in
 We also applied a median blur to the output image to remove noise while preserving edges. The end result is a clean image showing the outlines of everything.
 
 With that working, we began the process of using blob detection for our algorithmic approach. Oh right. We're using two different approaches, in case one doesn't work. The first is more complex, using AI to decide the turning direction. The second is an algorithmic approach.
+
+# 7/31/22
+More of the same thing, today we 3D printed some new traffic signals and taped some papers with the correct colors printed onto them onto the traffic signals. We also added a startup script that runs as a startup service. This will make it easier to get the program to run without ssh. Unfortunately the 2 minute boot times are still a big issue that we can't fix.
