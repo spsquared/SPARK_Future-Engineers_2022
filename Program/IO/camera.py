@@ -2,6 +2,7 @@ from jetcam.csi_camera import CSICamera
 import cv2
 from threading import Thread
 from IO import io
+from CV import io
 import time
 
 # camera module for capturing input data
@@ -22,6 +23,7 @@ def start():
             while running:
                 start = time.time()
                 currentImage = camera.value
+
                 time.sleep(max(0.0125-(time.time()-start), 0))
         except Exception as err:
             print(err)
