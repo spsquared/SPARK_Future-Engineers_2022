@@ -67,7 +67,7 @@ def startSaveStream(server = None, drive = None):
     if streaming == False:
         streaming = True
         if drive != None:
-            saveFd = open('./steering_vals/' + time.time() + '.txt', 'a')
+            saveFd = open('./steering_vals/' + str(round(time.time()*1000)) + '.txt', 'a')
         def loop():
             global currentImage, streaming, saveFd, totalCaptured
             try:
@@ -77,7 +77,8 @@ def startSaveStream(server = None, drive = None):
                     cv2.imwrite('image_out/' + name + '.png', currentImage)
                     totalCaptured += 1
                     if saveFd != None:
-                        saveFd.write(name + ' ' + str(drive.currentSteering()))
+                        print(drive.currentSteering())
+                        saveFd.write(name + ' ' + str(drive.currentSteering()) + '\n')
                     time.sleep(max(0.1-(time.time()-start), 0))
             except Exception as err:
                 print(err)
@@ -95,7 +96,7 @@ def stopSaveStream(server = None):
         streaming = False
         streamThread.join()
         if server != None:
-            server.broadcast('message', 'Ended save stream:<br>&emsp;Saved ' + totalCaptured + ' images')
+            server.broadcast('message', 'Ended save stream:<br>&emsp;Saved ' + str(totalCaptured) + ' images')
         if saveFd != None:
             saveFd.close()
             saveFd = None

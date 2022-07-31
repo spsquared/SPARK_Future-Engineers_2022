@@ -172,6 +172,7 @@ document.addEventListener('touchmove', function(e) {
 
 // controllers
 var trim = 0
+var pressedbuttons = [];
 function updateControllers() {
     var controllers = navigator.getGamepads();
     for (var i in controllers) {
@@ -179,8 +180,18 @@ function updateControllers() {
             var controller = controllers[i];
             throttle = Math.round(controller.axes[1]*-100);
             steering = Math.round(controller.axes[2]*100)-trim;
-            // buttons.clicking = controller.buttons[0].pressed;
-            // buttons.interacting = controller.buttons[3].pressed;
+            if (controller.buttons[8].pressed && pressedbuttons.indexOf(8) == -1) {
+                document.getElementById('captureButton').onclick();
+                pressedbuttons.push(8);
+            } else if (!controller.buttons[8].pressed && pressedbuttons.indexOf(8) != -1) {
+                pressedbuttons.splice(pressedbuttons.indexOf(8), 1);
+            }
+            if (controller.buttons[9].pressed && pressedbuttons.indexOf(9) == -1) {
+                document.getElementById('captureStreamButton').onclick();
+                pressedbuttons.push(9);
+            } else if (!controller.buttons[9].pressed && pressedbuttons.indexOf(9) != -1) {
+                pressedbuttons.splice(pressedbuttons.indexOf(9), 1);
+            }
             joystickPin.style.bottom = 150-(controller.axes[1]*150) + 'px';
             joystickPin.style.right = 150-(controller.axes[2]*150) + 'px';
             sliderX.style.bottom = 190-(controller.axes[1]*150) + 'px';
