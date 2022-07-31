@@ -52,16 +52,16 @@ def predict(imgIn: numpy.ndarray):
             wallHeights2.append(wallHeights[i])
 
     wallHeight = statistics.median(wallHeights2)
-    # -3 = turn left a lot
-    # 3 = turn right a lot
+    # -100 = turn left a lot
+    # 100 = turn right a lot
     for i in range(len(rKps)):
         if 131 < rKps[i].pt[0] * 5 / 12 + rKps[i].pt[1] + rKps[i].sizeof:
-            return -2
+            return -40
     for i in range(len(gKps)):
         if 131 < (272 - gKps[i].pt[0]) * 5 / 12 + gKps[i].pt[1] + rKps[i].sizeof:
-            return 2
+            return 40
     if wallHeight > 30:
-        return -2
+        return -40
     return 0
 
 def setColors(data):
