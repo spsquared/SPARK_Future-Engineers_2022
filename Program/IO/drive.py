@@ -89,3 +89,8 @@ def throttle(throttle: int):
 def trim(trim: int):
     global strTRIM
     strTRIM = trim
+
+# get current
+def currentSteering():
+    global currSteering
+    return -currSteering

@@ -41,14 +41,17 @@ def read():
     return currentImage
 
 # single image save
-def capture(server = None):
+def capture(server = None, drive = None):
     global currentImage
     try:
         name = str(round(time.time()*1000))
         cv2.imwrite('image_out/' + name + '.png', currentImage)
         if server != None:
             server.broadcast('message', 'Captured ' + name + '.png')
-            # server.broadcast('capture', currentImage.tolist())
+        if drive != None:
+            fd = open('./steering_vals/' + name + '.txt', 'w')
+            fd.write(name + ' ' + str(drive.currentSteering()))
+            fd.close()
         return currentImage
     except Exception as err:
         print(err)
@@ -57,22 +60,29 @@ def capture(server = None):
 # save a stream of images at 10 fps
 streamThread = None
 streaming = False
+saveFd = None
 totalCaptured = 0
-def startSaveStream(server = None):
-    global streamThread, streaming
+def startSaveStream(server = None, drive = None):
+    global streamThread, saveFd, streaming
     if streaming == False:
         streaming = True
+        if drive != None:
+            saveFd = open('./steering_vals/' + time.time() + '.txt', 'a')
         def loop():
+            global currentImage, streaming, saveFd, totalCaptured
             try:
-                global currentImage, streaming, totalCaptured
                 while streaming:
                     start = time.time()
                     name = str(round(time.time()*1000))
                     cv2.imwrite('image_out/' + name + '.png', currentImage)
                     totalCaptured += 1
+                    if saveFd != None:
+                        saveFd.write(name + ' ' + str(drive.currentSteering()))
                     time.sleep(max(0.1-(time.time()-start), 0))
             except Exception as err:
                 print(err)
+                saveFd.close()
+                saveFd = None
         streamThread = Thread(target = loop)
         streamThread.start()
         if server != None:
@@ -80,12 +90,15 @@ def startSaveStream(server = None):
         return True
     return False
 def stopSaveStream(server = None):
-    global streamThread, streaming, totalCaptured
+    global streamThread, streaming, saveFd, totalCaptured
     if streaming == True:
         streaming = False
         streamThread.join()
-        totalCaptured = 0
         if server != None:
-            server.broadcast('message', 'Ended save stream')
+            server.broadcast('message', 'Ended save stream:<br>&emsp;Saved ' + totalCaptured + ' images')
+        if saveFd != None:
+            saveFd.close()
+            saveFd = None
+        totalCaptured = 0
         return True
     return False

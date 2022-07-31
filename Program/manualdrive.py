@@ -41,13 +41,13 @@ def main():
             drive.throttle(data['throttle'])
             drive.steer(data['steering'])
         def capture(data):
-            image = camera.capture(server)
+            image = camera.capture(server, drive)
             encoded = base64.b64encode(image).decode()
             server.broadcast('capture', encoded)
         def captureStream(data):
             # filter.predict(camera.capture(server))
             if data['state'] == True:
-                camera.startSaveStream(server)
+                camera.startSaveStream(server, drive)
             else:
                 camera.stopSaveStream(server)
         def capturefilter(data):
