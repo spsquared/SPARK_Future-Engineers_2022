@@ -62,6 +62,7 @@ def start():
                     time.sleep(max((1/tickrate)-(time.time()-start), 0))
             except Exception as err:
                 print(err)
+                io.error()
         controlThread = Thread(target = loop)
         controlThread.start()
         return True

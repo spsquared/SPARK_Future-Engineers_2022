@@ -1,4 +1,4 @@
-from curses import raw
+from IO import io
 import numpy
 import cv2
 
@@ -21,12 +21,16 @@ def checkWallColor(array):
 # possibly filter with median filter (cv2)
 def filter(imgIn: numpy.ndarray):
     global redMax, redMin, greenMax, greenMin, wallMax, wallMin
-    rMask = cv2.inRange(imgIn, redMin, redMax)
-    gMask = cv2.inRange(imgIn, greenMin, greenMax)
-    wMask = cv2.inRange(imgIn, wallMin, wallMax)
-    rawImg = cv2.merge((wMask, gMask, rMask))
-    filteredImg = cv2.medianBlur(rawImg, 5)
-    return filteredImg
+    try:
+        rMask = cv2.inRange(imgIn, redMin, redMax)
+        gMask = cv2.inRange(imgIn, greenMin, greenMax)
+        wMask = cv2.inRange(imgIn, wallMin, wallMax)
+        rawImg = cv2.merge((wMask, gMask, rMask))
+        filteredImg = cv2.medianBlur(rawImg, 5)
+        return filteredImg
+    except Exception as err:
+        print(err)
+        io.error()
 
 def predict(imgIn: numpy.ndarray):
     global redMax, redMin, greenMax, greenMin, wallMax, wallMin
