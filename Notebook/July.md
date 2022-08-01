@@ -165,4 +165,7 @@ More of the same thing, today we 3D printed some new traffic signals and taped s
 
 **WE GOT OUR FIRST AUTONOMOUS TURN!**
 
-Using a basic wall height algorithm the car now turns left when it approaches a wall head-on!
+Using the height of the pixels in the filtered image, the car can detect walls on the left and right and determine whether to turn left or right in order to avoid the walls!
+
+[Link to video (download)](./July/7-31-22-a.mp4)
+[Link to video (download 2)](https://raw.githubusercontent.com/definitely-nobody-is-here/SPARK_Future-Engineers_2022/master/Notebook/2022/July/7-31-22-a.mp4)
