@@ -82,10 +82,10 @@ def predict(imgIn: numpy.ndarray):
         for i in range(len(gKps)):
             if 131 < (272 - gKps[i].pt[0]) * 5 / 12 + gKps[i].pt[1] + gKps[i].sizeof * 2:
                 return 100
-        if wallHeightCenter > 25:
+        if wallHeightCenter > 23:
             return -100
         if wallHeightRight > 25:
-            return -100
+            return -50
         if wallHeightLeft > 25:
             return 50
         return 0
