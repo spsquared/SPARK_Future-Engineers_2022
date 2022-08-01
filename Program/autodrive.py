@@ -9,9 +9,13 @@ def main():
     try:
         drive.start()
         camera.start()
+        time.sleep(1)
         drive.throttle(100)
         while True:
-            drive.steer(filter.predict(camera.read()))
+            image = camera.read()
+            prediction = filter.predict(image)
+            drive.steer(prediction)
+            print("Current Prediction: " + str(prediction))
         #code here
     except KeyboardInterrupt:
         camera.stop()
@@ -19,3 +23,7 @@ def main():
         io.close()
     except Exception as err:
         print(err)
+        io.error()
+
+if __name__ == '__main__':
+    main()
