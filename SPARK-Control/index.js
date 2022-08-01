@@ -257,6 +257,23 @@ document.getElementById('captureFilterButton').onclick = function(e) {
     }
     send('captureFilter', arr);
 };
+filterstreaming = false;
+document.getElementById('captureFilterStreamButton').onclick = function(e) {
+    arr = [];
+    for (var i in sliders) {
+        arr.push(sliders[i].value);
+    }
+    send('colors', arr);
+    filterstreaming = !filterstreaming;
+    send('captureFilterStream', {state: filterstreaming});
+    if (filterstreaming) {
+        document.getElementById('captureFilterStreamButton').innerText = 'STOP CAPTURE STREAM';
+        document.getElementById('captureFilterStreamButton').style.backgroundColor = 'lightcoral';
+    } else {
+        document.getElementById('captureFilterStreamButton').innerText = 'START CAPTURE STREAM';
+        document.getElementById('captureFilterStreamButton').style.backgroundColor = 'lightgreen';
+    }
+};
 function updateSlider(i) {
     document.getElementById(sliders[i].id + 'indicator').innerText = sliders[i].value;
 };

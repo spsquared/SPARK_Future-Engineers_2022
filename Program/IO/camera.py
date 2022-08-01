@@ -41,13 +41,19 @@ def read():
     return currentImage
 
 # single image save
-def capture(server = None, drive = None):
+def capture(filter = None, server = None, drive = None):
     global currentImage
     try:
         name = str(round(time.time()*1000))
-        cv2.imwrite('image_out/' + name + '.png', currentImage)
-        if server != None:
-            server.broadcast('message', 'Captured ' + name + '.png')
+        if filter != None:
+            filteredImg = filter.filter(currentImage)
+            cv2.imwrite('filtered_out/' + name + '.png', filteredImg)
+            if server != None:
+                server.broadcast('message', 'Captured (filtered)' + name + '.png')
+        else:
+            cv2.imwrite('image_out/' + name + '.png', currentImage)
+            if server != None:
+                server.broadcast('message', 'Captured ' + name + '.png')
         if drive != None:
             fd = open('./steering_vals/' + name + '.txt', 'w')
             fd.write(name + ' ' + str(drive.currentSteering()))
@@ -62,7 +68,7 @@ streamThread = None
 streaming = False
 saveFd = None
 totalCaptured = 0
-def startSaveStream(server = None, drive = None):
+def startSaveStream(filter = None, server = None, drive = None):
     global streamThread, saveFd, streaming
     if streaming == False:
         streaming = True
@@ -74,7 +80,11 @@ def startSaveStream(server = None, drive = None):
                 while streaming:
                     start = time.time()
                     name = str(round(time.time()*1000))
-                    cv2.imwrite('image_out/' + name + '.png', currentImage)
+                    if filter != None:
+                        filteredImg = filter.filter(currentImage)
+                        cv2.imwrite('filtered_out/' + name + '.png', filteredImg)
+                    else:
+                        cv2.imwrite('image_out/' + name + '.png', currentImage)
                     totalCaptured += 1
                     if saveFd != None:
                         print(drive.currentSteering())

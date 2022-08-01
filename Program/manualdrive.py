@@ -41,22 +41,24 @@ def main():
             drive.throttle(data['throttle'])
             drive.steer(data['steering'])
         def capture(data):
-            image = camera.capture(server, drive)
+            image = camera.capture(server=server, drive=drive)
             encoded = base64.b64encode(image).decode()
             server.broadcast('capture', encoded)
         def captureStream(data):
             if data['state'] == True:
-                camera.startSaveStream(server, drive)
+                camera.startSaveStream(server=server, drive=drive)
             else:
                 camera.stopSaveStream(server)
-        def capturefilter(data):
+        def captureFilter(data):
             filter.setColors(data)
-            image = filter.filter(camera.read())
-            name = str(round(time.time()*1000))
-            cv2.imwrite('image_filtered/' + name + '.png', image)
-            server.broadcast('message', 'Captured (filtered) ' + name + '.png')
+            image = camera.capture(filter=filter, server=server, drive=drive)
             encoded = base64.b64encode(image).decode()
             server.broadcast('capture', encoded)
+        def captureFilterStream(data):
+            if data['state'] == True:
+                camera.startSaveStream(filter=filter, server=server, drive=drive)
+            else:
+                camera.stopSaveStream(server)
         def colors(data):
             filter.setColors(data)
         server.addListener('key', keys)
@@ -64,7 +66,8 @@ def main():
         server.addListener('capture', capture)
         server.addListener('captureStream', captureStream)
         server.addListener('colors', colors)
-        server.addListener('captureFilter', capturefilter)
+        server.addListener('captureFilter', captureFilter)
+        server.addListener('captureFilterStream', captureFilterStream)
         try:
             while True:
                 msg = input()
