@@ -1,3 +1,4 @@
+from torch import true_divide
 from IO import io
 import numpy
 import cv2
@@ -6,11 +7,11 @@ import statistics
 # preprocessing filter module with cv prediction
 
 # colors
-rM = redMax = (190, 80, 80)
-rm = redMin = (105, 45, 35)
-gM = greenMax = (25, 140, 110)
-gm = greenMin = (0, 50, 45)
-wM = wallMax = (70, 80, 90)
+rM = redMax = (80, 80, 190)
+rm = redMin = (35, 45, 95)
+gM = greenMax = (110, 140, 25)
+gm = greenMin = (45, 50, 0)
+wM = wallMax = (90, 80, 70)
 wm = wallMin = (20, 20, 20)
 
 # possibly filter with median filter (cv2)
@@ -31,19 +32,28 @@ def predict(imgIn: numpy.ndarray):
     global redMax, redMin, greenMax, greenMin, wallMax, wallMin
     try:
         params = cv2.SimpleBlobDetector_Params()
-        params.minThreshold = 30
+        params.filterByColor = True
+        params.minThreshold = 1
         params.maxThreshold = 255
+        params.filterByInertia = True
+        params.minInertiaRatio = 0.01
         blobs = cv2.SimpleBlobDetector_create(params)
-        blobs.empty()
         rMask = cv2.inRange(imgIn, redMin, redMax)
         gMask = cv2.inRange(imgIn, greenMin, greenMax)
         wMask = cv2.inRange(imgIn, wallMin, wallMax)
-        rImg = cv2.medianBlur(rMask, 5)
-        gImg = cv2.medianBlur(gMask, 5)
-        wImg = cv2.medianBlur(wMask, 5)
-        rKps = blobs.detect(rImg)
-        gKps = blobs.detect(gImg)
-        wKps = blobs.detect(wImg)
+        rawImg = cv2.merge((wMask, gMask, rMask))
+        blurredImg = cv2.medianBlur(rawImg, 10)
+        wImg, gImg, rImg = cv2.split(blurredImg)
+        blobs.empty()
+        rKps = blobs.detect(255 - rImg)
+        blobs.empty()
+        gKps = blobs.detect(255 - gImg)
+        blobs.empty()
+        cv2.imwrite("e.png",(255 - rImg))
+        cv2.imwrite("d.png",blurredImg)
+        cv2.imwrite("g.png",rawImg)
+        cv2.imwrite("h.png",imgIn)
+        wKps = blobs.detect(255 - wImg)
         croppedWImgLeft = wImg[45:100,20:35]
         croppedWImgCenter = wImg[45:100,130:143]
         croppedWImgRight = wImg[45:100,237:252]
@@ -76,12 +86,17 @@ def predict(imgIn: numpy.ndarray):
             wallHeightRight = statistics.median(wallHeights2Right)
         # -100 = turn left a lot
         # 100 = turn right a lot
+        if len(gKps) != 0:
+            blank = numpy.zeros((1, 1))
+            blobs = cv2.drawKeypoints(rawImg, gKps, blank, (255, 0, 0),cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+
+            cv2.imwrite("f.png",blobs)
         for i in range(len(rKps)):
-            if 131 < rKps[i].pt[0] * 5 / 12 + rKps[i].pt[1] + rKps[i].sizeof * 2:
-                return -100
+            # if 131 < rKps[i].pt[0] * 5 / 12 + rKps[i].pt[1] + rKps[i].size * 2:
+            return 100
         for i in range(len(gKps)):
-            if 131 < (272 - gKps[i].pt[0]) * 5 / 12 + gKps[i].pt[1] + gKps[i].sizeof * 2:
-                return 100
+            # if 131 < (272 - gKps[i].pt[0]) * 5 / 12 + gKps[i].pt[1] + gKps[i].size * 2:
+            return -100
         if wallHeightCenter > 23:
             return -100
         if wallHeightRight > 25:
