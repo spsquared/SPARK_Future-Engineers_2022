@@ -8,7 +8,7 @@ import statistics
 
 # colors
 rM = redMax = (80, 80, 190)
-rm = redMin = (35, 45, 95)
+rm = redMin = (35, 40, 95)
 gM = greenMax = (110, 140, 25)
 gm = greenMin = (45, 50, 0)
 wM = wallMax = (90, 80, 70)
