@@ -275,7 +275,7 @@ function setColors(colors) {
 var initcolors = [
     [
         190, 80, 80,
-        105, 45, 35
+        95, 40, 35
     ],
     [
         25, 140, 110,
