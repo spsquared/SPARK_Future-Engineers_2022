@@ -162,3 +162,7 @@ With that working, we began the process of using blob detection for our algorith
 
 # 7/31/22
 More of the same thing, today we 3D printed some new traffic signals and taped some papers with the correct colors printed onto them onto the traffic signals. We also added a startup script that runs as a startup service. This will make it easier to get the program to run without ssh. Unfortunately the 2 minute boot times are still a big issue that we can't fix.
+
+**WE GOT OUR FIRST AUTONOMOUS TURN!**
+
+Using a basic wall height algorithm the car now turns left when it approaches a wall head-on!
