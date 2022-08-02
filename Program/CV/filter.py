@@ -1,4 +1,3 @@
-from torch import true_divide
 from IO import io
 import numpy
 import cv2
@@ -32,27 +31,34 @@ def predict(imgIn: numpy.ndarray):
     global redMax, redMin, greenMax, greenMin, wallMax, wallMin
     try:
         params = cv2.SimpleBlobDetector_Params()
-        params.filterByColor = True
-        params.minThreshold = 1
-        params.maxThreshold = 255
+        # params.filterByColor = True
+        # params.minThreshold = 1
+        # params.maxThreshold = 255
+        # params.filterByArea = True
+        # params.minArea = 100
+        params.filterByCircularity = True
+        params.minCircularity = 0
+        params.filterByConvexity = True
+        params.minConvexity = 0
         params.filterByInertia = True
-        params.minInertiaRatio = 0.01
+        params.minInertiaRatio = 0
         blobs = cv2.SimpleBlobDetector_create(params)
         rMask = cv2.inRange(imgIn, redMin, redMax)
         gMask = cv2.inRange(imgIn, greenMin, greenMax)
         wMask = cv2.inRange(imgIn, wallMin, wallMax)
         rawImg = cv2.merge((wMask, gMask, rMask))
-        blurredImg = cv2.medianBlur(rawImg, 10)
+        blurredImg = cv2.medianBlur(rawImg, 5)
+        blurredImg = cv2.medianBlur(blurredImg, 5)
         wImg, gImg, rImg = cv2.split(blurredImg)
         blobs.empty()
         rKps = blobs.detect(255 - rImg)
         blobs.empty()
         gKps = blobs.detect(255 - gImg)
         blobs.empty()
-        cv2.imwrite("e.png",(255 - rImg))
-        cv2.imwrite("d.png",blurredImg)
-        cv2.imwrite("g.png",rawImg)
-        cv2.imwrite("h.png",imgIn)
+        # cv2.imwrite("e.png",(255 - rImg))
+        # cv2.imwrite("d.png",blurredImg)
+        # cv2.imwrite("g.png",rawImg)
+        # cv2.imwrite("h.png",imgIn)
         wKps = blobs.detect(255 - wImg)
         croppedWImgLeft = wImg[45:100,20:35]
         croppedWImgCenter = wImg[45:100,130:143]
@@ -86,11 +92,16 @@ def predict(imgIn: numpy.ndarray):
             wallHeightRight = statistics.median(wallHeights2Right)
         # -100 = turn left a lot
         # 100 = turn right a lot
-        if len(gKps) != 0:
-            blank = numpy.zeros((1, 1))
-            blobs = cv2.drawKeypoints(rawImg, gKps, blank, (255, 0, 0),cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+        # if len(rKps) != 0:
+        #     blank = numpy.zeros((1, 1))
+        #     blobs = cv2.drawKeypoints(rawImg, rKps, blank, (255, 0, 0),cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
 
-            cv2.imwrite("f.png",blobs)
+        #     # cv2.imwrite("f.png",blobs)
+        # if len(gKps) != 0:
+        #     blank = numpy.zeros((1, 1))
+        #     blobs = cv2.drawKeypoints(rawImg, gKps, blank, (255, 0, 0),cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+
+        #     # cv2.imwrite("f.png",blobs)
         for i in range(len(rKps)):
             # if 131 < rKps[i].pt[0] * 5 / 12 + rKps[i].pt[1] + rKps[i].size * 2:
             return 100
