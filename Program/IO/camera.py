@@ -49,7 +49,7 @@ def capture(filter = None, server = None, drive = None):
             filteredImg = filter.filter(currentImage)
             cv2.imwrite('filtered_out/' + name + '.png', filteredImg)
             if server != None:
-                server.broadcast('message', 'Captured (filtered)' + name + '.png')
+                server.broadcast('message', 'Captured (filtered) ' + name + '.png')
         else:
             cv2.imwrite('image_out/' + name + '.png', currentImage)
             if server != None:
@@ -87,7 +87,6 @@ def startSaveStream(filter = None, server = None, drive = None):
                         cv2.imwrite('image_out/' + name + '.png', currentImage)
                     totalCaptured += 1
                     if saveFd != None:
-                        print(drive.currentSteering())
                         saveFd.write(name + ' ' + str(drive.currentSteering()) + '\n')
                     time.sleep(max(0.1-(time.time()-start), 0))
             except Exception as err:

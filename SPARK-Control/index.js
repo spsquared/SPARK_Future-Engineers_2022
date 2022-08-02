@@ -182,13 +182,15 @@ function updateControllers() {
             throttle = Math.round(controller.axes[1]*-100);
             steering = Math.round((controller.axes[2]-trim2)*100)-trim;
             if (controller.buttons[8].pressed && pressedbuttons.indexOf(8) == -1) {
-                document.getElementById('captureButton').onclick();
+                if (controller.buttons[7].pressed) document.getElementById('captureFilterButton').onclick();
+                else document.getElementById('captureButton').onclick();
                 pressedbuttons.push(8);
             } else if (!controller.buttons[8].pressed && pressedbuttons.indexOf(8) != -1) {
                 pressedbuttons.splice(pressedbuttons.indexOf(8), 1);
             }
             if (controller.buttons[9].pressed && pressedbuttons.indexOf(9) == -1) {
-                document.getElementById('captureStreamButton').onclick();
+                if (controller.buttons[7].pressed) document.getElementById('captureFilterStreamButton').onclick();
+                else document.getElementById('captureStreamButton').onclick();
                 pressedbuttons.push(9);
             } else if (!controller.buttons[9].pressed && pressedbuttons.indexOf(9) != -1) {
                 pressedbuttons.splice(pressedbuttons.indexOf(9), 1);
@@ -267,10 +269,10 @@ document.getElementById('captureFilterStreamButton').onclick = function(e) {
     filterstreaming = !filterstreaming;
     send('captureFilterStream', {state: filterstreaming});
     if (filterstreaming) {
-        document.getElementById('captureFilterStreamButton').innerText = 'STOP CAPTURE STREAM';
+        document.getElementById('captureFilterStreamButton').innerText = 'STOP FILTERED CAPTURE STREAM';
         document.getElementById('captureFilterStreamButton').style.backgroundColor = 'lightcoral';
     } else {
-        document.getElementById('captureFilterStreamButton').innerText = 'START CAPTURE STREAM';
+        document.getElementById('captureFilterStreamButton').innerText = 'START FILTERED CAPTURE STREAM';
         document.getElementById('captureFilterStreamButton').style.backgroundColor = 'lightgreen';
     }
 };
