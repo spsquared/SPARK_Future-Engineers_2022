@@ -49,7 +49,7 @@ def capture(filter = None, server = None, drive = None):
             filteredImg = filter.filter(currentImage)
             cv2.imwrite('filtered_out/' + name + '.png', filteredImg)
             if server != None:
-                server.broadcast('message', 'Captured (filtered)' + name + '.png')
+                server.broadcast('message', 'Captured (filtered) ' + name + '.png')
         else:
             cv2.imwrite('image_out/' + name + '.png', currentImage)
             if server != None:

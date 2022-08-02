@@ -169,3 +169,6 @@ Using the height of the pixels in the filtered image, the car can detect walls o
 
 [Link to video (download)](./July/7-31-22-a.mp4)
 [Link to video (download 2)](https://raw.githubusercontent.com/definitely-nobody-is-here/SPARK_Future-Engineers_2022/master/Notebook/2022/July/7-31-22-a.mp4)
+
+# 7/32/22
+At this point we are trying to make the car drive around traffic signals.
