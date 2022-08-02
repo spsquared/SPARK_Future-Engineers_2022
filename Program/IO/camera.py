@@ -87,7 +87,6 @@ def startSaveStream(filter = None, server = None, drive = None):
                         cv2.imwrite('image_out/' + name + '.png', currentImage)
                     totalCaptured += 1
                     if saveFd != None:
-                        print(drive.currentSteering())
                         saveFd.write(name + ' ' + str(drive.currentSteering()) + '\n')
                     time.sleep(max(0.1-(time.time()-start), 0))
             except Exception as err:
