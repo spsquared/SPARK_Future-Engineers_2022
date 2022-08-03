@@ -13,27 +13,29 @@ thread = None
 
 def start():
     global running, camera, thread
-    camera.running = True
-    running = True
-    def __capture():
-        try:
-            global running, camera, currentImage
-            # update loop that constantly updates the most recent image which can be read at any time
-            while running:
-                start = time.time()
-                currentImage = camera.value
-                time.sleep(max(0.0125-(time.time()-start), 0))
-        except Exception as err:
-            print(err)
-            io.error()
-    thread = Thread(target = __capture)
-    thread.start()
+    if running == False:
+        camera.running = True
+        running = True
+        def __capture():
+            try:
+                global running, camera, currentImage
+                # update loop that constantly updates the most recent image which can be read at any time
+                while running:
+                    start = time.time()
+                    currentImage = camera.value
+                    time.sleep(max(0.0125-(time.time()-start), 0))
+            except Exception as err:
+                print(err)
+                io.error()
+        thread = Thread(target = __capture)
+        thread.start()
 
 def stop():
     global running, camera, thread
-    running = False
-    thread.join()
-    camera.running = False
+    if running == True:
+        running = False
+        thread.join()
+        camera.running = False
 
 # read current image
 def read():

@@ -24,11 +24,13 @@ def broadcast(event: str, data: typing.Any):
 
 running = True
 thread = None
+threadLoop = asyncio.new_event_loop()
 
 def close():
-    global running, thread
+    global running, thread, threadLoop
     if running == True:
         running = False
+        threadLoop.stop()
         thread.join()
         return True
     return False
@@ -84,13 +86,12 @@ async def __server(websocket, path):
         io.error()
 
 def __start():
-    global running, __server
+    global running, __server, threadLoop
     running = True
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
+    asyncio.set_event_loop(threadLoop)
     server = websockets.serve(__server, '192.168.1.151', 4040)
-    loop.run_until_complete(server)
-    loop.run_forever()
+    threadLoop.run_until_complete(server)
+    threadLoop.run_forever()
 
 thread = Thread(target = __start)
 thread.start()

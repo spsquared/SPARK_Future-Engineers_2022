@@ -10,7 +10,9 @@ __forward = 0
 __backward = 0
 __left = 0
 __right = 0
+running = True
 def main():
+    global running
     try:
         drive.start()
         camera.start()
@@ -66,35 +68,33 @@ def main():
         server.addListener('colors', colors)
         server.addListener('captureFilter', captureFilter)
         server.addListener('captureFilterStream', captureFilterStream)
+        global running
         running = True
         def stop():
+            global running
             running = False
             server.close()
             camera.stop()
             drive.stop()
             io.close()
-        try:
-            while running:
-                msg = input()
-                if msg == 'reset':
-                    server.broadcast('colors', filter.getColors())
-                    print(filter.getColors())
-                elif msg != '':
-                    server.broadcast('message', msg)
-        except KeyboardInterrupt:
-            server.close()
-            camera.stop()
-            drive.stop()
-            io.close()
-        except:
-            io.error()
+        server.addListener('stop', stop)
+        while running:
+            msg = input()
+            if msg == 'reset':
+                server.broadcast('colors', filter.getColors())
+                print(filter.getColors())
+            elif msg != '':
+                server.broadcast('message', msg)
     except KeyboardInterrupt:
+        print('\nSTOPPING PROGRAM. DO NOT INTERRUPT.')
+        running = False
         server.close()
         camera.stop()
         drive.stop()
         io.close()
     except Exception as err:
         print(err)
+        io.error()
 
 if __name__ == '__main__':
     main()

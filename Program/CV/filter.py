@@ -167,4 +167,3 @@ def setColors(data):
     print(wallMax, wallMin)
 def getColors():
     global rM, rm, gM, gm, wM, wm
-    print(type(rM))
