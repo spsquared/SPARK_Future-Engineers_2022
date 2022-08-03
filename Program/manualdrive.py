@@ -4,9 +4,7 @@ from IO import drive
 from IO import camera
 from Util import server
 from CV import filter
-import cv2
 import base64
-import time
 
 __forward = 0
 __backward = 0
@@ -68,8 +66,15 @@ def main():
         server.addListener('colors', colors)
         server.addListener('captureFilter', captureFilter)
         server.addListener('captureFilterStream', captureFilterStream)
+        running = True
+        def stop():
+            running = False
+            server.close()
+            camera.stop()
+            drive.stop()
+            io.close()
         try:
-            while True:
+            while running:
                 msg = input()
                 if msg == 'reset':
                     server.broadcast('colors', filter.getColors())
@@ -77,7 +82,10 @@ def main():
                 elif msg != '':
                     server.broadcast('message', msg)
         except KeyboardInterrupt:
-            True
+            server.close()
+            camera.stop()
+            drive.stop()
+            io.close()
         except:
             io.error()
     except KeyboardInterrupt:
