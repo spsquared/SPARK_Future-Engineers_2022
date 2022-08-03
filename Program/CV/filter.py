@@ -102,18 +102,45 @@ def predict(imgIn: numpy.ndarray):
         #     blobs = cv2.drawKeypoints(rawImg, gKps, blank, (255, 0, 0),cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
 
         #     # cv2.imwrite("f.png",blobs)
+        brKps = 0
         for i in range(len(rKps)):
-            # if 131 < rKps[i].pt[0] * 5 / 12 + rKps[i].pt[1] + rKps[i].size * 2:
-            return 100
+            if 131 < rKps[i].pt[0] * 5 / 12 + rKps[i].pt[1] + rKps[i].size * 2:
+                if brKps == 0:
+                    brKps = rKps[i]
+                elif brKps.size < rKps[i].size:
+                    brKps = rKps[i]
+        bgKps = 0
         for i in range(len(gKps)):
-            # if 131 < (272 - gKps[i].pt[0]) * 5 / 12 + gKps[i].pt[1] + gKps[i].size * 2:
+            if 131 < (272 - gKps[i].pt[0]) * 5 / 12 + gKps[i].pt[1] + gKps[i].size * 2:
+                if bgKps == 0:
+                    bgKps = gKps[i]
+                elif bgKps.size < gKps[i].size:
+                    bgKps = gKps[i]
+        blobSizeRequirement = 25
+        if brKps != 0:
+            if bgKps != 0:
+                if brKps.size > bgKps.size and brKps.size > blobSizeRequirement:
+                    return 100
+                elif bgKps.size > blobSizeRequirement:
+                    return -100
+            elif brKps.size > blobSizeRequirement:
+                return 100
+        elif bgKps != 0 and bgKps.size > blobSizeRequirement:
             return -100
-        if wallHeightCenter > 23:
+        if wallHeightCenter > 26:
             return -100
-        if wallHeightRight > 25:
-            return -50
+        if wallHeightRight > 30:
+            if len(rKps) == 0:
+                if wallHeightRight > 45:
+                    return -50
+            else:
+                return -50
         if wallHeightLeft > 25:
-            return 50
+            if len(gKps) == 0:
+                if wallHeightLeft > 40:
+                    return 50
+            else:
+                return 50
         return 0
     except Exception as err:
         print(err)

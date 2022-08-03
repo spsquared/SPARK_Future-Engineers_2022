@@ -10,7 +10,7 @@ def main():
         drive.start()
         camera.start()
         time.sleep(1)
-        drive.throttle(100)
+        drive.throttle(90)
         while True:
             image = camera.read()
             prediction = filter.predict(image)
