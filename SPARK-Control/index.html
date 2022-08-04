@@ -16,7 +16,7 @@
         <div style="font-weight: bold;">Log</div>
         <div id="eventLogBody"></div>
     </div>
-    <div id="captureButtonBody">
+    <div id="captureButtons">
         <button id="captureButton">CAPTURE</button><br>
         <button id="captureFilterButton">FILTERED CAPTURE</button><br>
         <button id="captureStreamButton">START CAPTURE STREAM</button>
@@ -168,12 +168,15 @@
             </tbody>
         </table>
     </div>
-    <div id="captureDisplayBody">
+    <div id="captureDisplay">
         <button id="displayBack" onclick="displayBack();">&#60</button>
         <button id="displayForwards" onclick="displayFront();">&#62</button>
         <img id="displayImg">
     </div>
-    <div id="joystickBody">
+    <div id="filterDisplay" style="display: none;">
+        <canvas></canvas>
+    </div>
+    <div id="joystick">
         <div id="joystickPin"></div>
         <div id="sliderX"></div>
         <div id="sliderY"></div>

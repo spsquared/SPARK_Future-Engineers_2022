@@ -4,7 +4,6 @@ from IO import drive
 from IO import camera
 from Util import server
 from CV import filter
-import base64
 
 __forward = 0
 __backward = 0
@@ -41,9 +40,7 @@ def main():
             drive.throttle(data['throttle'])
             drive.steer(data['steering'])
         def capture(data):
-            image = camera.capture(server=server, drive=drive)
-            encoded = base64.b64encode(image).decode()
-            server.broadcast('capture', encoded)
+            camera.capture(server=server, drive=drive)
         def captureStream(data):
             if data['state'] == True:
                 camera.startSaveStream(server=server, drive=drive)
@@ -51,9 +48,7 @@ def main():
                 camera.stopSaveStream(server)
         def captureFilter(data):
             filter.setColors(data)
-            image = camera.capture(filter=filter, server=server, drive=drive)
-            encoded = base64.b64encode(image).decode()
-            server.broadcast('capture', encoded)
+            camera.capture(filter=filter, server=server, drive=drive)
         def captureFilterStream(data):
             if data['state'] == True:
                 camera.startSaveStream(filter=filter, server=server, drive=drive)

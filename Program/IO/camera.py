@@ -2,6 +2,7 @@ from jetcam.csi_camera import CSICamera
 import cv2
 from threading import Thread
 from IO import io
+import base64
 import time
 
 # camera module for capturing input data
@@ -52,10 +53,14 @@ def capture(filter = None, server = None, drive = None):
             cv2.imwrite('filtered_out/' + name + '.png', filteredImg)
             if server != None:
                 server.broadcast('message', 'Captured (filtered) ' + name + '.png')
+                encoded = base64.b64encode(cv2.imencode('.png', filteredImg)[1]).decode()
+                server.broadcast('capture', encoded)
         else:
             cv2.imwrite('image_out/' + name + '.png', currentImage)
             if server != None:
                 server.broadcast('message', 'Captured ' + name + '.png')
+                encoded = base64.b64encode(cv2.imencode('.png', currentImage)[1]).decode()
+                server.broadcast('capture', encoded)
         if drive != None:
             fd = open('./steering_vals/' + name + '.txt', 'w')
             fd.write(name + ' ' + str(drive.currentSteering()))

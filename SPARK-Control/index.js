@@ -89,7 +89,7 @@ document.onkeyup = function(e) {
 };
 
 // joystick
-const joystick = document.getElementById('joystickBody');
+const joystick = document.getElementById('joystick');
 const joystickPin = document.getElementById('joystickPin');
 const sliderX = document.getElementById('sliderX');
 const sliderY = document.getElementById('sliderY');
@@ -297,8 +297,8 @@ var initcolors = [
         95, 40, 35
     ],
     [
-        25, 140, 110,
-        0, 50, 45
+        85, 150, 125,
+        30, 90, 70
     ],
     [
         70, 80, 90,
@@ -338,11 +338,11 @@ function addCapture(img) {
     displayImg.src = recentCaptures[index];
     console.log(recentCaptures[index])
 };
-function displayBack() {
+async function displayBack() {
     index = Math.min(index+1, recentCaptures.length-1);
     if (recentCaptures[index]) displayImg.src = recentCaptures[index];
 };
-function displayFront() {
+async function displayFront() {
     index = Math.max(index-1, 0);
     if (recentCaptures[index]) displayImg.src = recentCaptures[index];
 };

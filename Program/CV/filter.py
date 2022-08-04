@@ -8,12 +8,11 @@ import statistics
 # colors
 rM = redMax = (80, 80, 190)
 rm = redMin = (35, 40, 95)
-gM = greenMax = (110, 140, 25)
-gm = greenMin = (45, 50, 0)
+gM = greenMax = (125, 150, 85)
+gm = greenMin = (70, 90, 30)
 wM = wallMax = (90, 80, 70)
 wm = wallMin = (20, 20, 20)
 
-# possibly filter with median filter (cv2)
 def filter(imgIn: numpy.ndarray):
     global redMax, redMin, greenMax, greenMin, wallMax, wallMin
     try:
@@ -27,7 +26,7 @@ def filter(imgIn: numpy.ndarray):
         print(err)
         io.error()
 
-def predict(imgIn: numpy.ndarray):
+def predict(imgIn: numpy.ndarray, server = None):
     global redMax, redMin, greenMax, greenMin, wallMax, wallMin
     try:
         params = cv2.SimpleBlobDetector_Params()
@@ -59,7 +58,6 @@ def predict(imgIn: numpy.ndarray):
         # cv2.imwrite("d.png",blurredImg)
         # cv2.imwrite("g.png",rawImg)
         # cv2.imwrite("h.png",imgIn)
-        wKps = blobs.detect(255 - wImg)
         croppedWImgLeft = wImg[45:100,20:35]
         croppedWImgCenter = wImg[45:100,130:143]
         croppedWImgRight = wImg[45:100,237:252]
