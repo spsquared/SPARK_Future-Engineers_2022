@@ -31,6 +31,9 @@ socket.onmessage = function(e) {
         case 'capture':
             addCapture(data);
             break;
+        case 'blobs':
+            addCapture(data);
+            break;
         case 'colors':
             setColors(data);
             break;

@@ -54,10 +54,6 @@ def predict(imgIn: numpy.ndarray, server = None):
         blobs.empty()
         gKps = blobs.detect(255 - gImg)
         blobs.empty()
-        # cv2.imwrite("e.png",(255 - rImg))
-        # cv2.imwrite("d.png",blurredImg)
-        # cv2.imwrite("g.png",rawImg)
-        # cv2.imwrite("h.png",imgIn)
         croppedWImgLeft = wImg[45:100,20:35]
         croppedWImgCenter = wImg[45:100,130:143]
         croppedWImgRight = wImg[45:100,237:252]
@@ -114,6 +110,8 @@ def predict(imgIn: numpy.ndarray, server = None):
                     bgKps = gKps[i]
                 elif bgKps.size < gKps[i].size:
                     bgKps = gKps[i]
+        if server != None:
+            server.broadcast('blobs', [brKps,bgKps])
         blobSizeRequirement = 25
         if brKps != 0:
             if bgKps != 0:
