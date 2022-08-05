@@ -6,13 +6,22 @@ from Util import server
 from CV import filter
 import time
 
+running = True
 def main():
+    global running
     try:
         drive.start()
         camera.start()
         time.sleep(1)
+        def stop():
+            global running
+            running = False
+            camera.stop()
+            drive.stop()
+            io.close()
+        server.addListener('stop', stop)
         drive.throttle(90)
-        while True:
+        while running:
             image = camera.read()
             prediction = filter.predict(image,server)
             drive.steer(prediction)

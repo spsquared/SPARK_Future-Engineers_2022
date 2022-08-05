@@ -101,7 +101,7 @@ div {
     height: 32px;
     margin: 16px 16px;
     margin-bottom: 0px;
-    font: 28px sans-serif black;
+    font: 12px sans-serif;
     font-weight: bolder;
     background-color: lightskyblue;
     border: 4px outset darkgray;
@@ -115,7 +115,7 @@ div {
     height: 32px;
     margin: 16px 16px;
     margin-bottom: 0px;
-    font: 28px sans-serif black;
+    font: 12px sans-serif;
     font-weight: bolder;
     background-color: gold;
     border: 4px outset darkgray;
@@ -129,7 +129,7 @@ div {
     height: 32px;
     margin: 16px 16px;
     margin-bottom: 0px;
-    font: 28px sans-serif black;
+    font: 12px sans-serif;
     font-weight: bolder;
     background-color: lightgreen;
     border: 4px outset darkgray;
@@ -143,7 +143,7 @@ div {
     height: 32px;
     margin: 16px 16px;
     margin-bottom: 0px;
-    font: 28px sans-serif black;
+    font: 12px sans-serif;
     font-weight: bolder;
     background-color: lightgreen;
     border: 4px outset darkgray;
@@ -237,7 +237,6 @@ div {
     border: 2px solid black;
     padding: 0px 0px;
 }
-
 #canvas {
     position: absolute;
     bottom: 0px;
@@ -247,4 +246,31 @@ div {
     border: 2px solid black;
     padding: 0px 0px;
     pointer-events: none;
+}
+#fps {
+    position: absolute;
+    top: 0px;
+    left: 58px;
+    padding: 8px 8px;
+    font: 28px sans-serif white;
+    color: white;
+    background-color: #0005;
+}
+
+#emergencyStop {
+    position: absolute;
+    top: 200px;
+    right: 84px;
+    width: 100px;
+    height: 48px;
+    margin: 16px 16px;
+    margin-bottom: 0px;
+    font: 20px sans-serif;
+    font-weight: bolder;
+    background-color: red;
+    border: 8px outset gold;
+    cursor: pointer;
+}
+#emergencyStop:active {
+    border-style: inset;
 }

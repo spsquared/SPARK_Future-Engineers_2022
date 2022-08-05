@@ -334,12 +334,20 @@ for (var i in sliders) {
 var recentCaptures = [];
 var index = 0;
 const displayImg = document.getElementById('displayImg');
+const FPS = document.getElementById('fps');
+var fpsTimes = [];
 function addCapture(img) {
     recentCaptures.unshift('data:image/png;base64,' + img);
     if (recentCaptures.length > 50) recentCaptures.pop();
     index = 0;
     displayImg.src = recentCaptures[index];
-    console.log(recentCaptures[index])
+    
+    var now = performance.now();
+    while(fpsTimes.length > 0 && fpsTimes[0] <= now - 1000){
+        fpsTimes.shift();
+    }
+    fpsTimes.push(now);
+    FPS.innerHTML = 'FPS: ' + fpsTimes.length;
 };
 async function displayBack() {
     index = Math.min(index+1, recentCaptures.length-1);
@@ -373,18 +381,16 @@ function drawBlob(blob,blobColor){
     ctx.stroke();
 };
 addListener('capture', addCapture);
-blobFpsTimes = [];
 addListener('blobs', function(data) {
-    var now = performance.now();
-    while(blobFpsTimes.length > 0 && blobFpsTimes[0] <= now - 1000){
-        blobFpsTimes.shift();
-    }
-    blobFpsTimes.push(now);
-    blobFpsDisplay.innerHTML = 'FPS: ' + blobFpsTimes.length;
     ctx.clearRect(0,0,272,154)
     drawBlob(data[0],0);
     drawBlob(data[1],1);
 });
+
+// stop
+document.getElementById('emergencyStop').onclick = function() {
+    send('stop', {});
+};
 
 // errors
 window.onerror = function(err) {
