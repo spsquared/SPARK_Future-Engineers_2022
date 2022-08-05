@@ -4,12 +4,18 @@ from IO import drive
 from IO import camera
 from Util import server
 from CV import filter
+from threading import Thread
+import cv2
+import time
+import base64
 
 __forward = 0
 __backward = 0
 __left = 0
 __right = 0
 running = True
+streamThread = None
+streaming = False
 def main():
     global running
     try:
@@ -54,6 +60,27 @@ def main():
                 camera.startSaveStream(filter=filter, server=server, drive=drive)
             else:
                 camera.stopSaveStream(server)
+        def stream(data):
+            global streamThread, streaming
+            if data['state'] == True:
+                if streaming == False:
+                    streaming = True
+                    def loop():
+                        global streaming, running
+                        try:
+                            while streaming and running:
+                                start = time.time()
+                                encoded = base64.b64encode(cv2.imencode('.png', camera.read())[1]).decode()
+                                server.broadcast('capture', encoded)
+                                time.sleep(max(0.05-(time.time()-start), 0))
+                        except Exception as err:
+                            print(err)
+                    streamThread = Thread(target = loop)
+                    streamThread.start()
+            else:
+                if streaming == True:
+                    streaming = False
+                    streamThread.join()
         def colors(data):
             filter.setColors(data)
         server.addListener('key', keys)
@@ -63,6 +90,7 @@ def main():
         server.addListener('colors', colors)
         server.addListener('captureFilter', captureFilter)
         server.addListener('captureFilterStream', captureFilterStream)
+        server.addListener('stream', stream)
         global running
         running = True
         def stop():

@@ -219,7 +219,7 @@ setInterval(function() {
 document.getElementById('captureButton').onclick = function(e) {
     send('capture', {});
 };
-streaming = false;
+var streaming = false;
 document.getElementById('captureStreamButton').onclick = function(e) {
     streaming = !streaming;
     send('captureStream', {state: streaming});
@@ -260,7 +260,7 @@ document.getElementById('captureFilterButton').onclick = function(e) {
     }
     send('captureFilter', arr);
 };
-filterstreaming = false;
+var filterstreaming = false;
 document.getElementById('captureFilterStreamButton').onclick = function(e) {
     arr = [];
     for (var i in sliders) {
@@ -292,6 +292,20 @@ function setColors(colors) {
     send('colors', arr);
 };
 addListener('colors', setColors);
+
+// non capture stream
+var streaming = false;
+document.getElementById('streamButton').onclick = function(e) {
+    streaming = !streaming;
+    send('stream', {state: streaming});
+    if (streaming) {
+        document.getElementById('streamButton').innerText = 'STOP STREAM';
+        document.getElementById('streamButton').style.backgroundColor = 'lightcoral';
+    } else {
+        document.getElementById('streamButton').innerText = 'START STREAM';
+        document.getElementById('streamButton').style.backgroundColor = 'lightgreen';
+    }
+};
 
 // bad coding practices
 var initcolors = [
