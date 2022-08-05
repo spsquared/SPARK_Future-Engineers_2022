@@ -1,6 +1,9 @@
 socket = new WebSocket('ws://192.168.1.151:4040');
 
 const log = document.getElementById('eventLogBody');
+var ctx = canvas.getContext("2d")
+ctx.canvas.width = 272;
+ctx.canvas.height = 154;
 var connected = false;
 function send(event, data) {
     if (connected) {
@@ -32,7 +35,8 @@ socket.onmessage = function(e) {
             addCapture(data);
             break;
         case 'blobs':
-            addCapture(data);
+            drawBlob(data[0]);
+            drawBlob(data[1]);
             break;
         case 'colors':
             setColors(data);
@@ -340,6 +344,20 @@ function addCapture(img) {
     index = 0;
     displayImg.src = recentCaptures[index];
     console.log(recentCaptures[index])
+};
+function drawBlob(blob,blobColor){
+    if(!blob){
+        return;
+    }
+    ctx.beginPath();
+    if(blobColor === 0){
+        ctx.strokeColor("f00")
+    }
+    else{
+        ctx.strokeColor("0f0")
+    }
+    ctx.arc(blob.pt.x,blob.pt.y,blob.size, 0, 2 * Math.PI);
+    ctx.stroke();
 };
 async function displayBack() {
     index = Math.min(index+1, recentCaptures.length-1);
