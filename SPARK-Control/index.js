@@ -332,16 +332,25 @@ for (var i in sliders) {
 
 // capture display
 var recentCaptures = [];
+var recentBlobs = [];
 var index = 0;
 const displayImg = document.getElementById('displayImg');
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext("2d");
+ctx.canvas.width = 272;
+ctx.canvas.height = 154;
 const FPS = document.getElementById('fps');
 var fpsTimes = [];
 function addCapture(img) {
     recentCaptures.unshift('data:image/png;base64,' + img);
-    if (recentCaptures.length > 10) recentCaptures.pop();
+    recentBlobs.unshift(null);
+    if (recentCaptures.length > 50) {
+        recentCaptures.pop();
+        recentBlobs.pop();
+    }
     index = 0;
     displayImg.src = recentCaptures[index];
-    
+
     var now = performance.now();
     while(fpsTimes.length > 0 && fpsTimes[0] <= now - 1000){
         fpsTimes.shift();
@@ -349,20 +358,12 @@ function addCapture(img) {
     fpsTimes.push(now);
     FPS.innerHTML = 'FPS: ' + fpsTimes.length;
 };
-async function displayBack() {
-    index = Math.min(index+1, recentCaptures.length-1);
-    if (recentCaptures[index]) displayImg.src = recentCaptures[index];
-};
-async function displayFront() {
-    index = Math.max(index-1, 0);
-    if (recentCaptures[index]) displayImg.src = recentCaptures[index];
-};
-
-// blobs
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext("2d");
-ctx.canvas.width = 272;
-ctx.canvas.height = 154;
+function drawBlobs(data) {
+    recentBlobs[index] = data;
+    ctx.clearRect(0,0,272,154);
+    drawBlob(recentBlobs[index][0],0);
+    drawBlob(recentBlobs[index][1],1);
+}
 function drawBlob(blob,blobColor){
     if(!blob){
         return;
@@ -380,12 +381,20 @@ function drawBlob(blob,blobColor){
     ctx.fill();
     ctx.stroke();
 };
+async function displayBack() {
+    index = Math.min(index+1, recentCaptures.length-1);
+    if (recentCaptures[index]) displayImg.src = recentCaptures[index];
+    if (recentBlobs[index]) drawBlobs(recentBlobs[index]);
+};
+async function displayFront() {
+    index = Math.max(index-1, 0);
+    if (recentCaptures[index]) displayImg.src = recentCaptures[index];
+    if (recentBlobs[index]) drawBlobs(recentBlobs[index]);
+};
 addListener('capture', addCapture);
-addListener('blobs', function(data) {
-    ctx.clearRect(0,0,272,154)
-    drawBlob(data[0],0);
-    drawBlob(data[1],1);
-});
+addListener('blobs', drawBlobs);
+
+// blobs
 
 // stop
 document.getElementById('emergencyStop').onclick = function() {
