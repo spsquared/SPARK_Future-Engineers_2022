@@ -373,7 +373,14 @@ function drawBlob(blob,blobColor){
     ctx.stroke();
 };
 addListener('capture', addCapture);
+blobFpsTimes = [];
 addListener('blobs', function(data) {
+    var now = performance.now();
+    while(blobFpsTimes.length > 0 && blobFpsTimes[0] <= now - 1000){
+        blobFpsTimes.shift();
+    }
+    blobFpsTimes.push(now);
+    blobFpsDisplay.innerHTML = 'FPS: ' + blobFpsTimes.length;
     ctx.clearRect(0,0,272,154)
     drawBlob(data[0],0);
     drawBlob(data[1],1);
