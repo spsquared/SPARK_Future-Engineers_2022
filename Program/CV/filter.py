@@ -139,7 +139,7 @@ def predict(imgIn: numpy.ndarray, server = None):
                     return -50
             else:
                 return -50
-        if wallHeightLeft > 25:
+        if wallHeightLeft > 23:
             if len(gKps) != 0:
                 if wallHeightLeft > 30:
                     return 50
