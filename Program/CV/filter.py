@@ -1,6 +1,7 @@
 from IO import io
 import numpy
 import cv2
+import base64
 import statistics
 
 # preprocessing filter module with cv prediction
@@ -26,8 +27,9 @@ def filter(imgIn: numpy.ndarray):
         print(err)
         io.error()
 
+lastSend = 0
 def predict(imgIn: numpy.ndarray, server = None):
-    global redMax, redMin, greenMax, greenMin, wallMax, wallMin
+    global redMax, redMin, greenMax, greenMin, wallMax, wallMin, lastSend
     try:
         params = cv2.SimpleBlobDetector_Params()
         # params.filterByColor = True
@@ -112,14 +114,19 @@ def predict(imgIn: numpy.ndarray, server = None):
                 elif bgKps.size < gKps[i].size:
                     bgKps = gKps[i]
         if server != None:
-            if brKps != 0 and bgKps != 0:
-                server.broadcast('blobs',[[brKps.pt[0],brKps.pt[1],brKps.size],[bgKps.pt[0],bgKps.pt[1],bgKps.size]])
-            elif brKps != 0:
-                server.broadcast('blobs',[[brKps.pt[0],brKps.pt[1],brKps.size],0])
-            elif bgKps != 0:
-                server.broadcast('blobs',[0,[bgKps.pt[0],bgKps.pt[1],bgKps.size]])
-            else:
-                server.broadcast('blobs',[0,0])
+            lastSend += 1
+            if (lastSend > 3):
+                lastSend = 0
+                if brKps != 0 and bgKps != 0:
+                    server.broadcast('blobs',[[brKps.pt[0],brKps.pt[1],brKps.size],[bgKps.pt[0],bgKps.pt[1],bgKps.size]])
+                elif brKps != 0:
+                    server.broadcast('blobs',[[brKps.pt[0],brKps.pt[1],brKps.size],0])
+                elif bgKps != 0:
+                    server.broadcast('blobs',[0,[bgKps.pt[0],bgKps.pt[1],bgKps.size]])
+                else:
+                    server.broadcast('blobs',[0,0])
+            encoded = base64.b64encode(cv2.imencode('.png', blurredImg)[1]).decode()
+            server.broadcast('capture', encoded)
         blobSizeRequirement = 25
         if brKps != 0:
             if bgKps != 0:
