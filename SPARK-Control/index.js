@@ -1,10 +1,14 @@
 socket = new WebSocket('ws://192.168.1.151:4040');
 
 const log = document.getElementById('eventLogBody');
+const callbacks = [];
 var ctx = canvas.getContext("2d")
 ctx.canvas.width = 272;
 ctx.canvas.height = 154;
 var connected = false;
+function addListener(event, cb) {
+    callbacks[event] = cb;
+};
 function send(event, data) {
     if (connected) {
         socket.send(JSON.stringify({
@@ -13,36 +17,12 @@ function send(event, data) {
         }));
     }
 };
-function appendLog(text, color) {
-    const div = document.createElement('div');
-    div.classList.add('logBlock');
-    div.innerHTML = text;
-    div.style.backgroundColor = color ?? '';
-    var scroll = false;
-    if (log.scrollTop + log.clientHeight >= log.scrollHeight - 5) scroll = true;
-    log.appendChild(div);
-    if (scroll) log.scrollTop = log.scrollHeight;
-};
 socket.onmessage = function(e) {
-    var event = JSON.parse(e.data).event;
-    var data = JSON.parse(e.data).data;
-    switch (event) {
-        case 'message':
-            playSound();
-            appendLog(data);
-            break;
-        case 'capture':
-            addCapture(data);
-            break;
-        case 'blobs':
-            ctx.clearRect(0,0,272,154)
-            drawBlob(data[0],0);
-            drawBlob(data[1],1);
-            break;
-        case 'colors':
-            setColors(data);
-            break;
-        
+    var json = JSON.parse(e.data);
+    for (var i in callbacks) {
+        if (i == json.event) {
+            callbacks[i](json.data);
+        }
     }
 };
 socket.onopen = function() {
@@ -61,6 +41,8 @@ socket.onclose = function() {
         socket = newsocket;
     }, 10000);
 };
+
+// messages
 var pendingsounds = [];
 var first = true;
 async function playSound() {
@@ -85,6 +67,20 @@ async function playSound() {
         pendingsounds.push(ping);
     });
 };
+function appendLog(text, color) {
+    const div = document.createElement('div');
+    div.classList.add('logBlock');
+    div.innerHTML = text;
+    div.style.backgroundColor = color ?? '';
+    var scroll = false;
+    if (log.scrollTop + log.clientHeight >= log.scrollHeight - 5) scroll = true;
+    log.appendChild(div);
+    if (scroll) log.scrollTop = log.scrollHeight;
+};
+addListener('message', function(data) {
+    playSound();
+    appendLog(data);
+});
 
 // keys
 document.onkeydown = function(e) {
@@ -298,6 +294,8 @@ function setColors(colors) {
     }
     send('colors', arr);
 };
+addListener('colors', setColors);
+
 // bad coding practices
 var initcolors = [
     [
@@ -346,6 +344,14 @@ function addCapture(img) {
     displayImg.src = recentCaptures[index];
     console.log(recentCaptures[index])
 };
+async function displayBack() {
+    index = Math.min(index+1, recentCaptures.length-1);
+    if (recentCaptures[index]) displayImg.src = recentCaptures[index];
+};
+async function displayFront() {
+    index = Math.max(index-1, 0);
+    if (recentCaptures[index]) displayImg.src = recentCaptures[index];
+};
 function drawBlob(blob,blobColor){
     if(!blob){
         return;
@@ -360,14 +366,12 @@ function drawBlob(blob,blobColor){
     ctx.arc(blob[0],blob[1],blob[2], 0, 2 * Math.PI);
     ctx.stroke();
 };
-async function displayBack() {
-    index = Math.min(index+1, recentCaptures.length-1);
-    if (recentCaptures[index]) displayImg.src = recentCaptures[index];
-};
-async function displayFront() {
-    index = Math.max(index-1, 0);
-    if (recentCaptures[index]) displayImg.src = recentCaptures[index];
-};
+addListener('capture', addCapture);
+addListener('blobs', function(data) {
+    ctx.clearRect(0,0,272,154)
+    drawBlob(data[0],0);
+    drawBlob(data[1],1);
+});
 
 // errors
 window.onerror = function(err) {
