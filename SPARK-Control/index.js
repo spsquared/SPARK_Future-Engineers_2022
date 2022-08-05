@@ -336,7 +336,7 @@ var index = 0;
 const displayImg = document.getElementById('displayImg');
 function addCapture(img) {
     recentCaptures.unshift('data:image/png;base64,' + img);
-    if (recentCaptures.length > 10) recentCaptures.pop();
+    if (recentCaptures.length > 50) recentCaptures.pop();
     index = 0;
     displayImg.src = recentCaptures[index];
     console.log(recentCaptures[index])

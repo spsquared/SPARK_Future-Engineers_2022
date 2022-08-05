@@ -101,14 +101,14 @@ def predict(imgIn: numpy.ndarray, server = None):
         #     # cv2.imwrite("f.png",blobs)
         brKps = 0
         for i in range(len(rKps)):
-            if 131 < rKps[i].pt[0] * 5 / 12 + rKps[i].pt[1] + rKps[i].size:
+            if 131 < rKps[i].pt[0] * 12 / 5 + rKps[i].pt[1] - rKps[i].size:
                 if brKps == 0:
                     brKps = rKps[i]
                 elif brKps.size < rKps[i].size:
                     brKps = rKps[i]
         bgKps = 0
         for i in range(len(gKps)):
-            if 131 < (274 - gKps[i].pt[0]) * 5 / 12 + gKps[i].pt[1] + gKps[i].size:
+            if 131 < (274 - gKps[i].pt[0]) * 12 / 5 + gKps[i].pt[1] - gKps[i].size:
                 if bgKps == 0:
                     bgKps = gKps[i]
                 elif bgKps.size < gKps[i].size:
@@ -138,20 +138,20 @@ def predict(imgIn: numpy.ndarray, server = None):
                 return 100
         elif bgKps != 0 and bgKps.size > blobSizeRequirement:
             return -100
-        if wallHeightCenter > 26:
+        if wallHeightCenter > 23 and wallHeightRight > 23:
             return -100
         if wallHeightRight > 30:
-            if len(rKps) != 0:
+            if brKps != 0:
                 if wallHeightRight > 45:
                     return -50
             else:
                 return -50
         if wallHeightLeft > 23:
-            if len(gKps) != 0:
-                if wallHeightLeft > 30:
-                    return 50
-            else:
-                return 50
+            # if bgKps != 0:
+            #     if wallHeightLeft > 30:
+            #         return 50
+            # else:
+            return 100
         return 0
     except Exception as err:
         print(err)
