@@ -90,8 +90,14 @@ def startSaveStream(filter = None, server = None, drive = None):
                     if filter != None:
                         filteredImg = filter.filter(currentImage)
                         cv2.imwrite('filtered_out/' + name + '.png', filteredImg)
+                        if server != None:
+                            encoded = base64.b64encode(cv2.imencode('.png', filteredImg)[1]).decode()
+                            server.broadcast('capture', encoded)
                     else:
                         cv2.imwrite('image_out/' + name + '.png', currentImage)
+                        if server != None:
+                            encoded = base64.b64encode(cv2.imencode('.png', currentImage)[1]).decode()
+                            server.broadcast('capture', encoded)
                     totalCaptured += 1
                     if saveFd != None:
                         saveFd.write(name + ' ' + str(drive.currentSteering()) + '\n')
