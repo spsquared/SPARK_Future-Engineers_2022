@@ -101,14 +101,14 @@ def predict(imgIn: numpy.ndarray, server = None):
         #     # cv2.imwrite("f.png",blobs)
         brKps = 0
         for i in range(len(rKps)):
-            if 131 < rKps[i].pt[0] * 5 / 12 + rKps[i].pt[1] + rKps[i].size * 2:
+            if 131 < rKps[i].pt[0] * 5 / 12 + rKps[i].pt[1] + rKps[i].size:
                 if brKps == 0:
                     brKps = rKps[i]
                 elif brKps.size < rKps[i].size:
                     brKps = rKps[i]
         bgKps = 0
         for i in range(len(gKps)):
-            if 131 < (274 - gKps[i].pt[0]) * 5 / 12 + gKps[i].pt[1] + gKps[i].size * 2:
+            if 131 < (274 - gKps[i].pt[0]) * 5 / 12 + gKps[i].pt[1] + gKps[i].size:
                 if bgKps == 0:
                     bgKps = gKps[i]
                 elif bgKps.size < gKps[i].size:
