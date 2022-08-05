@@ -386,6 +386,11 @@ addListener('blobs', function(data) {
     drawBlob(data[1],1);
 });
 
+// stop
+document.getElementById('emergencyStop').onclick = function() {
+    send('stop', {});
+};
+
 // errors
 window.onerror = function(err) {
     appendLog(err, 'red')
