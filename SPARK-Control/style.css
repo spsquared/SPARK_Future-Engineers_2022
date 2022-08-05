@@ -238,10 +238,13 @@ div {
     padding: 0px 0px;
 }
 
-#filterDisplay {
+#canvas {
     position: absolute;
-    bottom: 16px;
-    left: 450px;
-    width: 660px;
-    height: 312px;
+    bottom: 0px;
+    left: 56px;
+    width: 544px;
+    height: 308px;
+    border: 2px solid black;
+    padding: 0px 0px;
+    pointer-events: none;
 }

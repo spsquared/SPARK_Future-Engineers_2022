@@ -35,8 +35,9 @@ socket.onmessage = function(e) {
             addCapture(data);
             break;
         case 'blobs':
-            drawBlob(data[0]);
-            drawBlob(data[1]);
+            ctx.clearRect(0,0,272,154)
+            drawBlob(data[0],0);
+            drawBlob(data[1],1);
             break;
         case 'colors':
             setColors(data);
@@ -351,12 +352,12 @@ function drawBlob(blob,blobColor){
     }
     ctx.beginPath();
     if(blobColor === 0){
-        ctx.strokeColor("f00")
+        ctx.strokeStyle = "#f00"
     }
     else{
-        ctx.strokeColor("0f0")
+        ctx.strokeStyle = "#0f0"
     }
-    ctx.arc(blob.pt.x,blob.pt.y,blob.size, 0, 2 * Math.PI);
+    ctx.arc(blob[0],blob[1],blob[2], 0, 2 * Math.PI);
     ctx.stroke();
 };
 async function displayBack() {

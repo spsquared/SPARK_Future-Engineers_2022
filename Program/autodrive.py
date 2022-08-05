@@ -2,6 +2,7 @@ from IO import io
 io.setup()
 from IO import drive
 from IO import camera
+from Util import server
 from CV import filter
 import time
 
@@ -13,7 +14,7 @@ def main():
         drive.throttle(90)
         while True:
             image = camera.read()
-            prediction = filter.predict(image)
+            prediction = filter.predict(image,server)
             drive.steer(prediction)
             print("Current Prediction: " + str(prediction))
         #code here

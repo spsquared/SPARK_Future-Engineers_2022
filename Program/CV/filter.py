@@ -49,11 +49,12 @@ def predict(imgIn: numpy.ndarray, server = None):
         blurredImg = cv2.medianBlur(rawImg, 5)
         blurredImg = cv2.medianBlur(blurredImg, 5)
         wImg, gImg, rImg = cv2.split(blurredImg)
+        rImg = cv2.copyMakeBorder(rImg,1,1,1,1, cv2.BORDER_CONSTANT, value=[0,0,0])
+        gImg = cv2.copyMakeBorder(gImg,1,1,1,1, cv2.BORDER_CONSTANT, value=[0,0,0])
         blobs.empty()
         rKps = blobs.detect(255 - rImg)
         blobs.empty()
         gKps = blobs.detect(255 - gImg)
-        blobs.empty()
         croppedWImgLeft = wImg[45:100,20:35]
         croppedWImgCenter = wImg[45:100,130:143]
         croppedWImgRight = wImg[45:100,237:252]
@@ -105,13 +106,20 @@ def predict(imgIn: numpy.ndarray, server = None):
                     brKps = rKps[i]
         bgKps = 0
         for i in range(len(gKps)):
-            if 131 < (272 - gKps[i].pt[0]) * 5 / 12 + gKps[i].pt[1] + gKps[i].size * 2:
+            if 131 < (274 - gKps[i].pt[0]) * 5 / 12 + gKps[i].pt[1] + gKps[i].size * 2:
                 if bgKps == 0:
                     bgKps = gKps[i]
                 elif bgKps.size < gKps[i].size:
                     bgKps = gKps[i]
         if server != None:
-            server.broadcast('blobs', [brKps,bgKps])
+            if brKps != 0 and bgKps != 0:
+                server.broadcast('blobs',[[brKps.pt[0],brKps.pt[1],brKps.size],[bgKps.pt[0],bgKps.pt[1],bgKps.size]])
+            elif brKps != 0:
+                server.broadcast('blobs',[[brKps.pt[0],brKps.pt[1],brKps.size],0])
+            elif bgKps != 0:
+                server.broadcast('blobs',[0,[bgKps.pt[0],bgKps.pt[1],bgKps.size]])
+            else:
+                server.broadcast('blobs',[0,0])
         blobSizeRequirement = 25
         if brKps != 0:
             if bgKps != 0:
@@ -126,14 +134,14 @@ def predict(imgIn: numpy.ndarray, server = None):
         if wallHeightCenter > 26:
             return -100
         if wallHeightRight > 30:
-            if len(rKps) == 0:
+            if len(rKps) != 0:
                 if wallHeightRight > 45:
                     return -50
             else:
                 return -50
         if wallHeightLeft > 25:
-            if len(gKps) == 0:
-                if wallHeightLeft > 40:
+            if len(gKps) != 0:
+                if wallHeightLeft > 30:
                     return 50
             else:
                 return 50
