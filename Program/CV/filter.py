@@ -122,7 +122,6 @@ def predict(imgIn: numpy.ndarray, server = None):
                     server.broadcast('blobs',[0,[bgKps.pt[0],bgKps.pt[1],bgKps.size]])
                 else:
                     server.broadcast('blobs',[0,0])
-        
         steeringArray = [0]
         blobSizeRequirement = 20
         if brKps != 0:
@@ -146,7 +145,11 @@ def predict(imgIn: numpy.ndarray, server = None):
         steeringMax = max(steeringArray)
         steeringMin = min(steeringArray)
         if steeringMax > abs(steeringMin):
+            if server != None:
+                server.broadcast('strPredict', steeringMax)
             return steeringMax
+        if server != None:
+            server.broadcast('strPredict', steeringMin)
         return steeringMin
     except Exception as err:
         print(err)

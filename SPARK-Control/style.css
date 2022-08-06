@@ -4,6 +4,9 @@ body {
 div {
     font-family: sans-serif;
 }
+img {
+    -webkit-user-drag: none;
+}
 
 #banner1 {
     position: absolute;
@@ -269,6 +272,11 @@ div {
     font: 28px sans-serif white;
     color: white;
     background-color: #0005;
+}
+#strPredict {
+    position: absolute;
+    top: -20px;
+    left: 64px;
 }
 
 #emergencyStop {
