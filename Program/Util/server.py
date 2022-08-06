@@ -53,6 +53,7 @@ async def __server(websocket, path):
         async def send():
             global sendlist, running
             # send events
+            connected = True
             while connected and running:
                 if len(sendlist[index]) > 0:
                     data = sendlist[index][0]
@@ -72,16 +73,6 @@ async def __server(websocket, path):
                         io.error()
                 else:
                     time.sleep(0.1)
-        # def send2():
-        #     # middle function that allows async functions running in separate thread
-        #     loop = asyncio.new_event_loop()
-        #     asyncio.set_event_loop(loop)
-        #     loop.run_until_complete(send())
-        #     loop.close()
-        # sendThread = Thread(target = send2)
-        # sendThread.start()
-        # await recieve()
-        # sendThread.join()
         threadLoop.create_task(asyncio.gather(asyncio.ensure_future(send()), asyncio.ensure_future(recieve())))
     except websockets.exceptions.ConnectionClosedOK:
         connected = False
