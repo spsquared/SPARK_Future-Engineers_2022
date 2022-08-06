@@ -13,7 +13,7 @@ def main():
         drive.start()
         camera.start()
         time.sleep(1)
-        def stop():
+        def stop(data):
             global running
             running = False
             camera.stop()
