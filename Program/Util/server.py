@@ -72,7 +72,7 @@ async def __server(websocket, path):
         # sendThread.join()
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        loop.run_until_complete(asyncio.gather(send(), recieve()))
+        loop.run_until_complete(asyncio.gather(asyncio.ensure_future(send()), asyncio.ensure_future(recieve())))
         loop.close()
     except websockets.exceptions.ConnectionClosedOK:
         connected = False
