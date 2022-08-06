@@ -40,6 +40,42 @@ async def __server(websocket, path):
     index = len(sendlist)
     sendlist.append([])
     connected = True
+    connected = True
+    connected = True
+    connected = True
+    connected = True
+    connected = True
+    connected = True
+    connected = True
+    connected = True
+    connected = True
+    connected = True
+    connected = True
+    connected = True
+    connected = True
+    connected = True
+    connected = True
+    connected = True
+    connected = True
+    connected = True
+    connected = True
+    connected = True
+    connected = True
+    connected = True
+    connected = True
+    connected = True
+    connected = True
+    connected = True
+    connected = True
+    connected = True
+    connected = True
+    connected = True
+    connected = True
+    connected = True
+    connected = True
+    connected = True
+    connected = True
+    connected = True
     try:
         async def recieve():
             global callbacks, running
