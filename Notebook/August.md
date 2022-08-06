@@ -12,3 +12,13 @@ Today we fixed some bugs and added a live video stream from the car. The blob de
 In other news, we orded a wide-angle camera, and it arrived today. A new mount was 3D-printed to accomodate the larger lens (huge in comparison to the narrow-frame IMX219).
 
 ![new camera mount](./August/8-4-22-a.png)
+
+# 8/5/22
+We attempted to switch to the wide-angle camera, but the edges of the image are tinted pink. So, we can't use it.
+
+![pink fringing on camera](./August/8-5-22-a.png)
+
+In other news...
+The car now drives exceptionally well.
+
+We changed the steering values from an absolute return value to a weighted value; the steering values are scaled by size (which is correlated to distance) from the car. When the car is further away from something, it has less incentive to turn. Turn values are calculated individually for the red signals, green signals, left wall, and right wall. The program determines the final steering value by choosing the steering value that has the largest absolute value. This reduces the chances that the car overcorrects and ends up turning so far it can't recover before hitting a wall, and also prevents premature and most unneccesary turns.
