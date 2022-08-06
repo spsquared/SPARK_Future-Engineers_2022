@@ -14,6 +14,9 @@ gm = greenMin = (70, 90, 30)
 wM = wallMax = (90, 80, 70)
 wm = wallMin = (20, 20, 20)
 
+rightOnRed = True
+counterClockwise = True
+
 def filter(imgIn: numpy.ndarray):
     global redMax, redMin, greenMax, greenMin, wallMax, wallMin
     try:
@@ -53,10 +56,16 @@ def predict(imgIn: numpy.ndarray, server = None):
         rImg = cv2.copyMakeBorder(rImg,1,1,1,1, cv2.BORDER_CONSTANT, value=[0,0,0])
         gImg = cv2.copyMakeBorder(gImg,1,1,1,1, cv2.BORDER_CONSTANT, value=[0,0,0])
 
-        blobs.empty()
-        rKps = blobs.detect(255 - rImg)
-        blobs.empty()
-        gKps = blobs.detect(255 - gImg)
+        if rightOnRed == True:
+            blobs.empty()
+            rKps = blobs.detect(255 - rImg)
+            blobs.empty()
+            gKps = blobs.detect(255 - gImg)
+        else:
+            blobs.empty()
+            rKps = blobs.detect(255 - gImg)
+            blobs.empty()
+            gKps = blobs.detect(255 - rImg)
 
         croppedWImgLeft = wImg[45:100,20:35]
         croppedWImgCenter = wImg[45:100,130:143]
@@ -136,7 +145,10 @@ def predict(imgIn: numpy.ndarray, server = None):
             steeringArray.append(-bgKps.size ** 3 * 0.001)
         
         if wallHeightCenter > 27 and wallHeightRight > 27:
-            steeringArray.append(-(wallHeightCenter + wallHeightRight) ** 2 * 0.025)
+            if counterClockwise == True:
+                steeringArray.append(-(wallHeightCenter + wallHeightRight) ** 2 * 0.025)
+            else:
+                steeringArray.append((wallHeightCenter + wallHeightRight) ** 2 * 0.025)
         elif wallHeightRight > 50:
             steeringArray.append(-wallHeightRight ** 2 * 0.015)
         elif wallHeightLeft > 50:
