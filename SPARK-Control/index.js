@@ -311,7 +311,7 @@ document.getElementById('streamButton').onclick = function(e) {
 // bad coding practices
 var initcolors = [
     [
-        190, 80, 80,
+        190, 80, 90,
         95, 40, 35
     ],
     [

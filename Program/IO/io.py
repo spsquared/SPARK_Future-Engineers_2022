@@ -14,6 +14,7 @@ def setup():
         if fd.read() == '1':
             print('ERROR: SETUP HAS DETECTED THAT SETUP IS CURRENTLY RUNNING. PLEASE CLOSE SETUP TO CONTINUE')
             error()
+            exit(1)
         fd.write('1')
         fd.close()
         GPIO.setwarnings(False)
