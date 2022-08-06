@@ -124,26 +124,24 @@ def predict(imgIn: numpy.ndarray, server = None):
                     server.broadcast('blobs',[0,0])
         
         steeringArray = [0]
-        blobSizeRequirement = 1
+        blobSizeRequirement = 20
         if brKps != 0:
             if bgKps != 0:
                 if brKps.size > bgKps.size and brKps.size > blobSizeRequirement:
-                    steeringArray.append(brKps.size ** 2 * 0.3)
+                    steeringArray.append(brKps.size ** 3 * 0.005)
                 elif bgKps.size > blobSizeRequirement:
-                    steeringArray.append(-bgKps.size ** 2 * 0.3)
+                    steeringArray.append(-bgKps.size ** 3 * 0.005)
             elif brKps.size > blobSizeRequirement:
-                steeringArray.append(brKps.size ** 2 * 0.3)
+                steeringArray.append(brKps.size ** 3 * 0.005)
         elif bgKps != 0 and bgKps.size > blobSizeRequirement:
-            steeringArray.append(-bgKps.size ** 2 * 0.3)
+            steeringArray.append(-bgKps.size ** 3 * 0.005)
         
-        if wallHeightCenter > 20 and wallHeightRight > 20:
-            steeringArray.append(-(wallHeightCenter + wallHeightRight) ** 2 * 0.5)
-        
-        if wallHeightRight > 20:
-            steeringArray.append(-wallHeightRight ** 2 * 0.1)
-        
-        if wallHeightLeft > 20:
-            steeringArray.append(wallHeightLeft ** 2 * 0.1)
+        if wallHeightCenter > 27 and wallHeightRight > 27:
+            steeringArray.append(-(wallHeightCenter + wallHeightRight) ** 2 * 0.025)
+        elif wallHeightRight > 30:
+            steeringArray.append(-wallHeightRight ** 2 * 0.03)
+        elif wallHeightLeft > 20:
+            steeringArray.append(wallHeightLeft ** 2 * 0.03)
         
         steeringMax = max(steeringArray)
         steeringMin = min(steeringArray)
