@@ -93,7 +93,7 @@ def main():
         server.addListener('stream', stream)
         global running
         running = True
-        def stop():
+        def stop(data):
             global running
             running = False
             server.close()
