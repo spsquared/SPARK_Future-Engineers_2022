@@ -10,6 +10,12 @@ def setup():
     global running, thread
     if running == False:
         running = True
+        fd = open('./lock.txt', 'w+')
+        if fd.read() == '1':
+            print('ERROR: SETUP HAS DETECTED THAT SETUP IS CURRENTLY RUNNING. PLEASE CLOSE SETUP TO CONTINUE')
+            error()
+        fd.write('1')
+        fd.close()
         GPIO.setwarnings(False)
         GPIO.cleanup()
         GPIO.setmode(GPIO.BOARD)
@@ -34,6 +40,9 @@ def setup():
 def close():
     global thread, running
     if running == True:
+        fd = open('./lock.txt', 'w+')
+        fd.write('0')
+        fd.close()
         running = False
         thread.join()
         GPIO.output([11, 13], GPIO.LOW)

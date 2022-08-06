@@ -100,6 +100,7 @@ def main():
             camera.stop()
             drive.stop()
             io.close()
+            exit(0)
         server.addListener('stop', stop)
         while running:
             msg = input()
