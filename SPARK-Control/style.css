@@ -4,6 +4,9 @@ body {
 div {
     font-family: sans-serif;
 }
+img {
+    -webkit-user-drag: none;
+}
 
 #banner1 {
     position: absolute;
