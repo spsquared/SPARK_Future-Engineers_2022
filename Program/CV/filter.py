@@ -32,11 +32,6 @@ def predict(imgIn: numpy.ndarray, server = None):
     global redMax, redMin, greenMax, greenMin, wallMax, wallMin, lastSend
     try:
         params = cv2.SimpleBlobDetector_Params()
-        # params.filterByColor = True
-        # params.minThreshold = 1
-        # params.maxThreshold = 255
-        # params.filterByArea = True
-        # params.minArea = 100
         params.filterByCircularity = True
         params.minCircularity = 0
         params.filterByConvexity = True
@@ -44,22 +39,29 @@ def predict(imgIn: numpy.ndarray, server = None):
         params.filterByInertia = True
         params.minInertiaRatio = 0
         blobs = cv2.SimpleBlobDetector_create(params)
+
         rMask = cv2.inRange(imgIn, redMin, redMax)
         gMask = cv2.inRange(imgIn, greenMin, greenMax)
         wMask = cv2.inRange(imgIn, wallMin, wallMax)
+
         rawImg = cv2.merge((wMask, gMask, rMask))
         blurredImg = cv2.medianBlur(rawImg, 5)
         blurredImg = cv2.medianBlur(blurredImg, 5)
+
         wImg, gImg, rImg = cv2.split(blurredImg)
+
         rImg = cv2.copyMakeBorder(rImg,1,1,1,1, cv2.BORDER_CONSTANT, value=[0,0,0])
         gImg = cv2.copyMakeBorder(gImg,1,1,1,1, cv2.BORDER_CONSTANT, value=[0,0,0])
+
         blobs.empty()
         rKps = blobs.detect(255 - rImg)
         blobs.empty()
         gKps = blobs.detect(255 - gImg)
+
         croppedWImgLeft = wImg[45:100,20:35]
         croppedWImgCenter = wImg[45:100,130:143]
         croppedWImgRight = wImg[45:100,237:252]
+
         wallHeightsLeft = numpy.count_nonzero(croppedWImgLeft > 1,axis=0)
         wallHeights2Left = []
         for i in range(len(wallHeightsLeft)):
@@ -87,32 +89,25 @@ def predict(imgIn: numpy.ndarray, server = None):
             wallHeightRight = 0
         else:
             wallHeightRight = statistics.median(wallHeights2Right)
+        
         # -100 = turn left a lot
         # 100 = turn right a lot
-        # if len(rKps) != 0:
-        #     blank = numpy.zeros((1, 1))
-        #     blobs = cv2.drawKeypoints(rawImg, rKps, blank, (255, 0, 0),cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
 
-        #     # cv2.imwrite("f.png",blobs)
-        # if len(gKps) != 0:
-        #     blank = numpy.zeros((1, 1))
-        #     blobs = cv2.drawKeypoints(rawImg, gKps, blank, (255, 0, 0),cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
-
-        #     # cv2.imwrite("f.png",blobs)
         brKps = 0
         for i in range(len(rKps)):
-            if 131 < rKps[i].pt[0] * 12 / 5 + rKps[i].pt[1] - rKps[i].size:
-                if brKps == 0:
-                    brKps = rKps[i]
-                elif brKps.size < rKps[i].size:
-                    brKps = rKps[i]
+            # if 131 < rKps[i].pt[0] * 12 / 5 + rKps[i].pt[1] - rKps[i].size:
+            if brKps == 0:
+                brKps = rKps[i]
+            elif brKps.size < rKps[i].size:
+                brKps = rKps[i]
         bgKps = 0
         for i in range(len(gKps)):
-            if 131 < (274 - gKps[i].pt[0]) * 12 / 5 + gKps[i].pt[1] - gKps[i].size:
-                if bgKps == 0:
-                    bgKps = gKps[i]
-                elif bgKps.size < gKps[i].size:
-                    bgKps = gKps[i]
+            # if 131 < (274 - gKps[i].pt[0]) * 12 / 5 + gKps[i].pt[1] - gKps[i].size:
+            if bgKps == 0:
+                bgKps = gKps[i]
+            elif bgKps.size < gKps[i].size:
+                bgKps = gKps[i]
+        
         if server != None:
             lastSend += 1
             if (lastSend > 2):
@@ -127,32 +122,34 @@ def predict(imgIn: numpy.ndarray, server = None):
                     server.broadcast('blobs',[0,[bgKps.pt[0],bgKps.pt[1],bgKps.size]])
                 else:
                     server.broadcast('blobs',[0,0])
-        blobSizeRequirement = 25
+        
+        steeringArray = [0]
+        blobSizeRequirement = 1
         if brKps != 0:
             if bgKps != 0:
                 if brKps.size > bgKps.size and brKps.size > blobSizeRequirement:
-                    return 100
+                    steeringArray.append(brKps.size ** 2 * 0.3)
                 elif bgKps.size > blobSizeRequirement:
-                    return -100
+                    steeringArray.append(-bgKps.size ** 2 * 0.3)
             elif brKps.size > blobSizeRequirement:
-                return 100
+                steeringArray.append(brKps.size ** 2 * 0.3)
         elif bgKps != 0 and bgKps.size > blobSizeRequirement:
-            return -100
-        if wallHeightCenter > 23 and wallHeightRight > 23:
-            return -100
-        if wallHeightRight > 30:
-            if brKps != 0:
-                if wallHeightRight > 45:
-                    return -50
-            else:
-                return -50
-        if wallHeightLeft > 23:
-            # if bgKps != 0:
-            #     if wallHeightLeft > 30:
-            #         return 50
-            # else:
-            return 100
-        return 0
+            steeringArray.append(-bgKps.size ** 2 * 0.3)
+        
+        if wallHeightCenter > 20 and wallHeightRight > 20:
+            steeringArray.append(-(wallHeightCenter + wallHeightRight) ** 2 * 0.5)
+        
+        if wallHeightRight > 20:
+            steeringArray.append(-wallHeightRight ** 2 * 0.1)
+        
+        if wallHeightLeft > 20:
+            steeringArray.append(wallHeightLeft ** 2 * 0.1)
+        
+        steeringMax = max(steeringArray)
+        steeringMin = min(steeringArray)
+        if steeringMax > abs(steeringMin):
+            return steeringMax
+        return steeringMin
     except Exception as err:
         print(err)
         io.error()

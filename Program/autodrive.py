@@ -25,8 +25,9 @@ def main():
             image = camera.read()
             prediction = filter.predict(image,server)
             drive.steer(prediction)
-            print("Current Prediction: " + str(prediction))
+            # print("Current Prediction: " + str(prediction))
         #code here
+        print("stopped by emergency stop button")
     except KeyboardInterrupt:
         camera.stop()
         drive.stop()
