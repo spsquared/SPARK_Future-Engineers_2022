@@ -36,7 +36,7 @@ def close():
     return False
 
 async def __server(websocket, path):
-    global sendlist
+    global sendlist, threadLoop
     index = len(sendlist)
     sendlist.append([])
     connected = True
@@ -57,7 +57,19 @@ async def __server(websocket, path):
                 if len(sendlist[index]) > 0:
                     data = sendlist[index][0]
                     sendlist[index].pop(0)
-                    await websocket.send(data)
+                    try:
+                        await websocket.send(data)
+                    except websockets.exceptions.ConnectionClosedOK:
+                        connected = False
+                        del sendlist[index]
+                    except websockets.exceptions.ConnectionClosedError:
+                        connected = False
+                        del sendlist[index]
+                    except Exception as err:
+                        connected = False
+                        del sendlist[index]
+                        print(err)
+                        io.error()
                 else:
                     time.sleep(0.1)
         # def send2():
@@ -70,10 +82,7 @@ async def __server(websocket, path):
         # sendThread.start()
         # await recieve()
         # sendThread.join()
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        loop.run_until_complete(asyncio.gather(asyncio.ensure_future(send()), asyncio.ensure_future(recieve())))
-        loop.close()
+        threadLoop.create_task(asyncio.gather(asyncio.ensure_future(send()), asyncio.ensure_future(recieve())))
     except websockets.exceptions.ConnectionClosedOK:
         connected = False
         del sendlist[index]
