@@ -348,15 +348,16 @@ for (var i in sliders) {
 // capture display
 var recentCaptures = [];
 var recentBlobs = [];
+var recentPredictions = [];
 var index = 0;
+var fpsTimes = [];
 const displayImg = document.getElementById('displayImg');
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext("2d");
+const FPS = document.getElementById('fps');
+const strPredict = document.getElementById('strPredict');
 ctx.canvas.width = 272;
 ctx.canvas.height = 154;
-const FPS = document.getElementById('fps');
-var fpsTimes = [];
-const strPredict = document.getElementById('strPredict');
 function addCapture(img) {
     recentCaptures.unshift('data:image/png;base64,' + img);
     recentBlobs.unshift(null);
@@ -397,21 +398,25 @@ function drawBlob(blob,blobColor){
     ctx.fill();
     ctx.stroke();
 };
+function showPrediction(val) {
+    recentPredictions[index] = data;
+    strPredict.innerText = 'PredictedSteering: ' + recentPredictions[index];
+}
 async function displayBack() {
     index = Math.min(index+1, recentCaptures.length-1);
     if (recentCaptures[index]) displayImg.src = recentCaptures[index];
     if (recentBlobs[index]) drawBlobs(recentBlobs[index]);
+    if (recentPredictions[index]) strPredict.innerText = 'PredictedSteering: ' + recentPredictions[index];
 };
 async function displayFront() {
     index = Math.max(index-1, 0);
     if (recentCaptures[index]) displayImg.src = recentCaptures[index];
     if (recentBlobs[index]) drawBlobs(recentBlobs[index]);
+    if (recentPredictions[index]) strPredict.innerText = 'PredictedSteering: ' + recentPredictions[index];
 };
 addListener('capture', addCapture);
 addListener('blobs', drawBlobs);
-addListener('strPredict', function(data) {
-    strPredict.innerText = 'PredictedSteering: ' + data;
-});
+addListener('strPredict', showPrediction);
 
 // blobs
 
