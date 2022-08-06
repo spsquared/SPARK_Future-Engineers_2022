@@ -39,12 +39,13 @@ async def __server(websocket, path):
     global sendlist
     index = len(sendlist)
     sendlist.append([])
-    connected = True
     try:
         async def recieve():
-            global callbacks, running
+            global sendlist, callbacks, running
             # recieve events
-            while connected and running:
+            while running:
+                if sendlist[index] == None:
+                    break
                 json = await websocket.recv()
                 res = JSON.loads(json)
                 if res['event'] in callbacks:
@@ -53,17 +54,17 @@ async def __server(websocket, path):
         async def send():
             global sendlist, running
             # send events
-            while connected and running:
+            while running:
+                if sendlist[index] == None:
+                    break
                 if len(sendlist[index]) > 0:
                     data = sendlist[index][0]
                     del sendlist[index][0]
                     try:
                         await websocket.send(data)
                     except websockets.exceptions.ConnectionClosedOK:
-                        connected = False
                         del sendlist[index]
                     except websockets.exceptions.ConnectionClosedError:
-                        connected = False
                         del sendlist[index]
                     except RuntimeError:
                         True
@@ -80,16 +81,12 @@ async def __server(websocket, path):
         await recieve()
         sendThread.join()
     except websockets.exceptions.ConnectionClosedOK:
-        connected = False
         del sendlist[index]
     except websockets.exceptions.ConnectionClosedError:
-        connected = False
         del sendlist[index]
     except KeyboardInterrupt:
-        connected = False
         del sendlist[index]
     except Exception as err:
-        connected = False
         del sendlist[index]
         print(err)
         io.error()
