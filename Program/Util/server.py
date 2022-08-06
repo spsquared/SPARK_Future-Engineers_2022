@@ -39,13 +39,12 @@ async def __server(websocket, path):
     global sendlist
     index = len(sendlist)
     sendlist.append([])
+    connected = True
     try:
         async def recieve():
             global sendlist, callbacks, running
             # recieve events
-            while running:
-                if sendlist[index] == None:
-                    break
+            while connected and running:
                 json = await websocket.recv()
                 res = JSON.loads(json)
                 if res['event'] in callbacks:
@@ -54,39 +53,38 @@ async def __server(websocket, path):
         async def send():
             global sendlist, running
             # send events
-            while running:
-                if sendlist[index] == None:
-                    break
+            while connected and running:
                 if len(sendlist[index]) > 0:
                     data = sendlist[index][0]
-                    del sendlist[index][0]
-                    try:
-                        await websocket.send(data)
-                    except websockets.exceptions.ConnectionClosedOK:
-                        del sendlist[index]
-                    except websockets.exceptions.ConnectionClosedError:
-                        del sendlist[index]
-                    except RuntimeError:
-                        True
+                    sendlist[index].pop(0)
+                    await websocket.send(data)
                 else:
                     time.sleep(0.1)
-        def send2():
-            # middle function that allows async functions running in separate thread
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            loop.run_until_complete(send())
-            loop.close()
-        sendThread = Thread(target = send2)
-        sendThread.start()
-        await recieve()
-        sendThread.join()
+        # def send2():
+        #     # middle function that allows async functions running in separate thread
+        #     loop = asyncio.new_event_loop()
+        #     asyncio.set_event_loop(loop)
+        #     loop.run_until_complete(send())
+        #     loop.close()
+        # sendThread = Thread(target = send2)
+        # sendThread.start()
+        # await recieve()
+        # sendThread.join()
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        loop.run_until_complete(asyncio.gather(send(), recieve()))
+        loop.close()
     except websockets.exceptions.ConnectionClosedOK:
+        connected = False
         del sendlist[index]
     except websockets.exceptions.ConnectionClosedError:
+        connected = False
         del sendlist[index]
     except KeyboardInterrupt:
+        connected = False
         del sendlist[index]
     except Exception as err:
+        connected = False
         del sendlist[index]
         print(err)
         io.error()

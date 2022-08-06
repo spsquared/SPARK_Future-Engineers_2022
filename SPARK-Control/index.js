@@ -399,7 +399,7 @@ function drawBlob(blob,blobColor){
     ctx.stroke();
 };
 function showPrediction(val) {
-    recentPredictions[index] = data;
+    recentPredictions[index] = val;
     strPredict.innerText = 'PredictedSteering: ' + recentPredictions[index];
 }
 async function displayBack() {
