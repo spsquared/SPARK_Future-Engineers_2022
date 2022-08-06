@@ -57,7 +57,16 @@ async def __server(websocket, path):
                 if len(sendlist[index]) > 0:
                     data = sendlist[index][0]
                     del sendlist[index][0]
-                    await websocket.send(data)
+                    try:
+                        await websocket.send(data)
+                    except websockets.exceptions.ConnectionClosedOK:
+                        connected = False
+                        del sendlist[index]
+                    except websockets.exceptions.ConnectionClosedError:
+                        connected = False
+                        del sendlist[index]
+                    except RuntimeError:
+                        True
                 else:
                     time.sleep(0.1)
         def send2():

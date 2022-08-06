@@ -77,10 +77,12 @@ def main():
                             print(err)
                     streamThread = Thread(target = loop)
                     streamThread.start()
+                    server.broadcast('message', 'Began stream')
             else:
                 if streaming == True:
                     streaming = False
                     streamThread.join()
+                    server.broadcast('message', 'Ended stream')
         def colors(data):
             filter.setColors(data)
         server.addListener('key', keys)
