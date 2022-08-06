@@ -273,6 +273,11 @@ img {
     color: white;
     background-color: #0005;
 }
+#strPredict {
+    position: absolute;
+    top: -20px;
+    left: 64px;
+}
 
 #emergencyStop {
     position: absolute;

@@ -356,6 +356,7 @@ ctx.canvas.width = 272;
 ctx.canvas.height = 154;
 const FPS = document.getElementById('fps');
 var fpsTimes = [];
+const strPredict = document.getElementById('strPredict');
 function addCapture(img) {
     recentCaptures.unshift('data:image/png;base64,' + img);
     recentBlobs.unshift(null);
@@ -408,6 +409,9 @@ async function displayFront() {
 };
 addListener('capture', addCapture);
 addListener('blobs', drawBlobs);
+addListener('strPredict', function(data) {
+    strPredict.innerText = 'PredictedSteering: ' + data;
+});
 
 // blobs
 
