@@ -36,16 +36,30 @@ def close():
     return False
 
 async def __server(websocket, path):
-    global sendlist, threadLoop
+    global sendlist
     index = len(sendlist)
     sendlist.append([])
-    connected = True
     try:
         async def recieve():
-            global sendlist, callbacks, running
+            global callbacks, running
             # recieve events
-            while connected and running:
-                json = await websocket.recv()
+            while running:
+                try:
+                    json = await websocket.recv()
+                except websockets.exceptions.ConnectionClosedOK:
+                    print('disconnected')
+                    del sendlist[index]
+                    break
+                except websockets.exceptions.ConnectionClosedError:
+                    print('disconnected')
+                    del sendlist[index]
+                    break
+                except Exception as err:
+                    print('disconnected')
+                    del sendlist[index]
+                    print(err)
+                    io.error()
+                    break
                 res = JSON.loads(json)
                 if res['event'] in callbacks:
                     for cb in callbacks[res['event']]:
@@ -53,38 +67,31 @@ async def __server(websocket, path):
         async def send():
             global sendlist, running
             # send events
-            connected = True
-            while connected and running:
+            while running:
                 if len(sendlist[index]) > 0:
                     data = sendlist[index][0]
                     sendlist[index].pop(0)
                     try:
                         await websocket.send(data)
                     except websockets.exceptions.ConnectionClosedOK:
-                        connected = False
+                        print('disconnected')
                         del sendlist[index]
+                        break
                     except websockets.exceptions.ConnectionClosedError:
-                        connected = False
+                        print('disconnected')
                         del sendlist[index]
+                        break
                     except Exception as err:
-                        connected = False
+                        print('disconnected')
                         del sendlist[index]
                         print(err)
                         io.error()
+                        break
                 else:
                     time.sleep(0.1)
-        threadLoop.create_task(asyncio.gather(asyncio.ensure_future(send()), asyncio.ensure_future(recieve())))
-    except websockets.exceptions.ConnectionClosedOK:
-        connected = False
-        del sendlist[index]
-    except websockets.exceptions.ConnectionClosedError:
-        connected = False
-        del sendlist[index]
-    except KeyboardInterrupt:
-        connected = False
-        del sendlist[index]
+        await asyncio.gather(send(), recieve())
     except Exception as err:
-        connected = False
+        print('disconnected')
         del sendlist[index]
         print(err)
         io.error()
