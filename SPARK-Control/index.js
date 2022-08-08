@@ -15,11 +15,12 @@ function send(event, data) {
     }
 };
 socket.onmessage = function(e) {
-    console.log(e)
-    var json = JSON.parse(e.data);
-    for (var i in callbacks) {
-        if (i == json.event) {
-            callbacks[i](json.data);
+    if (e.data != 'ping') {
+        var json = JSON.parse(e.data);
+        for (var i in callbacks) {
+            if (i == json.event) {
+                callbacks[i](json.data);
+            }
         }
     }
 };

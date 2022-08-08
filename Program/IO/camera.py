@@ -1,4 +1,4 @@
-from jetcam.csi_camera import CSICamera
+# from jetcam.csi_camera import CSICamera
 import cv2
 from threading import Thread
 from IO import io
@@ -7,7 +7,8 @@ import time
 
 # camera module for capturing input data
 
-camera = CSICamera(width=272, height=154, capture_width=3264, capture_height=1848, capture_fps=28)
+# camera = CSICamera(width=272, height=154, capture_width=3264, capture_height=1848, capture_fps=28)
+camera = cv2.VideoCapture('nvarguscamerasrc sensor-id=0 ! video/x-raw(memory:NVMM), width=3264, height=1848, format=(string)NV12, framerate=(fraction)28/1 ! nvvidconv ! video/x-raw, width=(int)272, height=(int)154, format=(string)BGRx ! videoconvert ! appsink')
 running = False
 currentImage = [[[]]]
 thread = None
@@ -15,7 +16,7 @@ thread = None
 def start():
     global running, camera, thread
     if running == False:
-        camera.running = True
+        # camera.running = True
         running = True
         def __capture():
             try:
@@ -23,7 +24,7 @@ def start():
                 # update loop that constantly updates the most recent image which can be read at any time
                 while running:
                     start = time.time()
-                    currentImage = camera.value
+                    currentImage = camera.read()
                     time.sleep(max(0.0125-(time.time()-start), 0))
             except Exception as err:
                 print(err)
@@ -36,7 +37,8 @@ def stop():
     if running == True:
         running = False
         thread.join()
-        camera.running = False
+        # camera.running = False
+        camera.release()
 
 # read current image
 def read():
