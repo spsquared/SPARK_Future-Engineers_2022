@@ -12,15 +12,17 @@ def main():
     try:
         drive.start()
         camera.start()
+        camera.startSaveStream(filter, server, drive)
         time.sleep(1)
         def stop(data):
             global running
             running = False
+            camera.stopSaveStream(server)
             camera.stop()
             drive.stop()
             io.close()
         server.addListener('stop', stop)
-        drive.throttle(90)
+        drive.throttle(100)
         while running:
             image = camera.read()
             prediction = filter.predict(image,server)
@@ -29,6 +31,7 @@ def main():
         #code here
         print("stopped by emergency stop button")
     except KeyboardInterrupt:
+        camera.stopSaveStream(server)
         camera.stop()
         drive.stop()
         io.close()

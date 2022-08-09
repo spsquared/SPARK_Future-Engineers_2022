@@ -1,5 +1,6 @@
 import asyncio
 import websockets
+# import contextvars
 import json as JSON
 import typing
 from threading import Thread
@@ -36,16 +37,15 @@ def close():
     return False
 
 async def __server(websocket, path):
-    global sendlist
+    global sendlist, threadLoop
     index = len(sendlist)
     sendlist.append([])
-    connected = True
+    print('connected')
     try:
         async def recieve():
             global callbacks, running
-            nonlocal connected
             # recieve events
-            while connected and running:
+            while running:
                 json = await websocket.recv()
                 res = JSON.loads(json)
                 if res['event'] in callbacks:
@@ -53,45 +53,23 @@ async def __server(websocket, path):
                         cb(res['data'])
         async def send():
             global sendlist, running
-            nonlocal connected, index
             # send events
-            while connected and running:
+            while running:
+                await websocket.send('ping')
                 if len(sendlist[index]) > 0:
                     data = sendlist[index][0]
-                    del sendlist[index][0]
-                    try:
-                        await websocket.send(data)
-                    except websockets.exceptions.ConnectionClosedOK:
-                        connected = False
-                        del sendlist[index]
-                    except websockets.exceptions.ConnectionClosedError:
-                        connected = False
-                        del sendlist[index]
-                    except RuntimeError:
-                        True
+                    sendlist[index].pop(0)
+                    await websocket.send(data)
                 else:
                     time.sleep(0.1)
-        def send2():
-            # middle function that allows async functions running in separate thread
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            loop.run_until_complete(send())
-            loop.close()
-        sendThread = Thread(target = send2)
-        sendThread.start()
-        await recieve()
-        sendThread.join()
+        await asyncio.gather(recieve, send)
     except websockets.exceptions.ConnectionClosedOK:
-        connected = False
+        print('disconnected')
         del sendlist[index]
     except websockets.exceptions.ConnectionClosedError:
-        connected = False
-        del sendlist[index]
-    except KeyboardInterrupt:
-        connected = False
+        print('disconnected')
         del sendlist[index]
     except Exception as err:
-        connected = False
         del sendlist[index]
         print(err)
         io.error()
