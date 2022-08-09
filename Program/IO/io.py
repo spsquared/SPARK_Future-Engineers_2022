@@ -20,7 +20,7 @@ def setup():
         GPIO.setwarnings(False)
         GPIO.cleanup()
         GPIO.setmode(GPIO.BOARD)
-        GPIO.setup([11, 13], GPIO.OUT)
+        GPIO.setup([11, 13, 32, 33], GPIO.OUT)
         GPIO.output([11, 13], GPIO.LOW)
         # IO active indicator
         def blink():

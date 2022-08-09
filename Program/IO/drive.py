@@ -7,7 +7,6 @@ import time
 # drive module for controlling throttle and steering output
 
 # setup
-GPIO.setup([11, 32, 33], GPIO.OUT)
 t = GPIO.PWM(32, 200)
 s = GPIO.PWM(33, 200)
 
