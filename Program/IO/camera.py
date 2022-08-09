@@ -24,7 +24,9 @@ def start():
                 # update loop that constantly updates the most recent image which can be read at any time
                 while running:
                     start = time.time()
-                    currentImage = camera.read()
+                    re, currentImage = camera.read()
+                    if not re:
+                        raise RuntimeError('Camera read failed')
                     time.sleep(max(0.0125-(time.time()-start), 0))
             except Exception as err:
                 print(err)

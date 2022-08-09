@@ -62,7 +62,7 @@ async def __server(websocket, path):
                     await websocket.send(data)
                 else:
                     time.sleep(0.1)
-        await asyncio.gather(recieve, send)
+        await asyncio.gather(recieve(), send())
     except websockets.exceptions.ConnectionClosedOK:
         print('disconnected')
         del sendlist[index]
