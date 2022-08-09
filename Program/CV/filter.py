@@ -7,14 +7,14 @@ import statistics
 # preprocessing filter module with cv prediction
 
 # colors
-rM = redMax = (80, 90, 190)
+rM = redMax = (80, 100, 210)
 rm = redMin = (25, 35, 100)
 # rM = redMax = (90, 80, 190)
 # rm = redMin = (35, 40, 95)
-gM = greenMax = (75, 120, 60)
-gm = greenMin = (45, 85, 0)
-wM = wallMax = (90, 80, 70)
-wm = wallMin = (20, 20, 20)
+gM = greenMax = (90, 130, 60)
+gm = greenMin = (35, 65, 0)
+wM = wallMax = (95, 90, 85)
+wm = wallMin = (0, 0, 0)
 
 rightOnRed = True
 counterClockwise = True

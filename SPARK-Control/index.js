@@ -324,16 +324,16 @@ document.getElementById('filterStreamButton').onclick = function(e) {
 // bad coding practices
 var initcolors = [
     [
-        190, 90, 80,
+        210, 100, 80,
         100, 35, 25
     ],
     [
-        60, 120, 75,
-        0, 85, 45
+        60, 130, 90,
+        0, 65, 35
     ],
     [
-        70, 80, 90,
-        20, 20, 20
+        85, 90, 95,
+        0, 0, 0
     ]
 ]
 sliders[0].value = initcolors[0][0];
