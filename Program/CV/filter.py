@@ -7,7 +7,7 @@ import statistics
 # preprocessing filter module with cv prediction
 
 # colors
-rM = redMax = (65, 75, 150)
+rM = redMax = (80, 90, 190)
 rm = redMin = (25, 35, 100)
 # rM = redMax = (90, 80, 190)
 # rm = redMin = (35, 40, 95)
