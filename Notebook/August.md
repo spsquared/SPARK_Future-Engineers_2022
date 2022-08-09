@@ -22,3 +22,6 @@ In other news...
 The car now drives exceptionally well.
 
 We changed the steering values from an absolute return value to a weighted value; the steering values are scaled by size (which is correlated to distance) from the car. When the car is further away from something, it has less incentive to turn. Turn values are calculated individually for the red signals, green signals, left wall, and right wall. The program determines the final steering value by choosing the steering value that has the largest absolute value. This reduces the chances that the car overcorrects and ends up turning so far it can't recover before hitting a wall, and also prevents premature and most unneccesary turns.
+
+# 8/8/22
+Our camera broke and we got new signals. Again. The new red signals are unusually orange, leading to the filter detecting people's skin as red. We tuned the filter again and discovered some new problems. The program doesn't do any localization, so once it stops detecting something, it completely forgets it exists. We can add a simple memory system that "remembers" that it saw a signal, and will continue to act as if it is on screen for some time after it stops detecting it, preventing it from turning and running over a traffic signal as soon as it's out of view.
