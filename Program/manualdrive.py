@@ -15,7 +15,9 @@ __left = 0
 __right = 0
 running = True
 streamThread = None
+streamThread2 = None
 streaming = False
+streaming2 = False
 def main():
     global running
     try:
@@ -83,6 +85,29 @@ def main():
                     streaming = False
                     streamThread.join()
                     server.broadcast('message', 'Ended stream')
+        def filterstream(data):
+            global streamThread2, streaming2
+            if data['state'] == True:
+                if streaming2 == False:
+                    streaming2 = True
+                    def loop():
+                        global streaming2, running
+                        try:
+                            while streaming2 and running:
+                                start = time.time()
+                                encoded = base64.b64encode(cv2.imencode('.png', filter.filter(camera.read()))[1]).decode()
+                                server.broadcast('capture', encoded)
+                                time.sleep(max(0.05-(time.time()-start), 0))
+                        except Exception as err:
+                            print(err)
+                    streamThread2 = Thread(target = loop)
+                    streamThread2.start()
+                    server.broadcast('message', 'Began stream')
+            else:
+                if streaming2 == True:
+                    streaming2 = False
+                    streamThread2.join()
+                    server.broadcast('message', 'Ended stream')
         def colors(data):
             filter.setColors(data)
         server.addListener('key', keys)
@@ -93,6 +118,7 @@ def main():
         server.addListener('captureFilter', captureFilter)
         server.addListener('captureFilterStream', captureFilterStream)
         server.addListener('stream', stream)
+        server.addListener('filterstream', filterstream)
         global running
         running = True
         def stop(data):

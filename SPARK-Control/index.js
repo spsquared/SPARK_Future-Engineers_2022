@@ -295,17 +295,29 @@ function setColors(colors) {
 };
 addListener('colors', setColors);
 
-// non capture stream
-var streaming = false;
+// non capture streams
+var streaming2 = false;
+var filterstreaming2 = false;
 document.getElementById('streamButton').onclick = function(e) {
-    streaming = !streaming;
-    send('stream', {state: streaming});
-    if (streaming) {
+    streaming2 = !streaming2;
+    send('stream', {state: streaming2});
+    if (streaming2) {
         document.getElementById('streamButton').innerText = 'STOP STREAM';
         document.getElementById('streamButton').style.backgroundColor = 'lightcoral';
     } else {
         document.getElementById('streamButton').innerText = 'START STREAM';
         document.getElementById('streamButton').style.backgroundColor = 'lightgreen';
+    }
+};
+document.getElementById('filterStreamButton').onclick = function(e) {
+    filterstreaming2 = !filterstreaming2;
+    send('filterstream', {state: filterstreaming2});
+    if (filterstreaming2) {
+        document.getElementById('filterStreamButton').innerText = 'STOP FILTERED STREAM';
+        document.getElementById('filterStreamButton').style.backgroundColor = 'lightcoral';
+    } else {
+        document.getElementById('filterStreamButton').innerText = 'START FILTEREDSTREAM';
+        document.getElementById('filterStreamButton').style.backgroundColor = 'lightgreen';
     }
 };
 

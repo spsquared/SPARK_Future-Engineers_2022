@@ -99,75 +99,36 @@ img {
     width: 300px;
     align-content: center;
 }
-#captureButton {
+.largeButton {
     width: 268px;
     height: 32px;
     margin: 16px 16px;
     margin-bottom: 0px;
     font: 12px sans-serif;
     font-weight: bolder;
-    background-color: lightskyblue;
     border: 4px outset darkgray;
     cursor: pointer;
 }
-#captureButton:active {
+.largeButton:active {
     border-style: inset;
+}
+#captureButton {
+    background-color: lightskyblue;
 }
 #captureFilterButton {
-    width: 268px;
-    height: 32px;
-    margin: 16px 16px;
-    margin-bottom: 0px;
-    font: 12px sans-serif;
-    font-weight: bolder;
     background-color: gold;
-    border: 4px outset darkgray;
-    cursor: pointer;
-}
-#captureFilterButton:active {
-    border-style: inset;
 }
 #captureStreamButton {
-    width: 268px;
-    height: 32px;
-    margin: 16px 16px;
-    margin-bottom: 0px;
-    font: 12px sans-serif;
-    font-weight: bolder;
     background-color: lightgreen;
-    border: 4px outset darkgray;
-    cursor: pointer;
-}
-#captureStreamButton:active {
-    border-style: inset;
 }
 #captureFilterStreamButton {
-    width: 268px;
-    height: 32px;
-    margin: 16px 16px;
-    margin-bottom: 0px;
-    font: 12px sans-serif;
-    font-weight: bolder;
     background-color: lightgreen;
-    border: 4px outset darkgray;
-    cursor: pointer;
-}
-#captureFilterStreamButton:active {
-    border-style: inset;
 }
 #streamButton {
-    width: 268px;
-    height: 32px;
-    margin: 16px 16px;
-    margin-bottom: 0px;
-    font: 12px sans-serif;
-    font-weight: bolder;
     background-color: lightgreen;
-    border: 4px outset darkgray;
-    cursor: pointer;
 }
-#streamButton:active {
-    border-style: inset;
+#filterStreamButton {
+    background-color: lightgreen;
 }
 
 #filterAdjust {
@@ -281,8 +242,8 @@ img {
 
 #emergencyStop {
     position: absolute;
-    top: 235px;
-    right: 84px;
+    top: 0px;
+    right: 300px;
     width: 100px;
     height: 48px;
     margin: 16px 16px;
