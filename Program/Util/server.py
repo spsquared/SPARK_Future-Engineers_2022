@@ -41,10 +41,10 @@ async def __server(websocket, path):
     sendlist.append([])
     connected = True
     try:
-        async def recieve():
+        async def receive():
             global callbacks, running
             nonlocal connected
-            # recieve events
+            # receive events
             while connected and running:
                 json = await websocket.recv()
                 res = JSON.loads(json)
@@ -80,7 +80,7 @@ async def __server(websocket, path):
             threadLoop.create_task(send())
         sendThread = Thread(target = send2)
         sendThread.start()
-        await recieve()
+        await receive()
         sendThread.join()
     except websockets.exceptions.ConnectionClosedOK:
         connected = False
