@@ -36,20 +36,6 @@ def close():
         return True
     return False
 
-# jank source code since packages don't install properly on python3.10
-async def __to_thread(func):
-    global threadLoop
-    # ctx = contextvars.copy_context()
-    # func_call = __partial(ctx.run, func)
-    # func_call = __partial(func)
-    # return await threadLoop.run_in_executor(None, func_call)
-    return await threadLoop.run_in_executor(None, func)
-# def __partial(func):
-#     def newfunc():
-#         return func()
-#     newfunc.func = func
-#     return newfunc
-
 async def __server(websocket, path):
     global sendlist, threadLoop
     index = len(sendlist)
