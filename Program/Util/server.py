@@ -73,11 +73,11 @@ async def __server(websocket, path):
                     time.sleep(0.1)
         def send2():
             # middle function that allows async functions running in separate thread
-            # loop = asyncio.new_event_loop()
-            # asyncio.set_event_loop(loop)
-            # loop.run_until_complete(send())
-            # loop.close()
-            threadLoop.create_task(send())
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            loop.run_until_complete(send())
+            loop.close()
+            # threadLoop.create_task(send())
         sendThread = Thread(target = send2)
         sendThread.start()
         await receive()
