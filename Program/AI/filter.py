@@ -13,8 +13,8 @@ rm = redMin = (25, 35, 100)
 # rm = redMin = (35, 40, 95)
 gM = greenMax = (90, 130, 60)
 gm = greenMin = (35, 65, 0)
-wM = wallMax = (95, 90, 85)
-wm = wallMin = (0, 0, 0)
+wM = wallMax = (85, 85, 80)
+wm = wallMin = (15, 15, 15)
 
 rightOnRed = True
 counterClockwise = True
