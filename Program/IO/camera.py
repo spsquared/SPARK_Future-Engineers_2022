@@ -56,16 +56,20 @@ def capture(filter = None, server = None, drive = None):
                 server.broadcast('message', 'Captured (filtered) ' + name + '.png')
                 encoded = base64.b64encode(cv2.imencode('.png', filteredImg)[1]).decode()
                 server.broadcast('capture', encoded)
+            if drive != None:
+                fd = open('./filtered_out/' + name + '.txt', 'w')
+                fd.write(name + ' ' + str(drive.currentSteering()))
+                fd.close()
         else:
             cv2.imwrite('image_out/' + name + '.png', currentImage)
             if server != None:
                 server.broadcast('message', 'Captured ' + name + '.png')
                 encoded = base64.b64encode(cv2.imencode('.png', currentImage)[1]).decode()
                 server.broadcast('capture', encoded)
-        if drive != None:
-            fd = open('./steering_vals/' + name + '.txt', 'w')
-            fd.write(name + ' ' + str(drive.currentSteering()))
-            fd.close()
+            if drive != None:
+                fd = open('./image_out/' + name + '.txt', 'w')
+                fd.write(name + ' ' + str(drive.currentSteering()))
+                fd.close()
         return currentImage
     except Exception as err:
         print(err)
@@ -83,10 +87,12 @@ def startSaveStream(filter = None, server = None, drive = None):
         name = str(round(time.time()*1000))
         if filter != None:
             os.mkdir('./filtered_out/' + name)
+            if drive != None:
+                saveFd = open('./filtered_out/' + name + '/' + name + '.txt', 'a')
         else:
             os.mkdir('./image_out/' + name)
-        if drive != None:
-            saveFd = open('./steering_vals/' + name + '.txt', 'a')
+            if drive != None:
+                saveFd = open('./image_out/' + name + '/' + name + '.txt', 'a')
         def loop():
             global currentImage, streaming, saveFd, totalCaptured
             try:
