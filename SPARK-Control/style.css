@@ -169,8 +169,8 @@ img {
     position: absolute;
     bottom: 8px;
     left: 450px;
-    width: 522px;
-    height: 235px;
+    width: 660px;
+    height: 310px;
 }
 #displayBack {
     position: absolute;
@@ -210,15 +210,15 @@ img {
     position: absolute;
     bottom: 2px;
     left: 58px;
-    width: 408px;
-    height: 231px;
+    width: 544px;
+    height: 308px;
 }
 #canvas {
     position: absolute;
     bottom: 0px;
     left: 56px;
-    width: 406px;
-    height: 230px;
+    width: 542px;
+    height: 306px;
     border: 2px solid black;
     pointer-events: none;
 }
