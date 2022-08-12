@@ -1,5 +1,6 @@
 from jetcam.csi_camera import CSICamera
 import cv2
+import os
 from threading import Thread
 from IO import io
 import base64
@@ -79,29 +80,35 @@ def startSaveStream(filter = None, server = None, drive = None):
     global streamThread, saveFd, streaming
     if streaming == False:
         streaming = True
+        name = str(round(time.time()*1000))
+        if filter != None:
+            os.mkdir('./filtered_out/' + name)
+        else:
+            os.mkdir('./image_out/' + name)
         if drive != None:
-            saveFd = open('./steering_vals/' + str(round(time.time()*1000)) + '.txt', 'a')
+            saveFd = open('./steering_vals/' + name + '.txt', 'a')
         def loop():
             global currentImage, streaming, saveFd, totalCaptured
             try:
+                index = 0
                 while streaming:
                     start = time.time()
-                    name = str(round(time.time()*1000))
                     if filter != None:
                         filteredImg = filter.filter(currentImage)
-                        cv2.imwrite('filtered_out/' + name + '.png', filteredImg)
+                        cv2.imwrite('filtered_out/' + name + '/' + str(index) + '.png', filteredImg)
                         if server != None:
                             encoded = base64.b64encode(cv2.imencode('.png', filteredImg)[1]).decode()
                             server.broadcast('capture', encoded)
                     else:
-                        cv2.imwrite('image_out/' + name + '.png', currentImage)
+                        cv2.imwrite('image_out/' + name + '/' + str(index) + '.png', currentImage)
                         if server != None:
                             encoded = base64.b64encode(cv2.imencode('.png', currentImage)[1]).decode()
                             server.broadcast('capture', encoded)
                     totalCaptured += 1
                     if saveFd != None:
-                        saveFd.write(name + ' ' + str(drive.currentSteering()) + '\n')
+                        saveFd.write(str(index) + ' ' + str(drive.currentSteering()) + '\n')
                     time.sleep(max(0.1-(time.time()-start), 0))
+                    index += 1
             except Exception as err:
                 print(err)
                 saveFd.close()
