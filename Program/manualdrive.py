@@ -3,7 +3,7 @@ io.setup()
 from IO import drive
 from IO import camera
 from Util import server
-from CV import filter
+from AI import filter
 from threading import Thread
 import cv2
 import time
