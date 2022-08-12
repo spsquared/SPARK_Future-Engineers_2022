@@ -110,10 +110,10 @@ joystick.addEventListener('touchstart', function(e) {
 document.onmouseup = function(e) {
     if (grabbing) {
         grabbing = false;
-        joystickPin.style.right = '150px';
-        joystickPin.style.bottom = '150px';
-        sliderX.style.bottom = '190px';
-        sliderY.style.right = '190px';
+        joystickPin.style.right = '110px';
+        joystickPin.style.bottom = '110px';
+        sliderX.style.bottom = '140px';
+        sliderY.style.right = '140px';
         throttle = 0;
         steering = 0;
         send('joystick', {throttle: 0, steering: 0});
@@ -122,10 +122,10 @@ document.onmouseup = function(e) {
 document.addEventListener('touchend', function(e) {
     if (grabbingtouch) {
         grabbingtouch = false;
-        joystickPin.style.right = '150px';
-        joystickPin.style.bottom = '150px';
-        sliderX.style.bottom = '190px';
-        sliderY.style.right = '190px';
+        joystickPin.style.right = '110px';
+        joystickPin.style.bottom = '110px';
+        sliderX.style.bottom = '140px';
+        sliderY.style.right = '140px';
         throttle = 0;
         steering = 0;
         send('joystick', {throttle: 0, steering: 0});
@@ -134,10 +134,10 @@ document.addEventListener('touchend', function(e) {
 document.addEventListener('touchcancel', function(e) {
     if (grabbingtouch) {
         grabbingtouch = false;
-        joystickPin.style.right = '150px';
-        joystickPin.style.bottom = '150px';
-        sliderX.style.bottom = '190px';
-        sliderY.style.right = '190px';
+        joystickPin.style.right = '110px';
+        joystickPin.style.bottom = '110px';
+        sliderX.style.bottom = '140px';
+        sliderY.style.right = '140px';
         throttle = 0;
         steering = 0;
         send('joystick', {throttle: 0, steering: 0});
@@ -145,28 +145,29 @@ document.addEventListener('touchcancel', function(e) {
 }, {passive: true});
 document.onmousemove = function(e) {
     if (grabbing) {
-        var x = Math.max(-150, Math.min(e.clientX-window.innerWidth+200, 150));
-        var y = Math.max(-150, Math.min(e.clientY-window.innerHeight+200, 150));
-        throttle = Math.round(-y*2/3);
-        steering = Math.round(x*2/3);
-        joystickPin.style.bottom = 150-y + 'px';
-        joystickPin.style.right = 150-x + 'px';
-        sliderX.style.bottom = 190-y + 'px';
-        sliderY.style.right = 190-x + 'px';
+        var x = Math.max(-110, Math.min(e.clientX-window.innerWidth+150, 110));
+        var y = Math.max(-110, Math.min(e.clientY-window.innerHeight+150, 110));
+        throttle = Math.round(-y*90/99);
+        steering = Math.round(x*90/99);
+        console.log(throttle)
+        joystickPin.style.bottom = 110-y + 'px';
+        joystickPin.style.right = 110-x + 'px';
+        sliderX.style.bottom = 140-y + 'px';
+        sliderY.style.right = 140-x + 'px';
     }
 };
 document.addEventListener('touchmove', function(e) {
     if (grabbingtouch) {
         for (var i in e.touches) {
             if (joystick.contains(e.touches[i].target)) {
-                var x = Math.max(-150, Math.min(e.touches[i].clientX-window.innerWidth+200, 150));
-                var y = Math.max(-150, Math.min(e.touches[i].clientY-window.innerHeight+200, 150));
-                throttle = Math.round(-y*2/3);
-                steering = Math.round(x*2/3);
-                joystickPin.style.bottom = 150-y + 'px';
-                joystickPin.style.right = 150-x + 'px';
-                sliderX.style.bottom = 190-y + 'px';
-                sliderY.style.right = 190-x + 'px';
+                var x = Math.max(-110, Math.min(e.touches[i].clientX-window.innerWidth+150, 110));
+                var y = Math.max(-110, Math.min(e.touches[i].clientY-window.innerHeight+150, 110));
+                throttle = Math.round(-y*90/99);
+                steering = Math.round(x*90/99);
+                joystickPin.style.bottom = 110-y + 'px';
+                joystickPin.style.right = 110-x + 'px';
+                sliderX.style.bottom = 140-y + 'px';
+                sliderY.style.right = 140-x + 'px';
                 break;
             }
         }
