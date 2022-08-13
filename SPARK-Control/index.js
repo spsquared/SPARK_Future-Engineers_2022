@@ -150,8 +150,8 @@ document.onmousemove = function(e) {
         throttle = Math.round(-y*90/99);
         steering = Math.round(x*90/99);
         console.log(throttle)
-        joystickPin.style.bottom = 110-y + 'px';
-        joystickPin.style.right = 110-x + 'px';
+        joystickPin.style.bottom = 114-y + 'px';
+        joystickPin.style.right = 114-x + 'px';
         sliderX.style.bottom = 140-y + 'px';
         sliderY.style.right = 140-x + 'px';
     }
@@ -164,8 +164,8 @@ document.addEventListener('touchmove', function(e) {
                 var y = Math.max(-110, Math.min(e.touches[i].clientY-window.innerHeight+150, 110));
                 throttle = Math.round(-y*90/99);
                 steering = Math.round(x*90/99);
-                joystickPin.style.bottom = 110-y + 'px';
-                joystickPin.style.right = 110-x + 'px';
+                joystickPin.style.bottom = 114-y + 'px';
+                joystickPin.style.right = 114-x + 'px';
                 sliderX.style.bottom = 140-y + 'px';
                 sliderY.style.right = 140-x + 'px';
                 break;
@@ -199,10 +199,10 @@ function updateControllers() {
             } else if (!controller.buttons[9].pressed && pressedbuttons.indexOf(9) != -1) {
                 pressedbuttons.splice(pressedbuttons.indexOf(9), 1);
             }
-            joystickPin.style.bottom = 150-(controller.axes[1]*150) + 'px';
-            joystickPin.style.right = 150-(controller.axes[2]*150) + 'px';
-            sliderX.style.bottom = 190-(controller.axes[1]*150) + 'px';
-            sliderY.style.right = 190-(controller.axes[2]*150) + 'px';
+            joystickPin.style.bottom = 114-(controller.axes[1]*110) + 'px';
+            joystickPin.style.right = 114-(controller.axes[2]*110) + 'px';
+            sliderX.style.bottom = 140-(controller.axes[1]*110) + 'px';
+            sliderY.style.right = 140-(controller.axes[2]*110) + 'px';
             break;
         }
     }
@@ -336,7 +336,7 @@ var initcolors = [
         80, 70, 85,
         15, 15, 15
     ]
-]
+];
 sliders[0].value = initcolors[0][0];
 sliders[1].value = initcolors[1][0];
 sliders[2].value = initcolors[2][0];
@@ -360,6 +360,7 @@ for (var i in sliders) {
 }
 
 // capture display
+var maxHistory = 200;
 var recentCaptures = [];
 var recentBlobs = [];
 var recentPredictions = [];
@@ -368,6 +369,7 @@ var fpsTimes = [];
 const displayImg = document.getElementById('displayImg');
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext("2d");
+const historySlider = document.getElementById('historySlider');
 const FPS = document.getElementById('fps');
 const strPredict = document.getElementById('strPredict');
 ctx.canvas.width = 272;
@@ -375,7 +377,7 @@ ctx.canvas.height = 154;
 function addCapture(img) {
     recentCaptures.unshift('data:image/png;base64,' + img);
     recentBlobs.unshift(null);
-    if (recentCaptures.length > 50) {
+    if (recentCaptures.length > maxHistory) {
         recentCaptures.pop();
         recentBlobs.pop();
     }
@@ -390,12 +392,13 @@ function addCapture(img) {
     FPS.innerHTML = 'FPS: ' + fpsTimes.length;
 };
 function drawBlobs(data) {
+    index = 0;
     recentBlobs[index] = data;
     ctx.clearRect(0,0,272,154);
     for(var i of recentBlobs[index][1]){
         drawLightBlob(i,0);
     }
-    for(var i of recentBlobs[index][2]){
+    for(var i of recentBlobs[index][3]){
         drawLightBlob(i,1);
     }
     drawBlob(recentBlobs[index][0],0);
@@ -440,13 +443,22 @@ function showPrediction(val) {
     strPredict.innerText = 'PredictedSteering: ' + recentPredictions[index];
 }
 async function displayBack() {
+    console.log(index)
     index = Math.min(index+1, recentCaptures.length-1);
-    if (recentCaptures[index]) displayImg.src = recentCaptures[index];
-    if (recentBlobs[index]) drawBlobs(recentBlobs[index]);
-    if (recentPredictions[index]) strPredict.innerText = 'PredictedSteering: ' + recentPredictions[index];
+    historySlider.max = recentCaptures.length;
+    historySlider.value = recentCaptures.length-index;
+    displayChange();
 };
 async function displayFront() {
+    console.log(index)
     index = Math.max(index-1, 0);
+    historySlider.max = recentCaptures.length;
+    historySlider.value = recentCaptures.length-index;
+    displayChange();
+};
+function displayChange() {
+    historySlider.max = recentCaptures.length;
+    index = recentCaptures.length-historySlider.value;
     if (recentCaptures[index]) displayImg.src = recentCaptures[index];
     if (recentBlobs[index]) drawBlobs(recentBlobs[index]);
     if (recentPredictions[index]) strPredict.innerText = 'PredictedSteering: ' + recentPredictions[index];
@@ -467,8 +479,8 @@ document.getElementById('emergencyStop').onclick = function() {
 
 // errors
 window.onerror = function(err) {
-    appendLog(err, 'red')
+    appendLog(err, 'red');
 };
 document.onerror = function(err) {
-    appendLog(err, 'red')
+    appendLog(err, 'red');
 };

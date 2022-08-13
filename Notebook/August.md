@@ -25,3 +25,9 @@ We changed the steering values from an absolute return value to a weighted value
 
 # 8/8/22
 Our camera broke and we got new signals. Again. The new red signals are unusually orange, leading to the filter detecting people's skin as red. We tuned the filter again and discovered some new problems. The program doesn't do any localization, so once it stops detecting something, it completely forgets it exists. We can add a simple memory system that "remembers" that it saw a signal, and will continue to act as if it is on screen for some time after it stops detecting it, preventing it from turning and running over a traffic signal as soon as it's out of view.
+
+# 8/12/22
+Today we installed a wide-angle camera. To us, distortion is not an issue, since the size of objects will be the same as long as the distance is the same, and that's all we need. We just have to recalculate the inequalities used for predicting collisions.
+
+8/13/22
+Tuning the prediction - We added a check for whether a wall was the inner wall or outer wall. When the car drives straight towards a wall, it cannot use the slope of the wall to decide whether it is the inner or outer walls.
