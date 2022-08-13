@@ -360,7 +360,7 @@ for (var i in sliders) {
 }
 
 // capture display
-var maxHistory = 2000;
+var maxHistory = 500;
 var recentCaptures = [];
 var recentBlobs = [];
 var recentPredictions = [];
@@ -383,7 +383,7 @@ function addCapture(img) {
     }
     index = 0;
     historySlider.max = recentCaptures.length;
-    index = recentCaptures.length-historySlider.value;
+    historySlider.value = recentCaptures.length-index;
     displayImg.src = recentCaptures[index];
 
     var now = performance.now();
@@ -447,13 +447,13 @@ function showPrediction(val) {
 async function displayBack() {
     index = Math.min(index+1, recentCaptures.length-1);
     historySlider.max = recentCaptures.length;
-    historySlider.value = recentCaptures.length-index-1;
+    historySlider.value = recentCaptures.length-index;
     displayChange();
 };
 async function displayFront() {
     index = Math.max(index-1, 0);
     historySlider.max = recentCaptures.length;
-    historySlider.value = recentCaptures.length-index-1;
+    historySlider.value = recentCaptures.length-index;
     displayChange();
 };
 function displayChange() {
