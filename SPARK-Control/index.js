@@ -382,6 +382,8 @@ function addCapture(img) {
         recentBlobs.pop();
     }
     index = 0;
+    historySlider.max = recentCaptures.length;
+    index = recentCaptures.length-historySlider.value;
     displayImg.src = recentCaptures[index];
 
     var now = performance.now();
@@ -443,17 +445,15 @@ function showPrediction(val) {
     strPredict.innerText = 'PredictedSteering: ' + recentPredictions[index];
 }
 async function displayBack() {
-    console.log(index)
     index = Math.min(index+1, recentCaptures.length-1);
     historySlider.max = recentCaptures.length;
-    historySlider.value = recentCaptures.length-index;
+    historySlider.value = recentCaptures.length-index-1;
     displayChange();
 };
 async function displayFront() {
-    console.log(index)
     index = Math.max(index-1, 0);
     historySlider.max = recentCaptures.length;
-    historySlider.value = recentCaptures.length-index;
+    historySlider.value = recentCaptures.length-index-1;
     displayChange();
 };
 function displayChange() {
