@@ -393,7 +393,13 @@ function drawBlobs(data) {
     recentBlobs[index] = data;
     ctx.clearRect(0,0,272,154);
     drawBlob(recentBlobs[index][0],0);
-    drawBlob(recentBlobs[index][1],1);
+    for(var i of recentBlobs[index][1]){
+        drawLightBlob(i,0);
+    }
+    drawBlob(recentBlobs[index][2],1);
+    for(var i of recentBlobs[index][2]){
+        drawLightBlob(i,1);
+    }
 }
 function drawBlob(blob,blobColor){
     if(!blob){
@@ -407,6 +413,23 @@ function drawBlob(blob,blobColor){
     else{
         ctx.strokeStyle = "#0f0"
         ctx.fillStyle = "#0F05";
+    }
+    ctx.arc(blob[0],blob[1],blob[2], 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.stroke();
+};
+function drawLightBlob(blob,blobColor){
+    if(!blob){
+        return;
+    }
+    ctx.beginPath();
+    if(blobColor === 0){
+        ctx.strokeStyle = "#f00";
+        ctx.fillStyle = "#F001";
+    }
+    else{
+        ctx.strokeStyle = "#0f0"
+        ctx.fillStyle = "#0F01";
     }
     ctx.arc(blob[0],blob[1],blob[2], 0, 2 * Math.PI);
     ctx.fill();
