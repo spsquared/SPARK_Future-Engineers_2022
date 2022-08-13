@@ -61,8 +61,8 @@ async def __server(websocket, path):
                         data = sendlist[index][0]
                         del sendlist[index][0]
                         await websocket.send(data)
-                else:
-                    time.sleep(0.1)
+                    else:
+                        time.sleep(0.1)
             except websockets.exceptions.ConnectionClosedOK:
                 connected = False
                 del sendlist[index]
@@ -77,7 +77,7 @@ async def __server(websocket, path):
             asyncio.set_event_loop(loop)
             loop.run_until_complete(send())
             loop.close()
-            # threadLoop.create_task(send())
+            # threadLoop.create_tas                                                             k(send())
         sendThread = Thread(target = send2)
         sendThread.start()
         await receive()
