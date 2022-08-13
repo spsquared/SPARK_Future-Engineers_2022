@@ -104,10 +104,15 @@ def predict(imgIn: numpy.ndarray, server = None):
 
         dangerSize = 20
 
+        def getRedEquation(x):
+            return x * -0.315 + 121 - dangerSize
+        def getGreenEquation(x):
+            return (272 - x) * -0.315 + 121 - dangerSize
+
         brKps = 0
         for i in range(len(rKps)):
             rKps[i].size /= 2
-            if rKps[i].pt[1] + rKps[i].size > (272 - rKps[i].pt[0]) * -0.315 + 121 - dangerSize:
+            if rKps[i].pt[1] + rKps[i].size > getRedEquation(rKps[i].pt[0]):
                 if brKps == 0:
                     brKps = rKps[i]
                 elif brKps.size < rKps[i].size:
@@ -115,7 +120,7 @@ def predict(imgIn: numpy.ndarray, server = None):
         bgKps = 0
         for i in range(len(gKps)):
             gKps[i].size /= 2
-            if gKps[i].pt[1] + gKps[i].size > (gKps[i].pt[0]) * -0.315 + 121 - dangerSize:
+            if gKps[i].pt[1] + gKps[i].size > getGreenEquation(gKps[i].pt[0]):
                 if bgKps == 0:
                     bgKps = gKps[i]
                 elif bgKps.size < gKps[i].size:
@@ -142,28 +147,32 @@ def predict(imgIn: numpy.ndarray, server = None):
                 else:
                     server.broadcast('blobs',[0,arrayR,0,arrayG])
         steeringArray = [0]
-        blobSizeRequirement = 5
+        blobSizeRequirement = 10
         if brKps != 0:
             if bgKps != 0:
                 if brKps.size > bgKps.size and brKps.size > blobSizeRequirement:
-                    steeringArray.append(brKps.size ** 2 * 0.15)
+                    steeringArray.append(-(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size) * brKps.size ** 2 * 0.015)
+                    # steeringArray.append(brKps.size ** 2 * 0.2)
                 elif bgKps.size > blobSizeRequirement:
-                    steeringArray.append(-bgKps.size ** 2 * 0.15)
+                    steeringArray.append((getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size) * bgKps.size ** 2 * 0.015)
+                    # steeringArray.append(-bgKps.size ** 2 * 0.2)
             elif brKps.size > blobSizeRequirement:
-                steeringArray.append(brKps.size ** 2 * 0.15)
+                steeringArray.append(-(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size) * brKps.size ** 2 * 0.015)
+                # steeringArray.append(brKps.size ** 2 * 0.2)
         elif bgKps != 0 and bgKps.size > blobSizeRequirement:
-            steeringArray.append(-bgKps.size ** 2 * 0.15)
+            steeringArray.append((getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size) * bgKps.size ** 2 * 0.015)
+            # steeringArray.append(-bgKps.size ** 2 * 0.2)
         
-        if wallHeightCenter > 12 and wallHeightRight > 12:
-            steeringArray.append(-(wallHeightCenter + wallHeightRight) * 2)
+        if wallHeightCenter > 7 and wallHeightRight > 20:
+            steeringArray.append(-(wallHeightCenter + wallHeightRight) ** 2 * 0.03)
             # if counterClockwise == True:
             #     steeringArray.append(-(wallHeightCenter + wallHeightRight) ** 2 * 0.035)
             # else:
             #     steeringArray.append((wallHeightCenter + wallHeightRight) ** 2 * 0.035)
         elif wallHeightRight > 35:
-            steeringArray.append(-wallHeightRight ** 2 * 0.003)
+            steeringArray.append(-wallHeightRight ** 2 * 0.03)
         elif wallHeightLeft > 35:
-            steeringArray.append(wallHeightLeft ** 2 * 0.003)
+            steeringArray.append(wallHeightLeft ** 2 * 0.03)
         
         steeringMax = max(steeringArray)
         steeringMin = min(steeringArray)
