@@ -417,6 +417,10 @@ function drawBlob(blob,blobColor){
     ctx.arc(blob[0],blob[1],blob[2], 0, 2 * Math.PI);
     ctx.fill();
     ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(blob[0],blob[1],blob[2] * 2, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.stroke();
 };
 function drawLightBlob(blob,blobColor){
     if(!blob){
@@ -432,6 +436,10 @@ function drawLightBlob(blob,blobColor){
         ctx.fillStyle = "#0F01";
     }
     ctx.arc(blob[0],blob[1],blob[2], 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(blob[0],blob[1],blob[2] * 2, 0, 2 * Math.PI);
     ctx.fill();
     ctx.stroke();
 };

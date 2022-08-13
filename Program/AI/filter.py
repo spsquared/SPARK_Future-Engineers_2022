@@ -129,14 +129,20 @@ def predict(imgIn: numpy.ndarray, server = None):
                 lastSend = 0
                 encoded = base64.b64encode(cv2.imencode('.png', blurredImg)[1]).decode()
                 server.broadcast('capture', encoded)
+                arrayR = []
+                for i in range(len(rKps)):
+                    arrayR.append([rKps[i].pt[0],rKps[i].pt[1],rKps[i].size])
+                arrayG = []
+                for i in range(len(gKps)):
+                    arrayG.append([gKps[i].pt[0],gKps[i].pt[1],gKps[i].size])
                 if brKps != 0 and bgKps != 0:
-                    server.broadcast('blobs',[[brKps.pt[0],brKps.pt[1],brKps.size],rKps,[bgKps.pt[0],bgKps.pt[1],bgKps.size],gKps])
+                    server.broadcast('blobs',[[brKps.pt[0],brKps.pt[1],brKps.size],arrayR,[bgKps.pt[0],bgKps.pt[1],bgKps.size],arrayG])
                 elif brKps != 0:
-                    server.broadcast('blobs',[[brKps.pt[0],brKps.pt[1],brKps.size],rKps,0,gKps])
+                    server.broadcast('blobs',[[brKps.pt[0],brKps.pt[1],brKps.size],arrayR,0,arrayG])
                 elif bgKps != 0:
-                    server.broadcast('blobs',[0,rKps,[bgKps.pt[0],bgKps.pt[1],bgKps.size],gKps])
+                    server.broadcast('blobs',[0,arrayR,[bgKps.pt[0],bgKps.pt[1],bgKps.size],arrayG])
                 else:
-                    server.broadcast('blobs',[0,rKps,0,gKps])
+                    server.broadcast('blobs',[0,arrayR,0,arrayG])
         steeringArray = [0]
         blobSizeRequirement = 5
         if brKps != 0:
