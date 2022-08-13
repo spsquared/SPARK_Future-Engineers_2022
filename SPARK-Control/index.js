@@ -395,7 +395,7 @@ function drawBlobs(data) {
     for(var i of recentBlobs[index][1]){
         drawLightBlob(i,0);
     }
-    for(var i of recentBlobs[index][2]){
+    for(var i of recentBlobs[index][3]){
         drawLightBlob(i,1);
     }
     drawBlob(recentBlobs[index][0],0);
