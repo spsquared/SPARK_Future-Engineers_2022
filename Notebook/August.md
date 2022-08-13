@@ -16,7 +16,9 @@ In other news, we orded a wide-angle camera, and it arrived today. A new mount w
 # 8/5/22
 We attempted to switch to the wide-angle camera, but the edges of the image are tinted pink. So, we can't use it.
 
-![camera outside world border](./August/8-5-22-a.png)
+camera outside world border lol
+
+![pink fringing on camera](./August/8-5-22-a.png)
 
 In other news...
 The car now drives exceptionally well.
