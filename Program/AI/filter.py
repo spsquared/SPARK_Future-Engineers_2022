@@ -154,8 +154,8 @@ def predict(imgIn: numpy.ndarray, server = None):
         elif bgKps != 0 and bgKps.size > blobSizeRequirement:
             steeringArray.append(-bgKps.size ** 2 * 0.15)
         
-        if wallHeightCenter > 20 and wallHeightRight > 20:
-            steeringArray.append(-(wallHeightCenter + wallHeightRight) * 1)
+        if wallHeightCenter > 12 and wallHeightRight > 12:
+            steeringArray.append(-(wallHeightCenter + wallHeightRight) * 2)
             # if counterClockwise == True:
             #     steeringArray.append(-(wallHeightCenter + wallHeightRight) ** 2 * 0.035)
             # else:
