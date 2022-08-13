@@ -104,20 +104,22 @@ def predict(imgIn: numpy.ndarray, server = None):
         # -100 = turn left a lot
         # 100 = turn right a lot
 
+        dangerSize = 20
+
         brKps = 0
         for i in range(len(rKps)):
-            # if 131 < rKps[i].pt[0] * 12 / 5 + rKps[i].pt[1] - rKps[i].size:
-            if brKps == 0:
-                brKps = rKps[i]
-            elif brKps.size < rKps[i].size:
-                brKps = rKps[i]
+            if rKps[i].pt[1] - rKps[i].size > rKps[i].pt[0] * 0.322 + 33 + dangerSize:
+                if brKps == 0:
+                    brKps = rKps[i]
+                elif brKps.size < rKps[i].size:
+                    brKps = rKps[i]
         bgKps = 0
         for i in range(len(gKps)):
-            # if 131 < (274 - gKps[i].pt[0]) * 12 / 5 + gKps[i].pt[1] - gKps[i].size:
-            if bgKps == 0:
-                bgKps = gKps[i]
-            elif bgKps.size < gKps[i].size:
-                bgKps = gKps[i]
+            if gKps[i].pt[1] - gKps[i].size > gKps[i].pt[0] * 0.322 + 33 + dangerSize:
+                if bgKps == 0:
+                    bgKps = gKps[i]
+                elif bgKps.size < gKps[i].size:
+                    bgKps = gKps[i]
         
         if server != None:
             lastSend += 1
