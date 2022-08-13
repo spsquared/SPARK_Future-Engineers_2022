@@ -55,22 +55,22 @@ async def __server(websocket, path):
             global sendlist, running
             nonlocal connected, index
             # send events
-            while connected and running:
-                if len(sendlist[index]) > 0:
-                    try:
+            try:
+                while connected and running:
+                    if len(sendlist[index]) > 0:
                         data = sendlist[index][0]
                         del sendlist[index][0]
                         await websocket.send(data)
-                    except websockets.exceptions.ConnectionClosedOK:
-                        connected = False
-                        del sendlist[index]
-                    except websockets.exceptions.ConnectionClosedError:
-                        connected = False
-                        del sendlist[index]
-                    except RuntimeError:
-                        True
                 else:
                     time.sleep(0.1)
+            except websockets.exceptions.ConnectionClosedOK:
+                connected = False
+                del sendlist[index]
+            except websockets.exceptions.ConnectionClosedError:
+                connected = False
+                del sendlist[index]
+            except RuntimeError:
+                True
         def send2():
             # middle function that allows async functions running in separate thread
             loop = asyncio.new_event_loop()

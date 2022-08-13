@@ -9,11 +9,9 @@ import statistics
 # colors
 rM = redMax = (80, 100, 210)
 rm = redMin = (25, 35, 100)
-# rM = redMax = (90, 80, 190)
-# rm = redMin = (35, 40, 95)
-gM = greenMax = (90, 130, 60)
+gM = greenMax = (95, 140, 70)
 gm = greenMin = (35, 65, 0)
-wM = wallMax = (85, 85, 80)
+wM = wallMax = (85, 70, 80)
 wm = wallMin = (15, 15, 15)
 
 rightOnRed = True
