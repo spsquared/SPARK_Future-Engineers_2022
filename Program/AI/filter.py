@@ -108,14 +108,14 @@ def predict(imgIn: numpy.ndarray, server = None):
 
         brKps = 0
         for i in range(len(rKps)):
-            if rKps[i].pt[1] - rKps[i].size > rKps[i].pt[0] * 0.322 + 33 + dangerSize:
+            if rKps[i].pt[1] - rKps[i].size > rKps[i].pt[0] * -0.315 + 121 - dangerSize:
                 if brKps == 0:
                     brKps = rKps[i]
                 elif brKps.size < rKps[i].size:
                     brKps = rKps[i]
         bgKps = 0
         for i in range(len(gKps)):
-            if gKps[i].pt[1] - gKps[i].size > gKps[i].pt[0] * 0.322 + 33 + dangerSize:
+            if gKps[i].pt[1] - gKps[i].size > gKps[i].pt[0] * -0.315 + 121 - dangerSize:
                 if bgKps == 0:
                     bgKps = gKps[i]
                 elif bgKps.size < gKps[i].size:
