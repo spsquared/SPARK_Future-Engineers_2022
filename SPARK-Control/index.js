@@ -454,6 +454,9 @@ async function displayFront() {
 addListener('capture', addCapture);
 addListener('blobs', drawBlobs);
 addListener('strPredict', showPrediction);
+setInterval(() => {
+    while (performance.now()-fpsTimes[0] > 1000) fpsTimes.shift();
+}, 1000);
 
 // blobs
 
