@@ -360,7 +360,7 @@ for (var i in sliders) {
 }
 
 // capture display
-var maxHistory = 200;
+var maxHistory = 2000;
 var recentCaptures = [];
 var recentBlobs = [];
 var recentPredictions = [];
