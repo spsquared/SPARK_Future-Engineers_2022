@@ -10,7 +10,7 @@ def setup():
     global running, thread
     if running == False:
         running = True
-        fd = open('./lock.txt', 'w+')
+        fd = open('./../lock.txt', 'w+')
         if fd.read() == '1':
             print('ERROR: SETUP HAS DETECTED THAT SETUP IS CURRENTLY RUNNING. PLEASE CLOSE SETUP TO CONTINUE')
             error()
