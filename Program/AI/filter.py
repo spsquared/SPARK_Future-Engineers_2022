@@ -104,66 +104,77 @@ def predict(imgIn: numpy.ndarray, server = None):
         # -100 = turn left a lot
         # 100 = turn right a lot
 
+        dangerSize = 20
+
         brKps = 0
         for i in range(len(rKps)):
-            # if 131 < rKps[i].pt[0] * 12 / 5 + rKps[i].pt[1] - rKps[i].size:
-            if brKps == 0:
-                brKps = rKps[i]
-            elif brKps.size < rKps[i].size:
-                brKps = rKps[i]
+            rKps[i].size /= 2
+            if rKps[i].pt[1] + rKps[i].size > rKps[i].pt[0] * -0.315 + 121 - dangerSize:
+                if brKps == 0:
+                    brKps = rKps[i]
+                elif brKps.size < rKps[i].size:
+                    brKps = rKps[i]
         bgKps = 0
         for i in range(len(gKps)):
-            # if 131 < (274 - gKps[i].pt[0]) * 12 / 5 + gKps[i].pt[1] - gKps[i].size:
-            if bgKps == 0:
-                bgKps = gKps[i]
-            elif bgKps.size < gKps[i].size:
-                bgKps = gKps[i]
+            gKps[i].size /= 2
+            if gKps[i].pt[1] + gKps[i].size > (272 - gKps[i].pt[0]) * -0.315 + 121 - dangerSize:
+                if bgKps == 0:
+                    bgKps = gKps[i]
+                elif bgKps.size < gKps[i].size:
+                    bgKps = gKps[i]
         
-        if server != None:
+        if server != None and blurredImg.all() != None:
             lastSend += 1
             if (lastSend > 2):
                 lastSend = 0
                 encoded = base64.b64encode(cv2.imencode('.png', blurredImg)[1]).decode()
                 server.broadcast('capture', encoded)
+                arrayR = []
+                for i in range(len(rKps)):
+                    arrayR.append([rKps[i].pt[0],rKps[i].pt[1],rKps[i].size])
+                arrayG = []
+                for i in range(len(gKps)):
+                    arrayG.append([gKps[i].pt[0],gKps[i].pt[1],gKps[i].size])
                 if brKps != 0 and bgKps != 0:
-                    server.broadcast('blobs',[[brKps.pt[0],brKps.pt[1],brKps.size],[bgKps.pt[0],bgKps.pt[1],bgKps.size]])
+                    server.broadcast('blobs',[[brKps.pt[0],brKps.pt[1],brKps.size],arrayR,[bgKps.pt[0],bgKps.pt[1],bgKps.size],arrayG])
                 elif brKps != 0:
-                    server.broadcast('blobs',[[brKps.pt[0],brKps.pt[1],brKps.size],0])
+                    server.broadcast('blobs',[[brKps.pt[0],brKps.pt[1],brKps.size],arrayR,0,arrayG])
                 elif bgKps != 0:
-                    server.broadcast('blobs',[0,[bgKps.pt[0],bgKps.pt[1],bgKps.size]])
+                    server.broadcast('blobs',[0,arrayR,[bgKps.pt[0],bgKps.pt[1],bgKps.size],arrayG])
                 else:
-                    server.broadcast('blobs',[0,0])
+                    server.broadcast('blobs',[0,arrayR,0,arrayG])
         steeringArray = [0]
-        blobSizeRequirement = 20
+        blobSizeRequirement = 5
         if brKps != 0:
             if bgKps != 0:
                 if brKps.size > bgKps.size and brKps.size > blobSizeRequirement:
-                    steeringArray.append(brKps.size ** 3 * 0.001)
+                    steeringArray.append(brKps.size ** 2 * 0.15)
                 elif bgKps.size > blobSizeRequirement:
-                    steeringArray.append(-bgKps.size ** 3 * 0.001)
+                    steeringArray.append(-bgKps.size ** 2 * 0.15)
             elif brKps.size > blobSizeRequirement:
-                steeringArray.append(brKps.size ** 3 * 0.001)
+                steeringArray.append(brKps.size ** 2 * 0.15)
         elif bgKps != 0 and bgKps.size > blobSizeRequirement:
-            steeringArray.append(-bgKps.size ** 3 * 0.001)
+            steeringArray.append(-bgKps.size ** 2 * 0.15)
         
-        if wallHeightCenter > 27 and wallHeightRight > 27:
-            if counterClockwise == True:
-                steeringArray.append(-(wallHeightCenter + wallHeightRight) ** 2 * 0.025)
-            else:
-                steeringArray.append((wallHeightCenter + wallHeightRight) ** 2 * 0.025)
-        elif wallHeightRight > 50:
-            steeringArray.append(-wallHeightRight ** 2 * 0.015)
-        elif wallHeightLeft > 50:
-            steeringArray.append(wallHeightLeft ** 2 * 0.015)
+        if wallHeightCenter > 20 and wallHeightRight > 20:
+            steeringArray.append(-(wallHeightCenter + wallHeightRight) * 1)
+            # if counterClockwise == True:
+            #     steeringArray.append(-(wallHeightCenter + wallHeightRight) ** 2 * 0.035)
+            # else:
+            #     steeringArray.append((wallHeightCenter + wallHeightRight) ** 2 * 0.035)
+        elif wallHeightRight > 35:
+            steeringArray.append(-wallHeightRight ** 2 * 0.003)
+        elif wallHeightLeft > 35:
+            steeringArray.append(wallHeightLeft ** 2 * 0.003)
         
         steeringMax = max(steeringArray)
         steeringMin = min(steeringArray)
         if steeringMax > abs(steeringMin):
             if server != None:
-                server.broadcast('strPredict', steeringMax)
+                server.broadcast('strPredict', str(steeringMax))
             return steeringMax
         if server != None:
-            server.broadcast('strPredict', steeringMin)
+            server.broadcast('strPredict', str(steeringMin))
         return steeringMin
     except Exception as err:
         print(err)
