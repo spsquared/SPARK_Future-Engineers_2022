@@ -218,6 +218,17 @@ img {
     height: 48px;
     background-color: darkgrey;
 }
+#maxHistoryLabel {
+    position: absolute;
+    top: -20px;
+    right: 108px;
+}
+#maxHistory {
+    position: absolute;
+    top: -22px;
+    right: 0px;
+    width: 100px;
+}
 #displayImg {
     position: absolute;
     bottom: 56px;
