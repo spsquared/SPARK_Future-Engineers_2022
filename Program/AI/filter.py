@@ -147,7 +147,7 @@ def predict(imgIn: numpy.ndarray, server = None):
                 else:
                     server.broadcast('blobs',[0,arrayR,0,arrayG])
         steeringArray = [0]
-        blobSizeRequirement = 10
+        blobSizeRequirement = 5
         if brKps != 0:
             if bgKps != 0:
                 if brKps.size > bgKps.size and brKps.size > blobSizeRequirement:
