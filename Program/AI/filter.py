@@ -34,6 +34,7 @@ lastSend = 0
 def predict(imgIn: numpy.ndarray, server = None):
     global redMax, redMin, greenMax, greenMin, wallMax, wallMin, lastSend
     try:
+        # create blob detector
         params = cv2.SimpleBlobDetector_Params()
         params.filterByCircularity = True
         params.minCircularity = 0
@@ -43,19 +44,15 @@ def predict(imgIn: numpy.ndarray, server = None):
         params.minInertiaRatio = 0
         blobs = cv2.SimpleBlobDetector_create(params)
 
-        rMask = cv2.inRange(imgIn, redMin, redMax)
-        gMask = cv2.inRange(imgIn, greenMin, greenMax)
-        wMask = cv2.inRange(imgIn, wallMin, wallMax)
-
-        rawImg = cv2.merge((wMask, gMask, rMask))
-        blurredImg = cv2.medianBlur(rawImg, 5)
-        blurredImg = cv2.medianBlur(blurredImg, 5)
-
+        # filter to colors and split
+        blurredImg = filter(imgIn)
         wImg, gImg, rImg = cv2.split(blurredImg)
 
+        # add borders to fix blob detection
         rImg = cv2.copyMakeBorder(rImg,1,1,1,1, cv2.BORDER_CONSTANT, value=[0,0,0])
         gImg = cv2.copyMakeBorder(gImg,1,1,1,1, cv2.BORDER_CONSTANT, value=[0,0,0])
 
+        # detect blobs
         if rightOnRed == True:
             blobs.empty()
             rKps = blobs.detect(255 - rImg)
@@ -67,9 +64,9 @@ def predict(imgIn: numpy.ndarray, server = None):
             blobs.empty()
             gKps = blobs.detect(255 - rImg)
 
+        # crop for wall detection
         wallStart = 55
         wallEnd = 90
-
         croppedWImgLeft = wImg[wallStart:wallEnd,0:1]
         for i in range(19):
             croppedWImgLeft = numpy.concatenate((croppedWImgLeft, wImg[wallStart:wallEnd,i * 4:i * 4 + 1]), axis=1)
@@ -85,7 +82,8 @@ def predict(imgIn: numpy.ndarray, server = None):
             val = arr.shape[axis] - numpy.flip(mask, axis=axis).argmax(axis=axis) - 1
             return numpy.where(mask.any(axis=axis), val, invalid_val)
 
-
+        # find wall heights
+        # left
         wallHeightsLeft = numpy.count_nonzero(croppedWImgLeft > 1,axis=0)
         wallHeights2Left = []
         for i in range(len(wallHeightsLeft)):
@@ -96,7 +94,7 @@ def predict(imgIn: numpy.ndarray, server = None):
         else:
             wallHeightLeft = statistics.median(wallHeights2Left)
         wallMaximumLeft = max(last_nonzero(croppedWImgLeft, axis=0, invalid_val=-1))
-
+        # center
         wallHeightsCenter = numpy.count_nonzero(croppedWImgCenter > 1,axis=0)
         wallHeights2Center = []
         for i in range(len(wallHeightsCenter)):
@@ -107,8 +105,7 @@ def predict(imgIn: numpy.ndarray, server = None):
         else:
             wallHeightCenter = statistics.median(wallHeights2Center)
         wallMaximumCenter = max(last_nonzero(croppedWImgCenter, axis=0, invalid_val=-1))
-
-
+        # right
         wallHeightsRight = numpy.count_nonzero(croppedWImgRight > 1,axis=0)
         wallHeights2Right = []
         for i in range(len(wallHeightsRight)):
@@ -120,16 +117,15 @@ def predict(imgIn: numpy.ndarray, server = None):
             wallHeightRight = statistics.median(wallHeights2Right)
         wallMaximumRight = max(last_nonzero(croppedWImgRight, axis=0, invalid_val=-1))
 
-        # -100 = turn left a lot
-        # 100 = turn right a lot
+        # pillar calculations
 
         dangerSize = 30
-
         def getRedEquation(x):
             return x * -0.315 + 121 - dangerSize
         def getGreenEquation(x):
             return (272 - x) * -0.315 + 121 - dangerSize
 
+        # find signals that will collide with car
         brKps = 0
         for i in range(len(rKps)):
             rKps[i].size /= 2
@@ -147,6 +143,7 @@ def predict(imgIn: numpy.ndarray, server = None):
                 elif bgKps.size < gKps[i].size:
                     bgKps = gKps[i]
         
+        # send data to SPARK Control
         if server != None and blurredImg.all() != None:
             lastSend += 1
             if (lastSend > 2):
@@ -167,7 +164,10 @@ def predict(imgIn: numpy.ndarray, server = None):
                     server.broadcast('blobs',[0,arrayR,[bgKps.pt[0],bgKps.pt[1],bgKps.size],arrayG])
                 else:
                     server.broadcast('blobs',[0,arrayR,0,arrayG])
+        
         steeringArray = [0]
+
+        # decide steering for each signal that will collide
         blobSizeRequirement = 5
         if brKps != 0:
             if bgKps != 0:
@@ -184,6 +184,7 @@ def predict(imgIn: numpy.ndarray, server = None):
             steeringArray.append((getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size) * bgKps.size ** 2 * 0.015)
             # steeringArray.append(-bgKps.size ** 2 * 0.2)
         
+        # decide steering for each wall section
         # print(wallMaximumRight)
         if wallHeightCenter > 9 and wallHeightRight > 14 and (wallMaximumCenter > 24 or wallMaximumRight > 27):
             if wallMaximumLeft > 30 and wallMaximumCenter > 24:
@@ -199,6 +200,7 @@ def predict(imgIn: numpy.ndarray, server = None):
         if wallHeightLeft > 25 and wallMaximumLeft > 27:
             steeringArray.append(wallHeightLeft ** 2 * 0.06)
 
+        # decide final steering
         steeringMax = max(steeringArray)
         steeringMin = min(steeringArray)
         if steeringMax > abs(steeringMin):
