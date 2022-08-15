@@ -84,7 +84,6 @@ def steer(steering: int):
 def throttle(throttle: int):
     global targetThrottle
     targetThrottle = max(-100, min(throttle, 100))
-    targetThrottle = throttle
 
 def trim(trim: int):
     global strTRIM
