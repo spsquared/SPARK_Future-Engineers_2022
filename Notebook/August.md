@@ -35,4 +35,12 @@ Today we installed a wide-angle camera. To us, distortion is not an issue, since
 Tuning the prediction - We added a check for whether a wall was the inner wall or outer wall. When the car drives straight towards a wall, it cannot use the slope of the wall to decide whether it is the inner or outer walls.
 
 # 8/14/22
-More tuning. We resolved an issue that we have had for a long time, and will probably exist at competitions. When there is a black (or sufficiently dark) area in the image, it gets filtered out as wall and skews wall height readings, making it hard for the car to determine when to turn. We decided that instead of using the wall height - nonzero values in a vertical strip of the image - we would look at the locaction of the bottom edge of the walls, which is simple since there are no stray pixels or false positives on the floor. Also, we didn't implement any memory systems.
+More tuning, but we also made some other changes. We resolved an issue that we have had for a long time, and will probably exist at competitions. When there is a black (or sufficiently dark) area in the image, it gets filtered out as wall and skews wall height readings, making it hard for the car to determine when to turn. We decided that instead of using the wall height - nonzero values in a vertical strip of the image - we would look at the locaction of the bottom edge of the walls, which is simple since there are no stray pixels or false positives on the floor. Also, we didn't implement any memory systems. There were numerous bugs in the process, like seemingly random turns and steering values of 14000.
+
+There would be a video of the car here, but we haven't had the chance to take any good videos yet.
+
+I don't think we have any screenshots of our debugging and development software, called SPARK Control, here. Here's a screenshot now:
+
+![SPARK Control Panel](./August/8-14-22-a.png)
+
+There is a more detailed description in the documentation.
