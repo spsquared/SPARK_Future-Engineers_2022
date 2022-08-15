@@ -245,6 +245,16 @@ img {
     border: 2px solid black;
     pointer-events: none;
 }
+#wallCanvas {
+    position: absolute;
+    bottom: 56px;
+    left: -1px;
+    width: 542px;
+    height: 306px;
+    border: 2px solid black;
+    pointer-events: none;
+    image-rendering: pixelated;
+}
 #fps {
     position: absolute;
     top: 0px;
