@@ -67,15 +67,18 @@ def predict(imgIn: numpy.ndarray, server = None):
             blobs.empty()
             gKps = blobs.detect(255 - rImg)
 
-        croppedWImgLeft = wImg[65:100,0:1]
+        wallStart = 55
+        wallEnd = 90
+
+        croppedWImgLeft = wImg[wallStart:wallEnd,0:1]
         for i in range(19):
-            croppedWImgLeft = numpy.concatenate((croppedWImgLeft, wImg[65:100,i * 4:i * 4 + 1]), axis=1)
-        croppedWImgCenter = wImg[65:100,96:97]
+            croppedWImgLeft = numpy.concatenate((croppedWImgLeft, wImg[wallStart:wallEnd,i * 4:i * 4 + 1]), axis=1)
+        croppedWImgCenter = wImg[wallStart:wallEnd,96:97]
         for i in range(19):
-            croppedWImgCenter = numpy.concatenate((croppedWImgCenter, wImg[65:100,i * 4 + 100:i * 4 + 101]), axis=1)
-        croppedWImgRight = wImg[65:100,192:193]
+            croppedWImgCenter = numpy.concatenate((croppedWImgCenter, wImg[wallStart:wallEnd,i * 4 + 100:i * 4 + 101]), axis=1)
+        croppedWImgRight = wImg[wallStart:wallEnd,192:193]
         for i in range(19):
-            croppedWImgRight = numpy.concatenate((croppedWImgRight, wImg[65:100,i * 4 + 196:i * 4 + 197]), axis=1)
+            croppedWImgRight = numpy.concatenate((croppedWImgRight, wImg[wallStart:wallEnd,i * 4 + 196:i * 4 + 197]), axis=1)
 
         wallHeightsLeft = numpy.count_nonzero(croppedWImgLeft > 1,axis=0)
         wallHeights2Left = []
@@ -170,15 +173,15 @@ def predict(imgIn: numpy.ndarray, server = None):
             # steeringArray.append(-bgKps.size ** 2 * 0.2)
         
         if wallHeightCenter > 7 and wallHeightRight > 14:
-            steeringArray.append(-(wallHeightCenter + wallHeightRight) ** 2 * 0.03)
+            steeringArray.append(-(wallHeightCenter + wallHeightRight) ** 2 * 0.05)
             # if counterClockwise == True:
             #     steeringArray.append(-(wallHeightCenter + wallHeightRight) ** 2 * 0.035)
             # else:
             #     steeringArray.append((wallHeightCenter + wallHeightRight) ** 2 * 0.035)
         elif wallHeightRight > 35:
-            steeringArray.append(-wallHeightRight ** 2 * 0.04)
+            steeringArray.append(-wallHeightRight ** 2 * 0.05)
         elif wallHeightLeft > 35:
-            steeringArray.append(wallHeightLeft ** 2 * 0.04)
+            steeringArray.append(wallHeightLeft ** 2 * 0.05)
         
         steeringMax = max(steeringArray)
         steeringMin = min(steeringArray)

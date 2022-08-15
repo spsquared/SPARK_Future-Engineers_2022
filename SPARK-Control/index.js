@@ -469,13 +469,13 @@ var drawOverlay = function(){
     ctx.canvas.height = 154;
     ctx.fillStyle = "RGBA(255,255,255,0.5)";
     for(let i = 0;i < 80;i += 4){
-        ctx.fillRect(i,65,1,35);
+        ctx.fillRect(i,55,1,35);
     }
     for(let i = 96;i < 176;i += 4){
-        ctx.fillRect(i,65,1,35);
+        ctx.fillRect(i,55,1,35);
     }
     for(let i = 192;i < 276;i += 4){
-        ctx.fillRect(i,65,1,35);
+        ctx.fillRect(i,55,1,35);
     }
 }
 drawOverlay();
