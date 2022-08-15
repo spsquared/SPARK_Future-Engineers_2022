@@ -79,6 +79,12 @@ def predict(imgIn: numpy.ndarray, server = None):
         croppedWImgRight = wImg[wallStart:wallEnd,192:193]
         for i in range(19):
             croppedWImgRight = numpy.concatenate((croppedWImgRight, wImg[wallStart:wallEnd,i * 4 + 196:i * 4 + 197]), axis=1)
+        
+        def last_nonzero(arr, axis, invalid_val):
+            mask = arr!=0
+            val = arr.shape[axis] - numpy.flip(mask, axis=axis).argmax(axis=axis) - 1
+            return numpy.where(mask.any(axis=axis), val, invalid_val)
+
 
         wallHeightsLeft = numpy.count_nonzero(croppedWImgLeft > 1,axis=0)
         wallHeights2Left = []
@@ -89,6 +95,9 @@ def predict(imgIn: numpy.ndarray, server = None):
             wallHeightLeft = 0
         else:
             wallHeightLeft = statistics.median(wallHeights2Left)
+        wallMaximumLeft = max(last_nonzero(croppedWImgLeft, axis=0, invalid_val=-1))
+        print(last_nonzero(croppedWImgLeft, axis=0, invalid_val=-1))
+
         wallHeightsCenter = numpy.count_nonzero(croppedWImgCenter > 1,axis=0)
         wallHeights2Center = []
         for i in range(len(wallHeightsCenter)):
@@ -98,6 +107,9 @@ def predict(imgIn: numpy.ndarray, server = None):
             wallHeightCenter = 0
         else:
             wallHeightCenter = statistics.median(wallHeights2Center)
+        wallMaximumCenter = max(last_nonzero(croppedWImgCenter, axis=0, invalid_val=-1))
+
+
         wallHeightsRight = numpy.count_nonzero(croppedWImgRight > 1,axis=0)
         wallHeights2Right = []
         for i in range(len(wallHeightsRight)):
@@ -107,11 +119,12 @@ def predict(imgIn: numpy.ndarray, server = None):
             wallHeightRight = 0
         else:
             wallHeightRight = statistics.median(wallHeights2Right)
-        
+        wallMaximumRight = max(last_nonzero(croppedWImgRight, axis=0, invalid_val=-1))
+
         # -100 = turn left a lot
         # 100 = turn right a lot
 
-        dangerSize = 20
+        dangerSize = 30
 
         def getRedEquation(x):
             return x * -0.315 + 121 - dangerSize
@@ -172,17 +185,19 @@ def predict(imgIn: numpy.ndarray, server = None):
             steeringArray.append((getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size) * bgKps.size ** 2 * 0.015)
             # steeringArray.append(-bgKps.size ** 2 * 0.2)
         
+        # print(wallMaximumRight)
         if wallHeightCenter > 7 and wallHeightRight > 14:
-            steeringArray.append(-(wallHeightCenter + wallHeightRight) ** 2 * 0.05)
+            if (wallMaximumCenter > 27 or wallMaximumRight > 27) and not (wallMaximumLeft > 30 and wallMaximumCenter > 27):
+                steeringArray.append(-(wallHeightCenter + wallHeightRight) ** 2 * 0.05)
             # if counterClockwise == True:
             #     steeringArray.append(-(wallHeightCenter + wallHeightRight) ** 2 * 0.035)
             # else:
             #     steeringArray.append((wallHeightCenter + wallHeightRight) ** 2 * 0.035)
-        elif wallHeightRight > 35:
-            steeringArray.append(-wallHeightRight ** 2 * 0.05)
-        elif wallHeightLeft > 35:
-            steeringArray.append(wallHeightLeft ** 2 * 0.05)
-        
+        elif wallHeightRight > 25 and wallMaximumRight > 27:
+            steeringArray.append(-wallHeightRight ** 2 * 0.06)
+        elif wallHeightLeft > 25 and wallMaximumLeft > 27:
+            steeringArray.append(wallHeightLeft ** 2 * 0.06)
+
         steeringMax = max(steeringArray)
         steeringMin = min(steeringArray)
         if steeringMax > abs(steeringMin):
