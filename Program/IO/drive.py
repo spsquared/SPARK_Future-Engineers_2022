@@ -13,7 +13,7 @@ s = GPIO.PWM(33, 200)
 # pwm min max and speed
 thrBACK = 28
 thrMIN = 30
-thrMAX = 35
+thrMAX = 31
 strMAX = 47
 strMIN = 28
 strTRIM = 8
@@ -44,8 +44,7 @@ def start():
                 while running:
                     start = time.time()
                     # convert throttle to active time
-                    thrFeaACT = math.floor(abs(targetThrottle)/20)/50
-                    # thrFeaACT = math.floor(abs(targetThrottle)/20)/10
+                    thrFeaACT = math.floor(abs(targetThrottle)/20)/20
                     if timer > 1: timer = 0
                     if timer <= thrFeaACT and targetThrottle > 10: currThrottle = 100
                     elif targetThrottle < -10: currThrottle = targetThrottle
