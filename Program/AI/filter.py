@@ -12,7 +12,7 @@ rm = redMin = (25, 35, 100)
 gM = greenMax = (95, 140, 70)
 gm = greenMin = (35, 65, 0)
 wM = wallMax = (85, 70, 80)
-wm = wallMin = (15, 15, 15)
+wm = wallMin = (5, 5, 5)
 
 rightOnRed = True
 counterClockwise = True
@@ -96,7 +96,6 @@ def predict(imgIn: numpy.ndarray, server = None):
         else:
             wallHeightLeft = statistics.median(wallHeights2Left)
         wallMaximumLeft = max(last_nonzero(croppedWImgLeft, axis=0, invalid_val=-1))
-        print(last_nonzero(croppedWImgLeft, axis=0, invalid_val=-1))
 
         wallHeightsCenter = numpy.count_nonzero(croppedWImgCenter > 1,axis=0)
         wallHeights2Center = []
@@ -186,16 +185,16 @@ def predict(imgIn: numpy.ndarray, server = None):
             # steeringArray.append(-bgKps.size ** 2 * 0.2)
         
         # print(wallMaximumRight)
-        if wallHeightCenter > 7 and wallHeightRight > 14:
-            if (wallMaximumCenter > 27 or wallMaximumRight > 27) and not (wallMaximumLeft > 30 and wallMaximumCenter > 27):
+        if wallHeightCenter > 14 and wallHeightRight > 14 and (wallMaximumCenter > 27 or wallMaximumRight > 27):
+            if wallMaximumLeft > 30 and wallMaximumCenter > 27:
                 steeringArray.append(-(wallHeightCenter + wallHeightRight) ** 2 * 0.05)
             # if counterClockwise == True:
             #     steeringArray.append(-(wallHeightCenter + wallHeightRight) ** 2 * 0.035)
             # else:
             #     steeringArray.append((wallHeightCenter + wallHeightRight) ** 2 * 0.035)
-        elif wallHeightRight > 25 and wallMaximumRight > 27:
+        if wallHeightRight > 25 and wallMaximumRight > 27:
             steeringArray.append(-wallHeightRight ** 2 * 0.06)
-        elif wallHeightLeft > 25 and wallMaximumLeft > 27:
+        if wallHeightLeft > 25 and wallMaximumLeft > 27:
             steeringArray.append(wallHeightLeft ** 2 * 0.06)
 
         steeringMax = max(steeringArray)
