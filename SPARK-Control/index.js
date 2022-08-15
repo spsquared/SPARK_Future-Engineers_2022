@@ -361,11 +361,9 @@ for (var i in sliders) {
 
 // capture display
 var maxHistory = 500;
-var recentCaptures = [];
-var recentBlobs = [];
-var recentPredictions = [];
-var index = 0;
-var fpsTimes = [];
+const history = [];
+let index = 0;
+const fpsTimes = [];
 const displayImg = document.getElementById('displayImg');
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext("2d");
@@ -375,16 +373,18 @@ const strPredict = document.getElementById('strPredict');
 ctx.canvas.width = 272;
 ctx.canvas.height = 154;
 function addCapture(img) {
-    recentCaptures.unshift('data:image/png;base64,' + img);
-    recentBlobs.unshift(null);
-    if (recentCaptures.length > maxHistory) {
-        recentCaptures.pop();
-        recentBlobs.pop();
-    }
+    history.unshift({
+        img: 'data:image/png;base64,'+img,
+        blobs: [[], [], [], []],
+        steer: 0
+    });
     index = 0;
-    historySlider.max = recentCaptures.length;
-    historySlider.value = recentCaptures.length-index;
-    displayImg.src = recentCaptures[index];
+    if (history.length > maxHistory) {
+        history.pop();
+    }
+    historySlider.max = history.length;
+    historySlider.value = history.length;
+    displayChange();
 
     var now = performance.now();
     while(fpsTimes.length > 0 && fpsTimes[0] <= now - 1000){
@@ -393,18 +393,24 @@ function addCapture(img) {
     fpsTimes.push(now);
     FPS.innerHTML = 'FPS: ' + fpsTimes.length;
 };
-function drawBlobs(data) {
-    index = 0;
-    recentBlobs[index] = data;
+function addBlobs(data) {
+    history[index].blobs = data;
+    if (history.length > maxHistory) {
+        history.pop();
+    }
+    displayChange();
+};
+function drawBlobs() {
+    let data = history[index].blobs;
     ctx.clearRect(0,0,272,154);
-    for(var i of recentBlobs[index][1]){
+    for(var i of data[1]){
         drawLightBlob(i,0);
     }
-    for(var i of recentBlobs[index][3]){
+    for(var i of data[3]){
         drawLightBlob(i,1);
     }
-    drawBlob(recentBlobs[index][0],0);
-    drawBlob(recentBlobs[index][2],1);
+    drawBlob(data[0],0);
+    drawBlob(data[2],1);
 }
 function drawBlob(blob,blobColor){
     if(!blob){
@@ -430,38 +436,43 @@ function drawLightBlob(blob,blobColor){
     ctx.beginPath();
     if(blobColor === 0){
         ctx.strokeStyle = "#f00";
-        ctx.fillStyle = "#F005";
+        ctx.fillStyle = "#F00A";
     }
     else{
         ctx.strokeStyle = "#0f0"
-        ctx.fillStyle = "#0F05";
+        ctx.fillStyle = "#0F0A";
     }
     ctx.arc(blob[0],blob[1],blob[2] * 2, 0, 2 * Math.PI);
     ctx.fill();
     ctx.stroke();
 };
 function showPrediction(val) {
-    recentPredictions[index] = val;
-    strPredict.innerText = 'PredictedSteering: ' + recentPredictions[index];
+    history[index].steer = Math.round(val);
+    if (history.length > maxHistory) {
+        history.pop();
+    }
+    strPredict.innerText = 'PredictedSteering: ' + Math.round(val);
 }
 async function displayBack() {
-    index = Math.min(index+1, recentCaptures.length-1);
-    historySlider.max = recentCaptures.length;
-    historySlider.value = recentCaptures.length-index;
+    index = Math.min(index+1, history.length-1);
+    historySlider.max = history.length;
+    historySlider.value = history.length-index;
     displayChange();
 };
 async function displayFront() {
     index = Math.max(index-1, 0);
-    historySlider.max = recentCaptures.length;
-    historySlider.value = recentCaptures.length-index;
+    historySlider.max = history.length;
+    historySlider.value = history.length-index;
     displayChange();
 };
 function displayChange() {
-    historySlider.max = recentCaptures.length;
-    index = recentCaptures.length-historySlider.value;
-    if (recentCaptures[index]) displayImg.src = recentCaptures[index];
-    if (recentBlobs[index]) drawBlobs(recentBlobs[index]);
-    if (recentPredictions[index]) strPredict.innerText = 'PredictedSteering: ' + recentPredictions[index];
+    historySlider.max = history.length;
+    index = history.length-historySlider.value;
+    if (history[index]) {
+        displayImg.src = history[index].img;
+        drawBlobs();
+        showPrediction(history[index].steer);
+    }
 };
 var drawOverlay = function(){
     var ctx = wallCanvas.getContext('2d')
@@ -480,7 +491,7 @@ var drawOverlay = function(){
 }
 drawOverlay();
 addListener('capture', addCapture);
-addListener('blobs', drawBlobs);
+addListener('blobs', addBlobs);
 addListener('strPredict', showPrediction);
 setInterval(() => {
     while (performance.now()-fpsTimes[0] > 1000) fpsTimes.shift();

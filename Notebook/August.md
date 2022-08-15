@@ -31,5 +31,8 @@ Our camera broke and we got new signals. Again. The new red signals are unusuall
 # 8/12/22
 Today we installed a wide-angle camera. To us, distortion is not an issue, since the size of objects will be the same as long as the distance is the same, and that's all we need. We just have to recalculate the inequalities used for predicting collisions.
 
-8/13/22
+# 8/13/22
 Tuning the prediction - We added a check for whether a wall was the inner wall or outer wall. When the car drives straight towards a wall, it cannot use the slope of the wall to decide whether it is the inner or outer walls.
+
+# 8/14/22
+More tuning. We resolved an issue that we have had for a long time, and will probably exist at competitions. When there is a black (or sufficiently dark) area in the image, it gets filtered out as wall and skews wall height readings, making it hard for the car to determine when to turn. We decided that instead of using the wall height - nonzero values in a vertical strip of the image - we would look at the locaction of the bottom edge of the walls, which is simple since there are no stray pixels or false positives on the floor. Also, we didn't implement any memory systems.
