@@ -1,3 +1,4 @@
+from multiprocessing.context import set_spawning_popen
 from IO import io
 import numpy
 import cv2
@@ -67,9 +68,15 @@ def predict(imgIn: numpy.ndarray, server = None):
             blobs.empty()
             gKps = blobs.detect(255 - rImg)
 
-        croppedWImgLeft = wImg[45:100,20:35]
-        croppedWImgCenter = wImg[45:100,130:143]
-        croppedWImgRight = wImg[45:100,237:252]
+        croppedWImgLeft = wImg[45:100,0:1]
+        for i in range(19):
+            croppedWImgLeft = numpy.concatenate((croppedWImgLeft, wImg[45:100,i * 4:i * 4 + 1]), axis=1)
+        croppedWImgCenter = wImg[45:100,96:97]
+        for i in range(19):
+            croppedWImgCenter = numpy.concatenate((croppedWImgCenter, wImg[45:100,i * 4 + 100:i * 4 + 101]), axis=1)
+        croppedWImgRight = wImg[45:100,232:233]
+        for i in range(19):
+            croppedWImgRight = numpy.concatenate((croppedWImgRight, wImg[45:100,i * 4 + 236:i * 4 + 237]), axis=1)
 
         wallHeightsLeft = numpy.count_nonzero(croppedWImgLeft > 1,axis=0)
         wallHeights2Left = []
