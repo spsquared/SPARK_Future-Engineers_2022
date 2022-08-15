@@ -451,7 +451,7 @@ function showPrediction(val) {
     if (history.length > maxHistory) {
         history.pop();
     }
-    strPredict.innerText = 'PredictedSteering: ' + val;
+    strPredict.innerText = 'PredictedSteering: ' + Math.round(val);
 }
 async function displayBack() {
     index = Math.min(index+1, history.length-1);
