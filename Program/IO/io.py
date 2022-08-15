@@ -41,7 +41,7 @@ def setup():
 def close():
     global thread, running
     if running == True:
-        fd = open('./lock.txt', 'w+')
+        fd = open('./../lock.txt', 'w+')
         fd.write('0')
         fd.close()
         running = False
