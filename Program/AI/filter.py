@@ -185,9 +185,11 @@ def predict(imgIn: numpy.ndarray, server = None):
             # steeringArray.append(-bgKps.size ** 2 * 0.2)
         
         # print(wallMaximumRight)
-        if wallHeightCenter > 14 and wallHeightRight > 14 and (wallMaximumCenter > 27 or wallMaximumRight > 27):
-            if wallMaximumLeft > 30 and wallMaximumCenter > 27:
-                steeringArray.append(-(wallHeightCenter + wallHeightRight) ** 2 * 0.05)
+        if wallHeightCenter > 9 and wallHeightRight > 14 and (wallMaximumCenter > 24 or wallMaximumRight > 27):
+            if wallMaximumLeft > 30 and wallMaximumCenter > 24:
+                steeringArray.append(-(wallHeightCenter + wallHeightRight) ** 2 * 0.07)
+            else:
+                steeringArray.append(-(wallHeightCenter + wallHeightRight) ** 2 * 0.035)
             # if counterClockwise == True:
             #     steeringArray.append(-(wallHeightCenter + wallHeightRight) ** 2 * 0.035)
             # else:

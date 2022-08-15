@@ -20,7 +20,7 @@ def main():
             drive.stop()
             io.close()
         server.addListener('stop', stop)
-        drive.throttle(100)
+        drive.throttle(200)
         while running:
             image = camera.read()
             prediction = filter.predict(image,server)
