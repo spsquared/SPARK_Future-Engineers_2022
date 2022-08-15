@@ -174,7 +174,11 @@
         <button id="displayBack" onclick="displayBack();">&#60</button>
         <button id="displayForwards" onclick="displayFront();">&#62</button>
         <input type="range" id="historySlider" class="slider" oninput="displayChange();" min="1" max="1" step="1">
-        <label id="maxHistoryLabel" for="maxHistory">Max Save History:&nbsp;</label>
+        <label id="showOverlay">
+            <input type="checkbox" oninput="if (this.checked) {wallCanvas.style.display = '';} else {wallCanvas.style.display = 'none';}" checked>
+            Show Overlay
+        </label>
+        <label id="maxHistoryLabel" for="maxHistory">Max History:&nbsp;</label>
         <input type="number" id="maxHistory" min="0" max="1000000" step="10" value="500" oninput="maxHistory = parseInt(this.value);">
         <img id="displayImg">
         <canvas id="canvas"></canvas>

@@ -218,6 +218,11 @@ img {
     height: 48px;
     background-color: darkgrey;
 }
+#showOverlay {
+    position: absolute;
+    top: -20px;
+    left: 190px;
+}
 #maxHistoryLabel {
     position: absolute;
     top: -20px;

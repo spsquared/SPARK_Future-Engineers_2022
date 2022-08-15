@@ -362,7 +362,7 @@ for (var i in sliders) {
 // capture display
 var maxHistory = 500;
 const history = [];
-var index = 0;
+let index = 0;
 const fpsTimes = [];
 const displayImg = document.getElementById('displayImg');
 const canvas = document.getElementById('canvas');
@@ -447,7 +447,7 @@ function drawLightBlob(blob,blobColor){
     ctx.stroke();
 };
 function showPrediction(val) {
-    history[index].steer = val;
+    history[index].steer = Math.round(val);
     if (history.length > maxHistory) {
         history.pop();
     }
