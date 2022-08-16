@@ -2,7 +2,7 @@ socket = new WebSocket('ws://192.168.1.151:4040');
 
 const log = document.getElementById('eventLogBody');
 const callbacks = [];
-var connected = false;
+let connected = false;
 function addListener(event, cb) {
     callbacks[event] = cb;
 };
@@ -16,8 +16,8 @@ function send(event, data) {
 };
 socket.onmessage = function(e) {
     if (e.data != 'ping') {
-        var json = JSON.parse(e.data);
-        for (var i in callbacks) {
+        let json = JSON.parse(e.data);
+        for (let i in callbacks) {
             if (i == json.event) {
                 callbacks[i](json.data);
             }
@@ -33,7 +33,7 @@ socket.onclose = function() {
     appendLog('Connection closed', 'red');
     setTimeout(function() {
         appendLog('Attempting to reconnect...');
-        var newsocket = new WebSocket('ws://192.168.1.151:4040');
+        let newsocket = new WebSocket('ws://192.168.1.151:4040');
         newsocket.onmessage = socket.onmessage;
         newsocket.onopen = socket.onopen;
         newsocket.onclose = socket.onclose;
@@ -42,13 +42,13 @@ socket.onclose = function() {
 };
 
 // messages
-var pendingsounds = [];
-var first = true;
+const pendingsounds = [];
+let first = true;
 async function playSound() {
     if (first) {
-        for (var i = 0; i < 10; i++) {
+        for (let i = 0; i < 10; i++) {
             await new Promise(function(resolve, reject) {
-                var ping = new Audio('ping.mp3');
+                let ping = new Audio('ping.mp3');
                 ping.preload = true;
                 ping.addEventListener('loadeddata', function() {
                     pendingsounds.push(ping);
@@ -60,7 +60,7 @@ async function playSound() {
     }
     pendingsounds[0].play();
     pendingsounds.shift();
-    var ping = new Audio('ping.mp3');
+    let ping = new Audio('ping.mp3');
     ping.preload = true;
     ping.addEventListener('loadeddata', function() {
         pendingsounds.push(ping);
@@ -71,7 +71,7 @@ function appendLog(text, color) {
     div.classList.add('logBlock');
     div.innerHTML = text;
     div.style.backgroundColor = color ?? '';
-    var scroll = false;
+    let scroll = false;
     if (log.scrollTop + log.clientHeight >= log.scrollHeight - 5) scroll = true;
     log.appendChild(div);
     if (scroll) log.scrollTop = log.scrollHeight;
@@ -97,10 +97,10 @@ const joystickPin = document.getElementById('joystickPin');
 const sliderX = document.getElementById('sliderX');
 const sliderY = document.getElementById('sliderY');
 
-var grabbing = false;
-var grabbingtouch = false;
-var throttle = 0;
-var steering = 0;
+let grabbing = false;
+let grabbingtouch = false;
+let throttle = 0;
+let steering = 0;
 joystick.onmousedown = function(e) {
     grabbing = true;
 };
@@ -145,8 +145,8 @@ document.addEventListener('touchcancel', function(e) {
 }, {passive: true});
 document.onmousemove = function(e) {
     if (grabbing) {
-        var x = Math.max(-110, Math.min(e.clientX-window.innerWidth+150, 110));
-        var y = Math.max(-110, Math.min(e.clientY-window.innerHeight+150, 110));
+        let x = Math.max(-110, Math.min(e.clientX-window.innerWidth+150, 110));
+        let y = Math.max(-110, Math.min(e.clientY-window.innerHeight+150, 110));
         throttle = Math.round(-y*90/99);
         steering = Math.round(x*90/99);
         console.log(throttle)
@@ -158,10 +158,10 @@ document.onmousemove = function(e) {
 };
 document.addEventListener('touchmove', function(e) {
     if (grabbingtouch) {
-        for (var i in e.touches) {
+        for (let i in e.touches) {
             if (joystick.contains(e.touches[i].target)) {
-                var x = Math.max(-110, Math.min(e.touches[i].clientX-window.innerWidth+150, 110));
-                var y = Math.max(-110, Math.min(e.touches[i].clientY-window.innerHeight+150, 110));
+                let x = Math.max(-110, Math.min(e.touches[i].clientX-window.innerWidth+150, 110));
+                let y = Math.max(-110, Math.min(e.touches[i].clientY-window.innerHeight+150, 110));
                 throttle = Math.round(-y*90/99);
                 steering = Math.round(x*90/99);
                 joystickPin.style.bottom = 114-y + 'px';
@@ -175,14 +175,14 @@ document.addEventListener('touchmove', function(e) {
 }, {passive: true});
 
 // controllers
-var trim = 0;
-var trim2 = 0.1;
-var pressedbuttons = [];
+let trim = 0;
+let trim2 = 0.1;
+let pressedbuttons = [];
 function updateControllers() {
-    var controllers = navigator.getGamepads();
-    for (var i in controllers) {
+    let controllers = navigator.getGamepads();
+    for (let i in controllers) {
         if (controllers[i] instanceof Gamepad) {
-            var controller = controllers[i];
+            let controller = controllers[i];
             throttle = Math.round(controller.axes[1]*-100);
             steering = Math.round((controller.axes[2]-trim2)*100)-trim;
             if (controller.buttons[8].pressed && pressedbuttons.indexOf(8) == -1) {
@@ -222,7 +222,7 @@ setInterval(function() {
 document.getElementById('captureButton').onclick = function(e) {
     send('capture', {});
 };
-var streaming = false;
+let streaming = false;
 document.getElementById('captureStreamButton').onclick = function(e) {
     streaming = !streaming;
     send('captureStream', {state: streaming});
@@ -236,7 +236,7 @@ document.getElementById('captureStreamButton').onclick = function(e) {
 };
 
 // filtered capture (ignore the terrible coding practices this was intended to be a temporary thing)
-var sliders = [
+let sliders = [
     document.getElementById('redRMax'),
     document.getElementById('greenRMax'),
     document.getElementById('wallRMax'),
@@ -258,15 +258,15 @@ var sliders = [
 ];
 document.getElementById('captureFilterButton').onclick = function(e) {
     arr = [];
-    for (var i in sliders) {
+    for (let i in sliders) {
         arr.push(sliders[i].value);
     }
     send('captureFilter', arr);
 };
-var filterstreaming = false;
+let filterstreaming = false;
 document.getElementById('captureFilterStreamButton').onclick = function(e) {
     arr = [];
-    for (var i in sliders) {
+    for (let i in sliders) {
         arr.push(sliders[i].value);
     }
     send('colors', arr);
@@ -284,12 +284,12 @@ function updateSlider(i) {
     document.getElementById(sliders[i].id + 'indicator').innerText = sliders[i].value;
 };
 function setColors(colors) {
-    for (var i in colors) {
+    for (let i in colors) {
         sliders[i].value = colors[i];
         updateSlider(i);
     }
     arr = [];
-    for (var i in sliders) {
+    for (let i in sliders) {
         arr.push(sliders[i].value);
     }
     send('colors', arr);
@@ -297,8 +297,8 @@ function setColors(colors) {
 addListener('colors', setColors);
 
 // non capture streams
-var streaming2 = false;
-var filterstreaming2 = false;
+let streaming2 = false;
+let filterstreaming2 = false;
 document.getElementById('streamButton').onclick = function(e) {
     streaming2 = !streaming2;
     send('stream', {state: streaming2});
@@ -323,7 +323,7 @@ document.getElementById('filterStreamButton').onclick = function(e) {
 };
 
 // bad coding practices
-var initcolors = [
+let initcolors = [
     [
         210, 100, 95,
         100, 35, 25
@@ -355,14 +355,17 @@ sliders[14].value = initcolors[2][4];
 sliders[15].value = initcolors[0][5];
 sliders[16].value = initcolors[1][5];
 sliders[17].value = initcolors[2][5];
-for (var i in sliders) {
+for (let i in sliders) {
     updateSlider(i);
 }
 
 // capture display
-var maxHistory = 500;
+let maxHistory = 500;
 const history = [];
 let index = 0;
+let lefting = false;
+let righting = false;
+let fasting = false;
 const fpsTimes = [];
 const displayImg = document.getElementById('displayImg');
 const canvas = document.getElementById('canvas');
@@ -386,7 +389,7 @@ function addCapture(img) {
     historySlider.value = history.length;
     displayChange();
 
-    var now = performance.now();
+    let now = performance.now();
     while(fpsTimes.length > 0 && fpsTimes[0] <= now - 1000){
         fpsTimes.shift();
     }
@@ -403,10 +406,10 @@ function addBlobs(data) {
 function drawBlobs() {
     let data = history[index].blobs;
     ctx.clearRect(0,0,272,154);
-    for(var i of data[1]){
+    for(let i of data[1]){
         drawLightBlob(i,0);
     }
-    for(var i of data[3]){
+    for(let i of data[3]){
         drawLightBlob(i,1);
     }
     drawBlob(data[0],0);
@@ -474,8 +477,8 @@ function displayChange() {
         showPrediction(history[index].steer);
     }
 };
-var drawOverlay = function(){
-    var ctx = wallCanvas.getContext('2d')
+function drawOverlay(){
+    let ctx = wallCanvas.getContext('2d')
     ctx.canvas.width = 272;
     ctx.canvas.height = 154;
     ctx.fillStyle = "RGBA(255,255,255,0.5)";
@@ -496,6 +499,33 @@ addListener('strPredict', showPrediction);
 setInterval(() => {
     while (performance.now()-fpsTimes[0] > 1000) fpsTimes.shift();
 }, 1000);
+document.addEventListener('keydown', (e) => {
+    if (e.key == 'ArrowLeft') {
+        lefting = true;
+    } else if (e.key == 'ArrowRight') {
+        righting = true;
+    } else if (e.key == 'Control') {
+        fasting = true;
+    }
+});
+document.addEventListener('keyup', (e) => {
+    if (e.key == 'ArrowLeft') {
+        lefting = false;
+    } else if (e.key == 'ArrowRight') {
+        righting = false;
+    } else if (e.key == 'Control') {
+        fasting = false;
+    }
+});
+let timer = 0;
+setInterval(() => {
+    timer++;
+    if (timer > 2 || fasting) {
+        timer = 0;
+        if (lefting) displayBack();
+        if (righting) displayFront();
+    }
+}, 10);
 
 // blobs
 
