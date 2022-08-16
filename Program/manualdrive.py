@@ -45,8 +45,12 @@ def main():
             drive.throttle(__forward+__backward)
             drive.steer(__left+__right)
         def joystick(data):
-            drive.throttle(data['throttle'])
-            drive.steer(data['steering'])
+            __forward = max(data['throttle'], 0)
+            __backward = min(data['throttle'], 0)
+            __left = min(data['steering'], 0)
+            __right = max(data['steering'], 0)
+            drive.throttle(__forward+__backward)
+            drive.steer(__left+__right)
         def capture(data):
             camera.capture(server=server, drive=drive)
         def captureStream(data):
