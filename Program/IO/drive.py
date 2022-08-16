@@ -44,7 +44,7 @@ def start():
                 while running:
                     start = time.time()
                     # convert throttle to active time
-                    thrFeaACT = math.floor(abs(targetThrottle)/20)/20
+                    thrFeaACT = math.floor(abs(targetThrottle)/20)/10
                     if timer > 1: timer = 0
                     if timer <= thrFeaACT and targetThrottle > 10: currThrottle = 100
                     elif targetThrottle < -10: currThrottle = targetThrottle

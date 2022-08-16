@@ -48,9 +48,13 @@ def predict(imgIn: numpy.ndarray, server = None):
         blurredImg = filter(imgIn)
         wImg, gImg, rImg = cv2.split(blurredImg)
 
+        # crop for blob detection
+        blobStart = 50
+        blobEnd = 129
+
         # add borders to fix blob detection
-        rImg = cv2.copyMakeBorder(rImg,1,1,1,1, cv2.BORDER_CONSTANT, value=[0,0,0])
-        gImg = cv2.copyMakeBorder(gImg,1,1,1,1, cv2.BORDER_CONSTANT, value=[0,0,0])
+        rImg = cv2.copyMakeBorder(rImg[blobStart:blobEnd],1,1,1,1, cv2.BORDER_CONSTANT, value=[0,0,0])
+        gImg = cv2.copyMakeBorder(gImg[blobStart:blobEnd],1,1,1,1, cv2.BORDER_CONSTANT, value=[0,0,0])
 
         # detect blobs
         if rightOnRed == True:
@@ -129,6 +133,9 @@ def predict(imgIn: numpy.ndarray, server = None):
         brKps = 0
         for i in range(len(rKps)):
             rKps[i].size /= 2
+            position = list(rKps[i].pt)
+            position[1] += blobStart
+            rKps[i].pt = tuple(position)
             if rKps[i].pt[1] + rKps[i].size > getRedEquation(rKps[i].pt[0]):
                 if brKps == 0:
                     brKps = rKps[i]
@@ -137,6 +144,9 @@ def predict(imgIn: numpy.ndarray, server = None):
         bgKps = 0
         for i in range(len(gKps)):
             gKps[i].size /= 2
+            position = list(gKps[i].pt)
+            position[1] += blobStart
+            gKps[i].pt = tuple(position)
             if gKps[i].pt[1] + gKps[i].size > getGreenEquation(gKps[i].pt[0]):
                 if bgKps == 0:
                     bgKps = gKps[i]
@@ -168,27 +178,28 @@ def predict(imgIn: numpy.ndarray, server = None):
         steeringArray = [0]
 
         # decide steering for each signal that will collide
+        reducedSteering = 7
         blobSizeRequirement = 5
         if brKps != 0:
             if bgKps != 0:
                 if brKps.size > bgKps.size and brKps.size > blobSizeRequirement:
-                    steeringArray.append(-(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size) * brKps.size ** 2 * 0.015)
+                    steeringArray.append(-(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size + reducedSteering) * brKps.size ** 2 * 0.02)
                     # steeringArray.append(brKps.size ** 2 * 0.2)
                 elif bgKps.size > blobSizeRequirement:
-                    steeringArray.append((getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size) * bgKps.size ** 2 * 0.015)
+                    steeringArray.append((getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size + reducedSteering) * bgKps.size ** 2 * 0.02)
                     # steeringArray.append(-bgKps.size ** 2 * 0.2)
             elif brKps.size > blobSizeRequirement:
-                steeringArray.append(-(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size) * brKps.size ** 2 * 0.015)
+                steeringArray.append(-(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size + reducedSteering) * brKps.size ** 2 * 0.02)
                 # steeringArray.append(brKps.size ** 2 * 0.2)
         elif bgKps != 0 and bgKps.size > blobSizeRequirement:
-            steeringArray.append((getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size) * bgKps.size ** 2 * 0.015)
+            steeringArray.append((getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size + reducedSteering) * bgKps.size ** 2 * 0.02)
             # steeringArray.append(-bgKps.size ** 2 * 0.2)
         
         # decide steering for each wall section
         # print(wallMaximumRight)
-        if wallHeightCenter > 8 and wallHeightRight > 14 and (wallMaximumCenter > 24 or wallMaximumRight > 27):
+        if wallHeightCenter > 7 and wallHeightRight > 14 and (wallMaximumCenter > 24 or wallMaximumRight > 27):
             if wallMaximumLeft > 30 and wallMaximumCenter > 24:
-                steeringArray.append(-(wallHeightCenter + wallHeightRight) ** 2 * 0.07)
+                steeringArray.append(-(wallHeightCenter + wallHeightRight) ** 2 * 0.15)
             else:
                 steeringArray.append(-(wallHeightCenter + wallHeightRight) ** 2 * 0.035)
             # if counterClockwise == True:
