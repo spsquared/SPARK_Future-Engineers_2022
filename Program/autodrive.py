@@ -25,7 +25,8 @@ def main():
             image = camera.read()
             prediction = filter.predict(image,server)
             if prediction == "stop":
-                drive.throttle(0)
+                drive.throttle(-1)
+                time.sleep(0.2)
                 stop(1)
                 break
             drive.steer(prediction)
