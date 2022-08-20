@@ -9,12 +9,25 @@
 # The Hardware
 
 6 (perspective) views of our car:
+<table><tbody><tr><td>
+
 ![front](./img/front.png)
+</td><td>
+
 ![back](./img/rear.png)
+</td></tr><tr><td>
+
 ![left](./img/left.png)
+</td><td>
+
 ![right](./img/right.png)
+</td></tr><tr><td>
+
 ![top](./img/top.png)
+</td><td>
+
 ![bottom](./img/bottom.png)
+</td></tr></tbody></table>
 
 # The Software
 
