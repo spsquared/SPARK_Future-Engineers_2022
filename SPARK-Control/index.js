@@ -366,6 +366,7 @@ let index = 0;
 let lefting = false;
 let righting = false;
 let fasting = false;
+let slowing = false;
 const fpsTimes = [];
 const displayImg = document.getElementById('displayImg');
 const canvas = document.getElementById('canvas');
@@ -506,6 +507,8 @@ document.addEventListener('keydown', (e) => {
         righting = true;
     } else if (e.key == 'Control') {
         fasting = true;
+    } else if (e.key == 'Shift') {
+        slowing = true;
     }
 });
 document.addEventListener('keyup', (e) => {
@@ -515,12 +518,14 @@ document.addEventListener('keyup', (e) => {
         righting = false;
     } else if (e.key == 'Control') {
         fasting = false;
+    } else if (e.key == 'Shift') {
+        slowing = false;
     }
 });
 let timer = 0;
 setInterval(() => {
     timer++;
-    if (timer > 2 || fasting) {
+    if ((slowing && timer > 10) || (!slowing && timer > 2) || fasting) {
         timer = 0;
         if (lefting) displayBack();
         if (righting) displayFront();
