@@ -1,3 +1,4 @@
+from itertools import count
 from IO import io
 import numpy
 import cv2
@@ -15,7 +16,10 @@ wM = wallMax = (85, 70, 80)
 wm = wallMin = (5, 5, 5)
 
 rightOnRed = True
-counterClockwise = False
+counterClockwise = True
+
+turnsMade = 0
+turnCooldown = 0
 
 def filter(imgIn: numpy.ndarray):
     global redMax, redMin, greenMax, greenMin, wallMax, wallMin
@@ -32,7 +36,7 @@ def filter(imgIn: numpy.ndarray):
 
 lastSend = 0
 def predict(imgIn: numpy.ndarray, server = None):
-    global redMax, redMin, greenMax, greenMin, wallMax, wallMin, lastSend
+    global redMax, redMin, greenMax, greenMin, wallMax, wallMin, lastSend, rightOnRed, counterClockwise, turnsMade, turnCooldown
     try:
         # create blob detector
         params = cv2.SimpleBlobDetector_Params()
@@ -178,21 +182,21 @@ def predict(imgIn: numpy.ndarray, server = None):
         steeringArray = [0]
 
         # decide steering for each signal that will collide
-        reducedSteering = 7
+        reducedSteering = 9
         blobSizeRequirement = 5
         if brKps != 0:
             if bgKps != 0:
                 if brKps.size > bgKps.size and brKps.size > blobSizeRequirement:
-                    steeringArray.append(-(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size + reducedSteering) * brKps.size ** 2 * 0.02)
+                    steeringArray.append(-(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size + reducedSteering) * brKps.size ** 2 * 0.025)
                     # steeringArray.append(brKps.size ** 2 * 0.2)
                 elif bgKps.size > blobSizeRequirement:
-                    steeringArray.append((getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size + reducedSteering) * bgKps.size ** 2 * 0.02)
+                    steeringArray.append((getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size + reducedSteering) * bgKps.size ** 2 * 0.025)
                     # steeringArray.append(-bgKps.size ** 2 * 0.2)
             elif brKps.size > blobSizeRequirement:
-                steeringArray.append(-(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size + reducedSteering) * brKps.size ** 2 * 0.02)
+                steeringArray.append(-(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size + reducedSteering) * brKps.size ** 2 * 0.025)
                 # steeringArray.append(brKps.size ** 2 * 0.2)
         elif bgKps != 0 and bgKps.size > blobSizeRequirement:
-            steeringArray.append((getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size + reducedSteering) * bgKps.size ** 2 * 0.02)
+            steeringArray.append((getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size + reducedSteering) * bgKps.size ** 2 * 0.025)
             # steeringArray.append(-bgKps.size ** 2 * 0.2)
         
         # decide steering for each wall section
@@ -200,19 +204,31 @@ def predict(imgIn: numpy.ndarray, server = None):
         if counterClockwise == True:
             if wallHeightCenter > 7 and wallHeightRight > 14 and (wallMaximumCenter > 24 or wallMaximumRight > 27):
                 if wallMaximumLeft > 30 and wallMaximumCenter > 24:
-                    steeringArray.append(-(wallHeightCenter + wallHeightRight) ** 2 * 0.15)
+                    steeringArray.append(-(wallHeightCenter + wallHeightRight) ** 2 * 0.16)
                 else:
-                    steeringArray.append(-(wallHeightCenter + wallHeightRight) ** 2 * 0.035)
+                    steeringArray.append(-(wallHeightCenter + wallHeightRight) ** 2 * 0.04)
         else:
             if wallHeightCenter > 7 and wallHeightLeft > 14 and (wallMaximumCenter > 24 or wallMaximumLeft > 27):
                 if wallMaximumRight > 30 and wallMaximumCenter > 24:
-                    steeringArray.append((wallHeightCenter + wallHeightLeft) ** 2 * 0.15)
+                    steeringArray.append((wallHeightCenter + wallHeightLeft) ** 2 * 0.16)
                 else:
-                    steeringArray.append((wallHeightCenter + wallHeightLeft) ** 2 * 0.035)
+                    steeringArray.append((wallHeightCenter + wallHeightLeft) ** 2 * 0.04)
         if wallHeightRight > 25 and wallMaximumRight > 27:
-            steeringArray.append(-wallHeightRight ** 2 * 0.06)
+            steeringArray.append(-wallHeightRight ** 2 * 0.07)
         if wallHeightLeft > 25 and wallMaximumLeft > 27:
-            steeringArray.append(wallHeightLeft ** 2 * 0.06)
+            steeringArray.append(wallHeightLeft ** 2 * 0.07)
+        
+        # very far, just turned
+
+        if wallHeightCenter < 5 and turnCooldown <= 0:
+            turnCooldown = 100
+            turnsMade += 1
+            print(turnsMade)
+        
+        turnCooldown -= 1
+
+        if turnsMade == 13 and turnCooldown == 50:
+            return "stop"
 
         # decide final steering
         steeringMax = max(steeringArray)

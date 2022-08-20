@@ -20,10 +20,14 @@ def main():
             drive.stop()
             io.close()
         server.addListener('stop', stop)
-        drive.throttle(100)
+        drive.throttle(30)
         while running:
             image = camera.read()
             prediction = filter.predict(image,server)
+            if prediction == "stop":
+                drive.throttle(0)
+                stop(1)
+                break
             drive.steer(prediction)
             # print("Current Prediction: " + str(prediction))
         #code here
