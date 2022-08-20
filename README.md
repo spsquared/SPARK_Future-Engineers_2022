@@ -8,6 +8,14 @@
 
 # The Hardware
 
+6 (perspective) views of our car:
+![front](./img/front.png)
+![back](./img/rear.png)
+![left](./img/left.png)
+![right](./img/right.png)
+![top](./img/top.png)
+![bottom](./img/bottom.png)
+
 # The Software
 
 ## IO
