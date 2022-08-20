@@ -8,7 +8,7 @@
 
 # The Hardware
 
-6 (perspective) views of our car:
+6 (perspective) views of our vehicle:
 <table><tbody><tr><td>
 
 ![front](./img/front.png)
