@@ -234,31 +234,41 @@ img {
     right: 0px;
     width: 100px;
 }
-#displayImg {
+#displayBlock {
     position: absolute;
     bottom: 56px;
     left: 0px;
     width: 544px;
     height: 308px;
 }
+#displayImg {
+    position: absolute;
+    top: -0.5px;
+    left: -0.5px;
+    width: calc(100% + 2px);
+    height: calc(100% + 2px);
+    image-rendering: pixelated;
+    background-color: black;
+}
 #canvas {
     position: absolute;
-    bottom: 56px;
-    left: -1px;
-    width: 542px;
-    height: 306px;
+    top: -2px;
+    left: -2px;
+    width: 100%;
+    height: 100%;
     border: 2px solid black;
+    image-rendering: pixelated;
     pointer-events: none;
 }
 #wallCanvas {
     position: absolute;
-    bottom: 56px;
-    left: -1px;
-    width: 542px;
-    height: 306px;
-    border: 2px solid black;
-    pointer-events: none;
+    top: -2px;
+    left: -2px;
+    width: 100%;
+    height: 100%;
+    border: 2px solid transparent;
     image-rendering: pixelated;
+    pointer-events: none;
 }
 #fps {
     position: absolute;
@@ -273,6 +283,11 @@ img {
     position: absolute;
     top: -20px;
     left: 8px;
+}
+#displayFullscreen {
+    position: absolute;
+    top: -72px;
+    left: -8px;
 }
 
 #emergencyStop {

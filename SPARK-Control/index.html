@@ -180,11 +180,14 @@
         </label>
         <label id="maxHistoryLabel" for="maxHistory">Max History:&nbsp;</label>
         <input type="number" id="maxHistory" min="0" max="1000000" step="10" value="500" oninput="maxHistory = parseInt(this.value);">
-        <img id="displayImg">
-        <canvas id="canvas"></canvas>
-        <canvas id="wallCanvas"></canvas>
+        <div id="displayBlock">
+            <img id="displayImg">
+            <canvas id="canvas"></canvas>
+            <canvas id="wallCanvas"></canvas>
+        </div>
         <div id="fps">FPS: 0</div>
         <div id="strPredict">Predicted Steering: 0</div>
+        <button id="displayFullscreen" class="largeButton" onclick="document.getElementById('displayBlock').requestFullscreen();">FULLSCREEN</button>
     </div>
     <div id="joystick">
         <div id="joystickPin"></div>
