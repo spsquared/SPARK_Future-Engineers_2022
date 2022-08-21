@@ -19,7 +19,7 @@ WIP
 
 ## **Operating System**
 
-We used Jetson Nano's operating system, which is Linux.
+We used Jetson Nano's operating system, which is Linux. All our code is in python.
 
 ## **IO**
 insert documentation about drive throttling and camera
