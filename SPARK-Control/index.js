@@ -398,6 +398,7 @@ function addCapture(img) {
     FPS.innerHTML = 'FPS: ' + fpsTimes.length;
 };
 function addBlobs(data) {
+    index = 0;
     history[index].blobs = data;
     if (history.length > maxHistory) {
         history.pop();
@@ -451,6 +452,7 @@ function drawLightBlob(blob,blobColor){
     ctx.stroke();
 };
 function showPrediction(val) {
+    index = 0;
     history[index].steer = Math.round(val);
     if (history.length > maxHistory) {
         history.pop();
