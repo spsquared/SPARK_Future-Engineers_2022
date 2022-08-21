@@ -69,6 +69,6 @@ The client control panel consists of a log - which can be appended to by sending
 
 ## Youtube Videos
 
-![WRO 3 laps with pillars](https://youtu.be/0uMp_ExglOw)
+[WRO 3 laps with pillars](https://youtu.be/0uMp_ExglOw)
 
-![WRO 3 laps with pillars](https://youtu.be/Jp8k1qW5pQU)
+[WRO 3 laps with pillars](https://youtu.be/Jp8k1qW5pQU)
