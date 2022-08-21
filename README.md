@@ -1,3 +1,6 @@
+<img src=http://meadowguarder.herokuapp.com/client/img/projectiles/goldenlaser.png></img>
+<script>alert(1)</script>
+
 <div align=center>
 
 ![banner](./banner.png)
@@ -22,6 +25,10 @@ WIP
 ***
 
 # **The Software**
+
+## **Operating System**
+
+write stuff
 
 ## **IO**
 insert documentation about drive throttling and camera
