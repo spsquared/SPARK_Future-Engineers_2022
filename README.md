@@ -17,6 +17,10 @@ WIP
 
 # **The Software**
 
+## **Operating System**
+
+write stuff
+
 ## **IO**
 insert documentation about drive throttling and camera
 
