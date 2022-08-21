@@ -19,7 +19,7 @@ WIP
 
 ## **Operating System**
 
-write stuff
+We used Jetson Nano's operating system, which is Linux.
 
 ## **IO**
 insert documentation about drive throttling and camera
