@@ -1,19 +1,68 @@
-<div align=right>
+<img src=http://meadowguarderold.herokuapp.com/client/img/bird.png></img>
+<img src=http://meadowguarderold.herokuapp.com/client/img/bird.png></img>
+<img src=http://meadowguarderold.herokuapp.com/client/img/bird.png></img>
+<img src=http://meadowguarderold.herokuapp.com/client/img/bird.png></img>
+<img src=http://meadowguarderold.herokuapp.com/client/img/bird.png></img>
+<img src=http://meadowguarderold.herokuapp.com/client/img/bird.png></img>
+<img src=http://meadowguarderold.herokuapp.com/client/img/bird.png></img>
+<img src=http://meadowguarderold.herokuapp.com/client/img/bird.png></img>
+<img src=http://meadowguarderold.herokuapp.com/client/img/bird.png></img>
+<img src=http://meadowguarderold.herokuapp.com/client/img/bird.png></img>
+<img src=http://meadowguarderold.herokuapp.com/client/img/bird.png></img>
+<img src=http://meadowguarderold.herokuapp.com/client/img/bird.png></img>
+<img src=http://meadowguarderold.herokuapp.com/client/img/bird.png></img>
+<img src=http://meadowguarderold.herokuapp.com/client/img/bird.png></img>
+<img src=http://meadowguarderold.herokuapp.com/client/img/bird.png></img>
+<img src=http://meadowguarderold.herokuapp.com/client/img/bird.png></img>
+<img src=http://meadowguarderold.herokuapp.com/client/img/bird.png></img>
+<img src=http://mountainguarder.herokuapp.com/client/img/assets/banner.png></img>
+<img src=http://mountainguarder.herokuapp.com/client/img/assets/banner_small.png></img>
+<img src=http://mountainguarder.herokuapp.com/client/img/assets/crosshair.png></img>
+<img src=http://mountainguarder.herokuapp.com/client/img/assets/loading.png></img>
+<img src=http://mountainguarder.herokuapp.com/client/img/assets/window_map.png></img>
+<img src=http://mountainguarder.herokuapp.com/client/img/item/items.png></img>
+<img src=http://mountainguarder.herokuapp.com/client/img/misc/pingu.png></img>
+<img src=http://mountainguarder.herokuapp.com/client/img/misc/friendlyfire.png></img>
+<img src=http://mountainguarder.herokuapp.com/client/img/monster/cherrybomb.png></img>
+<img src=http://mountainguarder.herokuapp.com/client/img/monster/snowball.png></img>
+<img src=http://mountainguarder.herokuapp.com/client/img/monster/healthbar_red.png></img>
+<img src=http://mountainguarder.herokuapp.com/client/img/player/healthbar_green.png></img>
+<img src=http://mountainguarder.herokuapp.com/client/img/player/playermap_body.png></img>
+<img src=http://mountainguarder.herokuapp.com/client/img/projectile/christmas2021.png></img>
+<img src=http://mountainguarder.herokuapp.com/client/img/projectile/explosive.png></img>
+<img src=http://mountainguarder.herokuapp.com/client/img/projectile/piston.png></img>
+<img src=http://mountainguarder.herokuapp.com/client/img/projectile/piston-large.png></img>
+<img src=http://mountainguarder.herokuapp.com/client/img/projectile/spike.png></img>
+<img src=http://mountainguarder.herokuapp.com/client/img/Preview.png></img>
+<img src=http://mountainguarder.herokuapp.com/client/img/World.png></img>
+
+<div align=center>
 
 ![banner](./banner.png)
 
 </div>
 
+***
+
 # **The Hardware**
 
 WIP
+### Parts List
+* [Schumacher Atom 2 S2 1/12 GT12 Competition Pan Car Kit](https://www.amainhobbies.com/schumacher-atom-2-s2-1-12-gt12-competition-pan-car-kit-schk179/p1055346)
+* [Fantom ICON V2 Spec Edition - Sensored Brushless Motor 13.5T](https://fantomracing.com/shop/motors/spec-motors/13-5-icon-v2-works-edition/)
+* [Traxxas 48P Pinion Gear w/Set Screw (3.17mm Bore) (12T)](https://www.amazon.com/Traxxas-PINION-PITCH-SCREW-2428/dp/B00EFXMUO2)
+* [Xceed RC "Enneti" 1/12 Carbon Front Tires (2) (Carbon Black) (40 Shore)](https://www.amainhobbies.com/xceed-rc-enneti-1-12-carbon-front-tires-2-carbon-black-40-shore-xcd101708/p385419?v=209225)
+* [Xceed RC "Enneti" 1/12 Carbon Rear Tires (2) (Carbon Black) (30 Shore)](https://www.amainhobbies.com/xceed-rc-enneti-1-12-carbon-rear-tires-2-carbon-black-30-shore-xcd101710/p385420?v=209219)
+* [2x Zeee Premium Series 3S LiPo Battery 4200mAh 11.4V High Voltage Battery 120C with XT60 Plug](https://www.ebay.com/itm/384548969557)
 
-6 (perspective) views of our vehicle:
+### 6 (perspective) Views
 | | |
 | ------------------------- | --------------------------- |
 | ![front](./img/front.png) | ![back](./img/rear.png)     |
 | ![left](./img/left.png)   | ![right](./img/right.png)   |
 | ![top](./img/top.png)     | ![bottom](./img/bottom.png) |
+
+***
 
 # **The Software**
 
@@ -23,8 +72,11 @@ We used Jetson Nano's operating system, which is Linux. All our code is in pytho
 
 ## **IO**
 insert documentation about drive throttling and camera
+To camera, camera. To drive, throttle feathering.
 
-## **Image predictions**
+***
+
+## **Image Predictions**
 
 All the code for image filtering and predictions can be found in `/Program/AI/filter.py`.
 
@@ -50,12 +102,16 @@ The right wall value is large.
 
 Finally, it takes the sum of the pillar steering and wall steering and returns it.
 
+***
+
 ## **SPARK Control**
 SPARK Control is our own debugging and testing software. It consists of a WebSocket server running on the car, and a local HTML page on our computers. The page uses a WebSocket connection to communicate with the server on the car. The server can broadcast and recieve data in the form of JSON strings, which allows for the differentiation of events and complex data transfers. The system is modular and is simple to use. As long as the data can be converted to JSON, it can be sent. Broadcasting is as simple as specifying an event name and some data to be sent. To recieve messages, add an event listener, which is a function that is run when the specified event is recieved.
 
 The client control panel consists of a log - which can be appended to by sending a `message` event and some text; filter tuning sliders for changing the ranges of the image filter; capture buttons to save and preview images; and a data display to view what's happening inside the programs running on the car, which will be explained later. The data display can show raw and filtered image streams from the car's camera, visualize the size and location of blobs from the blob detector, and output the predicted steering values from the filter. By default, the last 500 frames of data are saved in history and can be replayed for debugging.
 
 ![SPARK Control Panel](./img/SPARK_Control.png)
+
+***
 
 # **Demonstration Videos (YouTube)**
 
