@@ -66,3 +66,9 @@ SPARK Control is our own debugging and testing software. It consists of a WebSoc
 The client control panel consists of a log - which can be appended to by sending a `message` event and some text; filter tuning sliders for changing the ranges of the image filter; capture buttons to save and preview images; and a data display to view what's happening inside the programs running on the car, which will be explained later. The data display can show raw and filtered image streams from the car's camera, visualize the size and location of blobs from the blob detector, and output the predicted steering values from the filter. By default, the last 500 frames of data are saved in history and can be replayed for debugging.
 
 ![SPARK Control Panel](./img/SPARK_Control.png)
+
+## Youtube Videos
+
+![WRO 3 laps with pillars](https://youtu.be/0uMp_ExglOw)
+
+![WRO 3 laps with pillars](https://youtu.be/Jp8k1qW5pQU)
