@@ -45,7 +45,11 @@ WIP
 
 ## **Operating System**
 
-We used Jetson Nano's operating system, which is Linux. All our code is in python.
+We used Jetson Nano's operating system, which is Linux.
+
+## **Programming Language**
+
+All our code is in python. We use numpy, cv2, base64, threading, asyncio, Jetson.GPIO.
 
 ## **IO**
 insert documentation about drive throttling and camera
@@ -59,23 +63,25 @@ All the code for image filtering and predictions can be found in `/Program/AI/fi
 
 The filter function takes in a raw image and outputs a filtered image. This image is filtered based on 6 RGB values, `redMax`, `redMin`, `greenMin`, `greenMax`, `wallMin`, `wallMax`. We use `cv2`'s `inRange` function to filter the image based on these values.
 
-The predict function is where all the predictions happen. It starts by creating a blob detector using `cv2.SimpleBlobDetector`. This is from a package. `SimpleBlobDetector_Params` is only for setting the parameters for the blob detector. After this, it takes the raw image from the input and passes it to the filter function. After this, it uses the blob detector on the filtered red and green images to detect red and green pillars. Now it does wall detection. First, it crops the image, removing the top and bottom sections, and then using `numpy.count_nonzero` as a fast way to get how many filtered wall pixels there are. There are 3 sections of the wall that we care about, the left side, center, and right side. Using the `last_nonzero` function from `numpy`, we can find the bottom line of the 3 sections of walls, as this is useful for making predictions based on the walls. We have two equations, `getRedEquation` and `getGreenEquation`. These calculate if we will hit a pillar or not, and we use it on all the blobs detected by the blob detector. After this, it sends all this information to the SPARK Control Panel. If the center wall is very tiny, the car knows it just turned and increases `turnsMade` by one, and if we have turned 12 times, or 3 laps, it returns "stop". After this, we take the largest pillar we will hit and given the pillar size and where it is we get a `pillarSteering`. Then, there are 4 main cases for wall steering:
+The predict function is where all the predictions happen. It starts by creating a blob detector using `cv2.SimpleBlobDetector`. This is from a package. `SimpleBlobDetector_Params` is only for setting the parameters for the blob detector. After this, it takes the raw image from the input and passes it to the filter function. After this, it uses the blob detector on the filtered red and green images to detect red and green pillars. Now it does wall detection. First, it crops the image, removing the top and bottom sections, and then using `numpy.count_nonzero` as a fast way to get how many filtered wall pixels there are. There are 3 sections of the wall that we care about, the left side, center, and right side. Using the `last_nonzero` function from `numpy`, we can find the bottom line of the 3 sections of walls, as this is useful for making predictions based on the walls. We have two equations, `getRedEquation` and `getGreenEquation`. These calculate if we will hit a pillar or not, and we use it on all the blobs detected by the blob detector. After this, it sends all this information to the SPARK Control Panel. If the center wall is very tiny, the car knows it just turned and increases `turnsMade` by one, and if we have turned 12 times, or 3 laps, it returns "stop". It compares the size of the left wall and the right wall, and adds the difference to a variable called `counterClockwise`. Based on if it is positive or negative, we know which direction to move. Negative is clockwise and positive is counter clockwise. After this, we take the largest pillar we will hit and given the pillar size and where it is we get a `pillarSteering`. Then, there are 4 main cases for wall steering:
 
 **1: Crashing into center wall**
 
-This means the center wall value and right wall values are large. However, if the left wall value is also large, it is the second case.
+This means the center wall value and right wall values are large. However, if the left wall value is also large, it is the second case. If we are turning clockwise we will turn right and if we are turning counter clockwise we turn left.
 
 **2: Crashing into left wall**
 
-The left wall value is very large, and the center section which is detected as the center wall may be actually the left wall.
+The left wall value is very large, and the center section which is detected as the center wall may be actually the left wall. We will always turn right.
 
 **3: Slanted left**
 
-The left wall value is large.
+The left wall value is large. We will always turn right.
 
 **4: Slanted right**
 
-The right wall value is large.
+The right wall value is large. We will always turn left.
+
+A negative steering value means we turn left, while a positive means turning right.
 
 Finally, it takes the sum of the pillar steering and wall steering and returns it.
 
