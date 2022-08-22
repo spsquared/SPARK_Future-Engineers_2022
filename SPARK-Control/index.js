@@ -1,5 +1,5 @@
 // const ip = '192.168.1.151';
-const ip = '192.168.100.12';
+const ip = '192.168.100.151';
 
 socket = new WebSocket('ws://' + ip + ':4040');
 
