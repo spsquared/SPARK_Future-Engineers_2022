@@ -45,15 +45,16 @@ WIP
 
 ## **Operating System**
 
-We used Jetson Nano's operating system, which is Linux.
+We used Jetson Nano's operating system, which is Ubuntu 18.04. We switched it to text-only mode since we encountered errors that prevented booting in GUI mode. We also added a startup script ([see Notes.md](./Notebook/Notes.md)) to run the program on startup, and it waits for 
 
 ## **Programming Language**
 
-All our code is in python. We use numpy, cv2, base64, threading, asyncio, Jetson.GPIO.
+All our code is in python (except the SPARK Control Panel, but that won't be used in competition). We use `os`, `time`, `threading`, `numpy`, `cv2`, `base64`, `threading`, `asyncio`, `Jetson.GPIO`, `jetcam`, `json`, `websockets`.
 
 ## **IO**
 insert documentation about drive throttling and camera
 To camera, camera. To drive, throttle feathering.
+The camera is handled by the `` library
 
 ***
 

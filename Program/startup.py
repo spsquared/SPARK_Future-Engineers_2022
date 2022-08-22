@@ -1,5 +1,6 @@
 import Jetson.GPIO as GPIO
 import time
+import os
 
 if __name__ == '__main__':
     GPIO.setwarnings(False)
@@ -14,6 +15,9 @@ if __name__ == '__main__':
     fd = open('./run_on_startup.txt', 'r')
     run_startup = fd.readlines()[0]
     if run_startup == 'true':
-        GPIO.setup(15, GPIO.IN)
-        GPIO.wait_for_edge(15, GPIO.RISING)
-        GPIO.wait_for_edge(15, GPIO.FALLING)
+        GPIO.setup(18, GPIO.IN)
+        GPIO.wait_for_edge(18, GPIO.RISING)
+        GPIO.wait_for_edge(18, GPIO.FALLING)
+        GPIO.cleanup()
+        print('SASDFADSFADSFSADFADSFA')
+        os.system('python3 ./autodrive.py')

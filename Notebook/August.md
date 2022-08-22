@@ -44,3 +44,9 @@ I don't think we have any screenshots of our debugging and development software,
 ![SPARK Control Panel](./August/8-14-22-a.png)
 
 There is a more detailed description in the documentation.
+
+# 8/15/22, 8/16/22, 8/18/22, 8/19/22, 8/20/22
+More tuning. Not a lot of new things.
+
+# 8/21/22
+We switched our systems to a new network (pocket router) and now the camera isn't detected.
