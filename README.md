@@ -11,11 +11,11 @@
 WIP
 ### Parts List
 * [Schumacher Atom 2 S2 1/12 GT12 Competition Pan Car Kit](https://www.amainhobbies.com/schumacher-atom-2-s2-1-12-gt12-competition-pan-car-kit-schk179/p1055346)
+* [HobbyWing QUICRUN 10BL60 Brushless ESC](https://www.hobbywingdirect.com/products/quicrun-wp-10bl60)
 * [Fantom ICON V2 Spec Edition - Sensored Brushless Motor 13.5T](https://fantomracing.com/shop/motors/spec-motors/13-5-icon-v2-works-edition/)
 * [Traxxas 48P Pinion Gear w/Set Screw (3.17mm Bore) (12T)](https://www.amazon.com/Traxxas-PINION-PITCH-SCREW-2428/dp/B00EFXMUO2)
 * [Xceed RC "Enneti" 1/12 Carbon Front Tires (2) (Carbon Black) (40 Shore)](https://www.amainhobbies.com/xceed-rc-enneti-1-12-carbon-front-tires-2-carbon-black-40-shore-xcd101708/p385419?v=209225)
 * [Xceed RC "Enneti" 1/12 Carbon Rear Tires (2) (Carbon Black) (30 Shore)](https://www.amainhobbies.com/xceed-rc-enneti-1-12-carbon-rear-tires-2-carbon-black-30-shore-xcd101710/p385420?v=209219)
-* [HobbyWing QUICRUN 10BL60 Brushless ESC](https://www.hobbywingdirect.com/products/quicrun-wp-10bl60)
 * [Savox SV1260MG - Mini Digital High Voltage Servo 7.4V](https://www.savoxusa.com/products/savsv1260mg-mini-digital-high-voltage)
 * [2x Zeee Premium Series 3S LiPo Battery 4200mAh 11.4V High Voltage Battery 120C with XT60 Plug](https://www.ebay.com/itm/384548969557)
 * [2x Variable DC Voltage Buck Converter](https://www.amazon.com/Regulator-Adjustable-Converter-Electronic-Stabilizer/dp/B07PDGG84B/ref=sr_1_18)
@@ -54,7 +54,9 @@ All our code is in python (except the SPARK Control Panel, but that won't be use
 ## **IO**
 insert documentation about drive throttling and camera
 To camera, camera. To drive, throttle feathering.
-The camera is handled by the `` library
+The camera is handled by the `jetcam` library, which we can read the most recent frame into a `numpy` array, which we then process.
+
+The drivetrain of the car is handled separately by the controller in the servo and the ESC. We can feed two PWM signals of specific pulse widths to them to control their speed/angle. However, speed control is not as straightforwards as steering control. The ESC was designed for RC hobby use, so it has a "dead zone" in the forwards throttle range of 6%. Since we are running the motor way below its rated speed, the 6% dead zone actually takes up our entire desired throttle range, making the minimum speed too high to be usable. To solve this, we can "feather" the throttle, which is actually just another PWM on the PWM. After implementing and tuning this, we can go much slower.
 
 ***
 

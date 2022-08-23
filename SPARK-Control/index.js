@@ -1,5 +1,4 @@
-// const ip = '192.168.1.151';
-const ip = '192.168.100.151';
+const ip = '192.168.1.151';
 
 socket = new WebSocket('ws://' + ip + ':4040');
 
@@ -455,7 +454,6 @@ function drawLightBlob(blob,blobColor){
     ctx.stroke();
 };
 function showPrediction(val) {
-    index = 0;
     history[index].steer = Math.round(val);
     if (history.length > maxHistory) {
         history.pop();
@@ -476,7 +474,7 @@ async function displayFront() {
 };
 function displayChange() {
     historySlider.max = history.length;
-    index = history.length-historySlider.value;
+    index = history.length-parseInt(historySlider.value);
     if (history[index]) {
         displayImg.src = history[index].img;
         drawBlobs();
