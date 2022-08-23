@@ -1,4 +1,7 @@
-socket = new WebSocket('ws://192.168.1.151:4040');
+// const ip = '192.168.1.151';
+const ip = '192.168.100.151';
+
+socket = new WebSocket('ws://' + ip + ':4040');
 
 const log = document.getElementById('eventLogBody');
 const callbacks = [];
@@ -33,7 +36,7 @@ socket.onclose = function() {
     appendLog('Connection closed', 'red');
     setTimeout(function() {
         appendLog('Attempting to reconnect...');
-        let newsocket = new WebSocket('ws://192.168.1.151:4040');
+        let newsocket = new WebSocket('ws://' + ip + ':4040');
         newsocket.onmessage = socket.onmessage;
         newsocket.onopen = socket.onopen;
         newsocket.onclose = socket.onclose;
