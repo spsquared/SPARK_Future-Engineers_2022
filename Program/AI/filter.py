@@ -19,6 +19,8 @@ counterClockwise = 0
 turnsMade = 0
 turnCooldown = 0
 
+passedPillar = 0
+
 def filter(imgIn: numpy.ndarray):
     global redMax, redMin, greenMax, greenMin, wallMax, wallMin
     try:
@@ -34,7 +36,7 @@ def filter(imgIn: numpy.ndarray):
 
 lastSend = 0
 def predict(imgIn: numpy.ndarray, server = None):
-    global redMax, redMin, greenMax, greenMin, wallMax, wallMin, lastSend, rightOnRed, counterClockwise, turnsMade, turnCooldown, turnTime
+    global redMax, redMin, greenMax, greenMin, wallMax, wallMin, lastSend, rightOnRed, counterClockwise, turnsMade, turnCooldown, passedPillar
     try:
         # create blob detector
         params = cv2.SimpleBlobDetector_Params()
@@ -185,50 +187,57 @@ def predict(imgIn: numpy.ndarray, server = None):
         pillarSteering = 0
 
         # decide steering for each signal that will collide
-        reducedSteering = 12
+        reducedSteering = 0
         if brKps != 0:
             if bgKps != 0:
                 if brKps.size > bgKps.size:
-                    pillarSteering = -(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size + reducedSteering) * (brKps.size + 1) ** 2 * 0.03
+                    pillarSteering = -(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size - reducedSteering) * (brKps.size + 1) ** 2 * 0.02
                     # steeringArray.append(brKps.size ** 2 * 0.2)
                 else:
-                    pillarSteering = (getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size + reducedSteering) * (bgKps.size + 1) ** 2 * 0.03
+                    pillarSteering = (getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size - reducedSteering) * (bgKps.size + 1) ** 2 * 0.02
                     # steeringArray.append(-bgKps.size ** 2 * 0.2)
             else:
-                pillarSteering = -(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size + reducedSteering) * (brKps.size + 1) ** 2 * 0.03
+                pillarSteering = -(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size - reducedSteering) * (brKps.size + 1) ** 2 * 0.02
                 # steeringArray.append(brKps.size ** 2 * 0.2)
         elif bgKps != 0:
-            pillarSteering = (getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size + reducedSteering) * (bgKps.size + 1) ** 2 * 0.03
+            pillarSteering = (getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size - reducedSteering) * (bgKps.size + 1) ** 2 * 0.02
             # steeringArray.append(-bgKps.size ** 2 * 0.2)
+        passedPillar *= 0.8
+        if pillarSteering != 0:
+            passedPillar = pillarSteering
+        else:
+            pillarSteering = passedPillar
         
         # decide steering for each wall section
-        counterClockwise += wallHeightRight - wallHeightLeft
+        counterClockwise += wallMaximumRight - wallMaximumLeft
 
         if counterClockwise >= 0:
             if wallHeightCenter > 9 and wallHeightRight > 18 and (wallMaximumCenter > 24 or wallMaximumRight > 27):
                 if wallMaximumLeft > 30 and wallMaximumCenter > 24:
-                    steeringArray.append(-(wallHeightCenter + wallHeightRight) ** 2 * 0.04)
+                    steeringArray.append(-(wallHeightCenter + wallHeightRight) ** 2 * 0.08)
                 else:
                     steeringArray.append(-(wallHeightCenter + wallHeightRight) ** 2 * 0.16)
-            if wallHeightRight > 22 and wallMaximumRight > 27:
-                steeringArray.append(-wallHeightRight ** 2 * 0.07)
-            if wallHeightLeft > 22 and wallMaximumLeft > 27:
-                steeringArray.append(wallHeightLeft ** 2 * 0.07)
+            if wallHeightRight > 24 and wallMaximumRight > 27:
+                steeringArray.append(-wallHeightRight ** 2 * 0.04)
+            if wallHeightLeft > 24 and wallMaximumLeft > 27:
+                steeringArray.append(wallHeightLeft ** 2 * 0.04)
+            # counterClockwise -= min(counterClockwise / 10,10)
         else:
             if wallHeightCenter > 9 and wallHeightLeft > 18 and (wallMaximumCenter > 24 or wallMaximumLeft > 27):
                 if wallMaximumRight > 30 and wallMaximumCenter > 24:
-                    steeringArray.append((wallHeightCenter + wallHeightLeft) ** 2 * 0.04)
+                    steeringArray.append((wallHeightCenter + wallHeightLeft) ** 2 * 0.08)
                 else:
                     steeringArray.append((wallHeightCenter + wallHeightLeft) ** 2 * 0.16)
-            if wallHeightRight > 22 and wallMaximumRight > 27:
-                steeringArray.append(-wallHeightRight ** 2 * 0.07)
-            if wallHeightLeft > 22 and wallMaximumLeft > 27:
-                steeringArray.append(wallHeightLeft ** 2 * 0.07)
+            if wallHeightRight > 24 and wallMaximumRight > 27:
+                steeringArray.append(-wallHeightRight ** 2 * 0.04)
+            if wallHeightLeft > 24 and wallMaximumLeft > 27:
+                steeringArray.append(wallHeightLeft ** 2 * 0.04)
+            # counterClockwise += min(-counterClockwise / 10,10)
         
         # very far, just turned
 
-        if wallHeightCenter < 7 and turnCooldown <= 0:
-            turnCooldown = 200
+        if wallHeightCenter < 8 and turnCooldown <= 0:
+            turnCooldown = 180
             turnsMade += 1
             print(turnsMade)
         
@@ -243,16 +252,16 @@ def predict(imgIn: numpy.ndarray, server = None):
         steeringMin = min(steeringArray)
         if steeringMax > abs(steeringMin):
             if pillarSteering > 0:
-                if steeringMax < pillarSteering and (steeringMax < 100 or pillarSteering >= 100):
-                    steeringMax += pillarSteering
+                if steeringMax < pillarSteering and (steeringMax < 75 or pillarSteering >= 75):
+                    steeringMax += pillarSteering * 3 / 2
                 else:
                     steeringMax += pillarSteering / 2
                 if server != None:
                     server.broadcast('strPredict', str(steeringMax))
                 return steeringMax
             else:
-                if steeringMax < abs(pillarSteering) and (steeringMax < 100 or pillarSteering <= -100):
-                    steeringMax += pillarSteering
+                if steeringMax < abs(pillarSteering) and (steeringMax < 75 or pillarSteering <= -75):
+                    steeringMax += pillarSteering * 3 / 2
                 else:
                     steeringMax += pillarSteering / 2
                 if server != None:
@@ -260,16 +269,16 @@ def predict(imgIn: numpy.ndarray, server = None):
                 return steeringMax
         else:
             if pillarSteering > 0:
-                if abs(steeringMin) < pillarSteering and (abs(steeringMin) < 100 or pillarSteering >= 100):
-                    steeringMin += pillarSteering
+                if abs(steeringMin) < pillarSteering and (abs(steeringMin) < 75 or pillarSteering >= 75):
+                    steeringMin += pillarSteering * 3 / 2
                 else:
                     steeringMin += pillarSteering / 2
                 if server != None:
                     server.broadcast('strPredict', str(steeringMin))
                 return steeringMin
             else:
-                if abs(steeringMin) < abs(pillarSteering) and (abs(steeringMin) < 100 or pillarSteering <= -100):
-                    steeringMin += pillarSteering
+                if abs(steeringMin) < abs(pillarSteering) and (abs(steeringMin) < 75 or pillarSteering <= -75):
+                    steeringMin += pillarSteering * 3 / 2
                 else:
                     steeringMin += pillarSteering / 2
                 if server != None:
