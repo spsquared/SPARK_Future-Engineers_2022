@@ -452,7 +452,6 @@ function drawLightBlob(blob,blobColor){
     ctx.stroke();
 };
 function showPrediction(val) {
-    index = 0;
     history[index].steer = Math.round(val);
     if (history.length > maxHistory) {
         history.pop();
