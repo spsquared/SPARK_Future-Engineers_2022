@@ -74,8 +74,6 @@ We used Jetson Nano's operating system, which is Ubuntu 18.04. We switched it to
 All our code is in python (except the SPARK Control Panel, but that won't be used in competition). We use `os`, `time`, `threading`, `numpy`, `cv2`, `base64`, `threading`, `asyncio`, `Jetson.GPIO`, `jetcam`, `json`, `websockets`.
 
 ## **IO**
-insert documentation about drive throttling and camera
-To camera, camera. To drive, throttle feathering.
 The camera is handled by the `jetcam` library, which we can read the most recent frame into a `numpy` array, which we then process.
 
 The drivetrain of the car is handled separately by the controller in the servo and the ESC. We can feed two PWM signals of specific pulse widths to them to control their speed/angle. However, speed control is not as straightforwards as steering control. The ESC was designed for RC hobby use, so it has a "dead zone" in the forwards throttle range of 6%. Since we are running the motor way below its rated speed, the 6% dead zone actually takes up our entire desired throttle range, making the minimum speed too high to be usable. To solve this, we can "feather" the throttle, which is actually just another PWM on the PWM. After implementing and tuning this, we can go much slower.
