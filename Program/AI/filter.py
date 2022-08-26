@@ -13,14 +13,6 @@ gm = greenMin = (80, 80, 35)
 wM = wallMax = (85, 70, 80)
 wm = wallMin = (5, 5, 5)
 
-rightOnRed = True
-counterClockwise = 0
-
-turnsMade = 0
-turnCooldown = 0
-
-passedPillar = 0
-
 def filter(imgIn: numpy.ndarray):
     global redMax, redMin, greenMax, greenMin, wallMax, wallMin
     try:
@@ -34,6 +26,11 @@ def filter(imgIn: numpy.ndarray):
         print(err)
         io.error()
 
+rightOnRed = True
+counterClockwise = 0
+turnsMade = 0
+turnCooldown = 0
+passedPillar = 0
 lastSend = 0
 def predict(imgIn: numpy.ndarray, server = None):
     global redMax, redMin, greenMax, greenMin, wallMax, wallMin, lastSend, rightOnRed, counterClockwise, turnsMade, turnCooldown, passedPillar
