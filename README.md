@@ -67,7 +67,7 @@ Here is a simple electromechanical schematic for how the electronics are wired:
 
 ## **Operating System**
 
-We used Jetson Nano's operating system, which is Ubuntu 18.04. We switched it to text-only mode since we encountered errors that prevented booting in GUI mode. We also added a startup script ([see Notes.md](./Notebook/Notes.md)) to run the program on startup, and it waits for 
+We used Jetson Nano's operating system, which is Ubuntu 18.04. We switched it to text-only mode since we encountered errors that prevented booting in GUI mode. We also added a startup script ([see Notes.md](./Notebook/Notes.md)) to run the program on startup, and it waits for two pins to be shorted. We're not sure if it's reliable yet.
 
 ## **Programming Language**
 
