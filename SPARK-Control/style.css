@@ -52,6 +52,19 @@ img {
     margin-top: 6px;
     margin-bottom: 2px;
 }
+.connectNow {
+    width: 158px;
+    height: 24px;
+    margin-left: 16px;
+    font: 12px sans-serif;
+    font-weight: bolder;
+    border: 4px outset white;
+    background-color: red;
+    cursor: pointer;
+}
+.connectNow:active {
+    border-style: inset;
+}
 
 #joystick {
     position: absolute;
