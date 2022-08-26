@@ -1,5 +1,4 @@
-// const ip = '192.168.1.151';
-const ip = '192.168.100.151';
+const ip = '192.168.1.151';
 
 socket = new WebSocket('ws://' + ip + ':4040');
 
@@ -475,7 +474,7 @@ async function displayFront() {
 };
 function displayChange() {
     historySlider.max = history.length;
-    index = history.length-historySlider.value;
+    index = history.length-parseInt(historySlider.value);
     if (history[index]) {
         displayImg.src = history[index].img;
         drawBlobs();
