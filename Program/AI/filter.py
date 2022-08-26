@@ -10,7 +10,7 @@ rM = redMax = (100, 115, 255)
 rm = redMin = (25, 35, 100)
 gM = greenMax = (120, 140, 95)
 gm = greenMin = (55, 85, 10)
-wM = wallMax = (85, 70, 80)
+wM = wallMax = (90, 75, 85)
 wm = wallMin = (5, 5, 5)
 
 def filter(imgIn: numpy.ndarray):
