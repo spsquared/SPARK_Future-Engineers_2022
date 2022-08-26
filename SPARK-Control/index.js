@@ -273,6 +273,8 @@ let sliders = [
     document.getElementById('redBMin'),
     document.getElementById('greenBMin'),
     document.getElementById('wallBMin'),
+    document.getElementById('grayMax'),
+    document.getElementById('grayMin')
 ];
 document.getElementById('captureFilterButton').onclick = function(e) {
     arr = [];
@@ -306,10 +308,6 @@ function setColors(colors) {
         sliders[i].value = colors[i];
         updateSlider(i);
     }
-    arr = [];
-    for (let i in sliders) {
-        arr.push(sliders[i].value);
-    }
 };
 addListener('colors', setColors);
 
@@ -329,6 +327,10 @@ document.getElementById('streamButton').onclick = function(e) {
 };
 document.getElementById('filterStreamButton').onclick = function(e) {
     filterstreaming2 = !filterstreaming2;
+    for (let i in sliders) {
+        arr.push(sliders[i].value);
+    }
+    send('colors', arr)
     send('filterstream', {state: filterstreaming2});
     if (filterstreaming2) {
         document.getElementById('filterStreamButton').innerText = 'STOP FILTERED STREAM';
@@ -352,6 +354,9 @@ let initcolors = [
     [
         90, 75, 85,
         0, 0, 0
+    ],
+    [
+        0, 65
     ]
 ];
 sliders[0].value = initcolors[0][0];
@@ -372,6 +377,8 @@ sliders[14].value = initcolors[2][4];
 sliders[15].value = initcolors[0][5];
 sliders[16].value = initcolors[1][5];
 sliders[17].value = initcolors[2][5];
+sliders[18].value = initcolors[3][1];
+sliders[19].value = initcolors[3][0];
 for (let i in sliders) {
     updateSlider(i);
 }

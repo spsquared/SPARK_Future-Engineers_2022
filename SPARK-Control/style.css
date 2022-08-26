@@ -178,6 +178,12 @@ img {
 .sliderB::-webkit-slider-thumb {
     background-color: #0000FF;
 }
+.sliderSM::-webkit-slider-thumb {
+    background-color: white;
+}
+.sliderSm::-webkit-slider-thumb {
+    background-color: black;
+}
 
 #captureDisplay {
     position: absolute;
