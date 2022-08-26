@@ -216,6 +216,8 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         # decide steering for each wall section
         counterClockwise += wallMaximumRight - wallMaximumLeft
 
+        counterClockwise *= 0.9
+
         if counterClockwise >= 0:
             if wallHeightCenter > 9 and wallHeightRight > 18 and (wallMaximumCenter > 24 or wallMaximumRight > 27):
                 if wallMaximumLeft > 30 and wallMaximumCenter > 24:
