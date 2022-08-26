@@ -138,8 +138,8 @@ def main():
         while running:
             msg = input()
             if msg == 'reset':
-                server.broadcast('colors', filter.getColors())
-                print(filter.getColors())
+                server.broadcast('colors', filter.getDefaultColors())
+                print(filter.getDefaultColors())
             elif msg != '':
                 server.broadcast('message', msg)
     except KeyboardInterrupt:

@@ -320,5 +320,8 @@ def setColors(data, server = None):
     if server != None:
         server.broadcast('colors', getColors())
 def getColors():
+    global redMax, redMin, greenMax, greenMin, wallMax, wallMin
+    return [redMax[0], greenMax[0], wallMax[0], redMax[1], greenMax[1], wallMax[1], redMax[2], greenMax[2], wallMax[2], redMin[0], greenMin[0], wallMin[0], redMin[1], greenMin[1], wallMin[1], redMin[2], greenMin[2], wallMin[2]]
+def getDefaultColors():
     global rM, rm, gM, gm, wM, wm
     return [rM[0], gM[0], wM[0], rM[1], gM[1], wM[1], rM[2], gM[2], wM[2], rm[0], gm[0], wm[0], rm[1], gm[1], wm[1], rm[2], gm[2], wm[2]]
