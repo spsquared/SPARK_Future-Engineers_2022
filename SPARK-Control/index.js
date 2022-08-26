@@ -35,11 +35,11 @@ socket.onopen = function() {
 socket.onclose = function() {
     connected = false;
     if (autoconnect) toReconnect = true;
-    appendLog('Connection closed<button class="connectNow" onclick="reconnect();">RECONNECT NOW</button>', 'red');
+    appendLog('Connection closed<button class="connectNow" onclick="reconnect(true);">RECONNECT NOW</button>', 'red');
     setTimeout(reconnect, 10000);
 };
-function reconnect() {
-    if (toReconnect) {
+function reconnect(force) {
+    if (toReconnect || force) {
         toReconnect = false;
         autoreconnect = true;
         document.querySelectorAll('.connectNow').forEach(button => button.remove());
