@@ -307,17 +307,34 @@ img {
 #emergencyStop {
     position: absolute;
     top: 300px;
-    right: 84px;
-    width: 100px;
-    height: 48px;
+    right: 172px;
+    width: 96px;
+    height: 36px;
     margin: 16px 16px;
     margin-bottom: 0px;
     font: 20px sans-serif;
     font-weight: bolder;
     background-color: red;
-    border: 8px outset gold;
+    border: 4px outset gray;
     cursor: pointer;
 }
 #emergencyStop:active {
+    border-style: inset;
+}
+#disconnect {
+    position: absolute;
+    top: 300px;
+    right: 0px;
+    width: 156px;
+    height: 36px;
+    margin: 16px 16px;
+    margin-bottom: 0px;
+    font: 20px sans-serif;
+    font-weight: bolder;
+    background-color: red;
+    border: 4px outset gray;
+    cursor: pointer;
+}
+#disconnect:active {
     border-style: inset;
 }
