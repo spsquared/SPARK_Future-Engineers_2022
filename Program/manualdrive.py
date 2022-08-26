@@ -78,7 +78,7 @@ def main():
                                 start = time.time()
                                 encoded = base64.b64encode(cv2.imencode('.png', camera.read())[1]).decode()
                                 server.broadcast('capture', encoded)
-                                time.sleep(max(0.05-(time.time()-start), 0))
+                                time.sleep(max(0.1-(time.time()-start), 0))
                         except Exception as err:
                             print(err)
                     streamThread = Thread(target = loop)
