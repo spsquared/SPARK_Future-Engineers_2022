@@ -106,12 +106,12 @@ def main():
                             print(err)
                     streamThread2 = Thread(target = loop)
                     streamThread2.start()
-                    server.broadcast('message', 'Began stream')
+                    server.broadcast('message', 'Began filtered stream')
             else:
                 if streaming2 == True:
                     streaming2 = False
                     streamThread2.join()
-                    server.broadcast('message', 'Ended stream')
+                    server.broadcast('message', 'Ended filtered stream')
         def colors(data):
             filter.setColors(data)
         server.addListener('key', keys)
