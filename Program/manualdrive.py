@@ -59,7 +59,7 @@ def main():
             else:
                 camera.stopSaveStream(server)
         def captureFilter(data):
-            filter.setColors(data)
+            filter.setColors(data, server=server)
             camera.capture(filter=filter, server=server, drive=drive)
         def captureFilterStream(data):
             if data['state'] == True:

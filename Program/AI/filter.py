@@ -298,7 +298,7 @@ def predict(imgIn: numpy.ndarray, server = None):
         print(err)
         io.error()
 
-def setColors(data):
+def setColors(data, server = None):
     global redMax, redMin, greenMax, greenMin, wallMax, wallMin
     redMax = (int(data[0]), int(data[3]), int(data[6]))
     greenMax = (int(data[1]), int(data[4]), int(data[7]))
@@ -317,5 +317,8 @@ def setColors(data):
     print(redMax, redMin)
     print(greenMax, greenMin)
     print(wallMax, wallMin)
+    if server != None:
+        server.broadcast('colors', filter.getColors())
 def getColors():
     global rM, rm, gM, gm, wM, wm
+    return [rM[0], gM[0], wM[0], rM[1], gM[1], wM[1], rM[2], gM[2], wM[2], rm[0], gm[0], wm[0], rm[1], gm[1], wm[1], rm[2], gm[2], wm[2]]
