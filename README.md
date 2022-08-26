@@ -115,6 +115,12 @@ The client control panel consists of a log - which can be appended to by sending
 
 ***
 
+## **Team Photos**
+
+![image](https://user-images.githubusercontent.com/68207888/186811577-064f3abf-f268-46b0-94bb-34b933060e80.png)
+
+![image](https://user-images.githubusercontent.com/68207888/186811596-caf5c99d-af9f-490f-a43a-0c62afa2525b.png)
+
 # **Demonstration Videos (YouTube)**
 
 [WRO 3 laps with pillars](https://youtu.be/0uMp_ExglOw)
