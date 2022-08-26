@@ -38,13 +38,19 @@ We followed the instructions for the Atom 2 pan car kit, and then added the plat
 
 The two RP-SMA connectors for the WiFi card (not required but good for development) can be routed to the back of the platform into their brackets. The NF A4x10 can be screwed into the heatsink of the Jetson NANO Developer Kit using 4 long nylon screws, but the holes will first have to be tapped or "tapped" by metal screws. The fan is also not required but can help (the board does reach fairly high temperatures at times).
 
-The top platform is mounted onto existing locations on the car. insert things here
+The top platform is mounted onto existing locations on the car. In the rear two spacers are screwed into the mounting locations for the rear body posts. In the front, the screws for the bracket above the steering servo are replaced with standoffs. This ensures that the mounting is secure.
 
 ![Top platform mount locations]()
 
-camer amount
+The camera mount is attached to the mounts for the front body posts.
 
 ![Camera mount locations]()
+
+### Electromechanical Diagram
+
+Here is a simple electromechanical schematic for how the electronics are wired:
+
+![Schematic](./img/schematic.png)
 
 ***
 
@@ -113,6 +119,14 @@ The client control panel consists of a log - which can be appended to by sending
 
 ![SPARK Control Panel](./img/SPARK_Control.png)
 
+***
+
+# Team Photos
+
+You have found the team photos!
+
+![normal photo](./img/teamphoto.jpg)
+![rick astley](./img/funnyteamphoto.jpg)
 ***
 
 # **Demonstration Videos (YouTube)**
