@@ -6,10 +6,10 @@ import base64
 # preprocessing filter module with cv prediction
 
 # colors
-rM = redMax = (95, 100, 210)
+rM = redMax = (100, 115, 255)
 rm = redMin = (25, 35, 100)
-gM = greenMax = (120, 140, 95)
-gm = greenMin = (80, 80, 35)
+gM = greenMax = (130, 160, 95)
+gm = greenMin = (50, 75, 35)
 wM = wallMax = (85, 70, 80)
 wm = wallMin = (5, 5, 5)
 
