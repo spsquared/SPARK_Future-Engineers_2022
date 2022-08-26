@@ -175,7 +175,7 @@
         <button id="displayForwards" onclick="displayFront();">&#62</button>
         <input type="range" id="historySlider" class="slider" oninput="displayChange();" min="1" max="1" step="1">
         <label id="showOverlay">
-            <input type="checkbox" oninput="if (this.checked) {wallCanvas.style.display = '';} else {wallCanvas.style.display = 'none';}" checked>
+            <input type="checkbox" oninput="if (this.checked) {document.getElementById('wallCanvas').style.display = '';} else {document.getElementById('wallCanvas').style.display = 'none';}">
             Show Overlay
         </label>
         <label id="maxHistoryLabel" for="maxHistory">Max History:&nbsp;</label>
@@ -183,7 +183,7 @@
         <div id="displayBlock">
             <img id="displayImg">
             <canvas id="canvas"></canvas>
-            <canvas id="wallCanvas"></canvas>
+            <canvas id="wallCanvas" style="display: none;"></canvas>
         </div>
         <div id="fps">FPS: 0</div>
         <div id="strPredict">Predicted Steering: 0</div>
