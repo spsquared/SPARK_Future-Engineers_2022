@@ -34,12 +34,13 @@ socket.onopen = function() {
 socket.onclose = function() {
     connected = false;
     toReconnect = true;
-    appendLog('Connection closed<button class="connectNow" onclick="this.remove(); reconnect();">RECONNECT NOW</button>', 'red');
+    appendLog('Connection closed<button class="connectNow" onclick="reconnect();">RECONNECT NOW</button>', 'red');
     setTimeout(reconnect, 10000);
 };
 function reconnect() {
     if (toReconnect) {
         toReconnect = false;
+        document.querySelectorAll('.connectNow').forEach(button => button.remove());
         appendLog('Attempting to reconnect...');
         let newsocket = new WebSocket('ws://' + ip + ':4040');
         newsocket.onmessage = socket.onmessage;
