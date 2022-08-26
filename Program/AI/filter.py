@@ -18,7 +18,10 @@ def filter(imgIn: numpy.ndarray):
     try:
         rMask = cv2.inRange(imgIn, redMin, redMax)
         gMask = cv2.inRange(imgIn, greenMin, greenMax)
-        wMask = cv2.inRange(imgIn, wallMin, wallMax)
+        colorWallMask = cv2.inRange(imgIn, wallMin, wallMax)
+        imgray = cv2.cvtColor(imgIn, cv2.COLOR_BGR2GRAY)
+        grayscaleFilter = cv2.inRange(imgray, 0,65)
+        wMask = cv2.cv2.bitwise_and(colorWallMask, grayscaleFilter, mask = None)
         rawImg = cv2.merge((wMask, gMask, rMask))
         filteredImg = cv2.medianBlur(rawImg, 5)
         return filteredImg
@@ -32,9 +35,12 @@ turnsMade = 0
 turnCooldown = 0
 passedPillar = 0
 lastSend = 0
-def predict(imgIn: numpy.ndarray, server = None):
+def predict(imgIn: numpy.ndarray, server = None, infinite = False):
     global redMax, redMin, greenMax, greenMin, wallMax, wallMin, lastSend, rightOnRed, counterClockwise, turnsMade, turnCooldown, passedPillar
     try:
+        # useless thing
+        if infinite: turnsMade = 0
+
         # create blob detector
         params = cv2.SimpleBlobDetector_Params()
         params.filterByCircularity = True
