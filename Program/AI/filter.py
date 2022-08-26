@@ -32,9 +32,12 @@ turnsMade = 0
 turnCooldown = 0
 passedPillar = 0
 lastSend = 0
-def predict(imgIn: numpy.ndarray, server = None):
+def predict(imgIn: numpy.ndarray, server = None, infinite = False):
     global redMax, redMin, greenMax, greenMin, wallMax, wallMin, lastSend, rightOnRed, counterClockwise, turnsMade, turnCooldown, passedPillar
     try:
+        # useless thing
+        if infinite: turnsMade = 0
+
         # create blob detector
         params = cv2.SimpleBlobDetector_Params()
         params.filterByCircularity = True
