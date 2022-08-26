@@ -5,11 +5,19 @@ from IO import camera
 from Util import server
 from AI import filter
 import time
+import sys
 
 running = True
 def main():
     global running
     try:
+        infinite = False
+        for i, arg in enumerate(sys.argv):
+            if i != 0:
+                if arg == 'infinite':
+                    infinite = True
+        if infinite:
+            print('PROGRAM RUNNING IN INFINITE MODE!')
         drive.start()
         camera.start()
         time.sleep(1)
@@ -33,7 +41,7 @@ def main():
         drive.throttle(30)
         while running:
             image = camera.read()
-            prediction = filter.predict(image,server)
+            prediction = filter.predict(image,server, infinite)
             if prediction == "stop":
                 drive.throttle(-100)
                 time.sleep(0.2)
