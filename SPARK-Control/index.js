@@ -5,6 +5,7 @@ socket = new WebSocket('ws://' + ip + ':4040');
 const log = document.getElementById('eventLogBody');
 const callbacks = [];
 let connected = false;
+let toReconnect = false;
 function addListener(event, cb) {
     callbacks[event] = cb;
 };
@@ -32,15 +33,20 @@ socket.onopen = function() {
 };
 socket.onclose = function() {
     connected = false;
-    appendLog('Connection closed', 'red');
-    setTimeout(function() {
+    toReconnect = true;
+    appendLog('Connection closed<button class="connectNow" onclick="this.remove(); reconnect();">RECONNECT NOW</button>', 'red');
+    setTimeout(reconnect, 10000);
+};
+function reconnect() {
+    if (toReconnect) {
+        toReconnect = false;
         appendLog('Attempting to reconnect...');
         let newsocket = new WebSocket('ws://' + ip + ':4040');
         newsocket.onmessage = socket.onmessage;
         newsocket.onopen = socket.onopen;
         newsocket.onclose = socket.onclose;
         socket = newsocket;
-    }, 10000);
+    }
 };
 
 // messages
