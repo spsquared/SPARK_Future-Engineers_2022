@@ -294,7 +294,6 @@ function setColors(colors) {
     for (let i in sliders) {
         arr.push(sliders[i].value);
     }
-    send('colors', arr);
 };
 addListener('colors', setColors);
 

@@ -322,6 +322,10 @@ def setColors(data, server = None):
 def getColors():
     global redMax, redMin, greenMax, greenMin, wallMax, wallMin
     return [redMax[2], greenMax[2], wallMax[2], redMax[1], greenMax[1], wallMax[1], redMax[0], greenMax[0], wallMax[0], redMin[2], greenMin[2], wallMin[2], redMin[1], greenMin[1], wallMin[1], redMin[0], greenMin[0], wallMin[0]]
-def getDefaultColors():
+def setDefaultColors():
     global rM, rm, gM, gm, wM, wm
+    print('-- New ----------')
+    print(rM, rm)
+    print(gM, gm)
+    print(wM, wm)
     return [rM[2], gM[2], wM[2], rM[1], gM[1], wM[1], rM[0], gM[0], wM[0], rm[2], gm[2], wm[2], rm[1], gm[1], wm[1], rm[0], gm[0], wm[0]]
