@@ -342,7 +342,7 @@ let initcolors = [
     ],
     [
         90, 75, 85,
-        5, 5, 5
+        0, 0, 0
     ]
 ];
 sliders[0].value = initcolors[0][0];
