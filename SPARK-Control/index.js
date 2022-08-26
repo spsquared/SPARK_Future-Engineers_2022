@@ -6,7 +6,7 @@ const log = document.getElementById('eventLogBody');
 const callbacks = [];
 let connected = false;
 let toReconnect = false;
-let autoconnect = false;
+let autoconnect = true;
 function addListener(event, cb) {
     callbacks[event] = cb;
 };
@@ -277,7 +277,7 @@ let sliders = [
     document.getElementById('grayMin')
 ];
 document.getElementById('captureFilterButton').onclick = function(e) {
-    arr = [];
+    let arr = [];
     for (let i in sliders) {
         arr.push(sliders[i].value);
     }
@@ -285,7 +285,7 @@ document.getElementById('captureFilterButton').onclick = function(e) {
 };
 let filterstreaming = false;
 document.getElementById('captureFilterStreamButton').onclick = function(e) {
-    arr = [];
+    let arr = [];
     for (let i in sliders) {
         arr.push(sliders[i].value);
     }
@@ -327,6 +327,7 @@ document.getElementById('streamButton').onclick = function(e) {
 };
 document.getElementById('filterStreamButton').onclick = function(e) {
     filterstreaming2 = !filterstreaming2;
+    let arr = [];
     for (let i in sliders) {
         arr.push(sliders[i].value);
     }

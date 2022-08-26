@@ -16,13 +16,13 @@ sM = greyMax = 65
 sm = greyMin = 0
 
 def filter(imgIn: numpy.ndarray):
-    global redMax, redMin, greenMax, greenMin, wallMax, wallMin
+    global redMax, redMin, greenMax, greenMin, wallMax, wallMin, greyMax, greyMin
     try:
         rMask = cv2.inRange(imgIn, redMin, redMax)
         gMask = cv2.inRange(imgIn, greenMin, greenMax)
         colorWallMask = cv2.inRange(imgIn, wallMin, wallMax)
         imgray = cv2.cvtColor(imgIn, cv2.COLOR_BGR2GRAY)
-        grayscaleFilter = cv2.inRange(imgray, 0, 65)
+        grayscaleFilter = cv2.inRange(imgray, greyMin, greyMax)
         wMask = cv2.bitwise_and(colorWallMask, grayscaleFilter, mask = None)
         rawImg = cv2.merge((wMask, gMask, rMask))
         filteredImg = cv2.medianBlur(rawImg, 5)
