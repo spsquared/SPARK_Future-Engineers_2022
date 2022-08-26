@@ -21,6 +21,14 @@ def main():
             io.close()
             print('stopped by emergency stop button')
             exit(0)
+        def stop2(data):
+            global running
+            running = False
+            camera.stop()
+            drive.stop()
+            io.close()
+            print('stopped by 3 laps')
+            exit(0)
         server.addListener('stop', stop)
         drive.throttle(30)
         while running:
@@ -29,7 +37,7 @@ def main():
             if prediction == "stop":
                 drive.throttle(-100)
                 time.sleep(0.2)
-                stop(1)
+                stop2(1)
                 break
             drive.steer(prediction)
             # print("Current Prediction: " + str(prediction))
