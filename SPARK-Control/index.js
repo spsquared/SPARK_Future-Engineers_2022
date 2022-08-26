@@ -185,7 +185,7 @@ document.addEventListener('touchmove', function(e) {
 
 // controllers
 let trim = 0;
-let trim2 = 0.1;
+let trim2 = 0.05;
 let pressedbuttons = [];
 function updateControllers() {
     let controllers = navigator.getGamepads();
