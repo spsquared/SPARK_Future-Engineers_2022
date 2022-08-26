@@ -132,6 +132,7 @@ def main():
             server.close()
             drive.stop()
             io.close()
+            print('stopped by emergency stop button')
             exit(0)
         server.addListener('stop', stop)
         while running:

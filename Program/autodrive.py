@@ -20,6 +20,7 @@ def main():
             drive.stop()
             io.close()
             print('stopped by emergency stop button')
+            exit(0)
         server.addListener('stop', stop)
         drive.throttle(30)
         while running:
