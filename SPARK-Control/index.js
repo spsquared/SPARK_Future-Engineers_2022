@@ -6,7 +6,7 @@ const log = document.getElementById('eventLogBody');
 const callbacks = [];
 let connected = false;
 let toReconnect = false;
-let autoconnect = true;
+let autoReconnect = true;
 function addListener(event, cb) {
     callbacks[event] = cb;
 };
@@ -34,14 +34,14 @@ socket.onopen = function() {
 };
 socket.onclose = function() {
     connected = false;
-    if (autoconnect) toReconnect = true;
+    if (autoReconnect) toReconnect = true;
     appendLog('Connection closed<button class="connectNow" onclick="reconnect(true);">RECONNECT NOW</button>', 'red');
     setTimeout(reconnect, 10000);
 };
 function reconnect(force) {
     if (toReconnect || force) {
         toReconnect = false;
-        autoreconnect = true;
+        autoReconnect = true;
         document.querySelectorAll('.connectNow').forEach(button => button.remove());
         appendLog('Attempting to reconnect...');
         let newsocket = new WebSocket('ws://' + ip + ':4040');
@@ -568,7 +568,7 @@ document.getElementById('emergencyStop').onclick = function() {
 document.getElementById('disconnect').onclick = async function() {
     socket.close();
     toReconnect = false;
-    autoconnect = false;
+    autoReconnect = false;
 };
 
 // errors
