@@ -123,10 +123,9 @@ The client control panel consists of a log - which can be appended to by sending
 
 # Team Photos
 
-You have found the team photos!
-
 ![normal photo](./img/teamphoto.jpg)
 ![rick astley](./img/funnyteamphoto.jpg)
+
 ***
 
 # **Demonstration Videos (YouTube)**
