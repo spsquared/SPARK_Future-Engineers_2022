@@ -18,7 +18,10 @@ def filter(imgIn: numpy.ndarray):
     try:
         rMask = cv2.inRange(imgIn, redMin, redMax)
         gMask = cv2.inRange(imgIn, greenMin, greenMax)
-        wMask = cv2.inRange(imgIn, wallMin, wallMax)
+        colorWallMask = cv2.inRange(imgIn, wallMin, wallMax)
+        imgray = cv2.cvtColor(imgIn, cv2.COLOR_BGR2GRAY)
+        grayscaleFilter = cv2.inRange(imgray, 0,65)
+        wMask = cv2.cv2.bitwise_and(colorWallMask, grayscaleFilter, mask = None)
         rawImg = cv2.merge((wMask, gMask, rMask))
         filteredImg = cv2.medianBlur(rawImg, 5)
         return filteredImg
