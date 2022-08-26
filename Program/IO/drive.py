@@ -19,6 +19,7 @@ strMIN = 28
 strTRIM = 8
 # throttle feathering
 thrFeaFREQ = 10
+thrFeaDiv = 20
 targetThrottle = 0
 targetSteering = 0
 currThrottle = 0
@@ -39,12 +40,12 @@ def start():
         s.start((strMIN+strMAX)/2)
         def loop():
             try:
-                global running, t, s, currThrottle, currSteering, targetThrottle, targetSteering, thrFeaFREQ, thrFeaACT, tickrate
+                global running, t, s, currThrottle, currSteering, targetThrottle, targetSteering, thrFeaFREQ, thrFeaDiv, tickrate
                 timer = 0
                 while running:
                     start = time.time()
                     # convert throttle to active time
-                    thrFeaACT = math.floor(abs(targetThrottle)/20)/20
+                    thrFeaACT = math.floor(abs(targetThrottle)/20)/thrFeaDiv
                     if timer > 1: timer = 0
                     if timer <= thrFeaACT and targetThrottle > 10: currThrottle = 100
                     elif targetThrottle < -10: currThrottle = targetThrottle

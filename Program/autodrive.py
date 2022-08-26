@@ -19,6 +19,8 @@ def main():
             camera.stop()
             drive.stop()
             io.close()
+            print('stopped by emergency stop button')
+            exit(0)
         server.addListener('stop', stop)
         drive.throttle(30)
         while running:
@@ -32,7 +34,6 @@ def main():
             drive.steer(prediction)
             # print("Current Prediction: " + str(prediction))
         #code here
-        print("stopped by emergency stop button")
     except KeyboardInterrupt:
         camera.stop()
         drive.stop()

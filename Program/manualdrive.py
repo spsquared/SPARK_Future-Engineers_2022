@@ -128,10 +128,11 @@ def main():
         def stop(data):
             global running
             running = False
-            server.close()
             camera.stop()
+            server.close()
             drive.stop()
             io.close()
+            print('stopped by emergency stop button')
             exit(0)
         server.addListener('stop', stop)
         while running:
@@ -144,8 +145,8 @@ def main():
     except KeyboardInterrupt:
         print('\nSTOPPING PROGRAM. DO NOT INTERRUPT.')
         running = False
-        server.close()
         camera.stop()
+        server.close()
         drive.stop()
         io.close()
     except Exception as err:
