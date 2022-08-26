@@ -59,7 +59,7 @@ def main():
             else:
                 camera.stopSaveStream(server)
         def captureFilter(data):
-            filter.setColors(data)
+            filter.setColors(data, server=server)
             camera.capture(filter=filter, server=server, drive=drive)
         def captureFilterStream(data):
             if data['state'] == True:
@@ -138,8 +138,7 @@ def main():
         while running:
             msg = input()
             if msg == 'reset':
-                server.broadcast('colors', filter.getColors())
-                print(filter.getColors())
+                server.broadcast('colors', filter.setDefaultColors())
             elif msg != '':
                 server.broadcast('message', msg)
     except KeyboardInterrupt:

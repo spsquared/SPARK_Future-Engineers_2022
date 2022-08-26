@@ -294,7 +294,6 @@ function setColors(colors) {
     for (let i in sliders) {
         arr.push(sliders[i].value);
     }
-    send('colors', arr);
 };
 addListener('colors', setColors);
 
@@ -327,12 +326,12 @@ document.getElementById('filterStreamButton').onclick = function(e) {
 // bad coding practices
 let initcolors = [
     [
-        210, 100, 95,
+        255, 115, 100,
         100, 35, 25
     ],
     [
         95, 140, 120,
-        35, 80, 80
+        10, 85, 55
     ],
     [
         80, 70, 85,

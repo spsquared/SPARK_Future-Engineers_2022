@@ -61,6 +61,7 @@ def capture(filter = None, server = None, drive = None):
                 fd = open('./filtered_out/' + name + '.txt', 'w')
                 fd.write(name + ' ' + str(drive.currentSteering()))
                 fd.close()
+            print('Captured (filtered) ' + name + '.png')
         else:
             cv2.imwrite('image_out/' + name + '.png', currentImage)
             if server != None:
@@ -71,6 +72,7 @@ def capture(filter = None, server = None, drive = None):
                 fd = open('./image_out/' + name + '.txt', 'w')
                 fd.write(name + ' ' + str(drive.currentSteering()))
                 fd.close()
+            print('Captured ' + name + '.png')
         return currentImage
     except Exception as err:
         print(err)
@@ -124,6 +126,7 @@ def startSaveStream(filter = None, server = None, drive = None):
         streamThread.start()
         if server != None:
             server.broadcast('message', 'Began save stream')
+        print('Began save stream')
         return True
     return False
 def stopSaveStream(server = None):
@@ -136,6 +139,7 @@ def stopSaveStream(server = None):
         if saveFd != None:
             saveFd.close()
             saveFd = None
+        print('Ended save stream:<br>&emsp;Saved ' + str(totalCaptured) + ' images')
         totalCaptured = 0
         return True
     return False

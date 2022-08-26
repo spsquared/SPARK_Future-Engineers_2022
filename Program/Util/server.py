@@ -1,4 +1,5 @@
 import asyncio
+from shutil import ExecError
 import websockets
 import json as JSON
 import typing
@@ -81,8 +82,8 @@ async def __server(websocket, path):
             try:
                 loop.run_until_complete(send())
                 loop.close()
-            except RuntimeError:
-                True
+            except Exception:
+                send2()
             # threadLoop.create_tas                                                             k(send())
         sendThread = Thread(target = send2)
         sendThread.start()

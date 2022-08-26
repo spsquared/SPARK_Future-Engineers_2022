@@ -6,20 +6,12 @@ import base64
 # preprocessing filter module with cv prediction
 
 # colors
-rM = redMax = (95, 100, 210)
+rM = redMax = (100, 115, 255)
 rm = redMin = (25, 35, 100)
 gM = greenMax = (120, 140, 95)
-gm = greenMin = (80, 80, 35)
+gm = greenMin = (55, 85, 10)
 wM = wallMax = (85, 70, 80)
 wm = wallMin = (5, 5, 5)
-
-rightOnRed = True
-counterClockwise = 0
-
-turnsMade = 0
-turnCooldown = 0
-
-passedPillar = 0
 
 def filter(imgIn: numpy.ndarray):
     global redMax, redMin, greenMax, greenMin, wallMax, wallMin
@@ -34,6 +26,11 @@ def filter(imgIn: numpy.ndarray):
         print(err)
         io.error()
 
+rightOnRed = True
+counterClockwise = 0
+turnsMade = 0
+turnCooldown = 0
+passedPillar = 0
 lastSend = 0
 def predict(imgIn: numpy.ndarray, server = None):
     global redMax, redMin, greenMax, greenMin, wallMax, wallMin, lastSend, rightOnRed, counterClockwise, turnsMade, turnCooldown, passedPillar
@@ -298,7 +295,7 @@ def predict(imgIn: numpy.ndarray, server = None):
         print(err)
         io.error()
 
-def setColors(data):
+def setColors(data, server = None):
     global redMax, redMin, greenMax, greenMin, wallMax, wallMin
     redMax = (int(data[0]), int(data[3]), int(data[6]))
     greenMax = (int(data[1]), int(data[4]), int(data[7]))
@@ -317,5 +314,15 @@ def setColors(data):
     print(redMax, redMin)
     print(greenMax, greenMin)
     print(wallMax, wallMin)
+    if server != None:
+        server.broadcast('colors', getColors())
 def getColors():
+    global redMax, redMin, greenMax, greenMin, wallMax, wallMin
+    return [redMax[2], greenMax[2], wallMax[2], redMax[1], greenMax[1], wallMax[1], redMax[0], greenMax[0], wallMax[0], redMin[2], greenMin[2], wallMin[2], redMin[1], greenMin[1], wallMin[1], redMin[0], greenMin[0], wallMin[0]]
+def setDefaultColors():
     global rM, rm, gM, gm, wM, wm
+    print('-- New ----------')
+    print(rM, rm)
+    print(gM, gm)
+    print(wM, wm)
+    return [rM[2], gM[2], wM[2], rM[1], gM[1], wM[1], rM[0], gM[0], wM[0], rm[2], gm[2], wm[2], rm[1], gm[1], wm[1], rm[0], gm[0], wm[0]]
