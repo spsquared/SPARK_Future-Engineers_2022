@@ -78,7 +78,7 @@ def main():
                                 start = time.time()
                                 encoded = base64.b64encode(cv2.imencode('.png', camera.read())[1]).decode()
                                 server.broadcast('capture', encoded)
-                                time.sleep(max(0.05-(time.time()-start), 0))
+                                time.sleep(max(0.1-(time.time()-start), 0))
                         except Exception as err:
                             print(err)
                     streamThread = Thread(target = loop)
@@ -106,12 +106,12 @@ def main():
                             print(err)
                     streamThread2 = Thread(target = loop)
                     streamThread2.start()
-                    server.broadcast('message', 'Began stream')
+                    server.broadcast('message', 'Began filtered stream')
             else:
                 if streaming2 == True:
                     streaming2 = False
                     streamThread2.join()
-                    server.broadcast('message', 'Ended stream')
+                    server.broadcast('message', 'Ended filtered stream')
         def colors(data):
             filter.setColors(data)
         server.addListener('key', keys)

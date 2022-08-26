@@ -185,7 +185,7 @@ document.addEventListener('touchmove', function(e) {
 
 // controllers
 let trim = 0;
-let trim2 = 0.1;
+let trim2 = 0.05;
 let pressedbuttons = [];
 function updateControllers() {
     let controllers = navigator.getGamepads();
@@ -207,6 +207,13 @@ function updateControllers() {
                 pressedbuttons.push(9);
             } else if (!controller.buttons[9].pressed && pressedbuttons.indexOf(9) != -1) {
                 pressedbuttons.splice(pressedbuttons.indexOf(9), 1);
+            }
+            if (controller.buttons[0].pressed && pressedbuttons.indexOf(0) == -1) {
+                if (controller.buttons[7].pressed) document.getElementById('filterStreamButton').onclick();
+                else document.getElementById('streamButton').onclick();
+                pressedbuttons.push(0);
+            } else if (!controller.buttons[0].pressed && pressedbuttons.indexOf(0) != -1) {
+                pressedbuttons.splice(pressedbuttons.indexOf(0), 1);
             }
             joystickPin.style.bottom = 114-(controller.axes[1]*110) + 'px';
             joystickPin.style.right = 114-(controller.axes[2]*110) + 'px';
@@ -508,6 +515,7 @@ addListener('blobs', addBlobs);
 addListener('strPredict', showPrediction);
 setInterval(() => {
     while (performance.now()-fpsTimes[0] > 1000) fpsTimes.shift();
+    FPS.innerHTML = 'FPS: ' + fpsTimes.length;
 }, 1000);
 document.addEventListener('keydown', (e) => {
     if (e.key == 'ArrowLeft') {
