@@ -3,6 +3,7 @@ import numpy
 import cv2
 import base64
 import statistics
+import builtins
 
 # preprocessing filter module with cv prediction
 
@@ -28,7 +29,9 @@ def filter(imgIn: numpy.ndarray):
         # grayscaleFilter = cv2.inRange(imgray, 0, 65)
         # wMask = cv2.bitwise_and(colorWallMask, grayscaleFilter, mask = None)
         # rawImg = cv2.merge((wMask, gMask, rMask))
-        edgesImage = cv2.Canny(imgIn, 200, 225, 3)
+        gray_image = cv2.cvtColor(imgIn, cv2.COLOR_RGB2GRAY)
+        blurredImg = cv2.GaussianBlur(gray_image, (3,3),0)
+        edgesImage = cv2.Canny(blurredImg, 50, 125, 3)
         filteredImg = cv2.merge((edgesImage, blurredG, blurredR))
         return filteredImg
     except Exception as err:
@@ -84,7 +87,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         # crop for wall detection
         wallStart = 55
         wallEnd = 90
-        croppedEdgesImg = edgesImage[wallStart:wallEnd,0:1]
+        croppedEdgesImg = edgesImage[0:,0:1]
         for i in range(19):
             croppedEdgesImg = numpy.concatenate((croppedEdgesImg, edgesImage[0:,i * 4:i * 4 + 1]), axis=1)
         for i in range(20):
@@ -92,71 +95,49 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         for i in range(20):
             croppedEdgesImg = numpy.concatenate((croppedEdgesImg, edgesImage[0:,i * 4 + 192:i * 4 + 193]), axis=1)
 
+        #flip wall
+
+        croppedEdgesImg = numpy.flip(croppedEdgesImg,axis=0)
 
         # find wall heights
 
-
         transposedArray = numpy.transpose(numpy.nonzero(croppedEdgesImg))
 
-        wallHeightsMaxLeft = []
-        wallHeightsDiffLeft = []
-        for i in range(20):
-            nonzeroList = list(numpy.extract(lambda x: x[0] == i,numpy.transpose(numpy.nonzero(transposedArray))))
-            if len(nonzeroList) >= 2:
-                firstNonzero = nonzeroList[0][1]
-                secondNonzero = nonzeroList[1][1]
+        def getWallHeights(offset):
+            wallHeightsMax = []
+            wallHeightsDiff = []
+            for i in range(20):
+                i += offset
+                nonzeroList = list(builtins.filter(lambda x: x[1] == i,transposedArray))
+                if len(nonzeroList) >= 2:
+                    firstNonzero = nonzeroList[0][0]
+                    secondNonzero = nonzeroList[1][0]
+                    index = 3
+                    while secondNonzero - firstNonzero < 5 and len(nonzeroList) >= index:
+                        secondNonzero = nonzeroList[index - 1][0]
+                        index += 1
+                else:
+                    firstNonzero = 0
+                    secondNonzero = 0
+                wallHeightsDiff.append(secondNonzero - firstNonzero)
+                wallHeightsMax.append(firstNonzero)
+            filteredWallHeightsDiff = list(builtins.filter(lambda x:x > 2,wallHeightsDiff))
+            print(offset)
+            print(filteredWallHeightsDiff)
+            if len(filteredWallHeightsDiff) > 0:
+                return [max(wallHeightsMax),statistics.median(filteredWallHeightsDiff)]
             else:
-                firstNonzero = 0
-                secondNonzero = 0
-            wallHeightsDiffLeft.append(secondNonzero - firstNonzero)
-            wallHeightsMaxLeft.append(firstNonzero)
+                return [max(wallHeightsMax),0]
 
-        if len(wallHeightsDiffLeft) == 0:
-            wallHeightLeft = 0
-        else:
-            wallHeightLeft = statistics.median(wallHeightsDiffLeft)
-        wallMaximumLeft = max(wallHeightsMaxLeft)
-
-        wallHeightsMaxCenter = []
-        wallHeightsDiffCenter = []
-        for i in range(20):
-            i += 20
-            nonzeroList = list(numpy.extract(lambda x: x[0] == i,numpy.transpose(numpy.nonzero(transposedArray))))
-            if len(nonzeroList) >= 2:
-                firstNonzero = nonzeroList[0][1]
-                secondNonzero = nonzeroList[1][1]
-            else:
-                firstNonzero = 0
-                secondNonzero = 0
-            wallHeightsDiffCenter.append(secondNonzero - firstNonzero)
-            wallHeightsMaxCenter.append(firstNonzero)
-
-        if len(wallHeightsDiffCenter) == 0:
-            wallHeightCenter = 0
-        else:
-            wallHeightCenter = statistics.median(wallHeightsDiffCenter)
-        wallMaximumCenter = max(wallHeightsMaxCenter)
-
-        wallHeightsMaxRight = []
-        wallHeightsDiffRight = []
-        for i in range(20):
-            i += 40
-            nonzeroList = list(numpy.extract(lambda x: x[0] == i,numpy.transpose(numpy.nonzero(transposedArray))))
-            if len(nonzeroList) >= 2:
-                firstNonzero = nonzeroList[0][1]
-                secondNonzero = nonzeroList[1][1]
-            else:
-                firstNonzero = 0
-                secondNonzero = 0
-            wallHeightsDiffRight.append(secondNonzero - firstNonzero)
-            wallHeightsMaxRight.append(firstNonzero)
-
-        if len(wallHeightsDiffRight) == 0:
-            wallHeightRight = 0
-        else:
-            wallHeightRight = statistics.median(wallHeightsDiffRight)
-        wallMaximumRight = max(wallHeightsMaxRight)
-
+        wallHeightsLeft = getWallHeights(0)
+        wallMaximumLeft = wallHeightsLeft[0]
+        wallHeightLeft = wallHeightsLeft[1]
+        wallHeightsCenter = getWallHeights(20)
+        wallMaximumCenter = wallHeightsCenter[0]
+        wallHeightCenter = wallHeightsCenter[1]
+        wallHeightsRight = getWallHeights(40)
+        wallMaximumRight = wallHeightsRight[0]
+        wallHeightRight = wallHeightsRight[1]
 
         # pillar calculations
 
