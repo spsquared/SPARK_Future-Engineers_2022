@@ -598,7 +598,7 @@ setInterval(() => {
         drawn = true;
         displayChange();
     }
-}, 1);
+}, 3);
 document.addEventListener('keydown', (e) => {
     if (e.key == 'ArrowLeft') {
         lefting = true;
