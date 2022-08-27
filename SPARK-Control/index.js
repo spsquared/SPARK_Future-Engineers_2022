@@ -255,26 +255,18 @@ document.getElementById('captureStreamButton').onclick = function(e) {
 
 // filtered capture (ignore the terrible coding practices this was intended to be a temporary thing)
 let sliders = [
-    document.getElementById('redRMax'),
-    document.getElementById('greenRMax'),
-    document.getElementById('wallRMax'),
-    document.getElementById('redGMax'),
-    document.getElementById('greenGMax'),
-    document.getElementById('wallGMax'),
-    document.getElementById('redBMax'),
-    document.getElementById('greenBMax'),
-    document.getElementById('wallBMax'),
-    document.getElementById('redRMin'),
-    document.getElementById('greenRMin'),
-    document.getElementById('wallRMin'),
-    document.getElementById('redGMin'),
-    document.getElementById('greenGMin'),
-    document.getElementById('wallGMin'),
-    document.getElementById('redBMin'),
-    document.getElementById('greenBMin'),
-    document.getElementById('wallBMin'),
-    // document.getElementById('grayMax'),
-    // document.getElementById('grayMin')
+    document.getElementById('redHMax'),
+    document.getElementById('greenHMax'),
+    document.getElementById('redSMax'),
+    document.getElementById('greenSMax'),
+    document.getElementById('redVMax'),
+    document.getElementById('greenVMax'),
+    document.getElementById('redHMin'),
+    document.getElementById('greenHMin'),
+    document.getElementById('redSMin'),
+    document.getElementById('greenSMin'),
+    document.getElementById('redVMin'),
+    document.getElementById('greenVMin'),
 ];
 document.getElementById('captureFilterButton').onclick = function(e) {
     let arr = [];
@@ -356,30 +348,19 @@ let initcolors = [
         90, 75, 85,
         0, 0, 0
     ],
-    // [
-    //     0, 65
-    // ]
 ];
 sliders[0].value = initcolors[0][0];
 sliders[1].value = initcolors[1][0];
-sliders[2].value = initcolors[2][0];
-sliders[3].value = initcolors[0][1];
-sliders[4].value = initcolors[1][1];
-sliders[5].value = initcolors[2][1];
-sliders[6].value = initcolors[0][2];
-sliders[7].value = initcolors[1][2];
-sliders[8].value = initcolors[2][2];
-sliders[9].value = initcolors[0][3];
-sliders[10].value = initcolors[1][3];
-sliders[11].value = initcolors[2][3];
-sliders[12].value = initcolors[0][4];
-sliders[13].value = initcolors[1][4];
-sliders[14].value = initcolors[2][4];
-sliders[15].value = initcolors[0][5];
-sliders[16].value = initcolors[1][5];
-sliders[17].value = initcolors[2][5];
-// sliders[18].value = initcolors[3][1];
-// sliders[19].value = initcolors[3][0];
+sliders[2].value = initcolors[0][1];
+sliders[3].value = initcolors[1][1];
+sliders[4].value = initcolors[0][2];
+sliders[5].value = initcolors[1][2];
+sliders[6].value = initcolors[0][3];
+sliders[7].value = initcolors[1][3];
+sliders[8].value = initcolors[0][4];
+sliders[9].value = initcolors[1][4];
+sliders[10].value = initcolors[0][5];
+sliders[11].value = initcolors[1][5];
 for (let i in sliders) {
     updateSlider(i);
 }

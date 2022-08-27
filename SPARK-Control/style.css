@@ -169,21 +169,20 @@ img {
 .slider::-webkit-slider-thumb:active {
     cursor: grabbing;
 }
-.sliderR::-webkit-slider-thumb {
-    background-color: #FF0000;
+.sliderH::-webkit-slider-thumb {
+    --hue: 0;
+    background-color: hsl(var(--hue, 1, 1));
 }
-.sliderG::-webkit-slider-thumb {
-    background-color: #00FF00;
+.sliderS::-webkit-slider-thumb {
+    --hue: 0;
+    --saturation: 0;
+    background-color: hsl(var(--hue), var(--saturation), 1);
 }
-.sliderB::-webkit-slider-thumb {
-    background-color: #0000FF;
+.sliderV::-webkit-slider-thumb {
+    --hue: 0;
+    --value: 0;
+    background-color: hsl(var(--hue), 1, var(--value));
 }
-/* .sliderSM::-webkit-slider-thumb {
-    background-color: white;
-}
-.sliderSm::-webkit-slider-thumb {
-    background-color: black;
-} */
 
 #captureDisplay {
     position: absolute;
