@@ -61,6 +61,7 @@ doPillars = True
 counterClockwise = 0
 turnsMade = 0
 turnCooldown = 0
+turnOnStart = 50
 passedPillar = 0
 lastSend = 0
 def predict(imgIn: numpy.ndarray, server = None, infinite = False):
@@ -279,11 +280,16 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         justTurned = False
 
         if wallHeightCenter < 10 and turnCooldown <= 0:
+            if turnOnStart >= 0:
+                turnOnStart = -1
             turnCooldown = 160
             turnsMade += 1
             justTurned = True
             print(turnsMade)
         
+        turnOnStart -= 1
+        if turnOnStart == -1 and turnsMade == 0:
+            turnsMade = 1
         turnCooldown -= 1
 
         if turnsMade == 13:
