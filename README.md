@@ -116,8 +116,6 @@ The client control panel consists of a log - which can be appended to by sending
 
 ![SPARK Control Panel](./img/SPARK_Control.png)
 
-![SPARK Control Panel 2](./img/SPARK_Control_2.png)
-
 </div>
 
 ***
