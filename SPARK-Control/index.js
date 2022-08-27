@@ -386,7 +386,7 @@ for (let i in sliders) {
 }
 
 // capture display
-let maxHistory = 500;
+let maxHistory = 1000;
 const history = [];
 let index = 0;
 let lefting = false;
