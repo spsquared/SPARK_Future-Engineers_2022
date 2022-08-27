@@ -275,11 +275,11 @@ randomiseWithPillars.onclick = function(){
     ];
     if(Math.random() < 0.5){
         drawPillar('rgba(238,39,55,1)',straightSection,1);
-        sections.splice(8,1);
+        sections.splice(9,1);
     }
     else{
         drawPillar('rgba(68,214,44,1)',straightSection,1);
-        sections.splice(9,1);
+        sections.splice(8,1);
     }
     pillarLocations[straightSection] = "center";
     for(var i = straightSection + 1;i < straightSection + 4;i++){
