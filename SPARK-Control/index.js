@@ -6,7 +6,7 @@ const log = document.getElementById('eventLogBody');
 const callbacks = [];
 let connected = false;
 let toReconnect = false;
-let autoconnect = false;
+let autoReconnect = true;
 function addListener(event, cb) {
     callbacks[event] = cb;
 };
@@ -34,14 +34,14 @@ socket.onopen = function() {
 };
 socket.onclose = function() {
     connected = false;
-    if (autoconnect) toReconnect = true;
+    if (autoReconnect) toReconnect = true;
     appendLog('Connection closed<button class="connectNow" onclick="reconnect(true);">RECONNECT NOW</button>', 'red');
     setTimeout(reconnect, 10000);
 };
 function reconnect(force) {
     if (toReconnect || force) {
         toReconnect = false;
-        autoreconnect = true;
+        autoReconnect = true;
         document.querySelectorAll('.connectNow').forEach(button => button.remove());
         appendLog('Attempting to reconnect...');
         let newsocket = new WebSocket('ws://' + ip + ':4040');
@@ -277,7 +277,7 @@ let sliders = [
     document.getElementById('grayMin')
 ];
 document.getElementById('captureFilterButton').onclick = function(e) {
-    arr = [];
+    let arr = [];
     for (let i in sliders) {
         arr.push(sliders[i].value);
     }
@@ -285,7 +285,7 @@ document.getElementById('captureFilterButton').onclick = function(e) {
 };
 let filterstreaming = false;
 document.getElementById('captureFilterStreamButton').onclick = function(e) {
-    arr = [];
+    let arr = [];
     for (let i in sliders) {
         arr.push(sliders[i].value);
     }
@@ -327,6 +327,7 @@ document.getElementById('streamButton').onclick = function(e) {
 };
 document.getElementById('filterStreamButton').onclick = function(e) {
     filterstreaming2 = !filterstreaming2;
+    let arr = [];
     for (let i in sliders) {
         arr.push(sliders[i].value);
     }
@@ -465,11 +466,11 @@ function drawLightBlob(blob,blobColor){
     ctx.beginPath();
     if(blobColor === 0){
         ctx.strokeStyle = "#f00";
-        ctx.fillStyle = "#F00A";
+        ctx.fillStyle = "#F007";
     }
     else{
         ctx.strokeStyle = "#0f0"
-        ctx.fillStyle = "#0F0A";
+        ctx.fillStyle = "#0F07";
     }
     ctx.arc(blob[0],blob[1],blob[2] * 2, 0, 2 * Math.PI);
     ctx.fill();
@@ -567,7 +568,7 @@ document.getElementById('emergencyStop').onclick = function() {
 document.getElementById('disconnect').onclick = async function() {
     socket.close();
     toReconnect = false;
-    autoconnect = false;
+    autoReconnect = false;
 };
 
 // errors

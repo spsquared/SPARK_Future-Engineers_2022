@@ -17,7 +17,7 @@ sM = greyMax = 65
 sm = greyMin = 0
 
 def filter(imgIn: numpy.ndarray):
-    global redMax, redMin, greenMax, greenMin, wallMax, wallMin
+    global redMax, redMin, greenMax, greenMin, wallMax, wallMin, greyMax, greyMin
     try:
         rMask = cv2.inRange(imgIn, redMin, redMax)
         gMask = cv2.inRange(imgIn, greenMin, greenMax)
@@ -29,7 +29,6 @@ def filter(imgIn: numpy.ndarray):
         croppedWImg = imgIn
         edgesImage = cv2.Canny(croppedWImg, 50, 120, 3)
         rawImg = cv2.merge((edgesImage, gMask, rMask))
-        filteredImg = cv2.medianBlur(rawImg, 5)
         return filteredImg
     except Exception as err:
         print(err)
