@@ -20,10 +20,28 @@ var resetField = function(){
         ctx.rotate(0.5 * Math.PI);
         ctx.translate(-155,-155);
     }
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+    ctx.fillRect(104.5, 44.5, 101, 1);
+    ctx.fillRect(104.5, 64.5, 101, 1);
+    ctx.fillRect(0, 104.5, 310, 1);
+    ctx.fillRect(0, 154.5, 310, 1);
+    ctx.fillRect(0, 204.5, 310, 1);
+    ctx.fillRect(104.5, 244.5, 101, 1);
+    ctx.fillRect(104.5, 264.5, 101, 1);
+    ctx.translate(155,155);
+    ctx.rotate(0.5*Math.PI);
+    ctx.translate(-155,-155);
+    ctx.fillRect(104.5, 44.5, 101, 1);
+    ctx.fillRect(104.5, 64.5, 101, 1);
+    ctx.fillRect(0, 104.5, 310, 1);
+    ctx.fillRect(0, 154.5, 310, 1);
+    ctx.fillRect(0, 204.5, 310, 1);
+    ctx.fillRect(104.5, 244.5, 101, 1);
+    ctx.fillRect(104.5, 264.5, 101, 1);
 }
 var drawPillarCircle = function(x,y){
-    ctx.fillStyle = 'rgba(0,0,0,0.5)';
-    ctx.strokeStyle = 'rgba(0,0,0,0.5)';
+    ctx.fillStyle = 'rgba(0,0,0,0.2)';
+    ctx.strokeStyle = 'rgba(0,0,0,0.2)';
     ctx.fillRect(x - 1,y - 1,2,2);
     ctx.beginPath();
     ctx.arc(x,y,4,0,2 * Math.PI);
