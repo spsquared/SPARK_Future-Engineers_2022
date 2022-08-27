@@ -276,7 +276,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         steeringMax = max(steeringArray)
         steeringMin = min(steeringArray)
         
-        wallSteeringReason = ""
+        wallSteeringReason = "no wall"
 
         if steeringMax > abs(steeringMin):
             if steeringMax == leftSteering:
