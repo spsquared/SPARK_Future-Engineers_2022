@@ -50,3 +50,6 @@ More tuning. Not a lot of new things.
 
 # 8/21/22
 We switched our systems to a new network (pocket router) and now the camera isn't detected.
+
+# 8/27/22
+Haven't been updating logs in a while, but we're at the competition now. We had issues with lighting, including glare and hard shadows. We've switched to using HSV as our pillar detection, and implemented a better system for detecting walls. In short, we find edges by marking pixels with high contrast, and then finding the first sets of highlighted pixels from the bottom. This method is much more reliable than using the color and works well in most lighting conditions.
