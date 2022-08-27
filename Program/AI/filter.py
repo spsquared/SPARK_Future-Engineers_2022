@@ -272,7 +272,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                 else:
                     steeringMax += pillarSteering / 2
                 if server != None:
-                    server.broadcast('strPredict', str(steeringMax))
+                    server.broadcast('values', [steeringMax, wallHeightLeft, wallHeightCenter, wallHeightRight, filteredWallHeightsDiffLeft, filteredWallHeightsDiffCenter, filteredWallHeightsDiffRight])
                 return steeringMax
             else:
                 if steeringMax < abs(pillarSteering) and (steeringMax < 75 or pillarSteering <= -75):
@@ -280,7 +280,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                 else:
                     steeringMax += pillarSteering / 2
                 if server != None:
-                    server.broadcast('strPredict', str(steeringMax))
+                    server.broadcast('values', [steeringMax, wallHeightLeft, wallHeightCenter, wallHeightRight, filteredWallHeightsDiffLeft, filteredWallHeightsDiffCenter, filteredWallHeightsDiffRight])
                 return steeringMax
         else:
             if pillarSteering > 0:
@@ -289,7 +289,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                 else:
                     steeringMin += pillarSteering / 2
                 if server != None:
-                    server.broadcast('strPredict', str(steeringMin))
+                    server.broadcast('values', [steeringMin, wallHeightLeft, wallHeightCenter, wallHeightRight, filteredWallHeightsDiffLeft, filteredWallHeightsDiffCenter, filteredWallHeightsDiffRight])
                 return steeringMin
             else:
                 if abs(steeringMin) < abs(pillarSteering) and (abs(steeringMin) < 75 or pillarSteering <= -75):
@@ -297,7 +297,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                 else:
                     steeringMin += pillarSteering / 2
                 if server != None:
-                    server.broadcast('strPredict', str(steeringMin))
+                    server.broadcast('values', [steeringMin, wallHeightLeft, wallHeightCenter, wallHeightRight, filteredWallHeightsDiffLeft, filteredWallHeightsDiffCenter, filteredWallHeightsDiffRight])
                 return steeringMin
 
         # steeringMax += pillarSteering
