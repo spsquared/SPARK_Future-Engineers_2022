@@ -165,7 +165,10 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                     firstNonzero = nonzeroList[0]
                     secondNonzero = nonzeroList[1]
                     index = 2
-                    while secondNonzero - firstNonzero < 5:
+                    minimumValue = 7
+                    if offset == 20:
+                        minimumValue = 5
+                    while secondNonzero - firstNonzero < minimumValue:
                         if len(nonzeroList) <= index:
                             secondNonzero = 50
                             break
