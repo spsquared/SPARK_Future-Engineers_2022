@@ -3,7 +3,7 @@ import numpy
 import cv2
 import base64
 import statistics
-import builtins
+import math
 
 # preprocessing filter module with cv prediction
 
@@ -392,11 +392,22 @@ def setColors(data, server = None):
     print(greenMax, greenMin)
     # print(wallMax, wallMin)
     # print(greyMax, greyMin)
-    # if server != None:
-    #     server.broadcast('colors', getColors())
+    if server != None:
+        server.broadcast('colors', getColors())
 def getColors():
-    global redMax, redMin, greenMax, greenMin, wallMax, wallMin
-    return [redMax[2], greenMax[2], wallMax[2], redMax[1], greenMax[1], wallMax[1], redMax[0], greenMax[0], wallMax[0], redMin[2], greenMin[2], wallMin[2], redMin[1], greenMin[1], wallMin[1], redMin[0], greenMin[0], wallMin[0]]
+    global redMax, redMin, greenMax, greenMin
+    array = []
+    for i in range(6):
+        if i % 2 == 0:
+            array.append(redMax[int(i/2)])
+        else:
+            array.append(greenMax[math.floor(i/2)])
+    for i in range(6):
+        if i % 2 == 0:
+            array.append(redMin[int(i/2)])
+        else:
+            array.append(greenMin[math.floor(i/2)])
+    return array
 def setDefaultColors():
     global rM, rm, gM, gm, wM, wm
     print('-- New ----------')
