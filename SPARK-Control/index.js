@@ -593,11 +593,11 @@ setInterval(() => {
     FPS.innerHTML = 'FPS: ' + fpsTimes.length;
 }, 1000);
 setInterval(() => {
-    if (performance.now()-displayTimer > displayDelay && !drawn) {
+    if (performance.now()-displayTimer >= displayDelay && !drawn) {
         drawn = true;
         displayChange();
     }
-}, 3);
+}, 1);
 document.addEventListener('keydown', (e) => {
     if (e.key == 'ArrowLeft') {
         lefting = true;
