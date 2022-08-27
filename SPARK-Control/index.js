@@ -629,12 +629,6 @@ setInterval(() => {
         if (righting) displayFront();
     }
 }, 10);
-setInterval(() => {
-    displayTimer--;
-    if (displayTimer == 0) {
-        displayChange();
-    }
-}, 1);
 
 // stop
 document.getElementById('emergencyStop').onclick = function() {
