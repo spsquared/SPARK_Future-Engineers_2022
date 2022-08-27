@@ -513,7 +513,7 @@ function showWallData() {
 function showPredictions() {
     let data = history[index].steer;
     strPredict.innerText = 'Final Steering: ' + Math.round(data[0]);
-    strReason.innerText = 'Steering Reason: ' + data[1];
+    strReason.innerText = data[1];
     wallStrPredict.innerText = 'Wall Steering: ' + Math.round(data[2]);
     pillarStrPredict.innerText = 'Pillar Steering: ' + Math.round(data[3]);
 };
