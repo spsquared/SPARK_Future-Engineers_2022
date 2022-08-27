@@ -10,7 +10,7 @@ import math
 # colors
 # rm = redMin1 = (175, 0, 0)
 # rM = redMax1 = (140, 140, 255)
-rm = redMin = (0, 75, 100)
+rm = redMin = (0, 75, 75)
 rM = redMax = (30, 255, 255)
 # rm = redMin = (150, 75, 100)
 # rM = redMax = (180, 255, 255)
