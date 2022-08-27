@@ -8,10 +8,16 @@ import builtins
 # preprocessing filter module with cv prediction
 
 # colors
-rM = redMax = (110, 110, 255)
-rm = redMin = (25, 35, 100)
-gM = greenMax = (85, 140, 95)
-gm = greenMin = (60, 65, 10)
+# rm = redMin1 = (175, 0, 0)
+# rM = redMax1 = (140, 140, 255)
+rm = redMin = (0, 75, 100)
+rM = redMax = (30, 255, 255)
+# rm = redMin = (150, 75, 100)
+# rM = redMax = (180, 255, 255)
+gm = greenMin = (30, 0, 0)
+gM = greenMax = (90, 255, 255)
+# gM = greenMax = (85, 140, 95)
+# gm = greenMin = (60, 65, 10)
 wM = wallMax = (90, 75, 85)
 wm = wallMin = (0, 0, 0)
 # sM = greyMax = 65
@@ -20,8 +26,19 @@ wm = wallMin = (0, 0, 0)
 def filter(imgIn: numpy.ndarray):
     global redMax, redMin, greenMax, greenMin, wallMax, wallMin
     try:
-        rMask = cv2.inRange(imgIn, redMin, redMax)
-        gMask = cv2.inRange(imgIn, greenMin, greenMax)
+        hsv = cv2.cvtColor(imgIn, cv2.COLOR_BGR2HSV)
+        # rMask = cv2.inRange(imgIn, redMin1, redMax1)
+        rMask1 = cv2.inRange(hsv, redMin, redMax)
+        redMinList = list(redMin)
+        redMinList = [180 - redMinList[0],redMinList[1],redMinList[2]]
+        redMin2 = tuple(redMinList)
+        redMaxList = list(redMax)
+        redMaxList = [180 - redMaxList[0],redMaxList[1],redMaxList[2]]
+        redMax2 = tuple(redMaxList)
+        rMask2 = cv2.inRange(hsv, redMin2, redMax2)
+        rMask = cv2.bitwise_or(rMask1, rMask2)
+        # gMask = cv2.inRange(imgIn, greenMin, greenMax)
+        gMask = cv2.inRange(hsv, greenMin, greenMax)
         blurredR = cv2.medianBlur(rMask, 5)
         blurredG = cv2.medianBlur(gMask, 5)
         # colorWallMask = cv2.inRange(imgIn, wallMin, wallMax)
