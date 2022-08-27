@@ -476,6 +476,9 @@ function drawLightBlob(blob,blobColor){
 };
 function addData(data) {
     index = 0;
+    if(!history[index]){
+        history[index] = {};
+    }
     history[index].steer = data[0];
     history[index].wall = data.slice(1, 10);
     // more bad coding practices
