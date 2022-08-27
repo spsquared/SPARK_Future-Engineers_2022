@@ -289,11 +289,11 @@ img {
     width: 100%;
 }
 #download {
-    width: 150px;
     height: 24px;
     text-decoration: none;
     color: black;
-    padding: 4px;
+    padding-left: 16px;
+    padding-right: 16px;
     padding-bottom: 0px;
     background-color: skyblue;
     text-align: center;
