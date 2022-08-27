@@ -85,6 +85,9 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         blurredImg = filter(imgIn)
         edgesImage, gImg, rImg = cv2.split(blurredImg)
 
+        # steering reason
+        steeringReason = ""
+
         ################# PILLAR STEERING #################
 
         # crop for blob detection
@@ -138,6 +141,36 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                     bgKps = gKps[i]
                 elif bgKps.size < gKps[i].size:
                     bgKps = gKps[i]
+
+        # pillar steering
+        pillarSteering = 0
+
+        # decide steering for each signal that will collide
+        reducedSteering = 0
+        if doPillars == True:
+            if brKps != 0:
+                if bgKps != 0:
+                    if brKps.size > bgKps.size:
+                        pillarSteering = -(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size - reducedSteering) * (brKps.size) ** 2 * 0.015
+                        steeringReason += "red pillar "
+                        # steeringArray.append(brKps.size ** 2 * 0.2)
+                    else:
+                        pillarSteering = (getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size - reducedSteering) * (bgKps.size) ** 2 * 0.015
+                        steeringReason += "green pillar "
+                        # steeringArray.append(-bgKps.size ** 2 * 0.2)
+                else:
+                    pillarSteering = -(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size - reducedSteering) * (brKps.size) ** 2 * 0.015
+                    steeringReason += "red pillar "
+                    # steeringArray.append(brKps.size ** 2 * 0.2)
+            elif bgKps != 0:
+                pillarSteering = (getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size - reducedSteering) * (bgKps.size) ** 2 * 0.015
+                steeringReason += "green pillar "
+                # steeringArray.append(-bgKps.size ** 2 * 0.2)
+            passedPillar *= 0.8
+            if pillarSteering != 0:
+                passedPillar = pillarSteering
+            else:
+                pillarSteering = passedPillar
 
         ################# WALL STEERING #################
 
@@ -204,62 +237,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         wallHeightsMaxRight = wallHeightsRight[1]
         wallHeightRight = wallHeightsRight[2]
         filteredWallHeightsDiffRight = wallHeightsRight[3]
-        
-        # send data to SPARK Control
-        if server != None and blurredImg.all() != None:
-            lastSend += 1
-            if (lastSend > 2):
-                lastSend = 0
-                encoded = base64.b64encode(cv2.imencode('.png', blurredImg)[1]).decode()
-                server.broadcast('capture', encoded)
-                arrayR = []
-                for i in range(len(rKps)):
-                    arrayR.append([rKps[i].pt[0],rKps[i].pt[1],rKps[i].size])
-                arrayG = []
-                for i in range(len(gKps)):
-                    arrayG.append([gKps[i].pt[0],gKps[i].pt[1],gKps[i].size])
-                if brKps != 0 and bgKps != 0:
-                    server.broadcast('blobs',[[brKps.pt[0],brKps.pt[1],brKps.size],arrayR,[bgKps.pt[0],bgKps.pt[1],bgKps.size],arrayG])
-                elif brKps != 0:
-                    server.broadcast('blobs',[[brKps.pt[0],brKps.pt[1],brKps.size],arrayR,0,arrayG])
-                elif bgKps != 0:
-                    server.broadcast('blobs',[0,arrayR,[bgKps.pt[0],bgKps.pt[1],bgKps.size],arrayG])
-                else:
-                    server.broadcast('blobs',[0,arrayR,0,arrayG])
-        
         steeringArray = [0]
-
-        pillarSteering = 0
-
-        #steering reason
-        steeringReason = ""
-
-        # decide steering for each signal that will collide
-        reducedSteering = 0
-        if doPillars == True:
-            if brKps != 0:
-                if bgKps != 0:
-                    if brKps.size > bgKps.size:
-                        pillarSteering = -(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size - reducedSteering) * (brKps.size) ** 2 * 0.015
-                        steeringReason += "red pillar "
-                        # steeringArray.append(brKps.size ** 2 * 0.2)
-                    else:
-                        pillarSteering = (getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size - reducedSteering) * (bgKps.size) ** 2 * 0.015
-                        steeringReason += "green pillar "
-                        # steeringArray.append(-bgKps.size ** 2 * 0.2)
-                else:
-                    pillarSteering = -(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size - reducedSteering) * (brKps.size) ** 2 * 0.015
-                    steeringReason += "red pillar "
-                    # steeringArray.append(brKps.size ** 2 * 0.2)
-            elif bgKps != 0:
-                pillarSteering = (getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size - reducedSteering) * (bgKps.size) ** 2 * 0.015
-                steeringReason += "green pillar "
-                # steeringArray.append(-bgKps.size ** 2 * 0.2)
-            passedPillar *= 0.8
-            if pillarSteering != 0:
-                passedPillar = pillarSteering
-            else:
-                pillarSteering = passedPillar
         
         # decide steering for each wall section
         counterClockwise += wallHeightRight - wallHeightLeft
@@ -287,11 +265,11 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         else:
             centerWallCalculations(wallHeightRight,wallHeightCenter,wallHeightLeft,1)
         if wallHeightRight > 18:
-            steering = -wallHeightRight ** 2 * 0.04
+            steering = -wallHeightRight ** 2 * 0.045
             steeringArray.append(steering)
             rightSteering = steering
         if wallHeightLeft > 18:
-            steering = wallHeightLeft ** 2 * 0.04
+            steering = wallHeightLeft ** 2 * 0.045
             steeringArray.append(steering)
             leftSteering = steering
         
@@ -310,7 +288,28 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         if turnsMade == 13:
             return "stop"
 
-
+        # send images to SPARK Control
+        if server != None and blurredImg.all() != None:
+            lastSend += 1
+            if (lastSend > 2):
+                lastSend = 0
+                encoded = base64.b64encode(cv2.imencode('.png', blurredImg)[1]).decode()
+                server.broadcast('capture', encoded)
+                arrayR = []
+                for i in range(len(rKps)):
+                    arrayR.append([rKps[i].pt[0],rKps[i].pt[1],rKps[i].size])
+                arrayG = []
+                for i in range(len(gKps)):
+                    arrayG.append([gKps[i].pt[0],gKps[i].pt[1],gKps[i].size])
+                if brKps != 0 and bgKps != 0:
+                    server.broadcast('blobs',[[brKps.pt[0],brKps.pt[1],brKps.size],arrayR,[bgKps.pt[0],bgKps.pt[1],bgKps.size],arrayG])
+                elif brKps != 0:
+                    server.broadcast('blobs',[[brKps.pt[0],brKps.pt[1],brKps.size],arrayR,0,arrayG])
+                elif bgKps != 0:
+                    server.broadcast('blobs',[0,arrayR,[bgKps.pt[0],bgKps.pt[1],bgKps.size],arrayG])
+                else:
+                    server.broadcast('blobs',[0,arrayR,0,arrayG])
+        
         # decide final steering
         steeringMax = max(steeringArray)
         steeringMin = min(steeringArray)
