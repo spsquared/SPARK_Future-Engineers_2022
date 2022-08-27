@@ -255,18 +255,18 @@ document.getElementById('captureStreamButton').onclick = function(e) {
 
 // filtered capture (ignore the terrible coding practices this was intended to be a temporary thing)
 let sliders = [
-    document.getElementById('redRMax'),
-    document.getElementById('greenRMax'),
-    document.getElementById('redGMax'),
-    document.getElementById('greenGMax'),
-    document.getElementById('redBMax'),
-    document.getElementById('greenBMax'),
-    document.getElementById('redRMin'),
-    document.getElementById('greenRMin'),
-    document.getElementById('redGMin'),
-    document.getElementById('greenGMin'),
-    document.getElementById('redBMin'),
-    document.getElementById('greenBMin'),
+    document.getElementById('redHMax'),
+    document.getElementById('greenHMax'),
+    document.getElementById('redSMax'),
+    document.getElementById('greenSMax'),
+    document.getElementById('redVMax'),
+    document.getElementById('greenVMax'),
+    document.getElementById('redHMin'),
+    document.getElementById('greenHMin'),
+    document.getElementById('redSMin'),
+    document.getElementById('greenSMin'),
+    document.getElementById('redVMin'),
+    document.getElementById('greenVMin'),
 ];
 document.getElementById('captureFilterButton').onclick = function(e) {
     let arr = [];
