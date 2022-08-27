@@ -655,6 +655,10 @@ async function animate(slider, backwards) {
     }
 };
 async function animateAll() {
+    setInterval(() => {
+        // document.body.style.backgroundColor = 'hsl(' + sliders[0].value*2 + ' ' + sliders[2].value*(100/255) + '% ' + sliders[4].value*(50/255) + '%)';
+        document.body.style.backgroundColor = 'hsl(' + sliders[0].value*2 + ' ' + sliders[2].value*(100/255) + '% 50%)';
+    }, 50);
     for (let slider of sliders) {
         animate(slider, 1);
         await new Promise((resolve) => setTimeout(resolve, Math.random()*200));
