@@ -280,6 +280,7 @@ img {
 #valueDisplayBlock {
     position: absolute;
     bottom: 364px;
+    width: 100%;
 }
 #download {
     width: 100px;
