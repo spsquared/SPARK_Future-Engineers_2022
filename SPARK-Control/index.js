@@ -594,7 +594,6 @@ setInterval(() => {
 }, 1000);
 setInterval(() => {
     if (performance.now()-displayTimer > displayDelay && !drawn) {
-        console.log('update')
         drawn = true;
         displayChange();
     }
