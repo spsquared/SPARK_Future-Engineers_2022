@@ -233,21 +233,21 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
 
         counterClockwise *= 0.9
 
-        def wallCalculations(left,center,right):
+        def centerWallCalculations(left,center,right):
             if center > 9 and right > 9:
                 if left > 20:
                     steeringArray.append(-(center + right) ** 2 * 0.08)
                 else:
                     steeringArray.append(-(center + right) ** 2 * 0.16)
-            if wallHeightRight > 15:
-                steeringArray.append(-wallHeightRight ** 2 * 0.04)
-            if wallHeightLeft > 15:
-                steeringArray.append(wallHeightLeft ** 2 * 0.04)
         
         if counterClockwise >= 0:
-            wallCalculations(wallHeightLeft,wallHeightCenter,wallHeightRight)
+            centerWallCalculations(wallHeightLeft,wallHeightCenter,wallHeightRight)
         else:
-            wallCalculations(wallHeightRight,wallHeightCenter,wallHeightLeft)
+            centerWallCalculations(wallHeightRight,wallHeightCenter,wallHeightLeft)
+        if wallHeightRight > 15:
+            steeringArray.append(-wallHeightRight ** 2 * 0.04)
+        if wallHeightLeft > 15:
+            steeringArray.append(wallHeightLeft ** 2 * 0.04)
         
         # very far, just turned
 
