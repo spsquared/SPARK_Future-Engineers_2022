@@ -318,6 +318,7 @@ document.getElementById('viewButton').onclick = function (e) {
     send('view');
 };
 document.getElementById('viewFilterButton').onclick = function (e) {
+    let arr = [];
     for (let i in sliders) {
         arr.push(sliders[i].value);
     }
