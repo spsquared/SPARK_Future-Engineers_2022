@@ -500,13 +500,13 @@ function showWallData() {
     ctx2.clearRect(0,0,272,154);
     ctx2.fillStyle = '#FFF9';
     for(let i = 0; i < 20; i++) {
-        ctx2.fillRect(i*4, 77-data[3][i]/2+data[6][i], 1, data[3][i]);
+        ctx2.fillRect(i*4, 100-data[3][i]-data[6][i], 1, data[3][i]);
     }
     for(let i = 0; i < 20; i++) {
-        ctx2.fillRect(i*4+96, 77-data[4][i]/2+data[7][i], 1, data[4][i]);
+        ctx2.fillRect(i*4+96, 100-data[4][i]-data[7][i], 1, data[4][i]);
     }
     for(let i = 0; i < 20; i++) {
-        ctx2.fillRect(i*4+192, 77-data[5][i]/2+data[8][i], 1, data[5][i]);
+        ctx2.fillRect(i*4+192, 100-data[5][i]-data[8][i], 1, data[5][i]);
     }
     ctx2.fillText(data[0], 0, 0);
 };
