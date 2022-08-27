@@ -401,6 +401,9 @@ const ctx2 = canvas2.getContext("2d");
 const historySlider = document.getElementById('historySlider');
 const FPS = document.getElementById('fps');
 const strPredict = document.getElementById('strPredict');
+const wallStrPredict = document.getElementById('wallStrPredict');
+const pillarStrPredict = document.getElementById('pillarStrPredict');
+const strReason = document.getElementById('strReason');
 const downloadButton = document.getElementById('download');
 ctx.canvas.width = 272;
 ctx.canvas.height = 154;
@@ -408,8 +411,8 @@ function addCapture(img) {
     history.unshift({
         img: 'data:image/png;base64,'+img,
         blobs: [[], [], [], []],
-        steer: 0,
-        wall: [0, 0, 0, [], [], []]
+        steer: [0, 'none', 0, 0],
+        wall: [0, 0, 0, [], [], [], [], [], []]
     });
     index = 0;
     if (history.length > maxHistory) {
@@ -480,44 +483,48 @@ function drawLightBlob(blob,blobColor){
     ctx.fill();
     ctx.stroke();
 };
-function addWallData(data) {
+function addData(data) {
     index = 0;
     history[index].steer = data[0];
-    history[index].wall = data.slice(1, 7);
+    history[index].wall = data.slice(1, 10);
+    // more bad coding practices
     history[index].wall[0] = parseInt(history[index].wall[0]);
     history[index].wall[1] = parseInt(history[index].wall[1]);
     history[index].wall[2] = parseInt(history[index].wall[2]);
     history[index].wall[3] = JSON.parse(history[index].wall[3]);
     history[index].wall[4] = JSON.parse(history[index].wall[4]);
     history[index].wall[5] = JSON.parse(history[index].wall[5]);
+    history[index].wall[6] = JSON.parse(history[index].wall[6]);
+    history[index].wall[7] = JSON.parse(history[index].wall[7]);
+    history[index].wall[8] = JSON.parse(history[index].wall[8]);
     if (history.length > maxHistory) {
         history.pop();
     }
     displayChange();
 };
 function showWallData() {
-    let data = history[index].wall
+    let data = history[index].wall;
     canvas2.width = 272;
     canvas2.height = 154;
     ctx2.clearRect(0,0,272,154);
     ctx2.fillStyle = '#FFF9';
     for(let i = 0; i < 20; i++) {
-        ctx2.fillRect(i*4, 77-data[3][i]/2, 1, data[3][i]);
+        ctx2.fillRect(i*4, 77-data[3][i]/2+data[6][i], 1, data[3][i]);
     }
     for(let i = 0; i < 20; i++) {
-        ctx2.fillRect(i*4+96, 77-data[4][i]/2, 1, data[4][i]);
+        ctx2.fillRect(i*4+96, 77-data[4][i]/2+data[7][i], 1, data[4][i]);
     }
     for(let i = 0; i < 20; i++) {
-        ctx2.fillRect(i*4+192, 77-data[5][i]/2, 1, data[5][i]);
+        ctx2.fillRect(i*4+192, 77-data[5][i]/2+data[8][i], 1, data[5][i]);
     }
     ctx2.fillText(data[0], 0, 0);
 };
-function showPrediction(val) {
-    history[index].steer = Math.round(val);
-    if (history.length > maxHistory) {
-        history.pop();
-    }
-    strPredict.innerText = 'Steering: ' + Math.round(val);
+function showPredictions() {
+    let data = history[index].wall;
+    strPredict.innerText = 'Final Steering: ' + Math.round(data[0]);
+    strReason.innerText = 'Steering Reason: ' + data[1];
+    wallStrPredict.innerText = 'Wall Steering: ' + Math.round(data[2]);
+    pillarStrPredict.innerText = 'Pillar Steering: ' + Math.round(data[3]);
 };
 async function displayBack() {
     index = Math.min(index+1, history.length-1);
@@ -539,12 +546,12 @@ function displayChange() {
         downloadButton.href = history[index].img;
         drawBlobs();
         showWallData();
-        showPrediction(history[index].steer);
+        showPredictions();
     }
 };
 addListener('capture', addCapture);
 addListener('blobs', addBlobs);
-addListener('values', addWallData);
+addListener('values', addData);
 setInterval(() => {
     while (performance.now()-fpsTimes[0] > 1000) fpsTimes.shift();
     FPS.innerHTML = 'FPS: ' + fpsTimes.length;

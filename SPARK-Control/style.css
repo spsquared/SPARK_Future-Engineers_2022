@@ -283,20 +283,11 @@ img {
     color: white;
     background-color: #0005;
 }
-#strPredict {
+#valueDisplayBlock {
     position: absolute;
-    top: -20px;
-    left: 8px;
-}
-#showOverlay {
-    position: absolute;
-    top: -20px;
-    left: 120px;
+    bottom: 364px;
 }
 #download {
-    position: absolute;
-    top: -22px;
-    left: 260px;
     width: 100px;
     height: 18px;
     font: 14px sans-serif;
@@ -307,20 +298,16 @@ img {
     cursor: pointer;
 }
 #maxHistoryLabel {
-    position: absolute;
-    top: -20px;
-    right: 58px;
+    display: inline-block;
 }
 #maxHistory {
-    position: absolute;
-    top: -22px;
-    right: 0px;
+    display: inline-block;
     width: 50px;
 }
 #displayFullscreen {
-    position: absolute;
-    top: -72px;
-    left: -8px;
+    width: 120px;
+    height: 24px;
+    margin: 0px;
 }
 
 #emergencyStop {

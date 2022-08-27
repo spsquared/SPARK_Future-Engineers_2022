@@ -220,15 +220,38 @@
             <canvas id="canvas2"></canvas>
         </div>
         <div id="fps">FPS: 0</div>
-        <div id="strPredict">Steering: 0</div>
-        <label id="showOverlay">
-            <input type="checkbox" oninput="if (this.checked) {document.getElementById('canvas2').style.display = '';} else {document.getElementById('canvas2').style.display = 'none';}" checked>
-            Show Overlay
-        </label>
-        <a id="download" href="data:image/png;base64," download="download.png">DOWNLOAD</a>
-        <label id="maxHistoryLabel" for="maxHistory">Max History:&nbsp;</label>
-        <input type="number" id="maxHistory" min="0" max="1000000" step="10" value="500" oninput="maxHistory = parseInt(this.value);">
-        <button id="displayFullscreen" class="largeButton" onclick="document.getElementById('displayBlock').requestFullscreen();">FULLSCREEN</button>
+        <table id="valueDisplayBlock" width="100%">
+            <tbody>
+                <tr>
+                    <td><span id="pillarStrPredict">Pillar Steering: 0</span></td>
+                    <td><button id="displayFullscreen" class="largeButton" onclick="document.getElementById('displayBlock').requestFullscreen();">FULLSCREEN</button></td>
+                    <td>
+                        <label id="showOverlay">
+                            <input type="checkbox" oninput="if (this.checked) {document.getElementById('canvas2').style.display = '';} else {document.getElementById('canvas2').style.display = 'none';}" checked>
+                            Show Overlay
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span id="wallStrPredict">Wall Steering: 0</span></td>
+                    <td></td>
+                    <td><a id="download" href="data:image/png;base64," download="download.png">DOWNLOAD</a></td>
+                </tr>
+                <tr>
+                    <td><span id="strPredict">Final Steering: 0</span></td>
+                    <td><span id="strReason">Steering Reason: yes</span></td>
+                    <td>
+                        <label id="maxHistoryLabel" for="maxHistory">Max History:&nbsp;</label>
+                        <input type="number" id="maxHistory" min="0" max="1000000" step="10" value="500" oninput="maxHistory = parseInt(this.value);">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        
+        
+        
+        
     </div>
     <div id="joystick">
         <div id="joystickPin"></div>
