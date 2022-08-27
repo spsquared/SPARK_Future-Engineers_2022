@@ -63,8 +63,9 @@ async def __server(websocket, path):
                             data = sendlist[index][0]
                             del sendlist[index][0]
                             await websocket.send(data)
+                            time.sleep(0.01)
                         else:
-                            time.sleep(0.1)
+                            time.sleep(0.2)
                     else:
                         time.sleep(0.1)
                 except websockets.exceptions.ConnectionClosedOK:
