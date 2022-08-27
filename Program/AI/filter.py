@@ -146,28 +146,29 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         pillarSteering = 0
 
         # decide steering for each signal that will collide
-        reducedSteering = 0
+        reducedSteering = -5
         if doPillars == True:
             if brKps != 0:
                 if bgKps != 0:
                     if brKps.size > bgKps.size:
-                        pillarSteering = -(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size - reducedSteering) * (brKps.size) ** 2 * 0.015
+                        pillarSteering = -(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size - reducedSteering) * (brKps.size - 3) ** 2 * 0.01
                         steeringReason += "red pillar "
                         # steeringArray.append(brKps.size ** 2 * 0.2)
                     else:
-                        pillarSteering = (getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size - reducedSteering) * (bgKps.size) ** 2 * 0.015
+                        pillarSteering = (getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size - reducedSteering) * (bgKps.size - 3) ** 2 * 0.01
                         steeringReason += "green pillar "
                         # steeringArray.append(-bgKps.size ** 2 * 0.2)
                 else:
-                    pillarSteering = -(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size - reducedSteering) * (brKps.size) ** 2 * 0.015
+                    pillarSteering = -(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size - reducedSteering) * (brKps.size - 3) ** 2 * 0.01
                     steeringReason += "red pillar "
                     # steeringArray.append(brKps.size ** 2 * 0.2)
             elif bgKps != 0:
-                pillarSteering = (getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size - reducedSteering) * (bgKps.size) ** 2 * 0.015
+                pillarSteering = (getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size - reducedSteering) * (bgKps.size - 3) ** 2 * 0.01
                 steeringReason += "green pillar "
                 # steeringArray.append(-bgKps.size ** 2 * 0.2)
-            passedPillar *= 0.8
+            passedPillar *= 0.9
             if pillarSteering != 0:
+                pillarSteering += passedPillar * 0.5
                 passedPillar = pillarSteering
             else:
                 pillarSteering = passedPillar
@@ -366,16 +367,6 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
             if server != None:
                 server.broadcast('values', [[str(steeringMin),steeringReason,str(wallSteering),str(pillarSteering)], str(wallHeightLeft), str(wallHeightCenter), str(wallHeightRight), str(filteredWallHeightsDiffLeft), str(filteredWallHeightsDiffCenter), str(filteredWallHeightsDiffRight),str(wallHeightsMaxLeft),str(wallHeightsMaxCenter),str(wallHeightsMaxRight),[str(justTurned),str(turnCooldown),str(turnsMade)],str(passedPillar)])
             return steeringMin
-
-        # steeringMax += pillarSteering
-        # steeringMin += pillarSteering
-        # if steeringMax > abs(steeringMin):
-        #     if server != None:
-        #         server.broadcast('strPredict', str(steeringMax))
-        #     return steeringMax
-        # if server != None:
-        #     server.broadcast('strPredict', str(steeringMin))
-        # return steeringMin
     except Exception as err:
         print(err)
         io.error()
