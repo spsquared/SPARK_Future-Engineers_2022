@@ -57,7 +57,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         params.filterByCircularity = True
         params.minCircularity = 0.6
         params.filterByConvexity = True
-        params.minConvexity = 0
+        params.minConvexity = 0.7
         params.filterByInertia = True
         params.minInertiaRatio = 0
         blobs = cv2.SimpleBlobDetector_create(params)
