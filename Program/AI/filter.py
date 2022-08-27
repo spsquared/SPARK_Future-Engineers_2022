@@ -55,7 +55,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         params.filterByArea = True
         params.minArea = 100
         params.filterByCircularity = True
-        params.minCircularity = 0
+        params.minCircularity = 0.6
         params.filterByConvexity = True
         params.minConvexity = 0
         params.filterByInertia = True
@@ -86,69 +86,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
             blobs.empty()
             gKps = blobs.detect(255 - rImg)
 
-        # crop for wall detection
-        wallStart = 55
-        wallEnd = 90
-        croppedEdgesImg = edgesImage[0:,0:1]
-        for i in range(19):
-            croppedEdgesImg = numpy.concatenate((croppedEdgesImg, edgesImage[0:,i * 4:i * 4 + 1]), axis=1)
-        for i in range(20):
-            croppedEdgesImg = numpy.concatenate((croppedEdgesImg, edgesImage[0:,i * 4 + 96:i * 4 + 97]), axis=1)
-        for i in range(20):
-            croppedEdgesImg = numpy.concatenate((croppedEdgesImg, edgesImage[0:,i * 4 + 192:i * 4 + 193]), axis=1)
-
-        #flip wall
-
-        croppedEdgesImg = numpy.flip(croppedEdgesImg,axis=0)
-
-        # find wall heights
-
-        transposedArray = numpy.transpose(numpy.nonzero(croppedEdgesImg))
-
-        def getWallHeights(offset):
-            wallHeightsMax = []
-            wallHeightsDiff = []
-            for i in range(20):
-                i += offset
-                nonzeroList = list(builtins.filter(lambda x: x[1] == i,transposedArray))
-                if len(nonzeroList) >= 2:
-                    firstNonzero = nonzeroList[0][0]
-                    secondNonzero = nonzeroList[1][0]
-                    index = 3
-                    while secondNonzero - firstNonzero < 5 and len(nonzeroList) >= index:
-                        secondNonzero = nonzeroList[index - 1][0]
-                        index += 1
-                else:
-                    firstNonzero = 0
-                    secondNonzero = 0
-                wallHeightsDiff.append(secondNonzero - firstNonzero)
-                wallHeightsMax.append(firstNonzero)
-            filteredWallHeightsDiff = list(builtins.filter(lambda x:x > 2,wallHeightsDiff))
-            print(offset)
-            print(filteredWallHeightsDiff)
-            if len(filteredWallHeightsDiff) > 0:
-                return [max(wallHeightsMax),statistics.median(filteredWallHeightsDiff),filteredWallHeightsDiff]
-            else:
-                return [max(wallHeightsMax),0,[]]
-
-        wallHeightsLeft = getWallHeights(0)
-        wallMaximumLeft = wallHeightsLeft[0]
-        wallHeightLeft = wallHeightsLeft[1]
-        filteredWallHeightsDiffLeft = wallHeightsLeft[2]
-        wallHeightsCenter = getWallHeights(20)
-        wallMaximumCenter = wallHeightsCenter[0]
-        wallHeightCenter = wallHeightsCenter[1]
-        filteredWallHeightsDiffCenter = wallHeightsRight[2]
-        wallHeightsRight = getWallHeights(40)
-        wallMaximumRight = wallHeightsRight[0]
-        wallHeightRight = wallHeightsRight[1]
-        filteredWallHeightsDiffRight = wallHeightsRight[2]
-        print(wallHeightLeft)
-        print(wallHeightCenter)
-        print(wallHeightRight)
-
         # pillar calculations
-
         blobSizeRequirement = 0
         dangerSize = 35
         def getRedEquation(x):
@@ -163,7 +101,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
             position = list(rKps[i].pt)
             position[1] += blobStart
             rKps[i].pt = tuple(position)
-            if rKps[i].pt[1] + rKps[i].size > getRedEquation(rKps[i].pt[0]) and rKps[i].size > blobSizeRequirement:
+            if rKps[i].pt[1] + rKps[i].size > getRedEquation(rKps[i].pt[0]) and rKps[i].pt[1] + rKps[i].size > 70 and rKps[i].size > blobSizeRequirement:
                 if brKps == 0:
                     brKps = rKps[i]
                 elif brKps.size < rKps[i].size:
@@ -174,11 +112,68 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
             position = list(gKps[i].pt)
             position[1] += blobStart
             gKps[i].pt = tuple(position)
-            if gKps[i].pt[1] + gKps[i].size > getGreenEquation(gKps[i].pt[0]) and gKps[i].size > blobSizeRequirement:
+            if gKps[i].pt[1] + gKps[i].size > getGreenEquation(gKps[i].pt[0]) and gKps[i].pt[1] + gKps[i].size > 70 and gKps[i].size > blobSizeRequirement:
                 if bgKps == 0:
                     bgKps = gKps[i]
                 elif bgKps.size < gKps[i].size:
                     bgKps = gKps[i]
+
+        # crop for wall detection
+        wallStart = 55
+        wallEnd = 100
+        croppedEdgesImg = edgesImage[wallStart:wallEnd,0:1]
+        for i in range(19):
+            croppedEdgesImg = numpy.concatenate((croppedEdgesImg, edgesImage[wallStart:wallEnd,i * 4:i * 4 + 1]), axis=1)
+        for i in range(20):
+            croppedEdgesImg = numpy.concatenate((croppedEdgesImg, edgesImage[wallStart:wallEnd,i * 4 + 96:i * 4 + 97]), axis=1)
+        for i in range(20):
+            croppedEdgesImg = numpy.concatenate((croppedEdgesImg, edgesImage[wallStart:wallEnd,i * 4 + 192:i * 4 + 193]), axis=1)
+
+        #flip wall
+
+        croppedEdgesImg = numpy.flip(croppedEdgesImg,axis=0)
+        croppedEdgesImg = numpy.swapaxes(croppedEdgesImg,0,1)
+
+        # find wall heights
+
+        def getWallHeights(offset):
+            wallHeightsMax = []
+            wallHeightsDiff = []
+            for i in range(20):
+                i += offset
+                nonzeroList = numpy.nonzero(croppedEdgesImg[i])[0]
+                if len(nonzeroList) >= 2:
+                    firstNonzero = nonzeroList[0]
+                    secondNonzero = nonzeroList[1]
+                    index = 3
+                    while secondNonzero - firstNonzero < 5 and len(nonzeroList) >= index:
+                        secondNonzero = nonzeroList[index - 1]
+                        index += 1
+                elif len(nonzeroList) == 1:
+                    firstNonzero = nonzeroList[0]
+                    secondNonzero = 35
+                else:
+                    firstNonzero = 0
+                    secondNonzero = 35
+                wallHeightsDiff.append(secondNonzero - firstNonzero)
+                wallHeightsMax.append(firstNonzero)
+            if len(wallHeightsDiff) > 0:
+                return [max(wallHeightsMax),statistics.median(wallHeightsDiff),wallHeightsDiff]
+            else:
+                return [max(wallHeightsMax),0,[]]
+
+        wallHeightsLeft = getWallHeights(0)
+        wallMaximumLeft = wallHeightsLeft[0]
+        wallHeightLeft = wallHeightsLeft[1]
+        filteredWallHeightsDiffLeft = wallHeightsLeft[2]
+        wallHeightsCenter = getWallHeights(20)
+        wallMaximumCenter = wallHeightsCenter[0]
+        wallHeightCenter = wallHeightsCenter[1]
+        filteredWallHeightsDiffCenter = wallHeightsCenter[2]
+        wallHeightsRight = getWallHeights(40)
+        wallMaximumRight = wallHeightsRight[0]
+        wallHeightRight = wallHeightsRight[1]
+        filteredWallHeightsDiffRight = wallHeightsRight[2]
         
         # send data to SPARK Control
         if server != None and blurredImg.all() != None:
@@ -236,9 +231,9 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         def centerWallCalculations(left,center,right):
             if center > 9 and right > 9:
                 if left > 20:
-                    steeringArray.append(-(center + right) ** 2 * 0.08)
+                    steeringArray.append(-min(center,right) ** 2 * 0.15)
                 else:
-                    steeringArray.append(-(center + right) ** 2 * 0.16)
+                    steeringArray.append(-min(center,right) ** 2 * 0.3)
         
         if counterClockwise >= 0:
             centerWallCalculations(wallHeightLeft,wallHeightCenter,wallHeightRight)
@@ -272,7 +267,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                 else:
                     steeringMax += pillarSteering / 2
                 if server != None:
-                    server.broadcast('values', [steeringMax, wallHeightLeft, wallHeightCenter, wallHeightRight, filteredWallHeightsDiffLeft, filteredWallHeightsDiffCenter, filteredWallHeightsDiffRight])
+                    server.broadcast('values', [str(steeringMax), str(wallHeightLeft), str(wallHeightCenter), str(wallHeightRight), str(filteredWallHeightsDiffLeft), str(filteredWallHeightsDiffCenter), str(filteredWallHeightsDiffRight)])
                 return steeringMax
             else:
                 if steeringMax < abs(pillarSteering) and (steeringMax < 75 or pillarSteering <= -75):
@@ -280,7 +275,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                 else:
                     steeringMax += pillarSteering / 2
                 if server != None:
-                    server.broadcast('values', [steeringMax, wallHeightLeft, wallHeightCenter, wallHeightRight, filteredWallHeightsDiffLeft, filteredWallHeightsDiffCenter, filteredWallHeightsDiffRight])
+                    server.broadcast('values', [str(steeringMax), str(wallHeightLeft), str(wallHeightCenter), str(wallHeightRight), str(filteredWallHeightsDiffLeft), str(filteredWallHeightsDiffCenter), str(filteredWallHeightsDiffRight)])
                 return steeringMax
         else:
             if pillarSteering > 0:
@@ -289,7 +284,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                 else:
                     steeringMin += pillarSteering / 2
                 if server != None:
-                    server.broadcast('values', [steeringMin, wallHeightLeft, wallHeightCenter, wallHeightRight, filteredWallHeightsDiffLeft, filteredWallHeightsDiffCenter, filteredWallHeightsDiffRight])
+                    server.broadcast('values', [str(steeringMin), str(wallHeightLeft), str(wallHeightCenter), str(wallHeightRight), str(filteredWallHeightsDiffLeft), str(filteredWallHeightsDiffCenter), str(filteredWallHeightsDiffRight)])
                 return steeringMin
             else:
                 if abs(steeringMin) < abs(pillarSteering) and (abs(steeringMin) < 75 or pillarSteering <= -75):
@@ -297,7 +292,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                 else:
                     steeringMin += pillarSteering / 2
                 if server != None:
-                    server.broadcast('values', [steeringMin, wallHeightLeft, wallHeightCenter, wallHeightRight, filteredWallHeightsDiffLeft, filteredWallHeightsDiffCenter, filteredWallHeightsDiffRight])
+                    server.broadcast('values', [str(steeringMin), str(wallHeightLeft), str(wallHeightCenter), str(wallHeightRight), str(filteredWallHeightsDiffLeft), str(filteredWallHeightsDiffCenter), str(filteredWallHeightsDiffRight)])
                 return steeringMin
 
         # steeringMax += pillarSteering
