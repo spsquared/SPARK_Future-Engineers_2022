@@ -415,6 +415,9 @@ const justTurned = document.getElementById('justTurned');
 const passedPillar = document.getElementById('passedPillar');
 ctx.canvas.width = 272;
 ctx.canvas.height = 154;
+let displayTimer = 0;
+let drawn = false;
+let displayDelay = 10;
 function addCapture(img) {
     history.unshift({
         img: 'data:image/png;base64,'+img,
@@ -430,7 +433,8 @@ function addCapture(img) {
     }
     historySlider.max = history.length;
     historySlider.value = history.length;
-    displayChange();
+    displayTimer = performance.now();
+    drawn = false;
 
     let now = performance.now();
     while(fpsTimes.length > 0 && fpsTimes[0] <= now - 1000){
@@ -445,7 +449,8 @@ function addBlobs(data) {
     if (history.length > maxHistory) {
         history.pop();
     }
-    displayChange();
+    displayTimer = performance.now();
+    drawn = false;
 };
 function drawBlobs() {
     let data = history[index].blobs;
@@ -518,7 +523,8 @@ function addData(data) {
     if (history.length > maxHistory) {
         history.pop();
     }
-    displayChange();
+    displayTimer = performance.now();
+    drawn = false;
 };
 function showPredictions() {
     let data = history[index].steer;
@@ -557,15 +563,17 @@ async function displayBack() {
     index = Math.min(index+1, history.length-1);
     historySlider.max = history.length;
     historySlider.value = history.length-index;
-    displayChange();
+    displayTimer = performance.now();
+    drawn = false;
 };
 async function displayFront() {
     index = Math.max(index-1, 0);
     historySlider.max = history.length;
     historySlider.value = history.length-index;
-    displayChange();
+    displayTimer = performance.now();
+    drawn = false;
 };
-function displayChange() {
+async function displayChange() {
     historySlider.max = history.length;
     index = history.length-parseInt(historySlider.value);
     if (history[index]) {
@@ -584,6 +592,12 @@ setInterval(() => {
     while (performance.now()-fpsTimes[0] > 1000) fpsTimes.shift();
     FPS.innerHTML = 'FPS: ' + fpsTimes.length;
 }, 1000);
+setInterval(() => {
+    if (performance.now()-displayTimer > displayDelay && !drawn) {
+        drawn = true;
+        displayChange();
+    }
+}, 3);
 document.addEventListener('keydown', (e) => {
     if (e.key == 'ArrowLeft') {
         lefting = true;
@@ -615,6 +629,12 @@ setInterval(() => {
         if (righting) displayFront();
     }
 }, 10);
+setInterval(() => {
+    displayTimer--;
+    if (displayTimer == 0) {
+        displayChange();
+    }
+}, 1);
 
 // stop
 document.getElementById('emergencyStop').onclick = function() {

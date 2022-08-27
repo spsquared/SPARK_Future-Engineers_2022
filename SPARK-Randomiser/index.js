@@ -20,82 +20,100 @@ var resetField = function(){
         ctx.rotate(0.5 * Math.PI);
         ctx.translate(-155,-155);
     }
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+    ctx.fillRect(104.5, 44.5, 101, 1);
+    ctx.fillRect(104.5, 64.5, 101, 1);
+    ctx.fillRect(0, 104.5, 310, 1);
+    ctx.fillRect(0, 154.5, 310, 1);
+    ctx.fillRect(0, 204.5, 310, 1);
+    ctx.fillRect(104.5, 244.5, 101, 1);
+    ctx.fillRect(104.5, 264.5, 101, 1);
+    ctx.translate(155,155);
+    ctx.rotate(0.5*Math.PI);
+    ctx.translate(-155,-155);
+    ctx.fillRect(104.5, 44.5, 101, 1);
+    ctx.fillRect(104.5, 64.5, 101, 1);
+    ctx.fillRect(0, 104.5, 310, 1);
+    ctx.fillRect(0, 154.5, 310, 1);
+    ctx.fillRect(0, 204.5, 310, 1);
+    ctx.fillRect(104.5, 244.5, 101, 1);
+    ctx.fillRect(104.5, 264.5, 101, 1);
 }
 var drawPillarCircle = function(x,y){
-    ctx.fillStyle = 'rgba(0,0,0,0.5)';
-    ctx.strokeStyle = 'rgba(0,0,0,0.5)';
+    ctx.fillStyle = 'rgba(0,0,0,0.2)';
+    ctx.strokeStyle = 'rgba(0,0,0,0.2)';
     ctx.fillRect(x - 1,y - 1,2,2);
     ctx.beginPath();
     ctx.arc(x,y,4,0,2 * Math.PI);
     ctx.stroke();
 }
 var drawStartingPosition = function(rotations,position,direction){
-    ctx.fillStyle = 'rgba(255,0,0,0.5)';
+    ctx.fillStyle = 'rgba(255,255,0,0.5)';
     ctx.translate(155,155);
     ctx.rotate(0.5 * Math.PI * rotations);
     if(position === 0){
         ctx.fillRect(-50,-150,50,40);
         if(direction === 0){
-            ctx.fillStyle = 'rgba(0,255,255,1)';
+            ctx.fillStyle = 'rgba(0,255,255,0.5)';
             ctx.fillRect(-50,-150,10,40);
         }
         else{
-            ctx.fillStyle = 'rgba(0,255,255,1)';
+            ctx.fillStyle = 'rgba(0,255,255,0.5)';
             ctx.fillRect(-10,-150,10,40);
         }
     }
     else if(position === 1){
         ctx.fillRect(0,-150,50,40);
         if(direction === 0){
-            ctx.fillStyle = 'rgba(0,255,255,1)';
+            ctx.fillStyle = 'rgba(0,255,255,0.5)';
             ctx.fillRect(0,-150,10,40);
         }
         else{
-            ctx.fillStyle = 'rgba(0,255,255,1)';
+            ctx.fillStyle = 'rgba(0,255,255,0.5)';
             ctx.fillRect(40,-150,10,40);
         }
     }
     else if(position === 2){
         ctx.fillRect(-50,-110,50,20);
         if(direction === 0){
-            ctx.fillStyle = 'rgba(0,255,255,1)';
+            ctx.fillStyle = 'rgba(0,255,255,0.5)';
             ctx.fillRect(-50,-110,10,20);
         }
         else{
-            ctx.fillStyle = 'rgba(0,255,255,1)';
+            ctx.fillStyle = 'rgba(0,255,255,0.5)';
             ctx.fillRect(-10,-110,10,20);
         }
     }
     else if(position === 3){
         ctx.fillRect(0,-110,50,20);
         if(direction === 0){
-            ctx.fillStyle = 'rgba(0,255,255,1)';
+            ctx.fillStyle = 'rgba(0,255,255,0.5)';
             ctx.fillRect(0,-110,10,20);
         }
         else{
-            ctx.fillStyle = 'rgba(0,255,255,1)';
+            ctx.fillStyle = 'rgba(0,255,255,0.5)';
             ctx.fillRect(40,-110,10,20);
         }
     }
     else if(position === 4){
         ctx.fillRect(-50,-90,50,40);
         if(direction === 0){
-            ctx.fillStyle = 'rgba(0,255,255,1)';
+            ctx.fillStyle = 'rgba(0,255,255,0.5)';
             ctx.fillRect(-50,-90,10,40);
         }
         else{
-            ctx.fillStyle = 'rgba(0,255,255,1)';
+            ctx.fillStyle = 'rgba(0,255,255,0.5)';
             ctx.fillRect(-10,-90,10,40);
         }
     }
     else if(position === 5){
         ctx.fillRect(0,-90,50,40);
         if(direction === 0){
-            ctx.fillStyle = 'rgba(0,255,255,1)';
+            ctx.fillStyle = 'rgba(0,255,255,0.5)';
             ctx.fillRect(0,-90,10,40);
         }
         else{
-            ctx.fillStyle = 'rgba(0,255,255,1)';
+            ctx.fillStyle = 'rgba(0,255,255,0.5)';
             ctx.fillRect(40,-90,10,40);
         }
     }
