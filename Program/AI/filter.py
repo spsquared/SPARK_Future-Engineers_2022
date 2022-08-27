@@ -17,18 +17,19 @@ sM = greyMax = 65
 sm = greyMin = 0
 
 def filter(imgIn: numpy.ndarray):
-    global redMax, redMin, greenMax, greenMin, wallMax, wallMin, greyMax, greyMin
+    global redMax, redMin, greenMax, greenMin, wallMax, wallMin
     try:
         rMask = cv2.inRange(imgIn, redMin, redMax)
         gMask = cv2.inRange(imgIn, greenMin, greenMax)
+        blurredR = cv2.medianBlur(rMask, 5)
+        blurredG = cv2.medianBlur(gMask, 5)
         # colorWallMask = cv2.inRange(imgIn, wallMin, wallMax)
         # imgray = cv2.cvtColor(imgIn, cv2.COLOR_BGR2GRAY)
         # grayscaleFilter = cv2.inRange(imgray, 0, 65)
         # wMask = cv2.bitwise_and(colorWallMask, grayscaleFilter, mask = None)
         # rawImg = cv2.merge((wMask, gMask, rMask))
-        croppedWImg = imgIn
-        edgesImage = cv2.Canny(croppedWImg, 50, 120, 3)
-        rawImg = cv2.merge((edgesImage, gMask, rMask))
+        edgesImage = cv2.Canny(imgIn, 200, 225, 3)
+        filteredImg = cv2.merge((edgesImage, blurredG, blurredR))
         return filteredImg
     except Exception as err:
         print(err)
