@@ -310,6 +310,12 @@ img {
     height: 24px;
     margin: 0px;
 }
+#valueDisplay2Block {
+    position: absolute;
+    right: -256px;
+    bottom: 16px;
+    width: 250px;
+}
 
 #emergencyStop {
     position: absolute;

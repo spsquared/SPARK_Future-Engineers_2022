@@ -21,10 +21,10 @@
         <button id="captureFilterButton" class="largeButton">FILTERED CAPTURE</button><br>
         <button id="captureStreamButton" class="largeButton">START CAPTURE STREAM</button>
         <button id="captureFilterStreamButton" class="largeButton">START FILTERED CAPTURE STREAM</button>
+        <button id="viewButton" class="largeButton">VIEW IMAGE</button>
+        <button id="viewFilterButton" class="largeButton">VIEW FILTERED IMAGE</button>
         <button id="streamButton" class="largeButton">START STREAM</button>
         <button id="filterStreamButton" class="largeButton">START FILTERED STREAM</button>
-        <button id="viewButton" class="largeButton">VIEW IMAGE</button>
-        <button id="viewFilterbutton" class="largeButton">VIEW FILTERED IMAGE</button>
     </div>
     <div id="filterAdjust">
         <div style="font-size: 32px; font-weight: bold;">Adjust Filter:</div>
@@ -171,6 +171,40 @@
                         <label id="maxHistoryLabel" for="maxHistory">Max History:&nbsp;</label>
                         <input type="number" id="maxHistory" min="0" max="1000000" step="10" value="500" oninput="maxHistory = parseInt(this.value);">
                     </td>
+                </tr>
+            </tbody>
+        </table>
+        <table id="valueDisplay2Block">
+            <tbody>
+                <tr>
+                    <td style="min-width: 80px;"></td>
+                    <td style="min-width: 40px; max-width: 40px;"></td>
+                    <td style="min-width: 40px; max-width: 40px;"></td>
+                </tr>
+                <tr>
+                    <td>Passed pillar:</td>
+                    <td><span id="passedPillar">buh</span></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Just turned:</td>
+                    <td><span id="justTurned">false</span></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Turn cooldown:</td>
+                    <td><span id="turnCooldown">0</span></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Turns Made:</td>
+                    <td><span id="turnsMade">0</span></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><span id="wallHeightLeft">L: 0</span></td>
+                    <td><span id="wallHeightCenter">C: 0</span></td>
+                    <td><span id="wallHeightRight">R: 0</span></td>
                 </tr>
             </tbody>
         </table>

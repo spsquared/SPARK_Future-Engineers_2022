@@ -252,22 +252,6 @@ document.getElementById('captureStreamButton').onclick = function(e) {
         document.getElementById('captureStreamButton').style.backgroundColor = 'lightgreen';
     }
 };
-
-// filtered capture (ignore the terrible coding practices this was intended to be a temporary thing)
-let sliders = [
-    document.getElementById('redHMax'),
-    document.getElementById('greenHMax'),
-    document.getElementById('redSMax'),
-    document.getElementById('greenSMax'),
-    document.getElementById('redVMax'),
-    document.getElementById('greenVMax'),
-    document.getElementById('redHMin'),
-    document.getElementById('greenHMin'),
-    document.getElementById('redSMin'),
-    document.getElementById('greenSMin'),
-    document.getElementById('redVMin'),
-    document.getElementById('greenVMin')
-];
 document.getElementById('captureFilterButton').onclick = function(e) {
     let arr = [];
     for (let i in sliders) {
@@ -292,6 +276,22 @@ document.getElementById('captureFilterStreamButton').onclick = function(e) {
         document.getElementById('captureFilterStreamButton').style.backgroundColor = 'lightgreen';
     }
 };
+
+// filtered capture (ignore the terrible coding practices this was intended to be a temporary thing)
+let sliders = [
+    document.getElementById('redHMax'),
+    document.getElementById('greenHMax'),
+    document.getElementById('redSMax'),
+    document.getElementById('greenSMax'),
+    document.getElementById('redVMax'),
+    document.getElementById('greenVMax'),
+    document.getElementById('redHMin'),
+    document.getElementById('greenHMin'),
+    document.getElementById('redSMin'),
+    document.getElementById('greenSMin'),
+    document.getElementById('redVMin'),
+    document.getElementById('greenVMin')
+];
 function updateSlider(i) {
     document.getElementById(sliders[i].id + 'indicator').innerText = sliders[i].value;
     if (sliders[i].id.includes('H')) {
@@ -313,7 +313,16 @@ function setColors(colors) {
 };
 addListener('colors', setColors);
 
-// non capture streams
+// non capture streams and iamges
+document.getElementById('viewButton').onclick = function (e) {
+    send('view');
+};
+document.getElementById('viewFilterButton').onclick = function (e) {
+    for (let i in sliders) {
+        arr.push(sliders[i].value);
+    }
+    send('viewFilter', arr)
+};
 let streaming2 = false;
 let filterstreaming2 = false;
 document.getElementById('streamButton').onclick = function(e) {
@@ -396,6 +405,13 @@ const wallStrPredict = document.getElementById('wallStrPredict');
 const pillarStrPredict = document.getElementById('pillarStrPredict');
 const strReason = document.getElementById('strReason');
 const downloadButton = document.getElementById('download');
+const wallHeightLeft = document.getElementById('wallHeightLeft');
+const wallHeightCenter = document.getElementById('wallHeightCenter');
+const wallHeightRight = document.getElementById('wallHeightRight');
+const turnsMade = document.getElementById('turnsMade');
+const turnCooldown = document.getElementById('turnCooldown');
+const justTurned = document.getElementById('justTurned');
+const passedPillar = document.getElementById('passedPillar');
 ctx.canvas.width = 272;
 ctx.canvas.height = 154;
 function addCapture(img) {
@@ -403,7 +419,9 @@ function addCapture(img) {
         img: 'data:image/png;base64,'+img,
         blobs: [[], [], [], []],
         steer: [0, 'none', 0, 0],
-        wall: [0, 0, 0, [], [], [], [], [], []]
+        wall: [0, 0, 0, [], [], [], [], [], []],
+        turns: [false, 0, 0],
+        passed: 0
     });
     index = 0;
     if (history.length > maxHistory) {
@@ -476,22 +494,37 @@ function drawLightBlob(blob,blobColor){
 };
 function addData(data) {
     index = 0;
+    // steering data
     history[index].steer = data[0];
-    history[index].wall = data.slice(1, 10);
-    // more bad coding practices
-    history[index].wall[0] = parseInt(history[index].wall[0]);
-    history[index].wall[1] = parseInt(history[index].wall[1]);
-    history[index].wall[2] = parseInt(history[index].wall[2]);
-    history[index].wall[3] = JSON.parse(history[index].wall[3]);
-    history[index].wall[4] = JSON.parse(history[index].wall[4]);
-    history[index].wall[5] = JSON.parse(history[index].wall[5]);
-    history[index].wall[6] = JSON.parse(history[index].wall[6]);
-    history[index].wall[7] = JSON.parse(history[index].wall[7]);
-    history[index].wall[8] = JSON.parse(history[index].wall[8]);
+    // wall data
+    history[index].wall[0] = parseFloat(data[1]);
+    history[index].wall[1] = parseFloat(data[2]);
+    history[index].wall[2] = parseFloat(data[3]);
+    history[index].wall[3] = JSON.parse(data[4]);
+    history[index].wall[4] = JSON.parse(data[5]);
+    history[index].wall[5] = JSON.parse(data[6]);
+    history[index].wall[6] = JSON.parse(data[7]);
+    history[index].wall[7] = JSON.parse(data[8]);
+    history[index].wall[8] = JSON.parse(data[9]);
+    // turn data
+    if (data[10][0] == 'True') data[10][0] = true;
+    else if (data[10][0] == 'False') data[10][0] = false;
+    data[10][1] = parseInt(data[10][1]);
+    data[10][2] = parseInt(data[10][2]);
+    history[index].turns = data[10];
+    // pass data
+    history[index].passed = parseInt(data[11]);
     if (history.length > maxHistory) {
         history.pop();
     }
     displayChange();
+};
+function showPredictions() {
+    let data = history[index].steer;
+    strPredict.innerText = 'Final Steering: ' + Math.round(data[0]);
+    strReason.innerText = data[1];
+    wallStrPredict.innerText = 'Wall Steering: ' + Math.round(data[2]);
+    pillarStrPredict.innerText = 'Pillar Steering: ' + Math.round(data[3]);
 };
 function showWallData() {
     let data = history[index].wall;
@@ -508,14 +541,16 @@ function showWallData() {
     for(let i = 0; i < 20; i++) {
         ctx2.fillRect(i*4+192, 100-data[5][i]-data[8][i], 1, data[5][i]);
     }
-    ctx2.fillText(data[0], 0, 0);
+    wallHeightLeft.innerText = 'L: ' + data[0];
+    wallHeightCenter.innerText = 'C: ' + data[1];
+    wallHeightRight.innerText = 'R: ' + data[2];
 };
-function showPredictions() {
-    let data = history[index].steer;
-    strPredict.innerText = 'Final Steering: ' + Math.round(data[0]);
-    strReason.innerText = data[1];
-    wallStrPredict.innerText = 'Wall Steering: ' + Math.round(data[2]);
-    pillarStrPredict.innerText = 'Pillar Steering: ' + Math.round(data[3]);
+function showTurnPassData() {
+    let data = history[index].turns;
+    justTurned.innerText = data[0];
+    turnCooldown.innerText = data[1];
+    turnsMade.innerText = data[2];
+    passedPillar.innerText = history[index].passed;
 };
 async function displayBack() {
     index = Math.min(index+1, history.length-1);
@@ -538,6 +573,7 @@ function displayChange() {
         drawBlobs();
         showWallData();
         showPredictions();
+        showTurnPassData();
     }
 };
 addListener('capture', addCapture);

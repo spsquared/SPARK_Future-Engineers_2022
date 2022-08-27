@@ -112,6 +112,13 @@ def main():
                     streaming2 = False
                     streamThread2.join()
                     server.broadcast('message', 'Ended filtered stream')
+        def view(data):
+            encoded = base64.b64encode(cv2.imencode('.png', filter.filter(camera.read()))[1]).decode()
+            server.broadcast('capture', encoded)
+        def viewFilter(data):
+            filter.setColors(data)
+            encoded = base64.b64encode(cv2.imencode('.png', filter.filter(camera.read()))[1]).decode()
+            server.broadcast('capture', encoded)
         def colors(data):
             filter.setColors(data)
         server.addListener('key', keys)
@@ -121,6 +128,8 @@ def main():
         server.addListener('colors', colors)
         server.addListener('captureFilter', captureFilter)
         server.addListener('captureFilterStream', captureFilterStream)
+        server.addListener('view', view)
+        server.addListener('viewFilter', viewFilter)
         server.addListener('stream', stream)
         server.addListener('filterstream', filterstream)
         global running
