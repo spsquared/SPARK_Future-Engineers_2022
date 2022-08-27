@@ -273,8 +273,8 @@ let sliders = [
     document.getElementById('redBMin'),
     document.getElementById('greenBMin'),
     document.getElementById('wallBMin'),
-    document.getElementById('grayMax'),
-    document.getElementById('grayMin')
+    // document.getElementById('grayMax'),
+    // document.getElementById('grayMin')
 ];
 document.getElementById('captureFilterButton').onclick = function(e) {
     let arr = [];
@@ -345,7 +345,7 @@ document.getElementById('filterStreamButton').onclick = function(e) {
 // bad coding practices
 let initcolors = [
     [
-        255, 115, 100,
+        255, 110, 110,
         100, 35, 25
     ],
     [
@@ -356,9 +356,9 @@ let initcolors = [
         90, 75, 85,
         0, 0, 0
     ],
-    [
-        0, 65
-    ]
+    // [
+    //     0, 65
+    // ]
 ];
 sliders[0].value = initcolors[0][0];
 sliders[1].value = initcolors[1][0];
@@ -378,8 +378,8 @@ sliders[14].value = initcolors[2][4];
 sliders[15].value = initcolors[0][5];
 sliders[16].value = initcolors[1][5];
 sliders[17].value = initcolors[2][5];
-sliders[18].value = initcolors[3][1];
-sliders[19].value = initcolors[3][0];
+// sliders[18].value = initcolors[3][1];
+// sliders[19].value = initcolors[3][0];
 for (let i in sliders) {
     updateSlider(i);
 }
@@ -399,6 +399,7 @@ const ctx = canvas.getContext("2d");
 const historySlider = document.getElementById('historySlider');
 const FPS = document.getElementById('fps');
 const strPredict = document.getElementById('strPredict');
+const downloadButton = document.getElementById('download');
 ctx.canvas.width = 272;
 ctx.canvas.height = 154;
 function addCapture(img) {
@@ -481,8 +482,8 @@ function showPrediction(val) {
     if (history.length > maxHistory) {
         history.pop();
     }
-    strPredict.innerText = 'PredictedSteering: ' + Math.round(val);
-}
+    strPredict.innerText = 'Steering: ' + Math.round(val);
+};
 async function displayBack() {
     index = Math.min(index+1, history.length-1);
     historySlider.max = history.length;
@@ -500,6 +501,7 @@ function displayChange() {
     index = history.length-parseInt(historySlider.value);
     if (history[index]) {
         displayImg.src = history[index].img;
+        downloadButton.href = history[index].img;
         drawBlobs();
         showPrediction(history[index].steer);
     }
