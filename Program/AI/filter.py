@@ -14,12 +14,12 @@ rm = redMin = (0, 75, 100)
 rM = redMax = (30, 255, 255)
 # rm = redMin = (150, 75, 100)
 # rM = redMax = (180, 255, 255)
-gm = greenMin = (30, 0, 0)
-gM = greenMax = (90, 255, 255)
+gm = greenMin = (30, 75, 100)
+gM = greenMax = (120, 255, 255)
 # gM = greenMax = (85, 140, 95)
 # gm = greenMin = (60, 65, 10)
-wM = wallMax = (90, 75, 85)
-wm = wallMin = (0, 0, 0)
+# wM = wallMax = (90, 75, 85)
+# wm = wallMin = (0, 0, 0)
 # sM = greyMax = 65
 # sm = greyMin = 0
 
