@@ -1,0 +1,35 @@
+body {
+    overflow: hidden;
+}
+div {
+    font-family: sans-serif;
+}
+img {
+    -webkit-user-drag: none;
+}
+
+#banner1 {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    height: 80px;
+    image-rendering: pixelated;
+}
+#banner2 {
+    position: absolute;
+    top: 16px;
+    left: 336px;
+    height: 80px;
+    image-rendering: pixelated;
+}
+
+#randomise {
+    position: absolute;
+    top: 0px;
+    left: 200px;
+    width: 350px;
+    height: calc(100vh - 140px);
+    border-right: 4px solid black;
+    border-top: 4px solid black;
+    padding: 16px 16px;
+}
