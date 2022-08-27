@@ -234,12 +234,18 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
 
         counterClockwise *= 0.9
 
+        leftSteering = 0
+        centerSteering = 0
+        rightSteering = 0
+
         def centerWallCalculations(left,center,right):
             if center > 9 and right > 9:
                 if left > 20:
                     steeringArray.append(-min(center,right) ** 2 * 0.15)
+                    centerSteering = -min(center,right) ** 2 * 0.15
                 else:
                     steeringArray.append(-min(center,right) ** 2 * 0.3)
+                    centerSteering = -min(center,right) ** 2 * 0.3
         
         if counterClockwise >= 0:
             centerWallCalculations(wallHeightLeft,wallHeightCenter,wallHeightRight)
@@ -247,8 +253,10 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
             centerWallCalculations(wallHeightRight,wallHeightCenter,wallHeightLeft)
         if wallHeightRight > 15:
             steeringArray.append(-wallHeightRight ** 2 * 0.04)
+            rightSteering = -wallHeightRight ** 2 * 0.04
         if wallHeightLeft > 15:
             steeringArray.append(wallHeightLeft ** 2 * 0.04)
+            leftSteering = wallHeightLeft ** 2 * 0.04
         
         # very far, just turned
 
@@ -266,40 +274,49 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         # decide final steering
         steeringMax = max(steeringArray)
         steeringMin = min(steeringArray)
+        
+        steeringReason = ""
+
         if steeringMax > abs(steeringMin):
+            if steeringMax == leftSteering:
+                steeringReason = "left wall"
+            if steeringMax == centerSteering:
+                steeringReason = "center wall"
+            if steeringMax == rightSteering:
+                steeringReason = "right wall"
             if pillarSteering > 0:
                 if steeringMax < pillarSteering and (steeringMax < 75 or pillarSteering >= 75):
                     steeringMax += pillarSteering * 3 / 2
                 else:
                     steeringMax += pillarSteering / 2
-                if server != None:
-                    server.broadcast('values', [str(steeringMax), str(wallHeightLeft), str(wallHeightCenter), str(wallHeightRight), str(filteredWallHeightsDiffLeft), str(filteredWallHeightsDiffCenter), str(filteredWallHeightsDiffRight),str(wallHeightsMaxLeft),str(wallHeightsMaxCenter),str(wallHeightsMaxRight)])
-                return steeringMax
             else:
                 if steeringMax < abs(pillarSteering) and (steeringMax < 75 or pillarSteering <= -75):
                     steeringMax += pillarSteering * 3 / 2
                 else:
                     steeringMax += pillarSteering / 2
-                if server != None:
-                    server.broadcast('values', [str(steeringMax), str(wallHeightLeft), str(wallHeightCenter), str(wallHeightRight), str(filteredWallHeightsDiffLeft), str(filteredWallHeightsDiffCenter), str(filteredWallHeightsDiffRight),str(wallHeightsMaxLeft),str(wallHeightsMaxCenter),str(wallHeightsMaxRight)])
-                return steeringMax
+            if server != None:
+                server.broadcast('values', [[str(steeringMax),steeringReason], str(wallHeightLeft), str(wallHeightCenter), str(wallHeightRight), str(filteredWallHeightsDiffLeft), str(filteredWallHeightsDiffCenter), str(filteredWallHeightsDiffRight),str(wallHeightsMaxLeft),str(wallHeightsMaxCenter),str(wallHeightsMaxRight)])
+            return steeringMax
         else:
+            if steeringMin == leftSteering:
+                steeringReason = "left wall"
+            if steeringMin == centerSteering:
+                steeringReason = "center wall"
+            if steeringMin == rightSteering:
+                steeringReason = "right wall"
             if pillarSteering > 0:
                 if abs(steeringMin) < pillarSteering and (abs(steeringMin) < 75 or pillarSteering >= 75):
                     steeringMin += pillarSteering * 3 / 2
                 else:
                     steeringMin += pillarSteering / 2
-                if server != None:
-                    server.broadcast('values', [str(steeringMin), str(wallHeightLeft), str(wallHeightCenter), str(wallHeightRight), str(filteredWallHeightsDiffLeft), str(filteredWallHeightsDiffCenter), str(filteredWallHeightsDiffRight),str(wallHeightsMaxLeft),str(wallHeightsMaxCenter),str(wallHeightsMaxRight)])
-                return steeringMin
             else:
                 if abs(steeringMin) < abs(pillarSteering) and (abs(steeringMin) < 75 or pillarSteering <= -75):
                     steeringMin += pillarSteering * 3 / 2
                 else:
                     steeringMin += pillarSteering / 2
-                if server != None:
-                    server.broadcast('values', [str(steeringMin), str(wallHeightLeft), str(wallHeightCenter), str(wallHeightRight), str(filteredWallHeightsDiffLeft), str(filteredWallHeightsDiffCenter), str(filteredWallHeightsDiffRight),str(wallHeightsMaxLeft),str(wallHeightsMaxCenter),str(wallHeightsMaxRight)])
-                return steeringMin
+            if server != None:
+                server.broadcast('values', [[str(steeringMin),steeringReason], str(wallHeightLeft), str(wallHeightCenter), str(wallHeightRight), str(filteredWallHeightsDiffLeft), str(filteredWallHeightsDiffCenter), str(filteredWallHeightsDiffRight),str(wallHeightsMaxLeft),str(wallHeightsMaxCenter),str(wallHeightsMaxRight)])
+            return steeringMin
 
         # steeringMax += pillarSteering
         # steeringMin += pillarSteering
