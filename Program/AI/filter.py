@@ -127,19 +127,22 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
             print(offset)
             print(filteredWallHeightsDiff)
             if len(filteredWallHeightsDiff) > 0:
-                return [max(wallHeightsMax),statistics.median(filteredWallHeightsDiff)]
+                return [max(wallHeightsMax),statistics.median(filteredWallHeightsDiff),filteredWallHeightsDiff]
             else:
-                return [max(wallHeightsMax),0]
+                return [max(wallHeightsMax),0,[]]
 
         wallHeightsLeft = getWallHeights(0)
         wallMaximumLeft = wallHeightsLeft[0]
         wallHeightLeft = wallHeightsLeft[1]
+        filteredWallHeightsDiffLeft = wallHeightsLeft[2]
         wallHeightsCenter = getWallHeights(20)
         wallMaximumCenter = wallHeightsCenter[0]
         wallHeightCenter = wallHeightsCenter[1]
+        filteredWallHeightsDiffCenter = wallHeightsRight[2]
         wallHeightsRight = getWallHeights(40)
         wallMaximumRight = wallHeightsRight[0]
         wallHeightRight = wallHeightsRight[1]
+        filteredWallHeightsDiffRight = wallHeightsRight[2]
         print(wallHeightLeft)
         print(wallHeightCenter)
         print(wallHeightRight)
