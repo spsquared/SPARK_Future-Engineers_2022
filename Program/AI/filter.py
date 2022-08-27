@@ -278,11 +278,11 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         else:
             centerWallCalculations(wallHeightRight,wallHeightCenter,wallHeightLeft)
         if wallHeightRight > 15:
-            steeringArray.append(-wallHeightRight ** 2 * 0.04)
+            steeringArray.append(-wallHeightRight ** 2 * 0.06)
             rightSteering = -wallHeightRight ** 2 * 0.06
         if wallHeightLeft > 15:
-            steeringArray.append(wallHeightLeft ** 2 * 0.04)
-            leftSteering = wallHeightLeft ** 2 * 0.6
+            steeringArray.append(wallHeightLeft ** 2 * 0.06)
+            leftSteering = wallHeightLeft ** 2 * 0.06
         
         # very far, just turned
 
