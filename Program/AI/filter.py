@@ -295,7 +295,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         justTurned = False
 
         if wallHeightCenter < 9 and turnCooldown <= 0:
-            turnCooldown = 140
+            turnCooldown = 150
             turnsMade += 1
             justTurned = True
             print(turnsMade)
