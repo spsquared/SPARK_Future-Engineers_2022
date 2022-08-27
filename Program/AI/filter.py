@@ -10,8 +10,8 @@ import builtins
 # colors
 rM = redMax = (110, 110, 255)
 rm = redMin = (25, 35, 100)
-gM = greenMax = (120, 140, 95)
-gm = greenMin = (55, 85, 10)
+gM = greenMax = (85, 140, 95)
+gm = greenMin = (60, 65, 10)
 wM = wallMax = (90, 75, 85)
 wm = wallMin = (0, 0, 0)
 # sM = greyMax = 65
