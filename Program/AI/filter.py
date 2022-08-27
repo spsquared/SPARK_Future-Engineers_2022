@@ -269,11 +269,11 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
             nonlocal centerSteering
             if center > 15 and right > 15:
                 if left > 20:
-                    steering = min(center,right) ** 2 * 0.15 * direction
+                    steering = min(center,right) ** 2 * 0.1 * direction
                     steeringArray.append(steering)
                     centerSteering = steering
                 else:
-                    steering = min(center,right) ** 2 * 0.3 * direction
+                    steering = min(center,right) ** 2 * 0.2 * direction
                     steeringArray.append(steering)
                     centerSteering = steering
         
@@ -335,7 +335,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                 else:
                     steeringMax += pillarSteering / 2
             if server != None:
-                server.broadcast('values', [[str(steeringMax),steeringReason,str(wallSteering),str(pillarSteering)], str(wallHeightLeft), str(wallHeightCenter), str(wallHeightRight), str(filteredWallHeightsDiffLeft), str(filteredWallHeightsDiffCenter), str(filteredWallHeightsDiffRight),str(wallHeightsMaxLeft),str(wallHeightsMaxCenter),str(wallHeightsMaxRight),str(justTurned)])
+                server.broadcast('values', [[str(steeringMax),steeringReason,str(wallSteering),str(pillarSteering)], str(wallHeightLeft), str(wallHeightCenter), str(wallHeightRight), str(filteredWallHeightsDiffLeft), str(filteredWallHeightsDiffCenter), str(filteredWallHeightsDiffRight),str(wallHeightsMaxLeft),str(wallHeightsMaxCenter),str(wallHeightsMaxRight),str(justTurned),str(turnCooldown),str(turnsMade)])
             return steeringMax
         else:
             if steeringMin == leftSteering:
@@ -360,7 +360,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                 else:
                     steeringMin += pillarSteering / 2
             if server != None:
-                server.broadcast('values', [[str(steeringMin),steeringReason,str(wallSteering),str(pillarSteering)], str(wallHeightLeft), str(wallHeightCenter), str(wallHeightRight), str(filteredWallHeightsDiffLeft), str(filteredWallHeightsDiffCenter), str(filteredWallHeightsDiffRight),str(wallHeightsMaxLeft),str(wallHeightsMaxCenter),str(wallHeightsMaxRight),str(justTurned)])
+                server.broadcast('values', [[str(steeringMin),steeringReason,str(wallSteering),str(pillarSteering)], str(wallHeightLeft), str(wallHeightCenter), str(wallHeightRight), str(filteredWallHeightsDiffLeft), str(filteredWallHeightsDiffCenter), str(filteredWallHeightsDiffRight),str(wallHeightsMaxLeft),str(wallHeightsMaxCenter),str(wallHeightsMaxRight),str(justTurned),str(turnCooldown),str(turnsMade)])
             return steeringMin
 
         # steeringMax += pillarSteering
