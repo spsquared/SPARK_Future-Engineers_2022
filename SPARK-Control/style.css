@@ -178,12 +178,12 @@ img {
 .sliderB::-webkit-slider-thumb {
     background-color: #0000FF;
 }
-.sliderSM::-webkit-slider-thumb {
+/* .sliderSM::-webkit-slider-thumb {
     background-color: white;
 }
 .sliderSm::-webkit-slider-thumb {
     background-color: black;
-}
+} */
 
 #captureDisplay {
     position: absolute;
@@ -238,22 +238,6 @@ img {
     height: 48px;
     background-color: darkgrey;
 }
-#showOverlay {
-    position: absolute;
-    top: -20px;
-    left: 190px;
-}
-#maxHistoryLabel {
-    position: absolute;
-    top: -20px;
-    right: 108px;
-}
-#maxHistory {
-    position: absolute;
-    top: -22px;
-    right: 0px;
-    width: 100px;
-}
 #displayBlock {
     position: absolute;
     bottom: 56px;
@@ -304,6 +288,35 @@ img {
     top: -20px;
     left: 8px;
 }
+#showOverlay {
+    position: absolute;
+    top: -20px;
+    left: 120px;
+}
+#download {
+    position: absolute;
+    top: -22px;
+    left: 260px;
+    width: 100px;
+    height: 18px;
+    font: 14px sans-serif;
+    color: black;
+    padding-top: 4px;
+    background-color: skyblue;
+    text-align: center;
+    cursor: pointer;
+}
+#maxHistoryLabel {
+    position: absolute;
+    top: -20px;
+    right: 58px;
+}
+#maxHistory {
+    position: absolute;
+    top: -22px;
+    right: 0px;
+    width: 50px;
+}
 #displayFullscreen {
     position: absolute;
     top: -72px;
@@ -312,12 +325,10 @@ img {
 
 #emergencyStop {
     position: absolute;
-    top: 300px;
-    right: 172px;
+    top: 304px;
+    right: 188px;
     width: 96px;
     height: 36px;
-    margin: 16px 16px;
-    margin-bottom: 0px;
     font: 20px sans-serif;
     font-weight: bolder;
     background-color: red;
@@ -329,12 +340,10 @@ img {
 }
 #disconnect {
     position: absolute;
-    top: 300px;
-    right: 0px;
+    top: 304px;
+    right: 16px;
     width: 156px;
     height: 36px;
-    margin: 16px 16px;
-    margin-bottom: 0px;
     font: 20px sans-serif;
     font-weight: bolder;
     background-color: red;

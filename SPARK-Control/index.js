@@ -399,6 +399,7 @@ const ctx = canvas.getContext("2d");
 const historySlider = document.getElementById('historySlider');
 const FPS = document.getElementById('fps');
 const strPredict = document.getElementById('strPredict');
+const downloadButton = document.getElementById('download');
 ctx.canvas.width = 272;
 ctx.canvas.height = 154;
 function addCapture(img) {
@@ -481,8 +482,8 @@ function showPrediction(val) {
     if (history.length > maxHistory) {
         history.pop();
     }
-    strPredict.innerText = 'PredictedSteering: ' + Math.round(val);
-}
+    strPredict.innerText = 'Steering: ' + Math.round(val);
+};
 async function displayBack() {
     index = Math.min(index+1, history.length-1);
     historySlider.max = history.length;
@@ -500,6 +501,7 @@ function displayChange() {
     index = history.length-parseInt(historySlider.value);
     if (history[index]) {
         displayImg.src = history[index].img;
+        downloadButton.href = history[index].img;
         drawBlobs();
         showPrediction(history[index].steer);
     }
