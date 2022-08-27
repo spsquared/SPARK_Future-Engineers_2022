@@ -4,6 +4,8 @@ ctx.canvas.width = 3100;
 ctx.canvas.height = 3100;
 ctx.scale(10,10);
 
+const redPillar = 'rgba(238,39,55,1)';
+const greenPillar = 'rgba(68,214,44,1)';
 var resetField = function(){
     ctx.fillStyle = 'rgba(0,0,0,1)';
     ctx.fillRect(0,0,310,310);
@@ -224,8 +226,8 @@ randomiseWithoutPillars.onclick = function(){
 }
 randomiseWithPillars.onclick = function(){
     resetField();
-    straightSection = Math.floor(Math.random() * 4);
-    sections = [
+    let straightSection = Math.floor(Math.random() * 4);
+    let sections = [
         [[1,5]],
         [[0,5]],
         [[1,4]],
@@ -267,32 +269,33 @@ randomiseWithPillars.onclick = function(){
         [[0,0],[1,2]],
         [[0,0],[0,2]],
     ];
-    pillarLocations = [
+    let pillarLocations = [
         "",
         "",
         "",
         "",
     ];
+    let drawLocations = [];
     if(Math.random() < 0.5){
-        drawPillar('rgba(238,39,55,1)',straightSection,1);
+        drawLocations.push([redPillar,straightSection,1]);
         sections.splice(9,1);
     }
     else{
-        drawPillar('rgba(68,214,44,1)',straightSection,1);
+        drawLocations.push([greenPillar,straightSection,1]);
         sections.splice(8,1);
     }
     pillarLocations[straightSection] = "center";
     for(var i = straightSection + 1;i < straightSection + 4;i++){
-        randomSection = Math.floor(Math.random() * sections.length);
-        numberOfPillars = 0;
+        let randomSection = Math.floor(Math.random() * sections.length);
+        let numberOfPillars = 0;
         var position = 0;
         for(var j in sections[randomSection]){
             position = sections[randomSection][j][1];
             if(sections[randomSection][j][0] === 0){
-                drawPillar('rgba(238,39,55,1)',i,sections[randomSection][j][1]);
+                drawLocations.push([redPillar,i,sections[randomSection][j][1]]);
             }
             else{
-                drawPillar('rgba(68,214,44,1)',i,sections[randomSection][j][1]);
+                drawLocations.push([greenPillar,i,sections[randomSection][j][1]]);
             }
             numberOfPillars += 1;
         }
@@ -312,7 +315,7 @@ randomiseWithPillars.onclick = function(){
         }
         sections.splice(randomSection,1);
     }
-    startingLocation = Math.floor(Math.random() * 4);
+    let startingLocation = Math.floor(Math.random() * 4);
     if(pillarLocations[startingLocation] === "both"){
         if(Math.random() < 0.5){
             drawStartingPosition(startingLocation,2,1);
@@ -354,20 +357,8 @@ randomiseWithPillars.onclick = function(){
             drawStartingPosition(startingLocation,3,0);
         }
     }
-    // if(startingLocation === 0){
-    //     startingPosition = Math.floor(Math.random() * 2) + 2;
-    // }
-    // else if(startingLocation === 1){
-    //     startingPosition = Math.floor(Math.random() * 2) + 2;
-    //     drawStartingPosition(1,startingPosition);
-    // }
-    // else if(startingLocation === 2){
-    //     startingPosition = Math.floor(Math.random() * 2) + 2;
-    //     drawStartingPosition(2,startingPosition);
-    // }
-    // else if(startingLocation === 3){
-    //     startingPosition = Math.floor(Math.random() * 2) + 2;
-    //     drawStartingPosition(3,startingPosition);
-    // }
+    for (let location of drawLocations) {
+        drawPillar(location[0], location[1], location[2]);
+    }
 }
 reset.onclick = resetField;
