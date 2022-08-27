@@ -295,9 +295,9 @@ let sliders = [
 function updateSlider(i) {
     document.getElementById(sliders[i].id + 'indicator').innerText = sliders[i].value;
     if (sliders[i].id.includes('H')) {
-        sliders[i].style.setProperty('--hue', sliders[i].value);
-        sliders[i+2].style.setProperty('--hue', sliders[i].value);
-        sliders[i+4].style.setProperty('--hue', sliders[i].value);
+        sliders[i].style.setProperty('--hue', sliders[i].value * 2);
+        sliders[i+2].style.setProperty('--hue', sliders[i].value * 2);
+        sliders[i+4].style.setProperty('--hue', sliders[i].value * 2);
     } else if (sliders[i].id.includes('S')) {
         sliders[i].style.setProperty('--saturation', sliders[i].value + '%');
         sliders[i+2].style.setProperty('--saturation', sliders[i].value + '%');
