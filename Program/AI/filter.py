@@ -335,7 +335,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                 else:
                     steeringMax += pillarSteering / 2
             if server != None:
-                server.broadcast('values', [[str(steeringMax),steeringReason,str(wallSteering),str(pillarSteering)], str(wallHeightLeft), str(wallHeightCenter), str(wallHeightRight), str(filteredWallHeightsDiffLeft), str(filteredWallHeightsDiffCenter), str(filteredWallHeightsDiffRight),str(wallHeightsMaxLeft),str(wallHeightsMaxCenter),str(wallHeightsMaxRight),str(justTurned),str(turnCooldown),str(turnsMade)])
+                server.broadcast('values', [[str(steeringMax),steeringReason,str(wallSteering),str(pillarSteering)], str(wallHeightLeft), str(wallHeightCenter), str(wallHeightRight), str(filteredWallHeightsDiffLeft), str(filteredWallHeightsDiffCenter), str(filteredWallHeightsDiffRight),str(wallHeightsMaxLeft),str(wallHeightsMaxCenter),str(wallHeightsMaxRight),[str(justTurned),str(turnCooldown),str(turnsMade)],str(passedPillar)])
             return steeringMax
         else:
             if steeringMin == leftSteering:
@@ -360,7 +360,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                 else:
                     steeringMin += pillarSteering / 2
             if server != None:
-                server.broadcast('values', [[str(steeringMin),steeringReason,str(wallSteering),str(pillarSteering)], str(wallHeightLeft), str(wallHeightCenter), str(wallHeightRight), str(filteredWallHeightsDiffLeft), str(filteredWallHeightsDiffCenter), str(filteredWallHeightsDiffRight),str(wallHeightsMaxLeft),str(wallHeightsMaxCenter),str(wallHeightsMaxRight),str(justTurned),str(turnCooldown),str(turnsMade)])
+                server.broadcast('values', [[str(steeringMin),steeringReason,str(wallSteering),str(pillarSteering)], str(wallHeightLeft), str(wallHeightCenter), str(wallHeightRight), str(filteredWallHeightsDiffLeft), str(filteredWallHeightsDiffCenter), str(filteredWallHeightsDiffRight),str(wallHeightsMaxLeft),str(wallHeightsMaxCenter),str(wallHeightsMaxRight),[str(justTurned),str(turnCooldown),str(turnsMade)],str(passedPillar)])
             return steeringMin
 
         # steeringMax += pillarSteering
