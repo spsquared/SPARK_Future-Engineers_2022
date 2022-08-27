@@ -636,3 +636,27 @@ window.onerror = function(err) {
 document.onerror = function(err) {
     appendLog(err, 'red');
 };
+
+async function animate(slider, backwards) {
+    if (backwards) {
+        for (let i = parseInt(slider.min); i <= parseInt(slider.max); i++) {
+            slider.value = i;
+            slider.oninput();
+            await new Promise((resolve) => setTimeout(resolve, Math.random()*10+5));
+        }
+        await animate(slider, false);
+    } else {
+        for (let i = parseInt(slider.max); i >= parseInt(slider.min); i--) {
+            slider.value = i;
+            slider.oninput();
+            await new Promise((resolve) => setTimeout(resolve, Math.random()*10+5));
+        }
+        await animate(slider, true);
+    }
+};
+async function animateAll() {
+    for (let slider of sliders) {
+        animate(slider, 1);
+        await new Promise((resolve) => setTimeout(resolve, Math.random()*200));
+    }
+};
