@@ -3,14 +3,14 @@ import numpy
 import cv2
 import base64
 import statistics
-import builtins
+import math
 
 # preprocessing filter module with cv prediction
 
 # colors
 # rm = redMin1 = (175, 0, 0)
 # rM = redMax1 = (140, 140, 255)
-rm = redMin = (0, 75, 100)
+rm = redMin = (0, 75, 75)
 rM = redMax = (30, 255, 255)
 # rm = redMin = (150, 75, 100)
 # rM = redMax = (180, 255, 255)
@@ -138,7 +138,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                     bgKps = gKps[i]
 
         # crop for wall detection
-        wallStart = 55
+        wallStart = 50
         wallEnd = 100
         croppedEdgesImg = edgesImage[wallStart:wallEnd,0:1]
         for i in range(19):
@@ -167,16 +167,16 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                     index = 2
                     while secondNonzero - firstNonzero < 5:
                         if len(nonzeroList) <= index:
-                            secondNonzero = 35
+                            secondNonzero = 50
                             break
                         secondNonzero = nonzeroList[index]
                         index += 1
                 elif len(nonzeroList) == 1:
                     firstNonzero = nonzeroList[0]
-                    secondNonzero = 35
+                    secondNonzero = 50
                 else:
                     firstNonzero = 0
-                    secondNonzero = 35
+                    secondNonzero = 50
                 wallHeightsDiff.append(secondNonzero - firstNonzero)
                 wallHeightsMax.append(firstNonzero)
             if len(wallHeightsDiff) > 0:
@@ -282,11 +282,11 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         else:
             centerWallCalculations(wallHeightRight,wallHeightCenter,wallHeightLeft,1)
         if wallHeightRight > 18:
-            steering = -wallHeightRight ** 2 * 0.06
+            steering = -wallHeightRight ** 2 * 0.04
             steeringArray.append(steering)
             rightSteering = steering
         if wallHeightLeft > 18:
-            steering = wallHeightLeft ** 2 * 0.06
+            steering = wallHeightLeft ** 2 * 0.04
             steeringArray.append(steering)
             leftSteering = steering
         
@@ -295,7 +295,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         justTurned = False
 
         if wallHeightCenter < 9 and turnCooldown <= 0:
-            turnCooldown = 100
+            turnCooldown = 150
             turnsMade += 1
             justTurned = True
             print(turnsMade)
@@ -335,7 +335,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                 else:
                     steeringMax += pillarSteering / 2
             if server != None:
-                server.broadcast('values', [[str(steeringMax),steeringReason,str(wallSteering),str(pillarSteering)], str(wallHeightLeft), str(wallHeightCenter), str(wallHeightRight), str(filteredWallHeightsDiffLeft), str(filteredWallHeightsDiffCenter), str(filteredWallHeightsDiffRight),str(wallHeightsMaxLeft),str(wallHeightsMaxCenter),str(wallHeightsMaxRight),str(justTurned),str(turnCooldown),str(turnsMade)])
+                server.broadcast('values', [[str(steeringMax),steeringReason,str(wallSteering),str(pillarSteering)], str(wallHeightLeft), str(wallHeightCenter), str(wallHeightRight), str(filteredWallHeightsDiffLeft), str(filteredWallHeightsDiffCenter), str(filteredWallHeightsDiffRight),str(wallHeightsMaxLeft),str(wallHeightsMaxCenter),str(wallHeightsMaxRight),[str(justTurned),str(turnCooldown),str(turnsMade)],str(passedPillar)])
             return steeringMax
         else:
             if steeringMin == leftSteering:
@@ -360,7 +360,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                 else:
                     steeringMin += pillarSteering / 2
             if server != None:
-                server.broadcast('values', [[str(steeringMin),steeringReason,str(wallSteering),str(pillarSteering)], str(wallHeightLeft), str(wallHeightCenter), str(wallHeightRight), str(filteredWallHeightsDiffLeft), str(filteredWallHeightsDiffCenter), str(filteredWallHeightsDiffRight),str(wallHeightsMaxLeft),str(wallHeightsMaxCenter),str(wallHeightsMaxRight),str(justTurned),str(turnCooldown),str(turnsMade)])
+                server.broadcast('values', [[str(steeringMin),steeringReason,str(wallSteering),str(pillarSteering)], str(wallHeightLeft), str(wallHeightCenter), str(wallHeightRight), str(filteredWallHeightsDiffLeft), str(filteredWallHeightsDiffCenter), str(filteredWallHeightsDiffRight),str(wallHeightsMaxLeft),str(wallHeightsMaxCenter),str(wallHeightsMaxRight),[str(justTurned),str(turnCooldown),str(turnsMade)],str(passedPillar)])
             return steeringMin
 
         # steeringMax += pillarSteering
@@ -392,11 +392,22 @@ def setColors(data, server = None):
     print(greenMax, greenMin)
     # print(wallMax, wallMin)
     # print(greyMax, greyMin)
-    # if server != None:
-    #     server.broadcast('colors', getColors())
+    if server != None:
+        server.broadcast('colors', getColors())
 def getColors():
-    global redMax, redMin, greenMax, greenMin, wallMax, wallMin
-    return [redMax[2], greenMax[2], wallMax[2], redMax[1], greenMax[1], wallMax[1], redMax[0], greenMax[0], wallMax[0], redMin[2], greenMin[2], wallMin[2], redMin[1], greenMin[1], wallMin[1], redMin[0], greenMin[0], wallMin[0]]
+    global redMax, redMin, greenMax, greenMin
+    array = []
+    for i in range(6):
+        if i % 2 == 0:
+            array.append(redMax[int(i/2)])
+        else:
+            array.append(greenMax[math.floor(i/2)])
+    for i in range(6):
+        if i % 2 == 0:
+            array.append(redMin[int(i/2)])
+        else:
+            array.append(greenMin[math.floor(i/2)])
+    return array
 def setDefaultColors():
     global rM, rm, gM, gm, wM, wm
     print('-- New ----------')

@@ -308,7 +308,7 @@ function updateSlider(i) {
 function setColors(colors) {
     for (let i in colors) {
         sliders[i].value = colors[i];
-        updateSlider(i);
+        updateSlider(parseInt(i));
     }
 };
 addListener('colors', setColors);
@@ -357,7 +357,7 @@ document.getElementById('filterStreamButton').onclick = function(e) {
 let initcolors = [
     [
         30, 255, 255,
-        0, 75, 100
+        0, 75, 75
     ],
     [
         110, 255, 255,
