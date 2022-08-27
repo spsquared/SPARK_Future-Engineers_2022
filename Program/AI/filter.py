@@ -242,7 +242,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         # decide steering for each wall section
         counterClockwise += wallHeightRight - wallHeightLeft
 
-        counterClockwise *= 0.9
+        counterClockwise *= 0.95
 
         leftSteering = "no"
         centerSteering = "no"
