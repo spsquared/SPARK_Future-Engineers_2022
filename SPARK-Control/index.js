@@ -579,8 +579,6 @@ setInterval(() => {
     }
 }, 10);
 
-// blobs
-
 // stop
 document.getElementById('emergencyStop').onclick = function() {
     send('stop', {});
@@ -590,6 +588,9 @@ document.getElementById('disconnect').onclick = async function() {
     toReconnect = false;
     autoReconnect = false;
 };
+document.addEventListener('keydown',(e) => {
+    if (e.key.toLowerCase() == 'c' && e.ctrlKey) send('stop', {});
+});
 
 // errors
 window.onerror = function(err) {
