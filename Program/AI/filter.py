@@ -2,6 +2,7 @@ from IO import io
 import numpy
 import cv2
 import base64
+import statistics
 
 # preprocessing filter module with cv prediction
 
@@ -20,11 +21,14 @@ def filter(imgIn: numpy.ndarray):
     try:
         rMask = cv2.inRange(imgIn, redMin, redMax)
         gMask = cv2.inRange(imgIn, greenMin, greenMax)
-        colorWallMask = cv2.inRange(imgIn, wallMin, wallMax)
-        imgray = cv2.cvtColor(imgIn, cv2.COLOR_BGR2GRAY)
-        grayscaleFilter = cv2.inRange(imgray, 0, 65)
-        wMask = cv2.bitwise_and(colorWallMask, grayscaleFilter, mask = None)
-        rawImg = cv2.merge((wMask, gMask, rMask))
+        # colorWallMask = cv2.inRange(imgIn, wallMin, wallMax)
+        # imgray = cv2.cvtColor(imgIn, cv2.COLOR_BGR2GRAY)
+        # grayscaleFilter = cv2.inRange(imgray, 0, 65)
+        # wMask = cv2.bitwise_and(colorWallMask, grayscaleFilter, mask = None)
+        # rawImg = cv2.merge((wMask, gMask, rMask))
+        croppedWImg = imgIn
+        edgesImage = cv2.Canny(croppedWImg, 50, 120, 3)
+        rawImg = cv2.merge((edgesImage, gMask, rMask))
         filteredImg = cv2.medianBlur(rawImg, 5)
         return filteredImg
     except Exception as err:
@@ -55,7 +59,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
 
         # filter to colors and split
         blurredImg = filter(imgIn)
-        wImg, gImg, rImg = cv2.split(blurredImg)
+        edgesImage, gImg, rImg = cv2.split(blurredImg)
 
         # crop for blob detection
         blobStart = 50
@@ -80,57 +84,79 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         # crop for wall detection
         wallStart = 55
         wallEnd = 90
-        croppedWImgLeft = wImg[wallStart:wallEnd,0:1]
+        croppedEdgesImg = edgesImage[wallStart:wallEnd,0:1]
         for i in range(19):
-            croppedWImgLeft = numpy.concatenate((croppedWImgLeft, wImg[wallStart:wallEnd,i * 4:i * 4 + 1]), axis=1)
-        croppedWImgCenter = wImg[wallStart:wallEnd,96:97]
-        for i in range(19):
-            croppedWImgCenter = numpy.concatenate((croppedWImgCenter, wImg[wallStart:wallEnd,i * 4 + 100:i * 4 + 101]), axis=1)
-        croppedWImgRight = wImg[wallStart:wallEnd,192:193]
-        for i in range(19):
-            croppedWImgRight = numpy.concatenate((croppedWImgRight, wImg[wallStart:wallEnd,i * 4 + 196:i * 4 + 197]), axis=1)
-        
-        def last_nonzero(arr, axis, invalid_val):
-            mask = arr!=0
-            val = arr.shape[axis] - numpy.flip(mask, axis=axis).argmax(axis=axis) - 1
-            return numpy.where(mask.any(axis=axis), val, invalid_val)
+            croppedEdgesImg = numpy.concatenate((croppedEdgesImg, edgesImage[0:,i * 4:i * 4 + 1]), axis=1)
+        for i in range(20):
+            croppedEdgesImg = numpy.concatenate((croppedEdgesImg, edgesImage[0:,i * 4 + 96:i * 4 + 97]), axis=1)
+        for i in range(20):
+            croppedEdgesImg = numpy.concatenate((croppedEdgesImg, edgesImage[0:,i * 4 + 192:i * 4 + 193]), axis=1)
+
 
         # find wall heights
-        # left
-        wallHeightsLeft = numpy.count_nonzero(croppedWImgLeft > 1,axis=0)
-        wallHeights2Left = []
-        for i in range(len(wallHeightsLeft)):
-            if wallHeightsLeft[i] != 0:
-                wallHeights2Left.append(wallHeightsLeft[i])
-        if len(wallHeights2Left) == 0:
+
+
+        transposedArray = numpy.transpose(numpy.nonzero(croppedEdgesImg))
+
+        wallHeightsMaxLeft = []
+        wallHeightsDiffLeft = []
+        for i in range(20):
+            nonzeroList = list(numpy.extract(lambda x: x[0] == i,numpy.transpose(numpy.nonzero(transposedArray))))
+            if len(nonzeroList) >= 2:
+                firstNonzero = nonzeroList[0][1]
+                secondNonzero = nonzeroList[1][1]
+            else:
+                firstNonzero = 0
+                secondNonzero = 0
+            wallHeightsDiffLeft.append(secondNonzero - firstNonzero)
+            wallHeightsMaxLeft.append(firstNonzero)
+
+        if len(wallHeightsDiffLeft) == 0:
             wallHeightLeft = 0
         else:
-            # wallHeightLeft = statistics.median(wallHeights2Left)
-            wallHeightLeft = sum(wallHeights2Left) / len(wallHeights2Left)
-        wallMaximumLeft = max(last_nonzero(croppedWImgLeft, axis=0, invalid_val=-1))
-        # center
-        wallHeightsCenter = numpy.count_nonzero(croppedWImgCenter > 1,axis=0)
-        wallHeights2Center = []
-        for i in range(len(wallHeightsCenter)):
-            if wallHeightsCenter[i] != 0:
-                wallHeights2Center.append(wallHeightsCenter[i])
-        if len(wallHeights2Center) == 0:
+            wallHeightLeft = statistics.median(wallHeightsDiffLeft)
+        wallMaximumLeft = max(wallHeightsMaxLeft)
+
+        wallHeightsMaxCenter = []
+        wallHeightsDiffCenter = []
+        for i in range(20):
+            i += 20
+            nonzeroList = list(numpy.extract(lambda x: x[0] == i,numpy.transpose(numpy.nonzero(transposedArray))))
+            if len(nonzeroList) >= 2:
+                firstNonzero = nonzeroList[0][1]
+                secondNonzero = nonzeroList[1][1]
+            else:
+                firstNonzero = 0
+                secondNonzero = 0
+            wallHeightsDiffCenter.append(secondNonzero - firstNonzero)
+            wallHeightsMaxCenter.append(firstNonzero)
+
+        if len(wallHeightsDiffCenter) == 0:
             wallHeightCenter = 0
         else:
-            # wallHeightCenter = statistics.median(wallHeights2Center)
-            wallHeightCenter = sum(wallHeights2Center) / len(wallHeights2Center)
-        wallMaximumCenter = max(last_nonzero(croppedWImgCenter, axis=0, invalid_val=-1))
-        # right
-        wallHeightsRight = numpy.count_nonzero(croppedWImgRight > 1,axis=0)
-        wallHeights2Right = []
-        for i in range(len(wallHeightsRight)):
-            if wallHeightsRight[i] != 0:
-                wallHeights2Right.append(wallHeightsRight[i])
-        if len(wallHeights2Right) == 0:
+            wallHeightCenter = statistics.median(wallHeightsDiffCenter)
+        wallMaximumCenter = max(wallHeightsMaxCenter)
+
+        wallHeightsMaxRight = []
+        wallHeightsDiffRight = []
+        for i in range(20):
+            i += 40
+            nonzeroList = list(numpy.extract(lambda x: x[0] == i,numpy.transpose(numpy.nonzero(transposedArray))))
+            if len(nonzeroList) >= 2:
+                firstNonzero = nonzeroList[0][1]
+                secondNonzero = nonzeroList[1][1]
+            else:
+                firstNonzero = 0
+                secondNonzero = 0
+            wallHeightsDiffRight.append(secondNonzero - firstNonzero)
+            wallHeightsMaxRight.append(firstNonzero)
+
+        if len(wallHeightsDiffRight) == 0:
             wallHeightRight = 0
         else:
-            wallHeightRight = sum(wallHeights2Right) / len(wallHeights2Right)
-        wallMaximumRight = max(last_nonzero(croppedWImgRight, axis=0, invalid_val=-1))
+            wallHeightRight = statistics.median(wallHeightsDiffRight)
+        wallMaximumRight = max(wallHeightsMaxRight)
+
 
         # pillar calculations
 
