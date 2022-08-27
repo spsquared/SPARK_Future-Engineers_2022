@@ -308,7 +308,7 @@ function updateSlider(i) {
 function setColors(colors) {
     for (let i in colors) {
         sliders[i].value = colors[i];
-        updateSlider(i);
+        updateSlider(parseInt(i));
     }
 };
 addListener('colors', setColors);
