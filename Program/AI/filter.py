@@ -53,7 +53,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         # create blob detector
         params = cv2.SimpleBlobDetector_Params()
         params.filterByArea = True
-        params.minArea = 100
+        params.minArea = 75
         params.filterByCircularity = True
         params.minCircularity = 0.6
         params.filterByConvexity = True
@@ -206,16 +206,16 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         if brKps != 0:
             if bgKps != 0:
                 if brKps.size > bgKps.size:
-                    pillarSteering = -(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size - reducedSteering) * (brKps.size + 1) ** 2 * 0.02
+                    pillarSteering = -(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size - reducedSteering) * (brKps.size) ** 2 * 0.015
                     # steeringArray.append(brKps.size ** 2 * 0.2)
                 else:
-                    pillarSteering = (getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size - reducedSteering) * (bgKps.size + 1) ** 2 * 0.02
+                    pillarSteering = (getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size - reducedSteering) * (bgKps.size) ** 2 * 0.015
                     # steeringArray.append(-bgKps.size ** 2 * 0.2)
             else:
-                pillarSteering = -(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size - reducedSteering) * (brKps.size + 1) ** 2 * 0.02
+                pillarSteering = -(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size - reducedSteering) * (brKps.size) ** 2 * 0.015
                 # steeringArray.append(brKps.size ** 2 * 0.2)
         elif bgKps != 0:
-            pillarSteering = (getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size - reducedSteering) * (bgKps.size + 1) ** 2 * 0.02
+            pillarSteering = (getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size - reducedSteering) * (bgKps.size) ** 2 * 0.015
             # steeringArray.append(-bgKps.size ** 2 * 0.2)
         passedPillar *= 0.8
         if pillarSteering != 0:
