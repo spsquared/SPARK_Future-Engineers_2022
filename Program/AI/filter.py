@@ -52,6 +52,8 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
 
         # create blob detector
         params = cv2.SimpleBlobDetector_Params()
+        params.filterByArea = True
+        params.minArea = 100
         params.filterByCircularity = True
         params.minCircularity = 0
         params.filterByConvexity = True
@@ -66,7 +68,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
 
         # crop for blob detection
         blobStart = 50
-        blobEnd = 129
+        blobEnd = 100
 
         # add borders to fix blob detection
         rImg = cv2.copyMakeBorder(rImg[blobStart:blobEnd],1,1,1,1, cv2.BORDER_CONSTANT, value=[0,0,0])
@@ -138,6 +140,9 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         wallHeightsRight = getWallHeights(40)
         wallMaximumRight = wallHeightsRight[0]
         wallHeightRight = wallHeightsRight[1]
+        print(wallHeightLeft)
+        print(wallHeightCenter)
+        print(wallHeightRight)
 
         # pillar calculations
 
@@ -221,32 +226,25 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
             pillarSteering = passedPillar
         
         # decide steering for each wall section
-        counterClockwise += wallMaximumRight - wallMaximumLeft
+        counterClockwise += wallHeightRight - wallHeightLeft
 
         counterClockwise *= 0.9
 
+        def wallCalculations(left,center,right):
+            if center > 9 and right > 9:
+                if left > 20:
+                    steeringArray.append(-(center + right) ** 2 * 0.08)
+                else:
+                    steeringArray.append(-(center + right) ** 2 * 0.16)
+            if right > 15:
+                steeringArray.append(-right ** 2 * 0.04)
+            if left > 15:
+                steeringArray.append(left ** 2 * 0.04)
+        
         if counterClockwise >= 0:
-            if wallHeightCenter > 9 and wallHeightRight > 18 and (wallMaximumCenter > 24 or wallMaximumRight > 27):
-                if wallMaximumLeft > 30 and wallMaximumCenter > 24:
-                    steeringArray.append(-(wallHeightCenter + wallHeightRight) ** 2 * 0.08)
-                else:
-                    steeringArray.append(-(wallHeightCenter + wallHeightRight) ** 2 * 0.16)
-            if wallHeightRight > 24 and wallMaximumRight > 27:
-                steeringArray.append(-wallHeightRight ** 2 * 0.04)
-            if wallHeightLeft > 24 and wallMaximumLeft > 27:
-                steeringArray.append(wallHeightLeft ** 2 * 0.04)
-            # counterClockwise -= min(counterClockwise / 10,10)
+            wallCalculations(wallHeightLeft,wallHeightCenter,wallHeightRight)
         else:
-            if wallHeightCenter > 9 and wallHeightLeft > 18 and (wallMaximumCenter > 24 or wallMaximumLeft > 27):
-                if wallMaximumRight > 30 and wallMaximumCenter > 24:
-                    steeringArray.append((wallHeightCenter + wallHeightLeft) ** 2 * 0.08)
-                else:
-                    steeringArray.append((wallHeightCenter + wallHeightLeft) ** 2 * 0.16)
-            if wallHeightRight > 24 and wallMaximumRight > 27:
-                steeringArray.append(-wallHeightRight ** 2 * 0.04)
-            if wallHeightLeft > 24 and wallMaximumLeft > 27:
-                steeringArray.append(wallHeightLeft ** 2 * 0.04)
-            # counterClockwise += min(-counterClockwise / 10,10)
+            wallCalculations(wallHeightRight,wallHeightCenter,wallHeightLeft)
         
         # very far, just turned
 
