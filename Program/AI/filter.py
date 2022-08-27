@@ -269,7 +269,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                 else:
                     steeringMax += pillarSteering / 2
                 if server != None:
-                    server.broadcast('strPredict', str(steeringMax))
+                    server.broadcast('values', [steeringMax, wallHeightLeft, wallHeightCenter, wallHeightRight, filteredWallHeightsDiffLeft])
                 return steeringMax
             else:
                 if steeringMax < abs(pillarSteering) and (steeringMax < 75 or pillarSteering <= -75):
