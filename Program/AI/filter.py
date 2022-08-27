@@ -138,7 +138,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                     bgKps = gKps[i]
 
         # crop for wall detection
-        wallStart = 55
+        wallStart = 50
         wallEnd = 100
         croppedEdgesImg = edgesImage[wallStart:wallEnd,0:1]
         for i in range(19):
@@ -167,16 +167,16 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                     index = 2
                     while secondNonzero - firstNonzero < 5:
                         if len(nonzeroList) <= index:
-                            secondNonzero = 35
+                            secondNonzero = 50
                             break
                         secondNonzero = nonzeroList[index]
                         index += 1
                 elif len(nonzeroList) == 1:
                     firstNonzero = nonzeroList[0]
-                    secondNonzero = 35
+                    secondNonzero = 50
                 else:
                     firstNonzero = 0
-                    secondNonzero = 35
+                    secondNonzero = 50
                 wallHeightsDiff.append(secondNonzero - firstNonzero)
                 wallHeightsMax.append(firstNonzero)
             if len(wallHeightsDiff) > 0:
@@ -282,11 +282,11 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         else:
             centerWallCalculations(wallHeightRight,wallHeightCenter,wallHeightLeft,1)
         if wallHeightRight > 18:
-            steering = -wallHeightRight ** 2 * 0.06
+            steering = -wallHeightRight ** 2 * 0.04
             steeringArray.append(steering)
             rightSteering = steering
         if wallHeightLeft > 18:
-            steering = wallHeightLeft ** 2 * 0.06
+            steering = wallHeightLeft ** 2 * 0.04
             steeringArray.append(steering)
             leftSteering = steering
         
@@ -294,8 +294,8 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
 
         justTurned = False
 
-        if wallHeightCenter < 9 and turnCooldown <= 0:
-            turnCooldown = 100
+        if wallHeightCenter < 10 and turnCooldown <= 0:
+            turnCooldown = 110
             turnsMade += 1
             justTurned = True
             print(turnsMade)
