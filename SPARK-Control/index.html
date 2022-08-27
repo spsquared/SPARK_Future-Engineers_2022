@@ -23,6 +23,8 @@
         <button id="captureFilterStreamButton" class="largeButton">START FILTERED CAPTURE STREAM</button>
         <button id="streamButton" class="largeButton">START STREAM</button>
         <button id="filterStreamButton" class="largeButton">START FILTERED STREAM</button>
+        <button id="viewButton" class="largeButton">VIEW IMAGE</button>
+        <button id="viewFilterbutton" class="largeButton">VIEW FILTERED IMAGE</button>
     </div>
     <div id="filterAdjust">
         <div style="font-size: 32px; font-weight: bold;">Adjust Filter:</div>
@@ -38,61 +40,61 @@
                 <tr>
                     <td>H max</td>
                     <td>
-                        <input type="range" class="slider sliderH" min="0" max="360" step="5" id="redHMax" oninput="updateSlider(0);">
+                        <input type="range" class="slider sliderH" min="0" max="180" step="2" id="redHMax" oninput="updateSlider(0);">
                     </td>
                     <td>H max</td>
                     <td>
-                        <input type="range" class="slider sliderH" min="0" max="360" step="5" id="greenHMax" oninput="updateSlider(1);">
+                        <input type="range" class="slider sliderH" min="0" max="180" step="2" id="greenHMax" oninput="updateSlider(1);">
                     </td>
                 </tr>
                 <tr>
                     <td>S max</td>
                     <td>
-                        <input type="range" class="slider sliderS" min="0" max="100" step="2" id="redSMax" oninput="updateSlider(2);">
+                        <input type="range" class="slider sliderS" min="0" max="255" step="5" id="redSMax" oninput="updateSlider(2);">
                     </td>
                     <td>S max</td>
                     <td>
-                        <input type="range" class="slider sliderS" min="0" max="100" step="2" id="greenSMax" oninput="updateSlider(3);">
+                        <input type="range" class="slider sliderS" min="0" max="255" step="5" id="greenSMax" oninput="updateSlider(3);">
                     </td>
                 </tr>
                 <tr>
                     <td>V max</td>
                     <td>
-                        <input type="range" class="slider sliderV" min="0" max="100" step="2" id="redVMax" oninput="updateSlider(4);">
+                        <input type="range" class="slider sliderV" min="0" max="255" step="5" id="redVMax" oninput="updateSlider(4);">
                     </td>
                     <td>V max</td>
                     <td>
-                        <input type="range" class="slider sliderV" min="0" max="100" step="2" id="greenVMax" oninput="updateSlider(5);">
+                        <input type="range" class="slider sliderV" min="0" max="255" step="5" id="greenVMax" oninput="updateSlider(5);">
                     </td>
                 </tr>
                 <tr>
                     <td>H min</td>
                     <td>
-                        <input type="range" class="slider sliderH" min="0" max="360" step="5" id="redHMin" oninput="updateSlider(6);">
+                        <input type="range" class="slider sliderH" min="0" max="180" step="2" id="redHMin" oninput="updateSlider(6);">
                     </td>
                     <td>H min</td>
                     <td>
-                        <input type="range" class="slider sliderH" min="0" max="360" step="5" id="greenHMin" oninput="updateSlider(7);">
+                        <input type="range" class="slider sliderH" min="0" max="180" step="2" id="greenHMin" oninput="updateSlider(7);">
                     </td>
                 </tr>
                 <tr>
                     <td>S min</td>
                     <td>
-                        <input type="range" class="slider sliderS" min="0" max="100" step="2" id="redSMin" oninput="updateSlider(8);">
+                        <input type="range" class="slider sliderS" min="0" max="255" step="5" id="redSMin" oninput="updateSlider(8);">
                     </td>
                     <td>S min</td>
                     <td>
-                        <input type="range" class="slider sliderS" min="0" max="100" step="2" id="greenSMin" oninput="updateSlider(9);">
+                        <input type="range" class="slider sliderS" min="0" max="255" step="5" id="greenSMin" oninput="updateSlider(9);">
                     </td>
                 </tr>
                 <tr>
                     <td>V min</td>
                     <td>
-                        <input type="range" class="slider sliderV" min="0" max="100" step="2" id="redVMin" oninput="updateSlider(10);">
+                        <input type="range" class="slider sliderV" min="0" max="255" step="5" id="redVMin" oninput="updateSlider(10);">
                     </td>
                     <td>V min</td>
                     <td>
-                        <input type="range" class="slider sliderV" min="0" max="100" step="2" id="greenVMin" oninput="updateSlider(11);">
+                        <input type="range" class="slider sliderV" min="0" max="255" step="5" id="greenVMin" oninput="updateSlider(11);">
                     </td>
                 </tr>
                 <tr>
@@ -172,11 +174,6 @@
                 </tr>
             </tbody>
         </table>
-        
-        
-        
-        
-        
     </div>
     <div id="joystick">
         <div id="joystickPin"></div>

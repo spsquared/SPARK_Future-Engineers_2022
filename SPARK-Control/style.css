@@ -144,6 +144,12 @@ img {
 #filterStreamButton {
     background-color: lightgreen;
 }
+#viewButton {
+    background-color: lightskyblue;
+}
+#viewFilterButton {
+    background-color: gold;
+}
 
 #filterAdjust {
     position: absolute;
@@ -307,10 +313,10 @@ img {
 
 #emergencyStop {
     position: absolute;
-    top: 304px;
-    right: 188px;
-    width: 96px;
-    height: 36px;
+    top: 16px;
+    right: 320px;
+    width: 200px;
+    height: 48px;
     font: 20px sans-serif;
     font-weight: bolder;
     background-color: red;
@@ -322,10 +328,10 @@ img {
 }
 #disconnect {
     position: absolute;
-    top: 304px;
-    right: 16px;
-    width: 156px;
-    height: 36px;
+    top: 80px;
+    right: 320px;
+    width: 200px;
+    height: 48px;
     font: 20px sans-serif;
     font-weight: bolder;
     background-color: red;
