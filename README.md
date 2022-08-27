@@ -78,7 +78,7 @@ The drivetrain of the car is handled separately by the controller in the servo a
 
 All the code for image filtering and predictions can be found in `/Program/AI/filter.py`.
 
-The filter function takes in a raw image and outputs a filtered image. This image is filtered based on 4 RGB values, `redMax`, `redMin`, `greenMin`, `greenMax`. We use `cv2`'s `inRange` function to filter the image based on these values. There used to be another pass to filter in the walls, but that was phased out in favor of a new method. This method is unreliable in spaces with dark areas and places with a lot of glare.
+The filter function takes in a raw image and outputs a filtered image. This image is filtered based on 4 HSV values, `redMax`, `redMin`, `greenMin`, `greenMax`. Using `cv2`'s `cvtColor` function, we can convert the RGB image captured by the camera to a HSV image, and using `cv2`'s `inRange` function, we can filter the image based on these values, to get a mask of the pillars. There used to be another pass to filter in the walls, but that was phased out in favor of a new method. This method is unreliable in spaces with dark areas and places with a lot of glare. Instead, after using `cvtColor` to turn the image into a grayscale
 
 The predict function is where all the predictions happen. It starts by creating a blob detector using `cv2.SimpleBlobDetector`. This is from a package. `SimpleBlobDetector_Params` is only for setting the parameters for the blob detector. After this, it takes the raw image from the input and passes it to the filter function. After this, it uses the blob detector on the filtered red and green images to detect red and green pillars.
 
