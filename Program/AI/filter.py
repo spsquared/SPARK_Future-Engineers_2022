@@ -57,6 +57,7 @@ def filter(imgIn: numpy.ndarray):
         io.error()
 
 rightOnRed = True
+doPillars = True
 counterClockwise = 0
 turnsMade = 0
 turnCooldown = 0
@@ -230,29 +231,30 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
 
         # decide steering for each signal that will collide
         reducedSteering = 0
-        if brKps != 0:
-            if bgKps != 0:
-                if brKps.size > bgKps.size:
+        if doPillars == True:
+            if brKps != 0:
+                if bgKps != 0:
+                    if brKps.size > bgKps.size:
+                        pillarSteering = -(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size - reducedSteering) * (brKps.size) ** 2 * 0.015
+                        steeringReason += "red pillar "
+                        # steeringArray.append(brKps.size ** 2 * 0.2)
+                    else:
+                        pillarSteering = (getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size - reducedSteering) * (bgKps.size) ** 2 * 0.015
+                        steeringReason += "green pillar "
+                        # steeringArray.append(-bgKps.size ** 2 * 0.2)
+                else:
                     pillarSteering = -(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size - reducedSteering) * (brKps.size) ** 2 * 0.015
                     steeringReason += "red pillar "
                     # steeringArray.append(brKps.size ** 2 * 0.2)
-                else:
-                    pillarSteering = (getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size - reducedSteering) * (bgKps.size) ** 2 * 0.015
-                    steeringReason += "green pillar "
-                    # steeringArray.append(-bgKps.size ** 2 * 0.2)
+            elif bgKps != 0:
+                pillarSteering = (getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size - reducedSteering) * (bgKps.size) ** 2 * 0.015
+                steeringReason += "green pillar "
+                # steeringArray.append(-bgKps.size ** 2 * 0.2)
+            passedPillar *= 0.8
+            if pillarSteering != 0:
+                passedPillar = pillarSteering
             else:
-                pillarSteering = -(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size - reducedSteering) * (brKps.size) ** 2 * 0.015
-                steeringReason += "red pillar "
-                # steeringArray.append(brKps.size ** 2 * 0.2)
-        elif bgKps != 0:
-            pillarSteering = (getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size - reducedSteering) * (bgKps.size) ** 2 * 0.015
-            steeringReason += "green pillar "
-            # steeringArray.append(-bgKps.size ** 2 * 0.2)
-        passedPillar *= 0.8
-        if pillarSteering != 0:
-            passedPillar = pillarSteering
-        else:
-            pillarSteering = passedPillar
+                pillarSteering = passedPillar
         
         # decide steering for each wall section
         counterClockwise += wallHeightRight - wallHeightLeft
@@ -265,7 +267,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
 
         def centerWallCalculations(left,center,right,direction):
             nonlocal centerSteering
-            if center > 9 and right > 9:
+            if center > 15 and right > 15:
                 if left > 20:
                     steering = min(center,right) ** 2 * 0.15 * direction
                     steeringArray.append(steering)
@@ -279,20 +281,23 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
             centerWallCalculations(wallHeightLeft,wallHeightCenter,wallHeightRight,-1)
         else:
             centerWallCalculations(wallHeightRight,wallHeightCenter,wallHeightLeft,1)
-        if wallHeightRight > 15:
+        if wallHeightRight > 18:
             steering = -wallHeightRight ** 2 * 0.06
             steeringArray.append(steering)
             rightSteering = steering
-        if wallHeightLeft > 15:
+        if wallHeightLeft > 18:
             steering = wallHeightLeft ** 2 * 0.06
             steeringArray.append(steering)
             leftSteering = steering
         
         # very far, just turned
 
+        justTurned = False
+
         if wallHeightCenter < 9 and turnCooldown <= 0:
             turnCooldown = 100
             turnsMade += 1
+            justTurned = True
             print(turnsMade)
         
         turnCooldown -= 1
@@ -330,7 +335,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                 else:
                     steeringMax += pillarSteering / 2
             if server != None:
-                server.broadcast('values', [[str(steeringMax),steeringReason,str(wallSteering),str(pillarSteering)], str(wallHeightLeft), str(wallHeightCenter), str(wallHeightRight), str(filteredWallHeightsDiffLeft), str(filteredWallHeightsDiffCenter), str(filteredWallHeightsDiffRight),str(wallHeightsMaxLeft),str(wallHeightsMaxCenter),str(wallHeightsMaxRight)])
+                server.broadcast('values', [[str(steeringMax),steeringReason,str(wallSteering),str(pillarSteering)], str(wallHeightLeft), str(wallHeightCenter), str(wallHeightRight), str(filteredWallHeightsDiffLeft), str(filteredWallHeightsDiffCenter), str(filteredWallHeightsDiffRight),str(wallHeightsMaxLeft),str(wallHeightsMaxCenter),str(wallHeightsMaxRight),str(justTurned)])
             return steeringMax
         else:
             if steeringMin == leftSteering:
@@ -355,7 +360,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                 else:
                     steeringMin += pillarSteering / 2
             if server != None:
-                server.broadcast('values', [[str(steeringMin),steeringReason,str(wallSteering),str(pillarSteering)], str(wallHeightLeft), str(wallHeightCenter), str(wallHeightRight), str(filteredWallHeightsDiffLeft), str(filteredWallHeightsDiffCenter), str(filteredWallHeightsDiffRight),str(wallHeightsMaxLeft),str(wallHeightsMaxCenter),str(wallHeightsMaxRight)])
+                server.broadcast('values', [[str(steeringMin),steeringReason,str(wallSteering),str(pillarSteering)], str(wallHeightLeft), str(wallHeightCenter), str(wallHeightRight), str(filteredWallHeightsDiffLeft), str(filteredWallHeightsDiffCenter), str(filteredWallHeightsDiffRight),str(wallHeightsMaxLeft),str(wallHeightsMaxCenter),str(wallHeightsMaxRight),str(justTurned)])
             return steeringMin
 
         # steeringMax += pillarSteering
