@@ -170,18 +170,13 @@ img {
     cursor: grabbing;
 }
 .sliderH::-webkit-slider-thumb {
-    --hue: 0;
-    background-color: hsl(var(--hue, 1, 1));
+    background-color: hsl(var(--hue), 100%, 50%);
 }
 .sliderS::-webkit-slider-thumb {
-    --hue: 0;
-    --saturation: 0;
-    background-color: hsl(var(--hue), var(--saturation), 1);
+    background-color: hsl(var(--hue), var(--saturation), 50%);
 }
 .sliderV::-webkit-slider-thumb {
-    --hue: 0;
-    --value: 0;
-    background-color: hsl(var(--hue), 1, var(--value));
+    background-color: hsl(var(--hue), var(--saturation), var(--value));
 }
 
 #captureDisplay {
