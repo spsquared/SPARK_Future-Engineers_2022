@@ -341,8 +341,8 @@ let initcolors = [
         0, 75, 100
     ],
     [
-        120, 255, 255,
-        30, 75, 100
+        110, 255, 255,
+        30, 30, 30
     ],
     [
         90, 75, 85,
@@ -501,7 +501,7 @@ function showWallData() {
     ctx2.fillText(data[0], 0, 0);
 };
 function showPredictions() {
-    let data = history[index].wall;
+    let data = history[index].steer;
     strPredict.innerText = 'Final Steering: ' + Math.round(data[0]);
     strReason.innerText = 'Steering Reason: ' + data[1];
     wallStrPredict.innerText = 'Wall Steering: ' + Math.round(data[2]);

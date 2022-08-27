@@ -14,8 +14,8 @@ rm = redMin = (0, 75, 100)
 rM = redMax = (30, 255, 255)
 # rm = redMin = (150, 75, 100)
 # rM = redMax = (180, 255, 255)
-gm = greenMin = (30, 75, 100)
-gM = greenMax = (120, 255, 255)
+gm = greenMin = (30, 30, 30)
+gM = greenMax = (110, 255, 255)
 # gM = greenMax = (85, 140, 95)
 # gm = greenMin = (60, 65, 10)
 # wM = wallMax = (90, 75, 85)
@@ -29,11 +29,12 @@ def filter(imgIn: numpy.ndarray):
         hsv = cv2.cvtColor(imgIn, cv2.COLOR_BGR2HSV)
         # rMask = cv2.inRange(imgIn, redMin1, redMax1)
         rMask1 = cv2.inRange(hsv, redMin, redMax)
+        redMaxH = redMax[0]
         redMinList = list(redMin)
-        redMinList = [180 - redMinList[0],redMinList[1],redMinList[2]]
+        redMinList = [180 - redMaxH,redMinList[1],redMinList[2]]
         redMin2 = tuple(redMinList)
         redMaxList = list(redMax)
-        redMaxList = [180 - redMaxList[0],redMaxList[1],redMaxList[2]]
+        redMaxList = [180,redMaxList[1],redMaxList[2]]
         redMax2 = tuple(redMaxList)
         rMask2 = cv2.inRange(hsv, redMin2, redMax2)
         rMask = cv2.bitwise_or(rMask1, rMask2)
@@ -258,9 +259,9 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
 
         counterClockwise *= 0.9
 
-        leftSteering = 0
-        centerSteering = 0
-        rightSteering = 0
+        leftSteering = "no"
+        centerSteering = "no"
+        rightSteering = "no"
 
         def centerWallCalculations(left,center,right):
             nonlocal centerSteering
@@ -278,10 +279,10 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
             centerWallCalculations(wallHeightRight,wallHeightCenter,wallHeightLeft)
         if wallHeightRight > 15:
             steeringArray.append(-wallHeightRight ** 2 * 0.04)
-            rightSteering = -wallHeightRight ** 2 * 0.04
+            rightSteering = -wallHeightRight ** 2 * 0.06
         if wallHeightLeft > 15:
             steeringArray.append(wallHeightLeft ** 2 * 0.04)
-            leftSteering = wallHeightLeft ** 2 * 0.04
+            leftSteering = wallHeightLeft ** 2 * 0.6
         
         # very far, just turned
 
@@ -305,10 +306,12 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         if steeringMax > abs(steeringMin):
             if steeringMax == leftSteering:
                 steeringReason += "left wall"
-            if steeringMax == centerSteering:
+            elif steeringMax == centerSteering:
                 steeringReason += "center wall"
-            if steeringMax == rightSteering:
+            elif steeringMax == rightSteering:
                 steeringReason += "right wall"
+            else:
+                steeringReason += "BORKEN"
             wallSteering = steeringMax
             if pillarSteering > 0:
                 if steeringMax < pillarSteering and (steeringMax < 75 or pillarSteering >= 75):
@@ -326,10 +329,12 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         else:
             if steeringMin == leftSteering:
                 steeringReason += "left wall"
-            if steeringMin == centerSteering:
+            elif steeringMin == centerSteering:
                 steeringReason += "center wall"
-            if steeringMin == rightSteering:
+            elif steeringMin == rightSteering:
                 steeringReason += "right wall"
+            else:
+                steeringReason += "BORKEN"
             wallSteering = steeringMin
             if pillarSteering > 0:
                 if abs(steeringMin) < pillarSteering and (abs(steeringMin) < 75 or pillarSteering >= 75):
@@ -359,22 +364,23 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         io.error()
 
 def setColors(data, server = None):
-    global redMax, redMin, greenMax, greenMin, wallMax, wallMin
-    redMax = (int(data[6]), int(data[3]), int(data[0]))
-    greenMax = (int(data[7]), int(data[4]), int(data[1]))
-    wallMax = (int(data[8]), int(data[5]), int(data[2]))
-    redMin = (int(data[15]), int(data[12]), int(data[9]))
-    greenMin = (int(data[16]), int(data[13]), int(data[10]))
-    wallMin = (int(data[17]), int(data[14]), int(data[11]))
+    print(data)
+    global redMax, redMin, greenMax, greenMin
+    redMax = (int(data[0]), int(data[2]), int(data[4]))
+    greenMax = (int(data[1]), int(data[3]), int(data[5]))
+    # wallMax = (int(data[8]), int(data[5]), int(data[2]))
+    redMin = (int(data[6]), int(data[8]), int(data[10]))
+    greenMin = (int(data[7]), int(data[9]), int(data[11]))
+    # wallMin = (int(data[17]), int(data[14]), int(data[11]))
     # greyMax = int(data[18])
     # greyMin = int(data[19])
     print('-- New ----------')
     print(redMax, redMin)
     print(greenMax, greenMin)
-    print(wallMax, wallMin)
+    # print(wallMax, wallMin)
     # print(greyMax, greyMin)
-    if server != None:
-        server.broadcast('colors', getColors())
+    # if server != None:
+    #     server.broadcast('colors', getColors())
 def getColors():
     global redMax, redMin, greenMax, greenMin, wallMax, wallMin
     return [redMax[2], greenMax[2], wallMax[2], redMax[1], greenMax[1], wallMax[1], redMax[0], greenMax[0], wallMax[0], redMin[2], greenMin[2], wallMin[2], redMin[1], greenMin[1], wallMin[1], redMin[0], greenMin[0], wallMin[0]]
