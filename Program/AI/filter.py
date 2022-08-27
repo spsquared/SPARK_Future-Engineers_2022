@@ -87,7 +87,6 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
             gKps = blobs.detect(255 - rImg)
 
         # pillar calculations
-
         blobSizeRequirement = 0
         dangerSize = 35
         def getRedEquation(x):
@@ -102,7 +101,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
             position = list(rKps[i].pt)
             position[1] += blobStart
             rKps[i].pt = tuple(position)
-            if rKps[i].pt[1] + rKps[i].size > getRedEquation(rKps[i].pt[0]) and rKps[i].size > blobSizeRequirement:
+            if rKps[i].pt[1] + rKps[i].size > getRedEquation(rKps[i].pt[0]) and rKps[i].pt[1] + rKps[i].size > 70 and rKps[i].size > blobSizeRequirement:
                 if brKps == 0:
                     brKps = rKps[i]
                 elif brKps.size < rKps[i].size:
@@ -113,7 +112,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
             position = list(gKps[i].pt)
             position[1] += blobStart
             gKps[i].pt = tuple(position)
-            if gKps[i].pt[1] + gKps[i].size > getGreenEquation(gKps[i].pt[0]) and gKps[i].size > blobSizeRequirement:
+            if gKps[i].pt[1] + gKps[i].size > getGreenEquation(gKps[i].pt[0]) and gKps[i].pt[1] + gKps[i].size > 70 and gKps[i].size > blobSizeRequirement:
                 if bgKps == 0:
                     bgKps = gKps[i]
                 elif bgKps.size < gKps[i].size:
@@ -137,14 +136,12 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
 
         # find wall heights
 
-        transposedArray = numpy.transpose(numpy.nonzero(croppedEdgesImg))
-
         def getWallHeights(offset):
             wallHeightsMax = []
             wallHeightsDiff = []
             for i in range(20):
                 i += offset
-                nonzeroList = numpy.extract(transposedArray[1] == i,transposedArray)[0]
+                nonzeroList = numpy.nonzero(croppedEdgesImg[i])[0]
                 if len(nonzeroList) >= 2:
                     firstNonzero = nonzeroList[0]
                     secondNonzero = nonzeroList[1]
