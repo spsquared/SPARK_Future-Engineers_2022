@@ -266,7 +266,7 @@ let sliders = [
     document.getElementById('redSMin'),
     document.getElementById('greenSMin'),
     document.getElementById('redVMin'),
-    document.getElementById('greenVMin'),
+    document.getElementById('greenVMin')
 ];
 document.getElementById('captureFilterButton').onclick = function(e) {
     let arr = [];
@@ -294,6 +294,16 @@ document.getElementById('captureFilterStreamButton').onclick = function(e) {
 };
 function updateSlider(i) {
     document.getElementById(sliders[i].id + 'indicator').innerText = sliders[i].value;
+    if (sliders[i].id.includes('H')) {
+        sliders[i].style.setProperty('--hue', sliders[i].value);
+        sliders[i+2].style.setProperty('--hue', sliders[i].value);
+        sliders[i+4].style.setProperty('--hue', sliders[i].value);
+    } else if (sliders[i].id.includes('S')) {
+        sliders[i].style.setProperty('--saturation', sliders[i].value + '%');
+        sliders[i+2].style.setProperty('--saturation', sliders[i].value + '%');
+    } else if (sliders[i].id.includes('V')) {
+        sliders[i].style.setProperty('--value', sliders[i].value/2 + '%');
+    }
 };
 function setColors(colors) {
     for (let i in colors) {
@@ -362,7 +372,7 @@ sliders[9].value = initcolors[1][4];
 sliders[10].value = initcolors[0][5];
 sliders[11].value = initcolors[1][5];
 for (let i in sliders) {
-    updateSlider(i);
+    updateSlider(parseInt(i));
 }
 
 // capture display
