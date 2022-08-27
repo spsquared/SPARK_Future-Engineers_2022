@@ -299,10 +299,10 @@ function updateSlider(i) {
         sliders[i+2].style.setProperty('--hue', sliders[i].value * 2);
         sliders[i+4].style.setProperty('--hue', sliders[i].value * 2);
     } else if (sliders[i].id.includes('S')) {
-        sliders[i].style.setProperty('--saturation', sliders[i].value + '%');
-        sliders[i+2].style.setProperty('--saturation', sliders[i].value + '%');
+        sliders[i].style.setProperty('--saturation', sliders[i].value*(100/255) + '%');
+        sliders[i+2].style.setProperty('--saturation', sliders[i].value*(100/255) + '%');
     } else if (sliders[i].id.includes('V')) {
-        sliders[i].style.setProperty('--value', sliders[i].value/2 + '%');
+        sliders[i].style.setProperty('--value', sliders[i].value*(50/255) + '%');
     }
 };
 function setColors(colors) {
