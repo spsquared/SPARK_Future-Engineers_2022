@@ -239,10 +239,10 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                     steeringArray.append(-(center + right) ** 2 * 0.08)
                 else:
                     steeringArray.append(-(center + right) ** 2 * 0.16)
-            if right > 15:
-                steeringArray.append(-right ** 2 * 0.04)
-            if left > 15:
-                steeringArray.append(left ** 2 * 0.04)
+            if wallHeightRight > 15:
+                steeringArray.append(-wallHeightRight ** 2 * 0.04)
+            if wallHeightLeft > 15:
+                steeringArray.append(wallHeightLeft ** 2 * 0.04)
         
         if counterClockwise >= 0:
             wallCalculations(wallHeightLeft,wallHeightCenter,wallHeightRight)
