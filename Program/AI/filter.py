@@ -85,6 +85,8 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         blurredImg = filter(imgIn)
         edgesImage, gImg, rImg = cv2.split(blurredImg)
 
+        ################# PILLAR STEERING #################
+
         # crop for blob detection
         blobStart = 50
         blobEnd = 100
@@ -113,7 +115,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         def getGreenEquation(x):
             return (272 - x) * -0.315 + 121 - dangerSize
 
-        # find signals that will collide with car
+        # find pillars that will collide with car
         brKps = 0
         for i in range(len(rKps)):
             rKps[i].size /= 2
@@ -137,6 +139,8 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                 elif bgKps.size < gKps[i].size:
                     bgKps = gKps[i]
 
+        ################# WALL STEERING #################
+
         # crop for wall detection
         wallStart = 50
         wallEnd = 100
@@ -149,12 +153,10 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
             croppedEdgesImg = numpy.concatenate((croppedEdgesImg, edgesImage[wallStart:wallEnd,i * 4 + 192:i * 4 + 193]), axis=1)
 
         #flip wall
-
         croppedEdgesImg = numpy.flip(croppedEdgesImg,axis=0)
         croppedEdgesImg = numpy.swapaxes(croppedEdgesImg,0,1)
 
         # find wall heights
-
         def getWallHeights(offset):
             wallHeightsMax = []
             wallHeightsDiff = []

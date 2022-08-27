@@ -78,31 +78,33 @@ The drivetrain of the car is handled separately by the controller in the servo a
 
 All the code for image filtering and predictions can be found in `/Program/AI/filter.py`.
 
-The filter function takes in a raw image and outputs a filtered image. This image is filtered based on 4 HSV values, `redMax`, `redMin`, `greenMin`, `greenMax`. Using `cv2`'s `cvtColor` function, we can convert the RGB image captured by the camera to a HSV image, and using `cv2`'s `inRange` function, we can filter the image based on these values, to get a mask of the pillars. There used to be another pass to filter in the walls, but that was phased out in favor of a new method. This method is unreliable in spaces with dark areas and places with a lot of glare. Instead, after using `cvtColor` to turn the image into a grayscale
+The filter function takes in a raw image and outputs a filtered image. This image is filtered based on 4 HSV values, `redMax`, `redMin`, `greenMin`, `greenMax`. Using `cv2.cvtColor`, we can convert the RGB image captured by the camera to a HSV image, and using `cv2.inRange`, we can filter the image based on these values, to get a mask of the pillars. There used to be another pass to filter in the walls, but that was phased out in favor of a new method. This method is unreliable in spaces with dark areas and places with a lot of glare. Instead, after using `cv2.cvtColor` to turn the image into a grayscale image, `cv2.GaussianBlur` to blur the image, we use `cv2.Canny` to get a black and white image highlighting edges.
 
-The predict function is where all the predictions happen. It starts by creating a blob detector using `cv2.SimpleBlobDetector`. This is from a package. `SimpleBlobDetector_Params` is only for setting the parameters for the blob detector. After this, it takes the raw image from the input and passes it to the filter function. After this, it uses the blob detector on the filtered red and green images to detect red and green pillars.
+The predict function is where all the predictions happen. There are two sections to it, pillar steering and wall steering.
 
-**TO UPDATE FIX STUFF MAITIAN**
+Pillar steering starts by creating a blob detector using `cv2.SimpleBlobDetector` and using `SimpleBlobDetector_Params` to set the parameters. Using the filtered red and green images, the blob detector detects blobs to filter out random noise in the image and get the relative position and relative size of the pillars. We have two equations, `getRedEquation` and `getGreenEquation`. These calculate if we will hit a pillar or not, and we use it on all the blobs detected by the blob detector. If there are pillars detected, we take the largest pillar. Using a combination of the size of the pillar and the location of the pillar, we calculate a steering value on which direction we should turn. This is stored in `pillarSteering`. The steering value is also written in `passedPillar`, as `passedPillar` is used when we pass a pillar to prevent the back wheels from hitting the pillar.
 
-Now it does wall detection. First, it crops the image, removing the top and bottom sections, and then using `numpy.count_nonzero` as a fast way to get how many filtered wall pixels there are. There are 3 sections of the wall that we care about, the left side, center, and right side. Using the `last_nonzero` function from `numpy`, we can find the bottom line of the 3 sections of walls, as this is useful for making predictions based on the walls. We have two equations, `getRedEquation` and `getGreenEquation`. These calculate if we will hit a pillar or not, and we use it on all the blobs detected by the blob detector. After this, it sends all this information to the SPARK Control Panel. If the center wall is very tiny, the car knows it just turned and increases `turnsMade` by one, and if we have turned 12 times, or 3 laps, it returns "stop". It compares the size of the left wall and the right wall, and adds the difference to a variable called `counterClockwise`. Based on if it is positive or negative, we know which direction to move. Negative is clockwise and positive is counter clockwise. After this, we take the largest pillar we will hit and given the pillar size and where it is we get a `pillarSteering`, and this is also written into `passedPillar`. `passedPillar` keeps track of past pillars, and is reduced by 20% every time. `passedPillar` is used if no pillar is detected. This is useful in making sure the back wheel doesn't hit the pillar. Then, there are 4 main cases for wall steering:
+Next we have wall steering. First we start by cropping out the top and bottom sections of the image, to remove useless noise. After this, we flip the image and swap the axes to prepare for wall height detection. Using `numpy.nonzero` we can find the first and second lines from the bottom. Getting the difference gives us the wall height. We repeat this 60 times, 20 for the left wall, 20 for the center, and 20 for the right wall. To remove outliers, we take the median. Based on this, we have 3 cases.
 
 **1: Crashing into center wall**
 
-This means the center wall value and right wall values are large. However, if the left wall value is also large, it is the second case. If we are turning clockwise we will turn right and if we are turning counter clockwise we turn left.
+This means if we are turning counterclockwise the center wall and the right wall are very large, and if we are turning clockwise the center wall and the left wall are very large. If we are turning counterclockwise we turn left, otherwise we turn right.
 
-**2: Crashing into left wall**
-
-The left wall value is very large, and the center section which is detected as the center wall may be actually the left wall. We will always turn right.
-
-**3: Slanted left**
+**2: Slanted left**
 
 The left wall value is large. We will always turn right.
 
-**4: Slanted right**
+**3: Slanted right**
 
 The right wall value is large. We will always turn left.
 
+If the center wall is very tiny, the car knows it just turned and increases `turnsMade` by one, and if we have turned 12 times, or 3 laps, it returns "stop", causing the car to stop.
+
+We take the difference of the left wall height and the right wall height. This lets us know which direction we are turning. If we are turning counterclockwise, when the car is in the corner, it will detect a right wall but no left wall. Similiarly, if we are turning clockwise, when the car is in the corner, it will detect a left wall but no right wall.
+
 A negative steering value means we turn left, while a positive means turning right.
+
+After this, we send all this information to SPARK Control.
 
 Finally, it takes the sum of the pillar steering and wall steering and returns it.
 
