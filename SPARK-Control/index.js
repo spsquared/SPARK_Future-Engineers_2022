@@ -466,11 +466,11 @@ function drawBlob(blob,blobColor){
     ctx.beginPath();
     if(blobColor === 0){
         ctx.strokeStyle = "#f00";
-        ctx.fillStyle = "#F007";
+        ctx.fillStyle = "#F005";
     }
     else{
         ctx.strokeStyle = "#0f0"
-        ctx.fillStyle = "#0F07";
+        ctx.fillStyle = "#0F05";
     }
     ctx.arc(blob[0],blob[1],blob[2] * 2, 0, 2 * Math.PI);
     ctx.fill();
@@ -483,11 +483,11 @@ function drawLightBlob(blob,blobColor){
     ctx.beginPath();
     if(blobColor === 0){
         ctx.strokeStyle = "#f00";
-        ctx.fillStyle = "#F007";
+        ctx.fillStyle = "#F005";
     }
     else{
         ctx.strokeStyle = "#0f0"
-        ctx.fillStyle = "#0F07";
+        ctx.fillStyle = "#0F05";
     }
     ctx.arc(blob[0],blob[1],blob[2] * 2, 0, 2 * Math.PI);
     ctx.fill();
