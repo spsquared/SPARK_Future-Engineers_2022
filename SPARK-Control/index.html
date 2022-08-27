@@ -217,12 +217,12 @@
         <div id="displayBlock">
             <img id="displayImg">
             <canvas id="canvas"></canvas>
-            <canvas id="wallCanvas" style="display: none;"></canvas>
+            <canvas id="canvas2" style="display: none;"></canvas>
         </div>
         <div id="fps">FPS: 0</div>
         <div id="strPredict">Steering: 0</div>
         <label id="showOverlay">
-            <input type="checkbox" oninput="if (this.checked) {document.getElementById('wallCanvas').style.display = '';} else {document.getElementById('wallCanvas').style.display = 'none';}">
+            <input type="checkbox" oninput="if (this.checked) {document.getElementById('canvas2').style.display = '';} else {document.getElementById('canvas2').style.display = 'none';}">
             Show Overlay
         </label>
         <a id="download" href="data:image/png;base64," download="download.png">DOWNLOAD</a>

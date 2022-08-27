@@ -121,8 +121,8 @@ joystick.addEventListener('touchstart', function(e) {
 document.onmouseup = function(e) {
     if (grabbing) {
         grabbing = false;
-        joystickPin.style.right = '110px';
-        joystickPin.style.bottom = '110px';
+        joystickPin.style.right = '114px';
+        joystickPin.style.bottom = '114px';
         sliderX.style.bottom = '140px';
         sliderY.style.right = '140px';
         throttle = 0;
@@ -145,8 +145,8 @@ document.addEventListener('touchend', function(e) {
 document.addEventListener('touchcancel', function(e) {
     if (grabbingtouch) {
         grabbingtouch = false;
-        joystickPin.style.right = '110px';
-        joystickPin.style.bottom = '110px';
+        joystickPin.style.right = '114px';
+        joystickPin.style.bottom = '114px';
         sliderX.style.bottom = '140px';
         sliderY.style.right = '140px';
         throttle = 0;
@@ -396,6 +396,8 @@ const fpsTimes = [];
 const displayImg = document.getElementById('displayImg');
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext("2d");
+const canvas2 = document.getElementById('canvas2');
+const ctx2 = canvas2.getContext("2d");
 const historySlider = document.getElementById('historySlider');
 const FPS = document.getElementById('fps');
 const strPredict = document.getElementById('strPredict');
@@ -406,7 +408,8 @@ function addCapture(img) {
     history.unshift({
         img: 'data:image/png;base64,'+img,
         blobs: [[], [], [], []],
-        steer: 0
+        steer: 0,
+        wall: [0, 0, 0, [], [], []]
     });
     index = 0;
     if (history.length > maxHistory) {
@@ -477,6 +480,38 @@ function drawLightBlob(blob,blobColor){
     ctx.fill();
     ctx.stroke();
 };
+function addWallData(data) {
+    index = 0;
+    history[index].steer = data[0];
+    history[index].wall = data.slice(1, 7);
+    history[index].wall[0] = parseInt(history[index].wall[0]);
+    history[index].wall[1] = parseInt(history[index].wall[1]);
+    history[index].wall[2] = parseInt(history[index].wall[2]);
+    history[index].wall[3] = JSON.parse(history[index].wall[3]);
+    history[index].wall[4] = JSON.parse(history[index].wall[4]);
+    history[index].wall[5] = JSON.parse(history[index].wall[5]);
+    if (history.length > maxHistory) {
+        history.pop();
+    }
+    displayChange();
+};
+function showWallData() {
+    let data = history[index].wall
+    canvas2.width = 272;
+    canvas2.height = 154;
+    ctx2.clearRect(0,0,272,154);
+    ctx2.fillStyle = '#FFF9';
+    for(let i = 0; i < 20; i++) {
+        ctx2.fillRect(i*4, 77-data[3][i]/2, 1, data[3][i]);
+    }
+    for(let i = 0; i < 20; i++) {
+        ctx2.fillRect(i*4+96, 77-data[4][i]/2, 1, data[4][i]);
+    }
+    for(let i = 0; i < 20; i++) {
+        ctx2.fillRect(i*4+192, 77-data[5][i]/2, 1, data[5][i]);
+    }
+    ctx2.fillText(data[0], 0, 0);
+};
 function showPrediction(val) {
     history[index].steer = Math.round(val);
     if (history.length > maxHistory) {
@@ -503,28 +538,13 @@ function displayChange() {
         displayImg.src = history[index].img;
         downloadButton.href = history[index].img;
         drawBlobs();
+        showWallData();
         showPrediction(history[index].steer);
     }
 };
-function drawOverlay(){
-    let ctx = wallCanvas.getContext('2d')
-    ctx.canvas.width = 272;
-    ctx.canvas.height = 154;
-    ctx.fillStyle = "RGBA(255,255,255,0.5)";
-    for(let i = 0;i < 80;i += 4){
-        ctx.fillRect(i,55,1,35);
-    }
-    for(let i = 96;i < 176;i += 4){
-        ctx.fillRect(i,55,1,35);
-    }
-    for(let i = 192;i < 276;i += 4){
-        ctx.fillRect(i,55,1,35);
-    }
-}
-drawOverlay();
 addListener('capture', addCapture);
 addListener('blobs', addBlobs);
-addListener('strPredict', showPrediction);
+addListener('values', addWallData);
 setInterval(() => {
     while (performance.now()-fpsTimes[0] > 1000) fpsTimes.shift();
     FPS.innerHTML = 'FPS: ' + fpsTimes.length;
