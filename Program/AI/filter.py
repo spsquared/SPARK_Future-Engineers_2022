@@ -263,26 +263,30 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         centerSteering = "no"
         rightSteering = "no"
 
-        def centerWallCalculations(left,center,right):
+        def centerWallCalculations(left,center,right,direction):
             nonlocal centerSteering
             if center > 9 and right > 9:
                 if left > 20:
-                    steeringArray.append(-min(center,right) ** 2 * 0.15)
-                    centerSteering = -min(center,right) ** 2 * 0.15
+                    steering = min(center,right) ** 2 * 0.15 * direction
+                    steeringArray.append(steering)
+                    centerSteering = steering
                 else:
-                    steeringArray.append(-min(center,right) ** 2 * 0.3)
-                    centerSteering = -min(center,right) ** 2 * 0.3
+                    steering = min(center,right) ** 2 * 0.3 * direction
+                    steeringArray.append(steering)
+                    centerSteering = steering
         
         if counterClockwise >= 0:
-            centerWallCalculations(wallHeightLeft,wallHeightCenter,wallHeightRight)
+            centerWallCalculations(wallHeightLeft,wallHeightCenter,wallHeightRight,-1)
         else:
-            centerWallCalculations(wallHeightRight,wallHeightCenter,wallHeightLeft)
+            centerWallCalculations(wallHeightRight,wallHeightCenter,wallHeightLeft,1)
         if wallHeightRight > 15:
-            steeringArray.append(-wallHeightRight ** 2 * 0.06)
-            rightSteering = -wallHeightRight ** 2 * 0.06
+            steering = -wallHeightRight ** 2 * 0.06
+            steeringArray.append(steering)
+            rightSteering = steering
         if wallHeightLeft > 15:
-            steeringArray.append(wallHeightLeft ** 2 * 0.06)
-            leftSteering = wallHeightLeft ** 2 * 0.06
+            steering = wallHeightLeft ** 2 * 0.06
+            steeringArray.append(steering)
+            leftSteering = steering
         
         # very far, just turned
 
@@ -310,6 +314,8 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                 steeringReason += "center wall"
             elif steeringMax == rightSteering:
                 steeringReason += "right wall"
+            elif steeringMax == 0:
+                steeringReason += ""
             else:
                 steeringReason += "BORKEN"
             wallSteering = steeringMax
@@ -333,6 +339,8 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                 steeringReason += "center wall"
             elif steeringMin == rightSteering:
                 steeringReason += "right wall"
+            elif steeringMin == 0:
+                steeringReason += ""
             else:
                 steeringReason += "BORKEN"
             wallSteering = steeringMin
