@@ -60,12 +60,12 @@ rightOnRed = True
 doPillars = True
 counterClockwise = 0
 turnsMade = 0
-turnCooldown = 0
-turnOnStart = 50
+turnCooldown = 40
+turnOnStart = 90
 passedPillar = 0
 lastSend = 0
 def predict(imgIn: numpy.ndarray, server = None, infinite = False):
-    global redMax, redMin, greenMax, greenMin, wallMax, wallMin, lastSend, rightOnRed, counterClockwise, turnsMade, turnCooldown, passedPillar
+    global redMax, redMin, greenMax, greenMin, lastSend, rightOnRed, counterClockwise, turnsMade, turnCooldown, passedPillar, turnOnStart
     try:
         # useless thing
         if infinite: turnsMade = 0
@@ -251,16 +251,18 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         rightSteering = "no"
 
         def centerWallCalculations(left,center,right,direction):
+            global counterClockwise
             nonlocal centerSteering
             if center > 15 and right > 15:
                 if left > 20:
-                    steering = min(center,right) ** 2 * 0.1 * direction
+                    steering = min(center,right) ** 2 * 0.15 * direction
                     steeringArray.append(steering)
                     centerSteering = steering
                 else:
-                    steering = min(center,right) ** 2 * 0.2 * direction
+                    steering = min(center,right) ** 2 * 0.3 * direction
                     steeringArray.append(steering)
                     centerSteering = steering
+                counterClockwise *= 2
         
         if counterClockwise >= 0:
             centerWallCalculations(wallHeightLeft,wallHeightCenter,wallHeightRight,-1)
@@ -279,10 +281,10 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
 
         justTurned = False
 
-        if wallHeightCenter < 10 and turnCooldown <= 0:
+        if wallHeightCenter < 11 and turnCooldown <= 0:
             if turnOnStart >= 0:
                 turnOnStart = -1
-            turnCooldown = 160
+            turnCooldown = 140
             turnsMade += 1
             justTurned = True
             print(turnsMade)
