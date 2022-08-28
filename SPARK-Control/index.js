@@ -417,7 +417,7 @@ ctx.canvas.width = 272;
 ctx.canvas.height = 154;
 let displayTimer = 0;
 let drawn = false;
-let displayDelay = 10;
+let displayDelay = 5;
 function addCapture(img) {
     history.unshift({
         img: 'data:image/png;base64,'+img,
