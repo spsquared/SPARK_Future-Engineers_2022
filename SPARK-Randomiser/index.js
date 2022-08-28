@@ -147,6 +147,42 @@ var drawPillar = function(color,rotations,position){
     ctx.rotate(-0.5 * Math.PI * rotations);
     ctx.translate(-155,-155);
 }
+var images = [];
+images.push(new Image());
+images[images.length - 1].src = "./images/grep.png";
+images.push(new Image());
+images[images.length - 1].src = "./images/meadowguarder.png";
+images.push(new Image());
+images[images.length - 1].src = "./images/oceanguarder.png";
+images.push(new Image());
+images[images.length - 1].src = "./images/Ten Eyed One.png";
+images.push(new Image());
+images[images.length - 1].src = "./images/the blob.png";
+var drawGaruderPillar = function(rotations,position){
+    ctx.translate(155,155);
+    ctx.rotate(0.5 * Math.PI * rotations);
+    if(position === 0){
+        ctx.drawImage(images[Math.floor(Math.random() * images.length)],-52.5,-112.5,15,15);
+    }
+    else if(position === 1){
+        ctx.drawImage(images[Math.floor(Math.random() * images.length)],-2.5,-112.5,15,15);
+    }
+    else if(position === 2){
+        ctx.drawImage(images[Math.floor(Math.random() * images.length)],47.5,-112.5,15,15);
+    }
+    else if(position === 3){
+        ctx.drawImage(images[Math.floor(Math.random() * images.length)],-52.5,-92.5,15,15);
+    }
+    else if(position === 4){
+        ctx.drawImage(images[Math.floor(Math.random() * images.length)],-2.5,-92.5,15,15);
+    }
+    else if(position === 5){
+        ctx.drawImage(images[Math.floor(Math.random() * images.length)],47.5,-92.5,15,15);
+    }
+    console.log(rotations,position)
+    ctx.rotate(-0.5 * Math.PI * rotations);
+    ctx.translate(-155,-155);
+}
 
 resetField();
 
@@ -359,6 +395,331 @@ randomiseWithPillars.onclick = function(){
     }
     for (let location of drawLocations) {
         drawPillar(location[0], location[1], location[2]);
+    }
+}
+randomiseWeirdly.onclick = function(){
+    resetField();
+    startX = 0;
+    startY = 0;
+    endX = 0;
+    endY = 0;
+    if(Math.random() < 0.5){
+        startX = 105;
+    }
+    else if(Math.random() < 0.5){
+        startX = 65;
+    }
+    else if(Math.random() < 0.9){
+        startX = 45;
+    }
+    else{
+        startX = 5;
+    }
+    if(Math.random() < 0.5){
+        startY = 105;
+    }
+    else if(Math.random() < 0.5){
+        startY = 65;
+    }
+    else if(Math.random() < 0.9){
+        startY = 45;
+    }
+    else{
+        startY = 5;
+    }
+    if(Math.random() < 0.5){
+        endX = 205;
+    }
+    else if(Math.random() < 0.5){
+        endX = 245;
+    }
+    else if(Math.random() < 0.9){
+        endX = 265;
+    }
+    else{
+        endX = 305;
+    }
+    if(Math.random() < 0.5){
+        endY = 205;
+    }
+    else if(Math.random() < 0.5){
+        endY = 245;
+    }
+    else if(Math.random() < 0.9){
+        endY = 265;
+    }
+    else{
+        endY = 305;
+    }
+    ctx.fillStyle = 'rgba(0,0,0,1)';
+    ctx.fillRect(startX,startY,endX - startX,endY - startY);
+    let straightSection = Math.floor(Math.random() * 4);
+    let sections = [
+        [[0,1],[1,5]],
+        [[1,1],[0,5]],
+        [[0,Math.floor(Math.random() * 6)],[1,Math.floor(Math.random() * 6)],[0,Math.floor(Math.random() * 6)],[1,Math.floor(Math.random() * 6)]],
+        [[0,Math.floor(Math.random() * 6)],[1,Math.floor(Math.random() * 6)],[0,Math.floor(Math.random() * 6)],[1,Math.floor(Math.random() * 6)]],
+        [[0,Math.floor(Math.random() * 6)],[1,Math.floor(Math.random() * 6)],[0,Math.floor(Math.random() * 6)],[1,Math.floor(Math.random() * 6)]],
+    ];
+    let pillarLocations = [
+        "",
+        "",
+        "",
+        "",
+    ];
+    let drawLocations = [];
+    if(Math.random() < 0.5){
+        drawLocations.push([redPillar,straightSection,1]);
+        sections.splice(9,1);
+    }
+    else{
+        drawLocations.push([greenPillar,straightSection,1]);
+        sections.splice(8,1);
+    }
+    pillarLocations[straightSection] = "center";
+    for(var i = straightSection + 1;i < straightSection + 4;i++){
+        let randomSection = Math.floor(Math.random() * sections.length);
+        let numberOfPillars = 0;
+        var position = 0;
+        for(var j in sections[randomSection]){
+            position = sections[randomSection][j][1];
+            if(sections[randomSection][j][0] === 0){
+                drawLocations.push([redPillar,i,sections[randomSection][j][1]]);
+            }
+            else{
+                drawLocations.push([greenPillar,i,sections[randomSection][j][1]]);
+            }
+            numberOfPillars += 1;
+        }
+        if(numberOfPillars === 2){
+            pillarLocations[i % 4] = "both";
+        }
+        else{
+            if(position === 0 || position === 3){
+                pillarLocations[i % 4] = "right";
+            }
+            if(position === 1 || position === 4){
+                pillarLocations[i % 4] = "center";
+            }
+            if(position === 2 || position === 5){
+                pillarLocations[i % 4] = "left";
+            }
+        }
+        sections.splice(randomSection,1);
+    }
+    let startingLocation = Math.floor(Math.random() * 4);
+    if(pillarLocations[startingLocation] === "both"){
+        if(Math.random() < 0.5){
+            drawStartingPosition(startingLocation,2,1);
+        }
+        else{
+            drawStartingPosition(startingLocation,3,0);
+        }
+    }
+    if(pillarLocations[startingLocation] === "left"){
+        startingPosition = Math.floor(Math.random() * 3);
+        if(startingPosition === 0){
+            drawStartingPosition(startingLocation,2,1);
+        }
+        else if(startingPosition === 1){
+            drawStartingPosition(startingLocation,3,1);
+        }
+        else{
+            drawStartingPosition(startingLocation,3,0);
+        }
+    }
+    if(pillarLocations[startingLocation] === "center"){
+        startingPosition = Math.floor(Math.random() * 2);
+        if(startingPosition === 0){
+            drawStartingPosition(startingLocation,2,0);
+        }
+        else{
+            drawStartingPosition(startingLocation,3,1);
+        }
+    }
+    if(pillarLocations[startingLocation] === "right"){
+        startingPosition = Math.floor(Math.random() * 3);
+        if(startingPosition === 0){
+            drawStartingPosition(startingLocation,2,1);
+        }
+        else if(startingPosition === 1){
+            drawStartingPosition(startingLocation,2,0);
+        }
+        else{
+            drawStartingPosition(startingLocation,3,0);
+        }
+    }
+    for (let location of drawLocations) {
+        drawPillar(location[0], location[1], location[2]);
+    }
+}
+randomiseGaruder.onclick = function(){
+    resetField();
+    startX = 0;
+    startY = 0;
+    endX = 0;
+    endY = 0;
+    if(Math.random() < 0.5){
+        startX = 105;
+    }
+    else if(Math.random() < 0.5){
+        startX = 65;
+    }
+    else{
+        startX = 45;
+    }
+    if(Math.random() < 0.5){
+        startY = 105;
+    }
+    else if(Math.random() < 0.5){
+        startY = 65;
+    }
+    else{
+        startY = 45;
+    }
+    if(Math.random() < 0.5){
+        endX = 205;
+    }
+    else if(Math.random() < 0.5){
+        endX = 245;
+    }
+    else{
+        endX = 265;
+    }
+    if(Math.random() < 0.5){
+        endY = 205;
+    }
+    else if(Math.random() < 0.5){
+        endY = 245;
+    }
+    else{
+        endY = 265;
+    }
+    ctx.fillStyle = 'rgba(0,0,0,1)';
+    ctx.fillRect(startX,startY,endX - startX,endY - startY);
+    let sections = [
+        [[1,5]],
+        [[0,5]],
+        [[1,4]],
+        [[0,4]],
+        [[1,3]],
+        [[0,3]],
+        [[1,2]],
+        [[0,2]],
+        [[1,1]],
+        [[0,1]],
+        [[1,0]],
+        [[0,0]],
+
+        [[1,2],[1,3]],
+        [[1,2],[0,3]],
+        [[0,2],[1,3]],
+        [[1,2],[0,3]],
+        [[0,2],[1,3]],
+        [[0,2],[0,3]],
+        
+        [[1,0],[1,5]],
+        [[1,0],[0,5]],
+        [[0,0],[1,5]],
+        [[1,0],[0,5]],
+        [[0,0],[1,5]],
+        [[0,0],[0,5]],
+        
+        [[1,3],[1,5]],
+        [[1,3],[0,5]],
+        [[0,3],[1,5]],
+        [[1,3],[0,5]],
+        [[0,3],[1,5]],
+        [[0,3],[0,5]],
+        
+        [[1,0],[1,2]],
+        [[1,0],[0,2]],
+        [[0,0],[1,2]],
+        [[1,0],[0,2]],
+        [[0,0],[1,2]],
+        [[0,0],[0,2]],
+    ];
+    let pillarLocations = [
+        "",
+        "",
+        "",
+        "",
+    ];
+    let drawLocations = [];
+    for(var i = 0;i < 4;i++){
+        let randomSection = Math.floor(Math.random() * sections.length);
+        let numberOfPillars = 0;
+        var position = 0;
+        for(var j in sections[randomSection]){
+            position = sections[randomSection][j][1];
+            if(sections[randomSection][j][0] === 0){
+                drawLocations.push([i,sections[randomSection][j][1]]);
+            }
+            else{
+                drawLocations.push([i,sections[randomSection][j][1]]);
+            }
+            numberOfPillars += 1;
+        }
+        if(numberOfPillars === 2){
+            pillarLocations[i % 4] = "both";
+        }
+        else{
+            if(position === 0 || position === 3){
+                pillarLocations[i % 4] = "right";
+            }
+            if(position === 1 || position === 4){
+                pillarLocations[i % 4] = "center";
+            }
+            if(position === 2 || position === 5){
+                pillarLocations[i % 4] = "left";
+            }
+        }
+        sections.splice(randomSection,1);
+    }
+    let startingLocation = Math.floor(Math.random() * 4);
+    if(pillarLocations[startingLocation] === "both"){
+        if(Math.random() < 0.5){
+            drawStartingPosition(startingLocation,2,1);
+        }
+        else{
+            drawStartingPosition(startingLocation,3,0);
+        }
+    }
+    if(pillarLocations[startingLocation] === "left"){
+        startingPosition = Math.floor(Math.random() * 3);
+        if(startingPosition === 0){
+            drawStartingPosition(startingLocation,2,1);
+        }
+        else if(startingPosition === 1){
+            drawStartingPosition(startingLocation,3,1);
+        }
+        else{
+            drawStartingPosition(startingLocation,3,0);
+        }
+    }
+    if(pillarLocations[startingLocation] === "center"){
+        startingPosition = Math.floor(Math.random() * 2);
+        if(startingPosition === 0){
+            drawStartingPosition(startingLocation,2,0);
+        }
+        else{
+            drawStartingPosition(startingLocation,3,1);
+        }
+    }
+    if(pillarLocations[startingLocation] === "right"){
+        startingPosition = Math.floor(Math.random() * 3);
+        if(startingPosition === 0){
+            drawStartingPosition(startingLocation,2,1);
+        }
+        else if(startingPosition === 1){
+            drawStartingPosition(startingLocation,2,0);
+        }
+        else{
+            drawStartingPosition(startingLocation,3,0);
+        }
+    }
+    for (let location of drawLocations) {
+        drawGaruderPillar(location[0], location[1]);
     }
 }
 reset.onclick = resetField;

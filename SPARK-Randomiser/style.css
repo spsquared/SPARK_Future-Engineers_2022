@@ -47,9 +47,19 @@ img {
     top: 152px;
     left: 0px;
 }
-#reset {
+#randomiseWeirdly {
     position: absolute;
     top: 200px;
+    left: 0px;
+}
+#randomiseGaruder {
+    position: absolute;
+    top: 248px;
+    left: 0px;
+}
+#reset {
+    position: absolute;
+    top: 296px;
     left: 0px;
 }
 
