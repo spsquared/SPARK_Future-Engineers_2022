@@ -27,7 +27,7 @@
 * [Noctua NF-A4x10 5V (not required)](https://noctua.at/en/products/fan/nf-a4x10-5v)
 * 24 Gauge wire
 
-3D printed parts were used in our build, and all CAD files can be found in the [repository](https://github.com/definitely-nobody-is-here/SPARK_Future-Engineers_2022/tree/master/Documentation/CAD). They're also linked here:
+3D printed parts were used in our build, and all CAD files are located in the folder [/Documentation/CAD/](https://github.com/definitely-nobody-is-here/SPARK_Future-Engineers_2022/tree/master/Documentation/CAD). They're also linked here:
 * [Top Platform](https://github.com/definitely-nobody-is-here/SPARK_Future-Engineers_2022/raw/master/Documentation/CAD/SPARK2022_platform.stl)
 * [Camera Mount](https://github.com/definitely-nobody-is-here/SPARK_Future-Engineers_2022/raw/master/Documentation/CAD/SPARK2022_cameramount.stl)
 * [LED Mount (not required)](https://github.com/definitely-nobody-is-here/SPARK_Future-Engineers_2022/raw/master/Documentation/CAD/SPARK2022_LEDmount.stl)
@@ -44,7 +44,7 @@ The top platform is mounted onto existing locations on the car. In the rear two 
 
 Here is a simple electromechanical schematic for how the electronics are wired:
 
-![Schematic](./img/schematic.png)
+![Schematic](./Documentation/Schematic/schematic.png)
 
 ***
 
@@ -65,7 +65,9 @@ We used Jetson Nano's operating system, which is Ubuntu 18.04. We switched it to
 
 ## **Programming Language**
 
-All our code is in python (except the SPARK Control Panel, but that won't be used in competition). We use `os`, `time`, `threading`, `numpy`, `cv2`, `base64`, `threading`, `asyncio`, `Jetson.GPIO`, `jetcam`, `json`, `websockets`.
+All our code is in python (except the SPARK Control Panel and SPARK Randomizer, as those are HTML/JS/CSS pages that don't get uploaded or used for actual runs). We use `os`, `time`, `threading`, `numpy`, `cv2`, `base64`, `threading`, `asyncio`, `Jetson.GPIO`, `jetcam`, `json`, `websockets`.
+
+The **entire** `Program` directory must be uploaded in order for the program to run.
 
 ## **IO**
 The camera is handled by the `jetcam` library, which we can read the most recent frame into a `numpy` array, which we then process.
