@@ -315,7 +315,7 @@ addListener('colors', setColors);
 
 // non capture streams and iamges
 document.getElementById('viewButton').onclick = function (e) {
-    send('view');
+    send('view', {});
 };
 document.getElementById('viewFilterButton').onclick = function (e) {
     let arr = [];
