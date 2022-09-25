@@ -1,12 +1,15 @@
 ctx = canvas.getContext('2d');
 
-ctx.canvas.width = 3100;
-ctx.canvas.height = 3100;
+canvas.width = 3100;
+canvas.height = 3100;
 ctx.scale(10,10);
 
 const redPillar = 'rgba(238,39,55,1)';
 const greenPillar = 'rgba(68,214,44,1)';
 var resetField = function(){
+    canvas.width = 3100;
+    canvas.height = 3100;
+    ctx.scale(10,10);
     ctx.fillStyle = 'rgba(0,0,0,1)';
     ctx.fillRect(0,0,310,310);
     ctx.clearRect(5,5,300,300);
@@ -158,6 +161,16 @@ images.push(new Image());
 images[images.length - 1].src = "./images/Ten Eyed One.png";
 images.push(new Image());
 images[images.length - 1].src = "./images/the blob.png";
+images.push(new Image());
+images[images.length-1].src = './images/piston-large.png';
+images.push(new Image());
+images[images.length-1].src = './images/Preview.png';
+images.push(new Image());
+images[images.length-1].src = './images/World.png';
+// images.push(new Image());
+// images[images.length-1].src = './images/11-25-21-b.png';
+images.push(new Image());
+images[images.length-1].src = './images/mountainguarder.png';
 var drawGaruderPillar = function(rotations,position){
     ctx.translate(155,155);
     ctx.rotate(0.5 * Math.PI * rotations);
@@ -179,7 +192,6 @@ var drawGaruderPillar = function(rotations,position){
     else if(position === 5){
         ctx.drawImage(images[Math.floor(Math.random() * images.length)],47.5,-92.5,15,15);
     }
-    console.log(rotations,position)
     ctx.rotate(-0.5 * Math.PI * rotations);
     ctx.translate(-155,-155);
 }
@@ -549,6 +561,7 @@ randomiseWeirdly.onclick = function(){
             drawStartingPosition(startingLocation,3,0);
         }
     }
+    drawStartingPosition(Math.floor(Math.random() * 4), Math.floor(Math.random()*6), Math.floor(Math.random()*2));
     for (let location of drawLocations) {
         drawPillar(location[0], location[1], location[2]);
     }
@@ -718,6 +731,7 @@ randomiseGaruder.onclick = function(){
             drawStartingPosition(startingLocation,3,0);
         }
     }
+    drawStartingPosition(Math.floor(Math.random() * 4), Math.floor(Math.random()*6), Math.floor(Math.random()*2));
     for (let location of drawLocations) {
         drawGaruderPillar(location[0], location[1]);
     }
