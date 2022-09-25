@@ -20,13 +20,25 @@ On the positive side, the mounting holes lined up really well and the camera see
 
 ![messy prints](./September/9-18-22-a.png)
 
-Also, there aren't any 1:12 scale 40mm wheels for our specific mounting pattern, so we ordered some tires off of amazon and began designing our own wheels.
+Also, there aren't any 1:12 scale 40mm wheels for our specific mounting pattern, so we ordered some tires off of Amazon and began designing our own wheels.
 
 # 9/19/22
 Below is the final design for our custom wheel hub. It has a small diameter of 28mm to fit the [new wheels](https://www.amazon.com/gp/product/B09YHC4NDS/).
 
 ![new wheel hub](./September/9-19-22-a.png)
 
-The first print was "alright". The wheel fit onto the hub and the screw holes lined up. The hub is a bit too wide and is missing extra insets for the m3 bolt heads used to hold it onto the axle.
+The first print was "alright". The wheel fit onto the hub and the screw holes lined up. The hub is a bit too wide and is missing extra insets for the M3 bolt heads used to hold it onto the axle.
 
 ![test fit of prototype hub](./September/9-19-22-b.png)
+
+# 9/20/22
+Multiple different prints resulted in unusable results. The inside face of the wheel hub was recessed to reduce the profile of the wheel (by 1mm) and without supports, it would collapse immediately. With supports, they're unremovable and the slicer places excessive amounts of them. There's still warping as well.
+
+# 9/24/22
+Yesterday the wheels finished printing. Today we put them on. Now we have wheels. The prints were warping slightly, but they were still usable. The camera bracket, on the other hand, warped so badly that none of them were actually good. The issue is that since the object is so small with so many details, the print head spends more time there, putting more heat into the already extruded material, melting it. This happens every time a layer is added, resulting in warped and messy prints. The solution was to lower the extrusion temperature to 180 degrees Celsius so it wouldn't add too much heat to existing material but also still melted the PLA being extruded.
+
+We also got a set of [5W LEDS](https://www.amazon.com/6000K-6500K-600mA-700mA-Intensity-Components-Lighting/dp/B01DBZJBIW), which we will design a mount for today. The idea is to put a recess in a plate with holes for the tabs on the sides to pass through. The tolerances for this method are really tight, though.
+
+![LED bracket test](./September/9-24-22-a.png)
+
+We also made a fifth revision of the top platform, integrating the indicator LEDs and the new start button into the plate (as well as some space for our logo).
