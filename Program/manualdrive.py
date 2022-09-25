@@ -113,7 +113,7 @@ def main():
                     streamThread2.join()
                     server.broadcast('message', 'Ended filtered stream')
         def view(data):
-            encoded = base64.b64encode(cv2.imencode('.png', filter.filter(camera.read()))[1]).decode()
+            encoded = base64.b64encode(cv2.imencode('.png', camera.read())[1]).decode()
             server.broadcast('capture', encoded)
         def viewFilter(data):
             filter.setColors(data)
@@ -157,9 +157,9 @@ def main():
         server.close()
         drive.stop()
         io.close()
-    except Exception as err:
-        print(err)
-        io.error()
+    # except Exception as err:
+    #     print(err)
+    #     io.error()
 
 if __name__ == '__main__':
     main()
