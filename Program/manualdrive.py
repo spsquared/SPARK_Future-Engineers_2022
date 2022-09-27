@@ -157,9 +157,9 @@ def main():
         server.close()
         drive.stop()
         io.close()
-    # except Exception as err:
-    #     print(err)
-    #     io.error()
+    except Exception as err:
+        print(err)
+        io.error()
 
 if __name__ == '__main__':
     main()
