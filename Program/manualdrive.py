@@ -119,6 +119,8 @@ def main():
             filter.setColors(data)
             encoded = base64.b64encode(cv2.imencode('.png', filter.filter(camera.read()))[1]).decode()
             server.broadcast('capture', encoded)
+        def prediction(data):
+            filter.predict(camera.read(), server)
         def colors(data):
             filter.setColors(data)
         server.addListener('key', keys)
@@ -132,6 +134,7 @@ def main():
         server.addListener('viewFilter', viewFilter)
         server.addListener('stream', stream)
         server.addListener('filterstream', filterstream)
+        server.addListener('prediction', prediction)
         global running
         running = True
         def stop(data):

@@ -114,9 +114,9 @@ img {
     align-content: center;
 }
 .largeButton {
-    width: 268px;
+    width: 276px;
     height: 32px;
-    margin: 16px 16px;
+    margin: 12px 12px;
     margin-bottom: 0px;
     font: 12px sans-serif;
     font-weight: bolder;
@@ -149,6 +149,9 @@ img {
 }
 #viewFilterButton {
     background-color: gold;
+}
+#predictionButton {
+    background-color: orange;
 }
 
 #filterAdjust {
