@@ -4,6 +4,7 @@ import cv2
 import base64
 import statistics
 import math
+from sklearn.linear_model import RANSACRegressor
 
 # preprocessing filter module with cv prediction
 
@@ -22,6 +23,13 @@ gM = greenMax = (110, 255, 255)
 # wm = wallMin = (0, 0, 0)
 # sM = greyMax = 65
 # sm = greyMin = 0
+
+LEFTLEFT = 0
+LEFT = 1
+CENTERLEFT = 2
+CENTERRIGHT = 3
+RIGHT = 4
+RIGHTRIGHT = 5
 
 def filter(imgIn: numpy.ndarray):
     global redMax, redMin, greenMax, greenMin, wallMax, wallMin
@@ -179,68 +187,93 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         # crop for wall detection
         wallStart = 50
         wallEnd = 100
-        croppedEdgesImg = edgesImage[wallStart:wallEnd,0:1]
-        for i in range(19):
-            croppedEdgesImg = numpy.concatenate((croppedEdgesImg, edgesImage[wallStart:wallEnd,i * 4:i * 4 + 1]), axis=1)
-        for i in range(20):
-            croppedEdgesImg = numpy.concatenate((croppedEdgesImg, edgesImage[wallStart:wallEnd,i * 4 + 96:i * 4 + 97]), axis=1)
-        for i in range(20):
-            croppedEdgesImg = numpy.concatenate((croppedEdgesImg, edgesImage[wallStart:wallEnd,i * 4 + 192:i * 4 + 193]), axis=1)
+        croppedEdgesImg = numpy.concatenate((edgesImage[wallStart:wallEnd], numpy.full((2,wallEnd - wallStart),1,dtype=int)), axis=1)
 
         #flip wall
         croppedEdgesImg = numpy.flip(croppedEdgesImg,axis=0)
         croppedEdgesImg = numpy.swapaxes(croppedEdgesImg,0,1)
 
-        # find wall heights
-        def getWallHeights(offset):
-            wallHeightsMax = []
-            wallHeightsDiff = []
-            for i in range(20):
-                i += offset
-                nonzeroList = numpy.nonzero(croppedEdgesImg[i])[0]
-                if len(nonzeroList) >= 2:
-                    firstNonzero = nonzeroList[0]
-                    secondNonzero = nonzeroList[1]
-                    index = 2
-                    minimumValue = 7
-                    if offset == 20:
-                        minimumValue = 5
-                    while secondNonzero - firstNonzero < minimumValue:
-                        if len(nonzeroList) <= index:
-                            secondNonzero = 50
-                            break
-                        secondNonzero = nonzeroList[index]
-                        index += 1
-                elif len(nonzeroList) == 1:
-                    firstNonzero = nonzeroList[0]
-                    secondNonzero = 50
-                else:
-                    firstNonzero = 0
-                    secondNonzero = 50
-                wallHeightsDiff.append(secondNonzero - firstNonzero)
-                wallHeightsMax.append(firstNonzero)
-            if len(wallHeightsDiff) > 0:
-                return [max(wallHeightsMax),wallHeightsMax,statistics.median(wallHeightsDiff),wallHeightsDiff]
-            else:
-                return [max(wallHeightsMax),wallHeightsMax,0,[]]
+        firstWallValues = (croppedEdgesImg!=0).argmax(axis=0)
 
-        wallHeightsLeft = getWallHeights(0)
-        wallMaximumLeft = wallHeightsLeft[0]
-        wallHeightsMaxLeft = wallHeightsLeft[1]
-        wallHeightLeft = wallHeightsLeft[2]
-        filteredWallHeightsDiffLeft = wallHeightsLeft[3]
-        wallHeightsCenter = getWallHeights(20)
-        wallMaximumCenter = wallHeightsCenter[0]
-        wallHeightsMaxCenter = wallHeightsCenter[1]
-        wallHeightCenter = wallHeightsCenter[2]
-        filteredWallHeightsDiffCenter = wallHeightsCenter[3]
-        wallHeightsRight = getWallHeights(40)
-        wallMaximumRight = wallHeightsRight[0]
-        wallHeightsMaxRight = wallHeightsRight[1]
-        wallHeightRight = wallHeightsRight[2]
-        filteredWallHeightsDiffRight = wallHeightsRight[3]
+        zipX = numpy.arange(0,252)
+
+        indices = numpy.zip(zipX,firstWallValues)
+
+        croppedEdgesImg[indices] = 0
+
+        secondWallValues = (croppedEdgesImg!=0).argmax(axis=0)
+
+        wallHeightsAll = secondWallValues - firstWallValues
+
+        oneSixth = 252 / 6
+
+        wallHeights = [wallHeightsAll[0:oneSixth],wallHeightsAll[oneSixth:oneSixth * 2],wallHeightsAll[oneSixth * 2:oneSixth * 3],wallHeightsAll[oneSixth * 3:oneSixth * 4],wallHeightsAll[oneSixth * 4:oneSixth * 5],wallHeightsAll[oneSixth * 5:oneSixth * 6]]
+
+        # find wall heights
+        # def getWallHeights(offset):
+        #     wallHeightsMax = []
+        #     wallHeightsDiff = []
+        #     for i in range(20):
+        #         i += offset
+        #         nonzeroList = numpy.nonzero(croppedEdgesImg[i])[0]
+        #         if len(nonzeroList) >= 2:
+        #             firstNonzero = nonzeroList[0]
+        #             secondNonzero = nonzeroList[1]
+        #             index = 2
+        #             minimumValue = 7
+        #             if offset == 20:
+        #                 minimumValue = 5
+        #             while secondNonzero - firstNonzero < minimumValue:
+        #                 if len(nonzeroList) <= index:
+        #                     secondNonzero = 50
+        #                     break
+        #                 secondNonzero = nonzeroList[index]
+        #                 index += 1
+        #         elif len(nonzeroList) == 1:
+        #             firstNonzero = nonzeroList[0]
+        #             secondNonzero = 50
+        #         else:
+        #             firstNonzero = 0
+        #             secondNonzero = 50
+        #         wallHeightsDiff.append(secondNonzero - firstNonzero)
+        #         wallHeightsMax.append(firstNonzero)
+        #     if len(wallHeightsDiff) > 0:
+        #         return [max(wallHeightsMax),wallHeightsMax,statistics.median(wallHeightsDiff),wallHeightsDiff]
+        #     else:
+        #         return [max(wallHeightsMax),wallHeightsMax,0,[]]
+
+        # wallHeightsLeft = getWallHeights(0)
+        # wallMaximumLeft = wallHeightsLeft[0]
+        # wallHeightsMaxLeft = wallHeightsLeft[1]
+        # wallHeightLeft = wallHeightsLeft[2]
+        # filteredWallHeightsDiffLeft = wallHeightsLeft[3]
+        # wallHeightsCenter = getWallHeights(20)
+        # wallMaximumCenter = wallHeightsCenter[0]
+        # wallHeightsMaxCenter = wallHeightsCenter[1]
+        # wallHeightCenter = wallHeightsCenter[2]
+        # filteredWallHeightsDiffCenter = wallHeightsCenter[3]
+        # wallHeightsRight = getWallHeights(40)
+        # wallMaximumRight = wallHeightsRight[0]
+        # wallHeightsMaxRight = wallHeightsRight[1]
+        # wallHeightRight = wallHeightsRight[2]
+        # filteredWallHeightsDiffRight = wallHeightsRight[3]
         steeringArray = [0]
-        
+
+        leftRansac = RANSACRegressor()
+        leftRansac.fit(leftArray, filteredWallHeightsDiffLeft)
+        leftPredict = leftRansac.predict(filteredWallHeightsDiffLeft)
+        leftSlope = leftPredict[1] - leftPredict[0]
+
+        centerRansac = RANSACRegressor()
+        centerRansac.fit(centerArray, filteredWallHeightsDiffCenter)
+        centerPredict = centerRansac.predict(filteredWallHeightsDiffCenter)
+        centerSlope = centerPredict[1] - centerPredict[0]
+
+        rightRansac = RANSACRegressor()
+        rightRansac.fit(rightArray, filteredWallHeightsDiffRight)
+        rightPredict = rightRansac.predict(filteredWallHeightsDiffRight)
+        rightSlope = rightPredict[1] - rightPredict[0]
+
         # decide steering for each wall section
         counterClockwise += wallHeightRight - wallHeightLeft
 
