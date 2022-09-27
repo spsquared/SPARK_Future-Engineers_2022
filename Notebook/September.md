@@ -42,3 +42,18 @@ We also got a set of [5W LEDS](https://www.amazon.com/6000K-6500K-600mA-700mA-In
 ![LED bracket test](./September/9-24-22-a.png)
 
 We also made a fifth revision of the top platform, integrating the indicator LEDs and the new start button into the plate (as well as some space for our logo).
+
+![platform v5](./September/9-24-22-b.png)
+
+# 2/26/22
+Today a battery was found to be at 0 volts. Not sure if it's still safe to use, people on the internet say that it could catch fire if charged. Hopefully that doesn't happen.
+
+In other news, we're working on improving the wall detection code. Instead of assuming that the right side of the image is always going to be a right wall, the left always the left wall, and the center always the far wall in front, we now divide the image into 6 sections, and check the slope of the wall in each section using the [RANSAC Regression algorithm](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.RANSACRegressor.html). This will reduce the chances of a false detection. For example, in a turn of one specific case a wall in front of the car was assumed to be to the right of the car, so it turned left because "the right wall is huge".
+
+In even more other news, the new camera bracket and LED brackets are mounted on 35mm brass standoffs extending up from the top of the front wheel plate.
+
+![mounting of camera bracket](./September/9-26-22-a.png)
+
+The LED brackets are sandwiched between the screw and the camera bracket, and is locked in place by the negative imprint of the camera bracket "foot".
+
+![mounting of LED bracket](./September/9-26-22-b.png)
