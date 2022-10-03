@@ -160,7 +160,6 @@ document.onmousemove = function(e) {
         let y = Math.max(-110, Math.min(e.clientY-window.innerHeight+150, 110));
         throttle = Math.round(-y*90/99);
         steering = Math.round(x*90/99);
-        console.log(throttle)
         joystickPin.style.bottom = 114-y + 'px';
         joystickPin.style.right = 114-x + 'px';
         sliderX.style.bottom = 140-y + 'px';
