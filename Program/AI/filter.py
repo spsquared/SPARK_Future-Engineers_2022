@@ -431,21 +431,14 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         io.error()
 
 def setColors(data, server = None):
-    print(data)
     global redMax, redMin, greenMax, greenMin
     redMax = (int(data[0]), int(data[2]), int(data[4]))
     greenMax = (int(data[1]), int(data[3]), int(data[5]))
-    # wallMax = (int(data[8]), int(data[5]), int(data[2]))
     redMin = (int(data[6]), int(data[8]), int(data[10]))
     greenMin = (int(data[7]), int(data[9]), int(data[11]))
-    # wallMin = (int(data[17]), int(data[14]), int(data[11]))
-    # greyMax = int(data[18])
-    # greyMin = int(data[19])
     print('-- New ----------')
     print(redMax, redMin)
     print(greenMax, greenMin)
-    # print(wallMax, wallMin)
-    # print(greyMax, greyMin)
     if server != None:
         server.broadcast('colors', getColors())
 def getColors():
@@ -463,9 +456,8 @@ def getColors():
             array.append(greenMin[math.floor(i/2)])
     return array
 def setDefaultColors():
-    global rM, rm, gM, gm, wM, wm
+    global rM, rm, gM, gm
     print('-- New ----------')
     print(rM, rm)
     print(gM, gm)
-    print(wM, wm)
     return [rM[2], gM[2], wM[2], rM[1], gM[1], wM[1], rM[0], gM[0], wM[0], rm[2], gm[2], wm[2], rm[1], gm[1], wm[1], rm[0], gm[0], wm[0]]

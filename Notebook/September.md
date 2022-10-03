@@ -57,3 +57,5 @@ In even more other news, the new camera bracket and LED brackets are mounted on 
 The LED brackets are sandwiched between the screw and the camera bracket, and is locked in place by the negative imprint of the camera bracket "foot".
 
 ![mounting of LED bracket](./September/9-26-22-b.png)
+
+I'm bad a crimping. And spelling. "Componenents".

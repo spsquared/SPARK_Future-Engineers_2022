@@ -354,6 +354,11 @@ document.getElementById('filterStreamButton').onclick = function(e) {
     }
 };
 
+// prediction view
+document.getElementById('predictionButton').onclick = function(e) {
+    send('prediction', {});
+};
+
 // bad coding practices
 let initcolors = [
     [

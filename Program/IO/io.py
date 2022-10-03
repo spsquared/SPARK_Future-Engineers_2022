@@ -47,6 +47,7 @@ def close():
         running = False
         thread.join()
         GPIO.output([11, 13], GPIO.LOW)
+        time.sleep(0.1)
         GPIO.cleanup()
         return True
     return False
