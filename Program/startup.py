@@ -18,4 +18,4 @@ if __name__ == '__main__':
         GPIO.wait_for_edge(18, GPIO.RISING)
         GPIO.wait_for_edge(18, GPIO.FALLING)
         GPIO.cleanup()
-        os.system('python3 ./autodrive.py')
+        os.system('python3 autodrive.py')

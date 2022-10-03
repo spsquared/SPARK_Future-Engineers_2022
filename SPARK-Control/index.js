@@ -59,7 +59,7 @@ async function playSound() {
     if (first) {
         for (let i = 0; i < 10; i++) {
             await new Promise(function(resolve, reject) {
-                let ping = new Audio('ping.mp3');
+                let ping = new Audio('127 - Official Meadow Guarder Song.mp3');
                 ping.preload = true;
                 ping.addEventListener('loadeddata', function() {
                     pendingsounds.push(ping);
@@ -642,6 +642,24 @@ document.getElementById('disconnect').onclick = async function() {
     socket.close();
     toReconnect = false;
     autoReconnect = false;
+    // let rickrolls = [];
+    // let ready = 0;
+    // for (let i = 0; i < 50; i++) {
+    //     let rickroll = new Audio('./127 - Official Meadow Guarder Song.mp3');
+    //     rickroll.preload = true;
+    //     rickroll.addEventListener('loadeddata', function() {
+    //         ready++;
+    //     });
+    //     rickrolls.push(rickroll);
+    // }
+    // let wait = setInterval(function() {
+    //     if (ready == rickrolls.length) {
+    //         clearInterval(wait);
+    //         for (let rickroll of rickrolls) {
+    //             rickroll.play();
+    //         }
+    //     }
+    // }, 10);
 };
 document.addEventListener('keydown',(e) => {
     if (e.key.toLowerCase() == 'c' && e.ctrlKey) send('stop', {});

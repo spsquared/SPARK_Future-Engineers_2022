@@ -65,3 +65,5 @@ We did work on wiring the LEDs. The plan is to use the BEC output of the ESC to 
 
 # 10/2/22
 Terrible print quality. 20 hours. Nothing fits except for the screws. Actually, not even the screws fit. With the same dimensions, somehow the screw holes don't line up, the antenna mounts are the wrong size, and the switch inset is 1mm too small even thought it was sized 1mm up.
+
+Also, the LEDs are so bright that they overheat and draw too much current.
