@@ -22,6 +22,7 @@
 * [2x Variable DC Voltage Buck Converter](https://www.amazon.com/Regulator-Adjustable-Converter-Electronic-Stabilizer/dp/B07PDGG84B/ref=sr_1_18)
 * [Male 5.5mm DC Barrel Connector Pigtails](https://www.amazon.com/Pigtails-Female-Connector-Pigtail-Security/dp/B08PYWN3T7/)
 * [DC Digital Voltometer](https://www.amazon.com/bayite-Digital-Voltmeter-Display-Motorcycle/dp/B00YALUXH0/)
+* [Normally Closed Push Button Momentary On Switch (size must match)](https://www.amazon.com/Pieces-normally-closed-Button-Momentary/dp/B07HCLVMGS/)
 * [Yahboom Jetson Nano 4GB Developer Kit](https://category.yahboom.net/collections/jetson/products/jetson-nano-sub)
 * [Arducam Raspberry Pi Official Camera Module V2, with 8 Megapixel IMX219 Wide Angle 175 Degree Replacement](https://www.amazon.com/Arducam-Raspberry-Official-Megapixel-Replacement/dp/B083PW4BLH/)
 * [Intel AX201 WiFi 6 BT 5.1 M.2 2230 with 10in RP-SMA Antenna (not required)](https://www.newegg.com/p/0XM-009Y-001C7)
@@ -148,3 +149,21 @@ The client control panel consists of a log - which can be appended to by sending
 [WRO 3 laps with pillars](https://youtu.be/0uMp_ExglOw)
 
 [WRO 3 laps without pillars](https://youtu.be/Jp8k1qW5pQU)
+
+# LiPo Battery Safety Notice
+
+While LiPo batteries are the safest form of portable, affordable, high density energy storage, there are still precautions to be taken when working with them. Lithium is a highly volatile element, and will react with the water vapor in the air if exposed to it.
+
+1. **Do not** puncture, deform, short, or heat LiPo batteries above 80° F
+2. Store and charge LiPos in a *fireproof container* **away** from flammable materials and water
+3. **NEVER** charge a swollen or damaged battery (e.g. damaged leads, swelling of cells, puncture in wrapping)
+4. **NEVER** leave a charging battery unattended
+5. Only charge LiPo batteries with chargers *designed for LiPo batteries*
+6. Dropping a battery can cause sufficient damage to rupture a cell and cause shorts
+7. Overdischarging a LiPo battery can cause **permanent damage**
+
+If a LiPo battery goes below its minimum voltage (stated in the manual included or 3.3v multiplied by the amount of cells connected in series) it can cause **permanent internal damage**. This damage is not visible until after further use, when it can swell, or potentially burst and **cause a FIRE**.
+
+**Read all safety notes and instructions included with LiPo batteries before use.**
+
+### For a more detailed LiPo safety manual there is one on [Tenergy Power](https://power.tenergy.com/lipo-safety-warnings/)
