@@ -428,7 +428,9 @@ function addCapture(img) {
         img: 'data:image/png;base64,'+img,
         blobs: [[], [], [], []],
         steer: [0, 'none', 0, 0],
-        wall: [0, 0, 0, [], [], [], [], [], []],
+        wall: {
+            heights:[]
+        },
         turns: [false, 0, 0],
         passed: 0
     });
@@ -504,27 +506,31 @@ function drawLightBlob(blob,blobColor){
     ctx.stroke();
 };
 function addData(data) {
+    console.log(data)
     index = 0;
     // steering data
     history[index].steer = data[0];
     // wall data
-    history[index].wall[0] = parseFloat(data[1]);
-    history[index].wall[1] = parseFloat(data[2]);
-    history[index].wall[2] = parseFloat(data[3]);
-    history[index].wall[3] = JSON.parse(data[4]);
-    history[index].wall[4] = JSON.parse(data[5]);
-    history[index].wall[5] = JSON.parse(data[6]);
-    history[index].wall[6] = JSON.parse(data[7]);
-    history[index].wall[7] = JSON.parse(data[8]);
-    history[index].wall[8] = JSON.parse(data[9]);
+    for(var i = 0;i<8;i+=1){
+        history[index].wall.heights[i] = JSON.parse(data[1][i]);
+    }
+    // history[index].wall[0] = parseFloat(data[1]);
+    // history[index].wall[1] = parseFloat(data[2]);
+    // history[index].wall[2] = parseFloat(data[3]);
+    // history[index].wall[3] = JSON.parse(data[4]);
+    // history[index].wall[4] = JSON.parse(data[5]);
+    // history[index].wall[5] = JSON.parse(data[6]);
+    // history[index].wall[6] = JSON.parse(data[7]);
+    // history[index].wall[7] = JSON.parse(data[8]);
+    // history[index].wall[8] = JSON.parse(data[9]);
     // turn data
-    if (data[10][0] == 'True') data[10][0] = true;
-    else if (data[10][0] == 'False') data[10][0] = false;
-    data[10][1] = parseInt(data[10][1]);
-    data[10][2] = parseInt(data[10][2]);
-    history[index].turns = data[10];
-    // pass data
-    history[index].passed = parseInt(data[11]);
+    // if (data[10][0] == 'True') data[10][0] = true;
+    // else if (data[10][0] == 'False') data[10][0] = false;
+    // data[10][1] = parseInt(data[10][1]);
+    // data[10][2] = parseInt(data[10][2]);
+    // history[index].turns = data[10];
+    // // pass data
+    // history[index].passed = parseInt(data[11]);
     if (history.length > maxHistory) {
         history.pop();
     }
@@ -539,23 +545,19 @@ function showPredictions() {
     pillarStrPredict.innerText = 'Pillar Steering: ' + Math.round(data[3]);
 };
 function showWallData() {
-    let data = history[index].wall;
+    let data = history[index].wall.heights;
     canvas2.width = 272;
     canvas2.height = 154;
     ctx2.clearRect(0,0,272,154);
     ctx2.fillStyle = '#FFF9';
-    for(let i = 0; i < 20; i++) {
-        ctx2.fillRect(i*4, 100-data[3][i]-data[6][i], 1, data[3][i]);
+    for(let i = 0; i < 8; i++) {
+        for(var j = 0;j < 34;j++){
+            ctx2.fillRect(i*34+                  j,77,1,data[i][j]);
+        }
     }
-    for(let i = 0; i < 20; i++) {
-        ctx2.fillRect(i*4+96, 100-data[4][i]-data[7][i], 1, data[4][i]);
-    }
-    for(let i = 0; i < 20; i++) {
-        ctx2.fillRect(i*4+192, 100-data[5][i]-data[8][i], 1, data[5][i]);
-    }
-    wallHeightLeft.innerText = 'L: ' + data[0];
-    wallHeightCenter.innerText = 'C: ' + data[1];
-    wallHeightRight.innerText = 'R: ' + data[2];
+    // wallHeightLeft.innerText = 'L: ' + data[0];
+    // wallHeightCenter.innerText = 'C: ' + data[1];
+    // wallHeightRight.innerText = 'R: ' + data[2];
 };
 function showTurnPassData() {
     let data = history[index].turns;
@@ -650,10 +652,10 @@ document.addEventListener('keydown',(e) => {
 
 // errors
 window.onerror = function(err) {
-    appendLog(err, 'red');
+    appendLog(err, '#f00f09');
 };
 document.onerror = function(err) {
-    appendLog(err, 'red');
+    appendLog(err, '#f00f09');
 };
 
 async function animate(slider, backwards) {

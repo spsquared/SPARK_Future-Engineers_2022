@@ -120,7 +120,7 @@ def main():
             encoded = base64.b64encode(cv2.imencode('.png', filter.filter(camera.read()))[1]).decode()
             server.broadcast('capture', encoded)
         def prediction(data):
-            filter.predict(camera.read(), server)
+            filter.predict(camera.read(), server, False)
         def colors(data):
             filter.setColors(data)
         server.addListener('key', keys)
