@@ -15,22 +15,31 @@
 * [12 Tooth 48 Pitch Pinion Gear w/Set Screw (3.17mm Bore)](https://www.amazon.com/Traxxas-PINION-PITCH-SCREW-2428/dp/B00EFXMUO2)
 * [78 Tooth Spur Gear 48 Pitch](https://www.amazon.com/Kimbrough-Pitch-Spur-Gear-78T/dp/B0006O1QVM)
 * [Xceed RC "Enneti" 1/12 Carbon Front Tires (2) (Carbon Black) (40 Shore)](https://www.amainhobbies.com/xceed-rc-enneti-1-12-carbon-front-tires-2-carbon-black-40-shore-xcd101708/p385419?v=209225)
-* [Xceed RC "Enneti" 1/12 Carbon Rear Tires (2) (Carbon Black) (30 Shore)](https://www.amainhobbies.com/xceed-rc-enneti-1-12-carbon-rear-tires-2-carbon-black-30-shore-xcd101710/p385420?v=209219)
+* [Xceed RC "Enneti" 1/12 Carbon Rear Tires (2) (Carbon Black) (30 Shore)](https://www.amainhobbies.com/xceed-rc-enneti-1-12-carbon-rear-tires-2-carbon-black-30-shore-xcd101710/p385420?v=209219) OR [HobbyFans 1inch Soft Rubber Crawler Tires](https://www.amazon.com/gp/product/B09YHC4NDS/)
 * [Savox SV1260MG - Mini Digital High Voltage Servo 7.4V](https://www.savoxusa.com/products/savsv1260mg-mini-digital-high-voltage)
 * [Woltechz LiPo Battery Balance Charger Discharger 1S -6S AC/DC for NiMH/NiCD/Li-PO/Li-Fe/Li-ion/PB](https://www.amazon.com/Woltechz-Battery-Charger-Discharger-Multi-Charging/dp/B07KDSGJFD/)
 * [2x Zeee Premium Series 3S LiPo Battery 4200mAh 11.4V High Voltage Battery 120C with XT60 Plug](https://www.ebay.com/itm/384548969557)
 * [2x Variable DC Voltage Buck Converter](https://www.amazon.com/Regulator-Adjustable-Converter-Electronic-Stabilizer/dp/B07PDGG84B/ref=sr_1_18)
+* [Male 5.5mm DC Barrel Connector Pigtails](https://www.amazon.com/Pigtails-Female-Connector-Pigtail-Security/dp/B08PYWN3T7/)
 * [DC Digital Voltometer](https://www.amazon.com/bayite-Digital-Voltmeter-Display-Motorcycle/dp/B00YALUXH0/)
+* [Normally Closed Push Button Momentary On Switch (size must match)](https://www.amazon.com/Pieces-normally-closed-Button-Momentary/dp/B07HCLVMGS/)
 * [Yahboom Jetson Nano 4GB Developer Kit](https://category.yahboom.net/collections/jetson/products/jetson-nano-sub)
-* [ArduCam 8MP IMX219 with M12 175 Ultra Wide Angle Camera](https://www.arducam.com/product/8mp-imx219-175-degree-ultra-wide-angle-raspberry-pi-b0392/)
+* [Arducam Raspberry Pi Official Camera Module V2, with 8 Megapixel IMX219 Wide Angle 175 Degree Replacement](https://www.amazon.com/Arducam-Raspberry-Official-Megapixel-Replacement/dp/B083PW4BLH/)
 * [Intel AX201 WiFi 6 BT 5.1 M.2 2230 with 10in RP-SMA Antenna (not required)](https://www.newegg.com/p/0XM-009Y-001C7)
 * [Noctua NF-A4x10 5V (not required)](https://noctua.at/en/products/fan/nf-a4x10-5v)
-* 24 Gauge wire
+* 20-24 gauge wire
+* 25mm M3 brass spacers
+* 20mm, 15mm M3 brass standoffs
+* 6mm M3 nylon standoffs
+* 6mm countersunk M3 screws
+* 6mm M3 nylon screws
+* 8mm M2.5 screws
 
 3D printed parts were used in our build, and all CAD files are located in the folder [/Documentation/CAD/](https://github.com/definitely-nobody-is-here/SPARK_Future-Engineers_2022/tree/master/Documentation/CAD). They're also linked here:
 * [Platform](https://github.com/definitely-nobody-is-here/SPARK_Future-Engineers_2022/raw/master/Documentation/CAD/SPARK2022_platform.stl)
 * [Camera Mount](https://github.com/definitely-nobody-is-here/SPARK_Future-Engineers_2022/raw/master/Documentation/CAD/SPARK2022_cameramount.stl)
 * [Camera LED Clip](https://github.com/definitely-nobody-is-here/SPARK_Future-Engineers_2022/raw/master/Documentation/CAD/SPARK2022_cameraLEDmount.stl)
+* [Rear Wheel Rim](https://github.com/definitely-nobody-is-here/SPARK_Future-Engineers_2022/raw/master/Documentation/CAD/SPARK2022_rearwheelrim.stl) (if using the 1 in rubber tires)
 
 ### Assembly
 
@@ -38,7 +47,11 @@ We followed the instructions for the Atom 2 pan car kit, and then added the plat
 
 The two RP-SMA connectors for the WiFi card (not required but good for development) can be routed to the back of the platform into their brackets. The NF A4x10 can be screwed into the heatsink of the Jetson NANO Developer Kit using 4 long nylon screws, but the holes will first have to be tapped or "tapped" by metal screws. The fan is also not required but can help (the board does reach fairly high temperatures at times).
 
-The top platform is mounted onto existing locations on the car. In the rear two spacers are screwed into the mounting locations for the rear body posts. In the front, the screws for the bracket above the steering servo are replaced with standoffs. This ensures that the mounting is secure. The camera mount is attached to the mounts for the front body posts.
+The top platform is mounted onto existing locations on the car. In the rear two spacers are screwed into the mounting locations for the rear body posts. In the front, the screws for the bracket above the steering servo are replaced with standoffs.
+
+The camera and LEDs are mounted on top of standoffs extending the top of front wheel plate.
+
+#### **For a detailed build guide, go to [ASSEMBLY.md](./ASSEMBLY.md)**
 
 ### Electromechanical Diagram
 
@@ -51,9 +64,9 @@ Here is a simple electromechanical schematic for how the electronics are wired:
 ### 6 (perspective) Views
 | | |
 | ------------------------- | --------------------------- |
-| ![front](./img/front.png) | ![back](./img/rear.png)     |
-| ![left](./img/left.png)   | ![right](./img/right.png)   |
-| ![top](./img/top.png)     | ![bottom](./img/bottom.png) |
+| ![front](./Documentation/img/front.png) | ![back](./Documentation/img/rear.png)     |
+| ![left](./Documentation/img/left.png)   | ![right](./Documentation/img/right.png)   |
+| ![top](./Documentation/img/top.png)     | ![bottom](./Documentation/img/bottom.png) |
 
 ***
 
@@ -118,7 +131,7 @@ SPARK Control is our own debugging and testing software. It consists of a WebSoc
 The client control panel consists of a log - which can be appended to by sending a `message` event and some text; filter tuning sliders for changing the ranges of the image filter; capture buttons to save and preview images; and a data display to view what's happening inside the programs running on the car, which will be explained later. The data display can show raw and filtered image streams from the car's camera, visualize the detected blobs and wall heights, and output various bits of data used within the code. By default, the last 500 frames of data are saved in history and can be replayed for debugging.
 <div align=center>
 
-![SPARK Control Panel](./img/SPARK_Control.png)
+![SPARK Control Panel](./Documentation/img/SPARK_Control.png)
 
 </div>
 
@@ -136,3 +149,21 @@ The client control panel consists of a log - which can be appended to by sending
 [WRO 3 laps with pillars](https://youtu.be/0uMp_ExglOw)
 
 [WRO 3 laps without pillars](https://youtu.be/Jp8k1qW5pQU)
+
+# LiPo Battery Safety Notice
+
+While LiPo batteries are the safest form of portable, affordable, high density energy storage, there are still precautions to be taken when working with them. Lithium is a highly volatile element, and will react with the water vapor in the air if exposed to it.
+
+1. **Do not** puncture, deform, short, or heat LiPo batteries above 80° F
+2. Store and charge LiPos in a *fireproof container* **away** from flammable materials and water
+3. **NEVER** charge a swollen or damaged battery (e.g. damaged leads, swelling of cells, puncture in wrapping)
+4. **NEVER** leave a charging battery unattended
+5. Only charge LiPo batteries with chargers *designed for LiPo batteries*
+6. Dropping a battery can cause sufficient damage to rupture a cell and cause shorts
+7. Overdischarging a LiPo battery can cause **permanent damage**
+
+If a LiPo battery goes below its minimum voltage (stated in the manual included or 3.3v multiplied by the amount of cells connected in series) it can cause **permanent internal damage**. This damage is not visible until after further use, when it can swell, or potentially burst and **cause a FIRE**.
+
+**Read all safety notes and instructions included with LiPo batteries before use.**
+
+### For a more detailed LiPo safety manual there is one on [Tenergy Power](https://power.tenergy.com/lipo-safety-warnings/)

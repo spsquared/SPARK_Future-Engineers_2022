@@ -45,7 +45,7 @@ We also made a fifth revision of the top platform, integrating the indicator LED
 
 ![platform v5](./September/9-24-22-b.png)
 
-# 2/26/22
+# 9/26/22
 Today a battery was found to be at 0 volts. Not sure if it's still safe to use, people on the internet say that it could catch fire if charged. Hopefully that doesn't happen.
 
 In other news, we're working on improving the wall detection code. Instead of assuming that the right side of the image is always going to be a right wall, the left always the left wall, and the center always the far wall in front, we now divide the image into 6 sections, and check the slope of the wall in each section using the [RANSAC Regression algorithm](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.RANSACRegressor.html). This will reduce the chances of a false detection. For example, in a turn of one specific case a wall in front of the car was assumed to be to the right of the car, so it turned left because "the right wall is huge".
@@ -59,3 +59,11 @@ The LED brackets are sandwiched between the screw and the camera bracket, and is
 ![mounting of LED bracket](./September/9-26-22-b.png)
 
 I'm bad a crimping. And spelling. "Componenents".
+
+# 10/1/22
+We did work on wiring the LEDs. The plan is to use the BEC output of the ESC to supply 6V to the LEDs, which can draw up to 2 Amps, so in theory the BEC should be able to drive them. When the ESC is switched off, the BEC output is also off, so we won't waste battery when idling. Also, we're printing the new platform, which prints way slower than it could be printed because the layer height is uselessly thin and the top-bottom speed is too low.
+
+# 10/2/22
+Terrible print quality. 20 hours. Nothing fits except for the screws. Actually, not even the screws fit. With the same dimensions, somehow the screw holes don't line up, the antenna mounts are the wrong size, and the switch inset is 1mm too small even thought it was sized 1mm up.
+
+Also, the LEDs are so bright that they overheat and draw too much current.
