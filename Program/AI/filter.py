@@ -4,6 +4,8 @@ import cv2
 import base64
 import statistics
 import math
+import json
+from json import JSONEncoder
 
 # preprocessing filter module with cv prediction
 
@@ -181,25 +183,27 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         ################# WALL STEERING #################
 
         # crop for wall detection
-        wallStart = 50
-        wallEnd = 100
-        croppedEdgesImg = numpy.concatenate((edgesImage[wallStart:wallEnd], numpy.full((2,wallEnd - wallStart),1,dtype=int)), axis=1)
+        wallStart = 77
+        wallEnd = 125
+        croppedEdgesImg = numpy.concatenate((edgesImage[wallStart:wallEnd], numpy.full((2,272),1,dtype=int)), axis=0)
 
         #flip wall
-        croppedEdgesImg = numpy.flip(croppedEdgesImg,axis=0)
+        # croppedEdgesImg = numpy.flip(croppedEdgesImg,axis=1)
         croppedEdgesImg = numpy.swapaxes(croppedEdgesImg,0,1)
 
-        firstWallValues = (croppedEdgesImg!=0).argmax(axis=0)
+        firstWallValues = (croppedEdgesImg!=0).argmax(axis=1)
 
-        zipX = numpy.arange(0,252)
+        # zipX = numpy.arange(0,272)
 
-        indices = numpy.zip(zipX,firstWallValues)
+        # indices = numpy.dstack((zipX,firstWallValues))
 
-        croppedEdgesImg[indices] = 0
+        # croppedEdgesImg[indices] = 0
 
-        secondWallValues = (croppedEdgesImg!=0).argmax(axis=0)
+        # secondWallValues = (croppedEdgesImg!=0).argmax(axis=1)
 
-        wallHeightsAll = secondWallValues - firstWallValues
+        # wallHeightsAll = firstWallValues - secondWallValues
+
+        wallHeightsAll = firstWallValues
 
         oneEighth = 34
         wallHeightsRaw = [wallHeightsAll[0:oneEighth],wallHeightsAll[oneEighth:oneEighth * 2],wallHeightsAll[oneEighth * 2:oneEighth * 3],wallHeightsAll[oneEighth * 3:oneEighth * 4],wallHeightsAll[oneEighth * 4:oneEighth * 5],wallHeightsAll[oneEighth * 5:oneEighth * 6],wallHeightsAll[oneEighth * 6:oneEighth * 7],wallHeightsAll[oneEighth * 7:oneEighth * 8]]
@@ -223,7 +227,11 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
             else:
                 wallLabels[i] = CENTER
         
+        wallLabels[0] = LEFT
 
+        
+
+        wallLabels[7] = RIGHT
         
 
         # find wall heights
@@ -339,14 +347,24 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         for i in range(8):
             if wallHeights[i] > 19:
                 if wallLabels[i] == LEFT:
-                    steeringArray.append(100)
-                    leftSteering = 100
+                    steering = 10
+                    if i <= 3:
+                        steering += 5 * (4 - i)
+                    steering += wallHeights[i] * 2
+                    steeringArray.append(steering)
+                    leftSteering = steering
                 elif wallLabels[i] == CENTER:
-                    steeringArray.append(50)
-                    centerSteering = 50
+                    steering = 40
+                    steering += wallHeights[i] * 2
+                    steeringArray.append(steering)
+                    centerSteering = steering
                 else:
-                    steeringArray.append(-100)
-                    rightSteering = -100
+                    steering = 10
+                    if i >= 4:
+                        steering += 5 * (i - 3)
+                    steering += wallHeights[i] * 2
+                    steeringArray.append(-steering)
+                    rightSteering = -steering
 
         # send images to SPARK Control
         if server != None and blurredImg.all() != None:
@@ -398,8 +416,11 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                     steeringMax += pillarSteering * 3 / 2
                 else:
                     steeringMax += pillarSteering / 2
-            # if server != None:
-            #     server.broadcast('values', [[str(steeringMax),steeringReason,str(wallSteering),str(pillarSteering)], str(wallHeightLeft), str(wallHeightCenter), str(wallHeightRight), str(filteredWallHeightsDiffLeft), str(filteredWallHeightsDiffCenter), str(filteredWallHeightsDiffRight),str(wallHeightsMaxLeft),str(wallHeightsMaxCenter),str(wallHeightsMaxRight),[str(justTurned),str(turnCooldown),str(turnsMade)],str(passedPillar)])
+            if server != None:
+                serailzed=[[],[],[],[],[],[],[],[]]
+                for i in range(8):
+                    serailzed[i] = json.dumps(wallHeightsRaw[i].tolist())
+                server.broadcast('values', [[str(steeringMax),steeringReason,str(wallSteering),str(pillarSteering)],serailzed])
             return steeringMax
         else:
             if steeringMin == leftSteering:
@@ -423,8 +444,11 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                     steeringMin += pillarSteering * 3 / 2
                 else:
                     steeringMin += pillarSteering / 2
-            # if server != None:
-            #     server.broadcast('values', [[str(steeringMin),steeringReason,str(wallSteering),str(pillarSteering)], str(wallHeightLeft), str(wallHeightCenter), str(wallHeightRight), str(filteredWallHeightsDiffLeft), str(filteredWallHeightsDiffCenter), str(filteredWallHeightsDiffRight),str(wallHeightsMaxLeft),str(wallHeightsMaxCenter),str(wallHeightsMaxRight),[str(justTurned),str(turnCooldown),str(turnsMade)],str(passedPillar)])
+            if server != None:
+                serailzed=[[],[],[],[],[],[],[],[]]
+                for i in range(8):
+                    serailzed[i] = json.dumps(wallHeightsRaw[i].tolist())
+                server.broadcast('values', [[str(steeringMax),steeringReason,str(wallSteering),str(pillarSteering)],serailzed])
             return steeringMin
     except Exception as err:
         print(err)
