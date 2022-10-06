@@ -57,6 +57,8 @@ The camera and LEDs are mounted on top of standoffs extending the top of front w
 
 Here is a simple electromechanical schematic for how the electronics are wired:
 
+# **OUTDATED**
+
 ![Schematic](./Documentation/Schematic/schematic.png)
 
 ***
