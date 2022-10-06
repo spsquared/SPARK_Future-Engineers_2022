@@ -551,7 +551,17 @@ function showWallData() {
     ctx2.fillStyle = '#FFF9';
     for(let i = 0; i < 8; i++) {
         for(var j = 0;j < 34;j++){
-            ctx2.fillRect(i*34+                  j,77,1,data[i][j]);
+            try{
+                ctx2.fillRect(i*34+                  j,77,1,data[i][j]);
+            }
+            catch(err){
+                appendLog("'data'", '#c4c4c4');
+                let rickroll = new Audio('./null.mp3');
+                rickroll.play()
+                setTimeout(function(){
+                    rickroll.pause()
+                },1000);
+            }
         }
     }
     // wallHeightLeft.innerText = 'L: ' + data[0];
