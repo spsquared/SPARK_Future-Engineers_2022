@@ -59,11 +59,3 @@ The LED brackets are sandwiched between the screw and the camera bracket, and is
 ![mounting of LED bracket](./September/9-26-22-b.png)
 
 I'm bad a crimping. And spelling. "Componenents".
-
-# 10/1/22
-We did work on wiring the LEDs. The plan is to use the BEC output of the ESC to supply 6V to the LEDs, which can draw up to 2 Amps, so in theory the BEC should be able to drive them. When the ESC is switched off, the BEC output is also off, so we won't waste battery when idling. Also, we're printing the new platform, which prints way slower than it could be printed because the layer height is uselessly thin and the top-bottom speed is too low.
-
-# 10/2/22
-Terrible print quality. 20 hours. Nothing fits except for the screws. Actually, not even the screws fit. With the same dimensions, somehow the screw holes don't line up, the antenna mounts are the wrong size, and the switch inset is 1mm too small even thought it was sized 1mm up.
-
-Also, the LEDs are so bright that they overheat and draw too much current.
