@@ -220,17 +220,19 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         wallLabels = [0,0,0,0,0,0,0,0]
 
         for i in range(8):
-            if wallSlopes[i] < -0.5:
+            if wallSlopes[i] < -0.3:
                 wallLabels[i] = LEFT
-            elif wallSlopes[i] > 0.5:
+            elif wallSlopes[i] > 0.3:
                 wallLabels[i] = RIGHT
             else:
                 wallLabels[i] = CENTER
         
         wallLabels[0] = LEFT
+        wallLabels[1] = LEFT
 
         
 
+        wallLabels[6] = RIGHT
         wallLabels[7] = RIGHT
         
 
@@ -282,7 +284,6 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         # wallHeightsMaxRight = wallHeightsRight[1]
         # wallHeightRight = wallHeightsRight[2]
         # filteredWallHeightsDiffRight = wallHeightsRight[3]
-        steeringArray = [0]
     
 
         # decide steering for each wall section
@@ -291,10 +292,6 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         # counterClockwise *= 0.95
 
         counterClockwise = 1
-
-        leftSteering = "no"
-        centerSteering = "no"
-        rightSteering = "no"
 
         # def centerWallCalculations(left,center,right,direction):
         #     global counterClockwise
@@ -343,28 +340,31 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         # if turnsMade == 13:
         #     return "stop"
         
+
+        leftSteering = 0
+        centerSteering = 0
+        rightSteering = 0
         
         for i in range(8):
-            if wallHeights[i] > 19:
-                if wallLabels[i] == LEFT:
+            if wallLabels[i] == LEFT:
+                if wallHeights[i] > 19:
                     steering = 10
                     if i <= 3:
                         steering += 5 * (4 - i)
                     steering += wallHeights[i] * 2
-                    steeringArray.append(steering)
-                    leftSteering = steering
-                elif wallLabels[i] == CENTER:
+                    leftSteering += steering
+            elif wallLabels[i] == CENTER:
+                if wallHeights[i] > 15:
                     steering = 40
                     steering += wallHeights[i] * 2
-                    steeringArray.append(steering)
-                    centerSteering = steering
-                else:
+                    centerSteering += steering
+            else:
+                if wallHeights[i] > 19:
                     steering = 10
                     if i >= 4:
                         steering += 5 * (i - 3)
                     steering += wallHeights[i] * 2
-                    steeringArray.append(-steering)
-                    rightSteering = -steering
+                    rightSteering -= steering
 
         # send images to SPARK Control
         if server != None and blurredImg.all() != None:
@@ -389,67 +389,53 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                     server.broadcast('blobs',[0,arrayR,0,arrayG])
         
         # decide final steering
-        steeringMax = max(steeringArray)
-        steeringMin = min(steeringArray)
 
         wallSteering = 0
-
-        if steeringMax > abs(steeringMin):
-            if steeringMax == leftSteering:
+        if abs(leftSteering) > abs(rightSteering):
+            if abs(leftSteering) > abs(centerSteering):
+                wallSteering = leftSteering
                 steeringReason += "left wall"
-            elif steeringMax == centerSteering:
+            else:
+                wallSteering = centerSteering
                 steeringReason += "center wall"
-            elif steeringMax == rightSteering:
-                steeringReason += "right wall"
-            elif steeringMax == 0:
-                steeringReason += ""
-            else:
-                steeringReason += "BORKEN"
-            wallSteering = steeringMax
-            if pillarSteering > 0:
-                if steeringMax < pillarSteering and (steeringMax < 75 or pillarSteering >= 75):
-                    steeringMax += pillarSteering * 3 / 2
-                else:
-                    steeringMax += pillarSteering / 2
-            else:
-                if steeringMax < abs(pillarSteering) and (steeringMax < 75 or pillarSteering <= -75):
-                    steeringMax += pillarSteering * 3 / 2
-                else:
-                    steeringMax += pillarSteering / 2
-            if server != None:
-                serailzed=[[],[],[],[],[],[],[],[]]
-                for i in range(8):
-                    serailzed[i] = json.dumps(wallHeightsRaw[i].tolist())
-                server.broadcast('values', [[str(steeringMax),steeringReason,str(wallSteering),str(pillarSteering)],serailzed])
-            return steeringMax
         else:
-            if steeringMin == leftSteering:
-                steeringReason += "left wall"
-            elif steeringMin == centerSteering:
-                steeringReason += "center wall"
-            elif steeringMin == rightSteering:
+            if abs(rightSteering) > abs(centerSteering):
+                wallSteering = rightSteering
                 steeringReason += "right wall"
-            elif steeringMin == 0:
-                steeringReason += ""
             else:
-                steeringReason += "BORKEN"
-            wallSteering = steeringMin
+                wallSteering = centerSteering
+                steeringReason += "center wall"
+
+        finalSteering = wallSteering
+
+        if wallSteering > 0:
             if pillarSteering > 0:
-                if abs(steeringMin) < pillarSteering and (abs(steeringMin) < 75 or pillarSteering >= 75):
-                    steeringMin += pillarSteering * 3 / 2
+                if wallSteering < pillarSteering and (wallSteering < 75 or pillarSteering >= 75):
+                    finalSteering += pillarSteering * 3 / 2
                 else:
-                    steeringMin += pillarSteering / 2
+                    finalSteering += pillarSteering / 2
             else:
-                if abs(steeringMin) < abs(pillarSteering) and (abs(steeringMin) < 75 or pillarSteering <= -75):
-                    steeringMin += pillarSteering * 3 / 2
+                if wallSteering < abs(pillarSteering) and (wallSteering < 75 or pillarSteering <= -75):
+                    finalSteering += pillarSteering * 3 / 2
                 else:
-                    steeringMin += pillarSteering / 2
-            if server != None:
-                serailzed=[[],[],[],[],[],[],[],[]]
-                for i in range(8):
-                    serailzed[i] = json.dumps(wallHeightsRaw[i].tolist())
-                server.broadcast('values', [[str(steeringMax),steeringReason,str(wallSteering),str(pillarSteering)],serailzed])
-            return steeringMin
+                    finalSteering += pillarSteering / 2
+        else:
+            if pillarSteering > 0:
+                if abs(wallSteering) < pillarSteering and (abs(wallSteering) < 75 or pillarSteering >= 75):
+                    finalSteering += pillarSteering * 3 / 2
+                else:
+                    finalSteering += pillarSteering / 2
+            else:
+                if abs(wallSteering) < abs(pillarSteering) and (abs(wallSteering) < 75 or pillarSteering <= -75):
+                    finalSteering += pillarSteering * 3 / 2
+                else:
+                    finalSteering += pillarSteering / 2
+        if server != None:
+            serailzed=[[],[],[],[],[],[],[],[]]
+            for i in range(8):
+                serailzed[i] = json.dumps(wallHeightsRaw[i].tolist())
+            server.broadcast('values', [[str(finalSteering),steeringReason,str(wallSteering),str(pillarSteering)],serailzed])
+        return finalSteering
     except Exception as err:
         print(err)
         io.error()
