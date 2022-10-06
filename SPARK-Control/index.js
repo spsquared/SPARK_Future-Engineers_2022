@@ -565,31 +565,44 @@ function showTurnPassData() {
     turnsMade.innerText = data[2];
     passedPillar.innerText = history[index].passed;
 };
-async function displayBack() {
+function displayBack() {
     index = Math.min(index+1, history.length-1);
     historySlider.max = history.length;
     historySlider.value = history.length-index;
     displayTimer = performance.now();
     drawn = false;
 };
-async function displayFront() {
+function displayFront() {
     index = Math.max(index-1, 0);
     historySlider.max = history.length;
     historySlider.value = history.length-index;
     displayTimer = performance.now();
     drawn = false;
 };
-async function displayChange() {
+function displayChange() {
     historySlider.max = history.length;
     index = history.length-parseInt(historySlider.value);
     if (history[index]) {
         displayImg.src = history[index].img;
-        downloadButton.href = history[index].img;
         drawBlobs();
         showWallData();
         showPredictions();
         showTurnPassData();
+        updateDownloadButton();
     }
+};
+function updateDownloadButton() {
+    // future - add data not on display (turning reason, steering values)
+    const downloadCanvas = document.createElement('canvas');
+    downloadCanvas.width = 272;
+    downloadCanvas.height = 154;
+    const downloadctx = downloadCanvas.getContext('2d');
+    downloadctx.drawImage(displayImg, 0, 0);
+    downloadctx.drawImage(canvas, 0, 0);
+    downloadctx.drawImage(canvas2, 0, 0);
+    downloadButton.href = downloadCanvas.toDataURL('image/png');
+    let current = new Date();
+    downloadButton.download = 'SPARK-data_' + current.getHours() + '-' + current.getMinutes()  + '_' + current.getMonth() + '-' + current.getDay() + '-' + current.getFullYear();
 };
 addListener('capture', addCapture);
 addListener('blobs', addBlobs);
@@ -644,24 +657,25 @@ document.getElementById('disconnect').onclick = async function() {
     socket.close();
     toReconnect = false;
     autoReconnect = false;
-    // let rickrolls = [];
-    // let ready = 0;
-    // for (let i = 0; i < 50; i++) {
-    //     let rickroll = new Audio('./127 - Official Meadow Guarder Song.mp3');
-    //     rickroll.preload = true;
-    //     rickroll.addEventListener('loadeddata', function() {
-    //         ready++;
-    //     });
-    //     rickrolls.push(rickroll);
-    // }
-    // let wait = setInterval(function() {
-    //     if (ready == rickrolls.length) {
-    //         clearInterval(wait);
-    //         for (let rickroll of rickrolls) {
-    //             rickroll.play();
-    //         }
-    //     }
-    // }, 10);
+    let rickrolls = [];
+    let ready = 0;
+    for (let i = 0; i < 50; i++) {
+        let rickroll = new Audio('./null.mp3');
+        // let rickroll = new Audio('./127 - Official Meadow Guarder Song.mp3');
+        rickroll.preload = true;
+        rickroll.addEventListener('loadeddata', function() {
+            ready++;
+        });
+        rickrolls.push(rickroll);
+    }
+    let wait = setInterval(function() {
+        if (ready == rickrolls.length) {
+            clearInterval(wait);
+            for (let rickroll of rickrolls) {
+                rickroll.play();
+            }
+        }
+    }, 10);
 };
 document.addEventListener('keydown',(e) => {
     if (e.key.toLowerCase() == 'c' && e.ctrlKey) send('stop', {});
