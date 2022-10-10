@@ -543,7 +543,7 @@ function showPredictions() {
     wallStrPredict.innerText = 'Wall Steering: ' + Math.round(data[2]);
     pillarStrPredict.innerText = 'Pillar Steering: ' + Math.round(data[3]);
 };
-function showWallData(){
+function showWallData() {
     let data = history[index].wall.heights;
     if(data.length === 0){
         return;
@@ -571,14 +571,14 @@ function showWallData(){
     // wallHeightCenter.innerText = 'C: ' + data[1];
     // wallHeightRight.innerText = 'R: ' + data[2];
 };
-function showTurnPassData(){
+function showTurnPassData() {
     let data = history[index].turns;
     justTurned.innerText = data[0];
     turnCooldown.innerText = data[1];
     turnsMade.innerText = data[2];
     passedPillar.innerText = history[index].passed;
 };
-function displayBack(){
+function displayBack() {
     index = Math.min(index+1, history.length-1);
     historySlider.max = history.length;
     historySlider.value = history.length-index;
