@@ -59,7 +59,7 @@ async function playSound() {
     if (first) {
         for (let i = 0; i < 10; i++) {
             await new Promise(function(resolve, reject) {
-                let ping = new Audio('127 - Official Meadow Guarder Song.mp3');
+                let ping = new Audio('ping.mp3');
                 ping.preload = true;
                 ping.addEventListener('loadeddata', function() {
                     pendingsounds.push(ping);
@@ -543,8 +543,11 @@ function showPredictions() {
     wallStrPredict.innerText = 'Wall Steering: ' + Math.round(data[2]);
     pillarStrPredict.innerText = 'Pillar Steering: ' + Math.round(data[3]);
 };
-function showWallData() {
+function showWallData(){
     let data = history[index].wall.heights;
+    if(data.length === 0){
+        return;
+    }
     canvas2.width = 272;
     canvas2.height = 154;
     ctx2.clearRect(0,0,272,154);
@@ -568,14 +571,14 @@ function showWallData() {
     // wallHeightCenter.innerText = 'C: ' + data[1];
     // wallHeightRight.innerText = 'R: ' + data[2];
 };
-function showTurnPassData() {
+function showTurnPassData(){
     let data = history[index].turns;
     justTurned.innerText = data[0];
     turnCooldown.innerText = data[1];
     turnsMade.innerText = data[2];
     passedPillar.innerText = history[index].passed;
 };
-function displayBack() {
+function displayBack(){
     index = Math.min(index+1, history.length-1);
     historySlider.max = history.length;
     historySlider.value = history.length-index;
@@ -650,12 +653,18 @@ document.addEventListener('keyup', (e) => {
     }
 });
 let timer = 0;
+var data = 0;
 setInterval(() => {
     timer++;
     if ((slowing && timer > 10) || (!slowing && timer > 2) || fasting) {
         timer = 0;
         if (lefting) displayBack();
         if (righting) displayFront();
+    }
+    data = function(){
+        appendLog("'data'", '#c4c4c4');
+        let rickroll = new Audio('./null.mp3');
+        rickroll.play()
     }
 }, 10);
 
