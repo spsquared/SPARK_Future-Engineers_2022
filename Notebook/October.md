@@ -18,3 +18,8 @@ Today we worked on improving the new system. It can now discern whether a wall i
 New wheel design - we're switching to LEGO wheels - or more specifically, their 49.5x20mm tires. We modified our existing rim to fit the new tire, which is slightly larger. We did this because the spur diff gear touches the ground when we drive on our existing wheels, which can cause damage to the gear and also collect lots of dust.
 
 ![wheel v3](./October/10-6-22-a.png)
+
+# 10/9/22
+The lights are so bright that they're causing some issues. The reflection off the mat is strong enough to cause the brightness to lower and the colors to change. We can combat this by placing a shield on the bottom preventing light from reaching the floor.
+
+Insert image hre.
