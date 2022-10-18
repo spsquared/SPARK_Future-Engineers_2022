@@ -80,7 +80,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         params.filterByArea = True
         params.minArea = 75
         params.filterByCircularity = True
-        params.minCircularity = 0.4
+        params.minCircularity = 0.3
         params.filterByConvexity = True
         params.minConvexity = 0.7
         params.filterByInertia = True
@@ -152,7 +152,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         pillarSteering = 0
 
         # decide steering for each signal that will collide
-        reducedSteering = -5
+        reducedSteering = 20
         if doPillars == True:
             if brKps != 0:
                 if bgKps != 0:
@@ -219,17 +219,32 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         wallLabels = [0,0,0,0,0,0,0,0]
 
         for i in range(8):
-            if wallSlopes[i] < -0.3:
+            if wallSlopes[i] < -0.2:
                 wallLabels[i] = LEFT
-            elif wallSlopes[i] > 0.3:
+            elif wallSlopes[i] > 0.2:
                 wallLabels[i] = RIGHT
             else:
                 wallLabels[i] = CENTER
         
+        jumped = False
+        for i in range(7):
+            if jumped == True:
+                wallLabels[i + 1] = RIGHT
+            if wallHeights[i + 1] - wallHeights[i] > 8:
+                wallLabels[i + 1] = RIGHT
+                jumped = True
+        
+        jumped = False
+        for i in range(7):
+            if jumped == True:
+                wallLabels[i] = LEFT
+            if wallHeights[i] - wallHeights[i + 1] > 8:
+                wallLabels[i] = LEFT
+                jumped = True
+        
         wallLabels[0] = LEFT
         wallLabels[1] = LEFT
 
-        
 
         wallLabels[6] = RIGHT
         wallLabels[7] = RIGHT
@@ -323,21 +338,21 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
 
         # justTurned = False
 
-        # if wallHeightCenter < 11 and turnCooldown <= 0:
-        #     if turnOnStart >= 0:
-        #         turnOnStart = -1
-        #     turnCooldown = 140
-        #     turnsMade += 1
-        #     justTurned = True
-        #     print(turnsMade)
+        if wallHeights[3] < 11 and wallHeights[4] < 11 and turnCooldown <= 0:
+            if turnOnStart >= 0:
+                turnOnStart = -1
+            turnCooldown = 140
+            turnsMade += 1
+            # justTurned = True
+            print(turnsMade)
         
-        # turnOnStart -= 1
-        # if turnOnStart == -1 and turnsMade == 0:
-        #     turnsMade = 1
-        # turnCooldown -= 1
+        turnOnStart -= 1
+        if turnOnStart == -1 and turnsMade == 0:
+            turnsMade = 1
+        turnCooldown -= 1
 
-        # if turnsMade == 13:
-        #     return "stop"
+        if turnsMade == 13:
+            return "stop"
         
 
         leftSteering = 0
@@ -353,7 +368,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                     steering += wallHeights[i] * 2
                     leftSteering += steering
             elif wallLabels[i] == CENTER:
-                if wallHeights[i] > 13:
+                if wallHeights[i] > 12:
                     steering = 40
                     steering += wallHeights[i] * 2
                     centerSteering += steering
