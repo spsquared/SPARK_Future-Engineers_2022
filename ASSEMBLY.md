@@ -52,11 +52,13 @@ On the output of the 7.4V regulator, solder two single-pin headers. Now, attach 
 
 soldering, crimping
 
+LIGHTS OUT OF DATE
+
 ![lights, indicators, jumpers, and a button](./Documentation/img/build-3.jpg)
 
 ## Jetson NANO
 
-attach fan, follow instructions to set up OS, create task to run startup.py on startup, switch to text-only mode
+TODO: attach fan, follow instructions to set up OS, create task to run startup.py on startup, switch to text-only mode
 
 ## Platform Mounting
 
