@@ -676,25 +676,25 @@ document.getElementById('disconnect').onclick = async function() {
     socket.close();
     toReconnect = false;
     autoReconnect = false;
-    let rickrolls = [];
-    let ready = 0;
-    for (let i = 0; i < 50; i++) {
-        let rickroll = new Audio('./null.mp3');
-        // let rickroll = new Audio('./127 - Official Meadow Guarder Song.mp3');
-        rickroll.preload = true;
-        rickroll.addEventListener('loadeddata', function() {
-            ready++;
-        });
-        rickrolls.push(rickroll);
-    }
-    let wait = setInterval(function() {
-        if (ready == rickrolls.length) {
-            clearInterval(wait);
-            for (let rickroll of rickrolls) {
-                rickroll.play();
-            }
-        }
-    }, 10);
+    // let rickrolls = [];
+    // let ready = 0;
+    // for (let i = 0; i < 100; i++) {
+    //     let rickroll = new Audio('./null.mp3');
+    //     // let rickroll = new Audio('./127 - Official Meadow Guarder Song.mp3');
+    //     rickroll.preload = true;
+    //     rickroll.addEventListener('loadeddata', function() {
+    //         ready++;
+    //     });
+    //     rickrolls.push(rickroll);
+    // }
+    // let wait = setInterval(function() {
+    //     if (ready == rickrolls.length) {
+    //         clearInterval(wait);
+    //         for (let rickroll of rickrolls) {
+    //             rickroll.play();
+    //         }
+    //     }
+    // }, 10);
 };
 document.addEventListener('keydown',(e) => {
     if (e.key.toLowerCase() == 'c' && e.ctrlKey) send('stop', {});
