@@ -293,35 +293,23 @@ img {
 }
 #download {
     height: 24px;
-    text-decoration: none;
-    color: black;
-    padding-left: 8px;
-    padding-right: 8px;
-    padding-bottom: 0px;
+    width: 150px;
+    margin-top: 0px;
     background-color: skyblue;
-    text-align: center;
     cursor: pointer;
 }
 #download2 {
     height: 24px;
-    text-decoration: none;
-    color: black;
-    padding-left: 8px;
-    padding-right: 8px;
-    padding-bottom: 0px;
+    width: 150px;
+    margin-top: 0px;
     background-color: skyblue;
-    text-align: center;
     cursor: pointer;
 }
 #download3 {
     height: 24px;
-    text-decoration: none;
-    color: black;
-    padding-left: 8px;
-    padding-right: 8px;
-    padding-bottom: 0px;
+    width: 150px;
+    margin-top: 0px;
     background-color: skyblue;
-    text-align: center;
     cursor: pointer;
 }
 #maxHistoryLabel {
