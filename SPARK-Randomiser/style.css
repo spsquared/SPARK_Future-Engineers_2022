@@ -36,6 +36,13 @@ img {
     height: 80px;
     image-rendering: pixelated;
 }
+#banner3 {
+    position: absolute;
+    top: 16px;
+    left: 432px;
+    height: 80px;
+    image-rendering: pixelated;
+}
 
 #randomiseWithoutPillars {
     position: absolute;
