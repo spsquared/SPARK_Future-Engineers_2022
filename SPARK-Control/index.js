@@ -504,8 +504,7 @@ function drawLightBlob(blob,blobColor){
     ctx.fill();
     ctx.stroke();
 };
-function addData(data) {
-    console.log(data)
+function addData(data){
     index = 0;
     // steering data
     history[index].steer = data[0];

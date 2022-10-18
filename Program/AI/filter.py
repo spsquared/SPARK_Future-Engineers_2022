@@ -5,18 +5,17 @@ import base64
 import statistics
 import math
 import json
-from json import JSONEncoder
 
 # preprocessing filter module with cv prediction
 
 # colors
 # rm = redMin1 = (175, 0, 0)
 # rM = redMax1 = (140, 140, 255)
-rm = redMin = (0, 75, 75)
-rM = redMax = (30, 255, 255)
+rm = redMin = (0, 95, 75)
+rM = redMax = (25, 255, 255)
 # rm = redMin = (150, 75, 100)
 # rM = redMax = (180, 255, 255)
-gm = greenMin = (30, 30, 30)
+gm = greenMin = (30, 30, 80)
 gM = greenMax = (110, 255, 255)
 # gM = greenMax = (85, 140, 95)
 # gm = greenMin = (60, 65, 10)
@@ -354,7 +353,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                     steering += wallHeights[i] * 2
                     leftSteering += steering
             elif wallLabels[i] == CENTER:
-                if wallHeights[i] > 15:
+                if wallHeights[i] > 13:
                     steering = 40
                     steering += wallHeights[i] * 2
                     centerSteering += steering

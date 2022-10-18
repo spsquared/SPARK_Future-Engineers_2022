@@ -46,9 +46,9 @@ def start():
                     start = time.time()
                     # convert throttle to active time
                     thrFeaACT = math.floor(abs(targetThrottle)/20)/thrFeaDiv
-                    if timer > 1: timer = 0
-                    if timer <= thrFeaACT and targetThrottle > 10: currThrottle = 100
-                    elif targetThrottle < -10: currThrottle = targetThrottle
+                    if timer >= 1: timer = 0
+                    if timer <= thrFeaACT and thrFeaACT < 1 and targetThrottle > 10: currThrottle = 100
+                    elif targetThrottle < -10 or thrFeaACT >= 1: currThrottle = targetThrottle
                     else: currThrottle = 0
                     # PID for steering (TODO)
                     currSteering = targetSteering
