@@ -409,7 +409,6 @@ const strPredict = document.getElementById('strPredict');
 const wallStrPredict = document.getElementById('wallStrPredict');
 const pillarStrPredict = document.getElementById('pillarStrPredict');
 const strReason = document.getElementById('strReason');
-const downloadButton = document.getElementById('download');
 const wallHeightLeft = document.getElementById('wallHeightLeft');
 const wallHeightCenter = document.getElementById('wallHeightCenter');
 const wallHeightRight = document.getElementById('wallHeightRight');
@@ -600,10 +599,9 @@ function displayChange() {
         showWallData();
         showPredictions();
         showTurnPassData();
-        updateDownloadButton();
     }
 };
-function updateDownloadButton() {
+function downloadFrame() {
     // future - add data not on display (turning reason, steering values)
     const downloadCanvas = document.createElement('canvas');
     downloadCanvas.width = 272;
@@ -612,9 +610,17 @@ function updateDownloadButton() {
     downloadctx.drawImage(displayImg, 0, 0);
     downloadctx.drawImage(canvas, 0, 0);
     downloadctx.drawImage(canvas2, 0, 0);
-    downloadButton.href = downloadCanvas.toDataURL('image/png');
+    const a = document.createElement('a');
+    a.href = downloadCanvas.toDataURL('image/png');
     let current = new Date();
-    downloadButton.download = 'SPARK-data_' + current.getHours() + '-' + current.getMinutes()  + '_' + current.getMonth() + '-' + current.getDay() + '-' + current.getFullYear();
+    a.download = `SPARK-img_${current.getHours()}-${current.getMinutes()}_${current.getMonth()}`;
+    a.download = 'SPARK-img_' + current.getHours() + '-' + current.getMinutes()  + '_' + current.getMonth() + '-' + current.getDay() + '-' + current.getFullYear();
+};
+function downloadSession() {
+    let data = 'data:text/json;charset=UTF-8,' + encodeURIComponent(JSON.stringify(history))
+};
+function importSession() {
+
 };
 addListener('capture', addCapture);
 addListener('blobs', addBlobs);
