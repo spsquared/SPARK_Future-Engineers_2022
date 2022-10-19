@@ -245,7 +245,6 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         wallLabels[0] = LEFT
         wallLabels[1] = LEFT
 
-
         wallLabels[6] = RIGHT
         wallLabels[7] = RIGHT
         
