@@ -602,7 +602,6 @@ function displayChange() {
     }
 };
 function downloadFrame() {
-    // future - add data not on display (turning reason, steering values)
     const downloadCanvas = document.createElement('canvas');
     downloadCanvas.width = 272;
     downloadCanvas.height = 154;
@@ -610,17 +609,46 @@ function downloadFrame() {
     downloadctx.drawImage(displayImg, 0, 0);
     downloadctx.drawImage(canvas, 0, 0);
     downloadctx.drawImage(canvas2, 0, 0);
+    // set data
+    let data = downloadCanvas.toDataURL('image/png');
     const a = document.createElement('a');
-    a.href = downloadCanvas.toDataURL('image/png');
+    a.href = data;
     let current = new Date();
-    a.download = `SPARK-img_${current.getHours()}-${current.getMinutes()}_${current.getMonth()}`;
-    a.download = 'SPARK-img_' + current.getHours() + '-' + current.getMinutes()  + '_' + current.getMonth() + '-' + current.getDay() + '-' + current.getFullYear();
+    a.download = `SPARK-img_${current.getHours()}-${current.getMinutes()}_${current.getMonth()}-${current.getDay()}-${current.getFullYear()}.png`;
+    a.click();
 };
 function downloadSession() {
-    let data = 'data:text/json;charset=UTF-8,' + encodeURIComponent(JSON.stringify(history))
+    // data...
+    const data = 'data:text/json;charset=UTF-8,' + encodeURIComponent(JSON.stringify(history));
+    const a = document.createElement('a');
+    a.href = data;
+    let current = new Date();
+    a.download = `SPARK-img_${current.getHours()}-${current.getMinutes()}_${current.getMonth()}-${current.getDay()}-${current.getFullYear()}.json`;
+    a.click();
 };
 function importSession() {
-
+    // create file input
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.click();
+    input.oninput = () => {
+        // read files
+        let files = input.files;
+        if (files.length == 0) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            // set history
+            let raw = JSON.parse(e.target.result);
+            history.splice(0, history.length);
+            for (let i in raw) {
+                history.push(raw[i]);
+            }
+            historySlider.max = 0;
+            displayChange();
+        };
+        reader.readAsText(files[0]);
+    };
 };
 addListener('capture', addCapture);
 addListener('blobs', addBlobs);
