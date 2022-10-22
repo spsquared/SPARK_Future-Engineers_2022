@@ -699,11 +699,6 @@ setInterval(() => {
         if (lefting) displayBack();
         if (righting) displayFront();
     }
-    data = function(){
-        appendLog("'data'", '#c4c4c4');
-        let rickroll = new Audio('./null.mp3');
-        rickroll.play()
-    }
 }, 10);
 
 // stop
