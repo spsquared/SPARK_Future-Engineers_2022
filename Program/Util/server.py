@@ -65,7 +65,7 @@ async def __server(websocket, path):
                             await websocket.send(data)
                             time.sleep(0.002)
                         else:
-                            time.sleep(0.2)
+                            time.sleep(0.05)
                     else:
                         time.sleep(0.1)
                 except websockets.exceptions.ConnectionClosedOK:
