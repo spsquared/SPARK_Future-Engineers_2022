@@ -121,6 +121,7 @@ def main():
             server.broadcast('capture', encoded)
         def prediction(data):
             filter.predict(camera.read(), server, False)
+            server.broadcast('message', 'Ran prediction on image')
         def colors(data):
             filter.setColors(data)
         server.addListener('key', keys)

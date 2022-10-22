@@ -196,25 +196,31 @@ function updateControllers() {
             throttle = Math.round(controller.axes[1]*-100);
             steering = Math.round((controller.axes[2]-trim2)*100)-trim;
             if (controller.buttons[8].pressed && pressedbuttons.indexOf(8) == -1) {
-                if (controller.buttons[7].pressed) document.getElementById('captureFilterButton').onclick();
-                else document.getElementById('captureButton').onclick();
+                if (controller.buttons[7].pressed) document.getElementById('captureFilterButton').click();
+                else document.getElementById('captureButton').click();
                 pressedbuttons.push(8);
             } else if (!controller.buttons[8].pressed && pressedbuttons.indexOf(8) != -1) {
                 pressedbuttons.splice(pressedbuttons.indexOf(8), 1);
             }
             if (controller.buttons[9].pressed && pressedbuttons.indexOf(9) == -1) {
-                if (controller.buttons[7].pressed) document.getElementById('captureFilterStreamButton').onclick();
-                else document.getElementById('captureStreamButton').onclick();
+                if (controller.buttons[7].pressed) document.getElementById('captureFilterStreamButton').click();
+                else document.getElementById('captureStreamButton').click();
                 pressedbuttons.push(9);
             } else if (!controller.buttons[9].pressed && pressedbuttons.indexOf(9) != -1) {
                 pressedbuttons.splice(pressedbuttons.indexOf(9), 1);
             }
             if (controller.buttons[0].pressed && pressedbuttons.indexOf(0) == -1) {
-                if (controller.buttons[7].pressed) document.getElementById('filterStreamButton').onclick();
-                else document.getElementById('streamButton').onclick();
+                if (controller.buttons[7].pressed) document.getElementById('filterStreamButton').click();
+                else document.getElementById('streamButton').click();
                 pressedbuttons.push(0);
             } else if (!controller.buttons[0].pressed && pressedbuttons.indexOf(0) != -1) {
                 pressedbuttons.splice(pressedbuttons.indexOf(0), 1);
+            }
+            if (controller.buttons[1].pressed && pressedbuttons.indexOf(1) == -1) {
+                document.getElementById('predictionButton').click();
+                pressedbuttons.push(1);
+            } else if (!controller.buttons[1].pressed && pressedbuttons.indexOf(1) != -1) {
+                pressedbuttons.splice(pressedbuttons.indexOf(1), 1);
             }
             joystickPin.style.bottom = 114-(controller.axes[1]*110) + 'px';
             joystickPin.style.right = 114-(controller.axes[2]*110) + 'px';
