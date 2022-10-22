@@ -44,32 +44,52 @@ On the ends of the power leads of the ESC, solder a female XT60 connector and fo
 
 ## Voltage Regulators
 
-On the output of the 7.4V regulator, solder two single-pin headers. Now, attach the [digital voltometer](https://www.amazon.com/bayite-Digital-Voltmeter-Display-Motorcycle/dp/B00YALUXH0/). On the input, solder the ground wire (black) to the negative terminal, and the power and source wires (red and white) to the positive terminal. On the output of the 5V regulator, solder the [DC barrel jack](https://www.amazon.com/Pigtails-Female-Connector-Pigtail-Security/dp/B08PYWN3T7/) (again, making sure that the polarity is correct).
+On the output of the 7.4V regulator, solder two single-pin headers. Now, attach the [digital voltometer](https://www.amazon.com/bayite-Digital-Voltmeter-Display-Motorcycle/dp/B00YALUXH0/). On the input, solder the ground wire (black) to the negative terminal, and the power and source wires (red and white) to the positive terminal. On the output of the 5V regulator, solder the [DC barrel jack](https://www.amazon.com/Pigtails-Female-Connector-Pigtail-Security/dp/B08PYWN3T7/) (again, making sure that the polarity is correct). The 7.4V regulator outputs should have two male Dupont connectors soldered to them, facing upwards. This is to make plugging the servos in easier.
 
 ![soldered regulators](./Documentation/img/build-2.jpg)
 
-## Lights, Camera, and Wires
+## Wiring
 
 soldering, crimping
 
-LIGHTS OUT OF DATE
+LIGHTS NO MORE
 
 ![lights, indicators, jumpers, and a button](./Documentation/img/build-3.jpg)
+
+crimp indicators, button, jumpers, optional wifi stuff
+
+ensure that power, ground, and PWM wires are labeled
 
 ## Jetson NANO
 
 TODO: attach fan, follow instructions to set up OS, create task to run startup.py on startup, switch to text-only mode
 
-## Platform Mounting
+Add the [Noctua NF-A4X10 5V PWM fan](https://noctua.at/en/products/fan/nf-a4x10-5v) to the board using M3x20mm nylon screws
+
+## Platform Standoffs
 
 Follow the diagram below to place the spacers and standoffs for the mounting of the upper platform and camera. The rear two are spacers, and the other six will replace existing screws.
 
 ![standoff/spacer locations](./Documentation/img/build-4.jpg)
 
-Use the diagram below to fill in the standoffs on the top platform. All standoffs in green are M3x6mm nylon standoffs, and the blue are M2.5x5mm brass standoffs (included with Jetson NANO).
+Use the diagram below to fill in the standoffs on the top platform. All standoffs in green are M3x6mm nylon standoffs, and the blue are M2.5x5mm brass spacers (included with Jetson NANO). Use M3 nylon nuts to hold the nylon standoffs onto the board and use 8mm M2.5 screws to hold the brass spacers onto the board.
 
 ![standoff locations on platform](./Documentation/img/build-5.jpg)
 
+*Note: Platform in diagram is of a slightly older design of V5. Standoff and spacer locations still apply.*
+
 ## Top Platform Assembly
 
-put everythign in, pin locations
+Place the top platform assembly on top of the 25mm/20mm brass standoffs mentioned [earlier](#platform-standoffs). Screw them in using M3x6mm countersunk screws. Route the wires through the provided cable management holes. The way they are routed doesn't matter, but the use the image below for a general guide on routing wires. The [voltage regulators](#voltage-regulators) are attached to the [diagonal nylon spacers (image 2, red)](#platform-standoffs) with 6mm M3 nylon screws, with the outputs facing toward the side with the [button and indicator LEDS](#wiring), as well as the 5V regulator being in the front (narrow end) and the 7.4V regulator in the back (LED indicator end). The voltometer](https://www.amazon.com/bayite-Digital-Voltmeter-Display-Motorcycle/dp/B00YALUXH0/) goes on the [two nylon standoffs (image 2, red)](#platform-standoffs) on the input side of the 7.4V regulator.
+
+![platform mounted with voltage regulators](./Documentation/img/build-6.jpg)
+
+Place the [assembled Jetson NANO](#jetson-nano) on the [four brass standoffs (image 2, blue)](#platform-standoffs) and secure with the provided M2.5x5mm screws. If there is a [WiFi card](https://www.newegg.com/p/0XM-009Y-001C7), route the antenna cables to the rear (right of image) and attach to the holders.
+
+![platform with everything mounted](./Documentation/img/build-7.jpg)
+
+## Plugging it All In
+
+check wiring
+
+![pin numberings](./Documentation/img/build-8.jpg)

@@ -22,4 +22,5 @@ New wheel design - we're switching to LEGO wheels - or more specifically, their 
 # 10/9/22
 The lights are so bright that they're causing some issues. The reflection off the mat is strong enough to cause the brightness to lower and the colors to change. We can combat this by placing a shield on the bottom preventing light from reaching the floor.
 
-Insert image hre.
+# 10/17/22
+We don't need lights anymore. We've decided that lights will be unneccesar, and the competition mat should be evenly lit. We'll remove the lights and change nothing else.

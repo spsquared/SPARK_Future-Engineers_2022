@@ -6,6 +6,8 @@ ctx.scale(10,10);
 
 const redPillar = 'rgba(238,39,55,1)';
 const greenPillar = 'rgba(68,214,44,1)';
+const orangeLine = 'rgba(255,102,0,1)';
+const blueLine = 'rgba(0,51,255,1)';
 var resetField = function(){
     canvas.width = 3100;
     canvas.height = 3100;
@@ -25,7 +27,7 @@ var resetField = function(){
         ctx.rotate(0.5 * Math.PI);
         ctx.translate(-155,-155);
     }
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
     ctx.fillRect(104.5, 44.5, 101, 1);
     ctx.fillRect(104.5, 64.5, 101, 1);
     ctx.fillRect(0, 104.5, 310, 1);
@@ -43,10 +45,23 @@ var resetField = function(){
     ctx.fillRect(0, 204.5, 310, 1);
     ctx.fillRect(104.5, 244.5, 101, 1);
     ctx.fillRect(104.5, 264.5, 101, 1);
+    ctx.translate(155,155);
+    for (let i = 0; i < 4; i++) {
+        ctx.translate(40,40);
+        // ctx.rotate(Math.PI/6);
+        ctx.fillStyle = orangeLine;
+        ctx.fillRect(68, 19, 10, 20);
+        // ctx.rotate(Math.PI/6);
+        // ctx.fillStyle = blueLine;
+        // ctx.fillRect(0, 0, 10, 20);
+        // ctx.rotate(Math.PI/6);
+        ctx.translate(-40,-40);
+    }
+    ctx.translate(-155,-155);
 }
 var drawPillarCircle = function(x,y){
-    ctx.fillStyle = 'rgba(0,0,0,0.2)';
-    ctx.strokeStyle = 'rgba(0,0,0,0.2)';
+    ctx.fillStyle = 'rgba(0,0,0,0.3)';
+    ctx.strokeStyle = 'rgba(0,0,0,0.3)';
     ctx.fillRect(x - 1,y - 1,2,2);
     ctx.beginPath();
     ctx.arc(x,y,4,0,2 * Math.PI);
