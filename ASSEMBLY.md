@@ -22,7 +22,7 @@ You can start building while these are printing.
 
 ## Assemble Chassis Kit
 
-Our design is built on top of a [Schumacher Atom 2 S2 GT12 Pan Car Kit](https://www.amainhobbies.com/schumacher-atom-2-s2-1-12-gt12-competition-pan-car-kit-schk179/p1055346). Follow the instructions in the box until the step to attach the bumper, which is omitted in our build. Make sure to replace the stock 64-tooth spur gear with a [78-tooth spur gear](https://www.amazon.com/Kimbrough-Pitch-Spur-Gear-78T/dp/B0006O1QVM). At this point, the car should look like the car on the box, except without wheels or a bumper.
+Our design is built on top of a [Schumacher Atom 2 S2 GT12 Pan Car Kit](https://www.amainhobbies.com/schumacher-atom-2-s2-1-12-gt12-competition-pan-car-kit-schk179/p1055346). Follow the instructions in the box until the step to attach the bumper, which is omitted in our build. Make sure to replace the stock 64-tooth spur gear with a [78-tooth spur gear](https://www.amazon.com/Kimbrough-Pitch-Spur-Gear-78T/dp/B0006O1QVM). Also, remove one layer of spacers from the front suspension to raise the front ride height (the weight of the added componenents cause the front suspension to sag). At this point, the car should look like the car on the box, except without wheels or a bumper.
 
 ![terrible paint 3d image](./Documentation/img/build-0.jpg)
 
