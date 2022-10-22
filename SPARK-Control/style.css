@@ -361,15 +361,3 @@ img {
 #disconnect:active {
     border-style: inset;
 }
-#EEE {
-    position: absolute;
-    top: 144px;
-    right: 320px;
-    width: 200px;
-    height: 48px;
-    font: 20px sans-serif;
-    font-weight: bolder;
-    background-color: rgba(0,0,0,0);
-    color: rgba(0,0,0,0);
-    border: rgba(0,0,0,0);
-}
