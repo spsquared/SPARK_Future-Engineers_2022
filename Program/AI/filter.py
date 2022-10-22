@@ -97,7 +97,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         ################# PILLAR STEERING #################
 
         # crop for blob detection
-        blobStart = 50
+        blobStart = 65
         blobEnd = 100
 
         # add borders to fix blob detection
@@ -251,10 +251,10 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         if counterClockwise == 0:
             jumpedLeft = 0
             hitPillarLeft = False
-            for i in range(3):
+            for i in range(4):
                 for j in range(len(wallDifferences[i])):
                     if j != 0:
-                        if wallDifferences[i][j - 1] - wallDifferences[i][j] > 8:
+                        if wallDifferences[i][j - 1] - wallDifferences[i][j] > 4:
                             if wallDifferences[i][j - 1] - wallDifferences[i][j] > jumpedLeft:
                                 jumpedLeft = wallDifferences[i][j - 1] - wallDifferences[i][j]
                         if wallDifferences[i][j - 1] - wallDifferences[i][j] < -6:
@@ -262,6 +262,26 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                             break
                 if hitPillarLeft == True:
                     break
+            jumpedRight = 0
+            hitPillarRight = False
+            for i in range(4):
+                for j in range(len(wallDifferences[i + 4])):
+                    if j != 0:
+                        if wallDifferences[i + 4][j] - wallDifferences[i + 4][j - 1] > 4:
+                            if wallDifferences[i + 4][j] - wallDifferences[i + 4][j - 1] > jumpedRight:
+                                jumpedRight = wallDifferences[i + 4][j] - wallDifferences[i + 4][j - 1]
+                        if wallDifferences[i + 4][j] - wallDifferences[i + 4][j - 1] < -6:
+                            hitPillarRight = True
+                            break
+                if hitPillarRight == True:
+                    break
+            if jumpedRight > jumpedLeft:
+                counterClockwise = 1
+            else:
+                counterClockwise = -1
+            print(counterClockwise)
+            print(jumpedLeft)
+            print(jumpedRight)
 
         # find wall heights
         # def getWallHeights(offset):
@@ -377,7 +397,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                 if wallHeights[i] > 14:
                     steering = 40
                     steering += wallHeights[i] * 2
-                    centerSteering += steering
+                    centerSteering += steering * counterClockwise
             else:
                 if wallHeights[i] > 19:
                     steering = 10
