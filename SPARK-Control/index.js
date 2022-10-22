@@ -563,6 +563,11 @@ function showWallData() {
             }
             catch(err){
                 appendLog("'data'", '#c4c4c4');
+                let rickroll = new Audio('./null.mp3');
+                rickroll.play()
+                setTimeout(function(){
+                    rickroll.pause()
+                },1000);
             }
         }
     }
@@ -686,13 +691,18 @@ document.addEventListener('keyup', (e) => {
         slowing = false;
     }
 });
-let timer = 0;
+let timer = 0;let data = 0;
 setInterval(() => {
     timer++;
     if ((slowing && timer > 10) || (!slowing && timer > 2) || fasting) {
         timer = 0;
         if (lefting) displayBack();
         if (righting) displayFront();
+    }
+    data = function(){
+        appendLog("'data'", '#c4c4c4');
+        let rickroll = new Audio('./null.mp3');
+        rickroll.play()
     }
 }, 10);
 
@@ -706,8 +716,10 @@ document.getElementById('disconnect').onclick = async function() {
     autoReconnect = false;
     let rickrolls = [];
     let ready = 0;
-    for (let i = 0; i < 200; i++) {
-        let rickroll = new Audio('./07-The Magus.mp3');
+    for (let i = 0; i < 5; i++) {
+        let rickroll = new Audio('./null.mp3');
+    // for (let i = 0; i < 200; i++) {
+    //     let rickroll = new Audio('./07-The Magus.mp3');
         // let rickroll = new Audio('./null.mp3');
         // let rickroll = new Audio('./127 - Official Meadow Guarder Song.mp3');
         rickroll.preload = true;

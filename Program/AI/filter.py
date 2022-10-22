@@ -66,11 +66,11 @@ doPillars = True
 counterClockwise = 0
 turnsMade = 0
 turnCooldown = 40
-turnOnStart = 90
+turning = 0
 passedPillar = 0
 lastSend = 0
 def predict(imgIn: numpy.ndarray, server = None, infinite = False):
-    global redMax, redMin, greenMax, greenMin, lastSend, rightOnRed, counterClockwise, turnsMade, turnCooldown, passedPillar, turnOnStart
+    global redMax, redMin, greenMax, greenMin, lastSend, rightOnRed, counterClockwise, turnsMade, turnCooldown, passedPillar, turning
     try:
         # useless thing
         if infinite: turnsMade = 0
@@ -157,19 +157,19 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
             if brKps != 0:
                 if bgKps != 0:
                     if brKps.size > bgKps.size:
-                        pillarSteering = -(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size - reducedSteering) * (brKps.size - 3) ** 2 * 0.01
+                        pillarSteering = -(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size - reducedSteering) * (brKps.size - 3) ** 2 * 0.012
                         steeringReason += "red pillar "
                         # steeringArray.append(brKps.size ** 2 * 0.2)
                     else:
-                        pillarSteering = (getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size - reducedSteering) * (bgKps.size - 3) ** 2 * 0.01
+                        pillarSteering = (getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size - reducedSteering) * (bgKps.size - 3) ** 2 * 0.012
                         steeringReason += "green pillar "
                         # steeringArray.append(-bgKps.size ** 2 * 0.2)
                 else:
-                    pillarSteering = -(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size - reducedSteering) * (brKps.size - 3) ** 2 * 0.01
+                    pillarSteering = -(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size - reducedSteering) * (brKps.size - 3) ** 2 * 0.012
                     steeringReason += "red pillar "
                     # steeringArray.append(brKps.size ** 2 * 0.2)
             elif bgKps != 0:
-                pillarSteering = (getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size - reducedSteering) * (bgKps.size - 3) ** 2 * 0.01
+                pillarSteering = (getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size - reducedSteering) * (bgKps.size - 3) ** 2 * 0.012
                 steeringReason += "green pillar "
                 # steeringArray.append(-bgKps.size ** 2 * 0.2)
             passedPillar *= 0.9
@@ -337,21 +337,14 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
 
         # justTurned = False
 
-        if wallHeights[3] < 11 and wallHeights[4] < 11 and turnCooldown <= 0:
-            if turnOnStart >= 0:
-                turnOnStart = -1
-            turnCooldown = 140
-            turnsMade += 1
-            # justTurned = True
-            print(turnsMade)
+        # if wallHeights[3] < 11 and wallHeights[4] < 11 and turnCooldown <= 0:
+        #     if turnOnStart >= 0:
+        #         turnOnStart = -1
+        #     turnCooldown = 140
+        #     turnsMade += 1
+        #     # justTurned = True
+        #     print(turnsMade)
         
-        turnOnStart -= 1
-        if turnOnStart == -1 and turnsMade == 0:
-            turnsMade = 1
-        turnCooldown -= 1
-
-        if turnsMade == 13:
-            return "stop"
         
 
         leftSteering = 0
@@ -367,10 +360,10 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                     steering += wallHeights[i] * 2
                     leftSteering += steering
             elif wallLabels[i] == CENTER:
-                if wallHeights[i] > 12:
+                if wallHeights[i] > 14:
                     steering = 40
                     steering += wallHeights[i] * 2
-                    centerSteering -= steering
+                    centerSteering += steering
             else:
                 if wallHeights[i] > 19:
                     steering = 10
@@ -408,16 +401,30 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
             if abs(leftSteering) > abs(centerSteering):
                 wallSteering = leftSteering
                 steeringReason += "left wall"
+                turning = max(turning - 1,0)
             else:
                 wallSteering = centerSteering
                 steeringReason += "center wall"
+                turning += 1
+                if turning > 5 and turnCooldown < 0:
+                    turnsMade += 1
+                    turnCooldown = 120
         else:
             if abs(rightSteering) > abs(centerSteering):
                 wallSteering = rightSteering
                 steeringReason += "right wall"
+                turning = max(turning - 1,0)
             else:
                 wallSteering = centerSteering
                 steeringReason += "center wall"
+                turning += 1
+                if turning > 5 and turnCooldown < 0:
+                    turnsMade += 1
+                    turnCooldown = 120
+        turnCooldown -= 1
+        
+        if turnsMade >= 12:
+            return "stop"
 
         finalSteering = wallSteering
 
