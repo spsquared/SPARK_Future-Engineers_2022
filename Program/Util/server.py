@@ -65,15 +65,21 @@ async def __server(websocket, path):
                             await websocket.send(data)
                             time.sleep(0.002)
                         else:
-                            time.sleep(0.2)
+                            time.sleep(0.05)
                     else:
                         time.sleep(0.1)
                 except websockets.exceptions.ConnectionClosedOK:
                     connected = False
-                    del sendlist[index]
+                    try:
+                        del sendlist[index]
+                    except Exception:
+                        True
                 except websockets.exceptions.ConnectionClosedError:
                     connected = False
-                    del sendlist[index]
+                    try:
+                        del sendlist[index]
+                    except Exception:
+                        True
                 except RuntimeError:
                     continue
         def send2():
@@ -85,23 +91,34 @@ async def __server(websocket, path):
                 loop.close()
             except Exception:
                 send2()
-            # threadLoop.create_tas                                                             k(send())
         sendThread = Thread(target = send2)
         sendThread.start()
         await receive()
         sendThread.join()
     except websockets.exceptions.ConnectionClosedOK:
         connected = False
-        del sendlist[index]
+        try:
+            del sendlist[index]
+        except Exception:
+            True
     except websockets.exceptions.ConnectionClosedError:
         connected = False
-        del sendlist[index]
+        try:
+            del sendlist[index]
+        except Exception:
+            True
     except KeyboardInterrupt:
         connected = False
-        del sendlist[index]
+        try:
+            del sendlist[index]
+        except Exception:
+            True
     except Exception as err:
         connected = False
-        del sendlist[index]
+        try:
+            del sendlist[index]
+        except Exception:
+            True
         print(err)
         io.error()
 
