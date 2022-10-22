@@ -102,19 +102,9 @@ The predict function is where all the predictions happen. There are two sections
 
 Pillar steering starts by creating a blob detector using `cv2.SimpleBlobDetector` and using `SimpleBlobDetector_Params` to set the parameters. Using the filtered red and green images, the blob detector detects blobs to filter out random noise in the image and get the relative position and relative size of the pillars. We have two equations, `getRedEquation` and `getGreenEquation`. These calculate if we will hit a pillar or not, and we use it on all the blobs detected by the blob detector. If there are pillars detected, we take the largest pillar. Using a combination of the size of the pillar and the location of the pillar, we calculate a steering value on which direction we should turn. This is stored in `pillarSteering`. The steering value is also written in `passedPillar`, as `passedPillar` is used when we pass a pillar to prevent the back wheels from hitting the pillar.
 
-Next we have wall steering. First we start by cropping out the top and bottom sections of the image, to remove useless noise. After this, we flip the image and swap the axes to prepare for wall height detection. Using `numpy.nonzero` we can find the first and second lines from the bottom. Getting the difference gives us the wall height. We repeat this 60 times, 20 for the left wall, 20 for the center, and 20 for the right wall. To remove outliers, we take the median. Based on this, we have 3 cases.
+Next we have wall steering. First we start by cropping out the top 77 pixels. Due to the way the camera is placed, it is exactly the same height as the wall, so no matter where the wall is, the top line is nearly constant, and is around 77 pixels. After this, we swap the axes to prepare for wall height detection. Using `numpy.argmax` we find the bottom of the wall. We split the image into 8 sections. Taking the differences, we can find the slope of each section, and catagorize the sections. If the slope is less than -0.2, it is catagorized as a left wall. If the slope is more than 0.2, it is catagorized as a right wall. Otherwise, it is catagorized as a center wall. The first two sections on the left side are always left walls and the first two sections on the right side are always right walls. If there is a sudden jump in the height of the wall, we know the higher wall cannot be a center wall, and must either be a left wall or a right wall.
 
-**1: Crashing into center wall**
-
-This means if we are turning counterclockwise the center wall and the right wall are very large, and if we are turning clockwise the center wall and the left wall are very large. If we are turning counterclockwise we turn left, otherwise we turn right.
-
-**2: Slanted left**
-
-The left wall value is large. We will always turn right.
-
-**3: Slanted right**
-
-The right wall value is large. We will always turn left.
+Now, we loop through all 8 wall sections. Based on the position and height of the wall, we calculate a steering value. At the end, we have 3 values, one for all the left walls, one for all the right walls, and one for all the center walls. We take the maximum.
 
 If the center wall is very tiny, the car knows it just turned and increases `turnsMade` by one, and if we have turned 12 times, or 3 laps, it returns "stop", causing the car to stop.
 

@@ -245,7 +245,6 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         wallLabels[0] = LEFT
         wallLabels[1] = LEFT
 
-
         wallLabels[6] = RIGHT
         wallLabels[7] = RIGHT
         
@@ -371,7 +370,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                 if wallHeights[i] > 12:
                     steering = 40
                     steering += wallHeights[i] * 2
-                    centerSteering += steering
+                    centerSteering -= steering
             else:
                 if wallHeights[i] > 19:
                     steering = 10
