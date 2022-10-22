@@ -248,6 +248,20 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         wallLabels[6] = RIGHT
         wallLabels[7] = RIGHT
         
+        if counterClockwise == 0:
+            jumpedLeft = 0
+            hitPillarLeft = False
+            for i in range(3):
+                for j in range(len(wallDifferences[i])):
+                    if j != 0:
+                        if wallDifferences[i][j - 1] - wallDifferences[i][j] > 8:
+                            if wallDifferences[i][j - 1] - wallDifferences[i][j] > jumpedLeft:
+                                jumpedLeft = wallDifferences[i][j - 1] - wallDifferences[i][j]
+                        if wallDifferences[i][j - 1] - wallDifferences[i][j] < -6:
+                            hitPillarLeft = True
+                            break
+                if hitPillarLeft == True:
+                    break
 
         # find wall heights
         # def getWallHeights(offset):
@@ -304,7 +318,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
 
         # counterClockwise *= 0.95
 
-        counterClockwise = 1
+        # counterClockwise = 1
 
         # def centerWallCalculations(left,center,right,direction):
         #     global counterClockwise
