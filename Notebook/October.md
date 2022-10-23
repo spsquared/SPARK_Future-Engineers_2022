@@ -24,3 +24,16 @@ The lights are so bright that they're causing some issues. The reflection off th
 
 # 10/17/22
 We don't need lights anymore. We've decided that lights will be unneccesar, and the competition mat should be evenly lit. We'll remove the lights and change nothing else.
+
+# 10/22/22
+Got new motor. Does anyone even read these?
+
+It's a lot slower (less than half the speed) but doesn't fit in the chassis. We may have used a dremel to make it fit.
+
+Details: We got a quicrun 3650 because it has a lower kV rating and will allow us to move at lower speeds. However, the motor is barely short enough to fit in the mount, and if the car is rolled left, the motor gets stuck and the car is left with a permanent left roll. We considered preventing roll on the rear axle completely by locking it with bolts but the threaded inserts on ours are broken and we can't remove the springs to replace them with bolts. Our solution was to grind off 1mm of material on the cutout in the frame.
+
+It still doesn't fit because the protrusion is 15mm, while the maximum allowable protrusion is 10mm. So now we either keep using the old one (and unsolder connectors) or buy a new one (and unsolder connectors). And now we have a patch of exposed steel in the chassis.
+
+Instead of choosing either of those options, we ground away more of the chassis instead.
+
+To avoid putting "grind off part of the chassis" in the instructions the 22.5T version of the original Fantom motor will be used instead.

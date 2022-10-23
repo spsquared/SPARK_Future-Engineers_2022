@@ -22,19 +22,23 @@ You can start building while these are printing.
 
 ## Assemble Chassis Kit
 
-Our design is built on top of a [Schumacher Atom 2 S2 GT12 Pan Car Kit](https://www.amainhobbies.com/schumacher-atom-2-s2-1-12-gt12-competition-pan-car-kit-schk179/p1055346). Follow the instructions in the box until the step to attach the bumper, which is omitted in our build. Make sure to replace the stock 64-tooth spur gear with a [78-tooth spur gear](https://www.amazon.com/Kimbrough-Pitch-Spur-Gear-78T/dp/B0006O1QVM). Also, remove one layer of spacers from the front suspension to raise the front ride height (the weight of the added componenents cause the front suspension to sag). At this point, the car should look like the car on the box, except without wheels or a bumper.
+Our design is built on top of a [Schumacher Atom 2 S2 GT12 Pan Car Kit](https://www.amainhobbies.com/schumacher-atom-2-s2-1-12-gt12-competition-pan-car-kit-schk179/p1055346). Follow the instructions in the box until the step to attach the bumper, which is omitted in our build. Make sure to replace the stock 64-tooth spur gear with a [78-tooth spur gear](https://www.amazon.com/Kimbrough-Pitch-Spur-Gear-78T/dp/B0006O1QVM). Also, remove one layer of spacers from the front suspension to raise the front ride height (the weight of the added componenents cause the front suspension to sag).
 
-![terrible paint 3d image](./Documentation/img/build-0.jpg)
+At this point, the car should look like the car on the box, except without wheels or a bumper.
 
-*This image is an edited version of the carbon fibre edition. It's not ours, we didn't take a picture of just the chassis.*
+![chassis with modifications](./Documentation/img/build-0.jpg)
 
-Take the rear rims and fit the tires onto them. Instructions to attaching wheels are in the kit's instruction packet.
+*This image is an edited version of a photo of the carbon fiber edition. It's not ours, we just don't have a picture of this step.*
 
-## Attach Motors and ESC
+Take the rear rims and fit the tires onto them. Instructions to attaching wheels are in the kit's instruction packet; follow those to secure the wheels.
 
-Use the two included screws in the kit to mount the [Fantom ICON V2 brushless motor](https://fantomracing.com/shop/motors/spec-motors/13-5-icon-v2-works-edition/) to the motor bracket. Then, align the [12-tooth pinion gear](https://www.amazon.com/Traxxas-PINION-PITCH-SCREW-2428/dp/B00EFXMUO2) on the motor shaft and turn the set screw to lock it in place. The servo is placed in the servo bracket (specifics are included in the kit instructions). DO NOT tighten the servo horn to the gear yet, as it must first be centered in order for steering to work. The [HobbyWing Q10BL60 ESC](https://www.hobbywingdirect.com/products/quicrun-10-sensored) can be attached to the forward section using the VHB tape included with it. Make sure to solder the wires in the correct order, or the motor may not rotate. The capacitors for the ESC can be double-sided taped to the forward section as well.
+## Attach Servo, ESC, and Motor
+
+Use the two included screws in the kit to mount the [Fantom ICON sensored brushless motor](https://fantomracing.com/shop/motors/spec-motors/25-5-icon-torque-works-edition/) to the motor bracket. Then, align the [12-tooth pinion gear](https://www.amazon.com/Traxxas-PINION-PITCH-SCREW-2428/dp/B00EFXMUO2) on the motor shaft and turn the set screw to lock it in place. The servo is placed in the servo bracket (specifics are included in the kit instructions). DO NOT tighten the servo horn to the gear yet, as it must first be centered in order for steering to work. The [HobbyWing Q10BL60 ESC](https://www.hobbywingdirect.com/products/quicrun-10-sensored) can be attached to the forward section using the VHB tape included with it. Make sure to solder the wires in the correct order, or the motor may not rotate. The capacitors for the ESC can be double-sided taped to the forward section as well.
 
 ![top-down view](./Documentation/img/build-1.jpg)
+
+*Our build uses a different 25.5T brushless motor from HobbyWing but we had to modify our chassis to make it fit. The code will still work with the motor in these instructions.*
 
 ## Solder Electrical Components
 
