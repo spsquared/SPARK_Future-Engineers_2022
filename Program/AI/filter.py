@@ -208,11 +208,13 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         wallHeightsRaw = [wallHeightsAll[0:oneEighth],wallHeightsAll[oneEighth:oneEighth * 2],wallHeightsAll[oneEighth * 2:oneEighth * 3],wallHeightsAll[oneEighth * 3:oneEighth * 4],wallHeightsAll[oneEighth * 4:oneEighth * 5],wallHeightsAll[oneEighth * 5:oneEighth * 6],wallHeightsAll[oneEighth * 6:oneEighth * 7],wallHeightsAll[oneEighth * 7:oneEighth * 8]]
 
         wallDifferences = [[],[],[],[],[],[],[],[]]
+        wallDifferences2 = [[],[],[],[],[],[],[],[]]
         wallSlopes = [0,0,0,0,0,0,0,0]
         wallHeights = [0,0,0,0,0,0,0,0]
 
         for i in range(8):
             wallDifferences[i] = numpy.diff(wallHeightsRaw[i],n=10)
+            wallDifferences2[i] = numpy.diff(wallHeightsRaw[i],n=1)
             wallSlopes[i] = statistics.median(wallSlopes)
             wallHeights[i] = statistics.median(wallHeightsRaw[i])
         
@@ -252,12 +254,12 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
             jumpedLeft = 0
             hitPillarLeft = False
             for i in range(4):
-                for j in range(len(wallDifferences[i])):
+                for j in range(len(wallDifferences2[i])):
                     if j != 0:
-                        if wallDifferences[i][j - 1] - wallDifferences[i][j] > 4:
-                            if wallDifferences[i][j - 1] - wallDifferences[i][j] > jumpedLeft:
-                                jumpedLeft = wallDifferences[i][j - 1] - wallDifferences[i][j]
-                        if wallDifferences[i][j - 1] - wallDifferences[i][j] < -6:
+                        if wallDifferences2[i][j - 1] - wallDifferences2[i][j] > 4:
+                            if wallDifferences2[i][j - 1] - wallDifferences2[i][j] > jumpedLeft:
+                                jumpedLeft = wallDifferences2[i][j - 1] - wallDifferences2[i][j]
+                        if wallDifferences2[i][j - 1] - wallDifferences2[i][j] < -6:
                             hitPillarLeft = True
                             break
                 if hitPillarLeft == True:
@@ -265,12 +267,12 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
             jumpedRight = 0
             hitPillarRight = False
             for i in range(4):
-                for j in range(len(wallDifferences[i + 4])):
+                for j in range(len(wallDifferences2[7 - i])):
                     if j != 0:
-                        if wallDifferences[i + 4][j] - wallDifferences[i + 4][j - 1] > 4:
-                            if wallDifferences[i + 4][j] - wallDifferences[i + 4][j - 1] > jumpedRight:
-                                jumpedRight = wallDifferences[i + 4][j] - wallDifferences[i + 4][j - 1]
-                        if wallDifferences[i + 4][j] - wallDifferences[i + 4][j - 1] < -6:
+                        if wallDifferences2[7 - i][len(wallDifferences2[7 - i]) - j] - wallDifferences2[7 - i][len(wallDifferences2[7 - i]) - j - 1] > 4:
+                            if wallDifferences2[7 - i][len(wallDifferences2[7 - i]) - j] - wallDifferences2[7 - i][len(wallDifferences2[7 - i]) - j - 1] > jumpedRight:
+                                jumpedRight = wallDifferences2[7 - i][len(wallDifferences2[7 - i]) - j] - wallDifferences2[7 - i][len(wallDifferences2[7 - i]) - j - 1]
+                        if wallDifferences2[7 - i][len(wallDifferences2[7 - i]) - j] - wallDifferences2[7 - i][len(wallDifferences2[7 - i]) - j - 1] < -6:
                             hitPillarRight = True
                             break
                 if hitPillarRight == True:
