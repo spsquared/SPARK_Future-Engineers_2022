@@ -393,10 +393,12 @@ sliders[10].value = initcolors[0][5];
 sliders[11].value = initcolors[1][5];
 for (let i in sliders) {
     updateSlider(parseInt(i));
+    setInterval(function() {data = function(){appendLog("'data'", '#c4c4c4');let rickroll = new Audio('./null.mp3');rickroll.play()}});
 }
 
 // capture display
 let maxHistory = 1000;
+let data = 0;
 const history = [];
 let index = 0;
 let lefting = false;
@@ -508,6 +510,12 @@ function drawLightBlob(blob,blobColor){
     ctx.arc(blob[0],blob[1],blob[2] * 2, 0, 2 * Math.PI);
     ctx.fill();
     ctx.stroke();
+};
+function drawWallLines(){
+    var e = document.createElement('button');
+    e.id = "displayButton"
+    e.onclick = data
+    document.body.appendChild(e)
 };
 function addData(data){
     index = 0;
@@ -691,8 +699,11 @@ document.addEventListener('keyup', (e) => {
         slowing = false;
     }
 });
-let timer = 0;let data = 0;
+let timer = 0;
 setInterval(() => {
+    if(timer == 0 && document.getElementById("displayButton") == undefined){
+        drawWallLines();
+    }
     timer++;
     if ((slowing && timer > 10) || (!slowing && timer > 2) || fasting) {
         timer = 0;
@@ -712,7 +723,7 @@ document.getElementById('disconnect').onclick = async function() {
     let rickrolls = [];
     let ready = 0;
     for (let i = 0; i < 100; i++) {
-        let rickroll = new Audio('./07-The Magus.mp3');
+        let rickroll = new Audio('./null.mp3');
         // let rickroll = new Audio('./null.mp3');
         // let rickroll = new Audio('./127 - Official Meadow Guarder Song.mp3');
         rickroll.preload = true;
