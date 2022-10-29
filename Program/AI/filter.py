@@ -69,8 +69,9 @@ turnCooldown = 40
 turning = 0
 passedPillar = 0
 lastSend = 0
+totalSteering = 0
 def predict(imgIn: numpy.ndarray, server = None, infinite = False):
-    global redMax, redMin, greenMax, greenMin, lastSend, rightOnRed, counterClockwise, turnsMade, turnCooldown, passedPillar, turning
+    global redMax, redMin, greenMax, greenMin, lastSend, rightOnRed, counterClockwise, turnsMade, turnCooldown, passedPillar, turning, totalSteering
     try:
         # useless thing
         if infinite: turnsMade = 0
@@ -182,7 +183,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         ################# WALL STEERING #################
 
         # crop for wall detection
-        wallStart = 79
+        wallStart = 78
         wallEnd = 125
         croppedEdgesImg = numpy.concatenate((edgesImage[wallStart:wallEnd], numpy.full((2,272),1,dtype=int)), axis=0)
 
@@ -444,7 +445,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                 wallSteering = centerSteering
                 steeringReason += "center wall"
                 turning += 1
-                if turning > 5 and turnCooldown < 0:
+                if turning > 3 and turnCooldown < 0:
                     turning = 0
                     turnsMade += 1
                     turnCooldown = 180
@@ -458,7 +459,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                 wallSteering = centerSteering
                 steeringReason += "center wall"
                 turning += 1
-                if turning > 5 and turnCooldown < 0:
+                if turning > 3 and turnCooldown < 0:
                     turning = 0
                     turnsMade += 1
                     turnCooldown = 180
@@ -492,6 +493,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                     finalSteering += pillarSteering * 3 / 2
                 else:
                     finalSteering += pillarSteering / 2
+        totalSteering += finalSteering
         if server != None:
             serailzed=[[],[],[],[],[],[],[],[]]
             for i in range(8):
