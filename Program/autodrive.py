@@ -25,6 +25,7 @@ def main():
             global running
             running = False
             camera.stop()
+            server.close()
             drive.stop()
             io.close()
             print('stopped by emergency stop button')
@@ -36,6 +37,7 @@ def main():
             global running
             running = False
             camera.stop()
+            server.close()
             drive.stop()
             io.close()
             print('stopped by 3 laps')
