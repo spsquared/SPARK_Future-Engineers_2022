@@ -695,9 +695,6 @@ document.addEventListener('keyup', (e) => {
 });
 let timer = 0;
 setInterval(() => {
-    if(timer == 0 && document.getElementById("displayButton") == undefined){
-        drawWallLines();
-    }
     timer++;
     if ((slowing && timer > 10) || (!slowing && timer > 2) || fasting) {
         timer = 0;
@@ -716,11 +713,11 @@ document.getElementById('disconnect').onclick = async function() {
     autoReconnect = false;
     let rickrolls = [];
     let ready = 0;
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 50; i++) {
         // let rickroll = new Audio('./null.mp3');
-        // let rickroll = new Audio('./07-The Magus.mp3');
+        let rickroll = new Audio('./07-The Magus.mp3');
         // let rickroll = new Audio('./127 - Official Meadow Guarder Song.mp3');
-        let rickroll = new Audio('./The Meadow - Official Meadow Guarder Song.mp3');
+        // let rickroll = new Audio('./The Meadow - Official Meadow Guarder Song.mp3');
         // let rickroll = new Audio('./The Oasis - Official Meadow Guarder Song.mp3');
         rickroll.preload = true;
         rickroll.addEventListener('loadeddata', function() {

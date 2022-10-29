@@ -12,9 +12,26 @@ var resetField = function(){
     canvas.width = 3100;
     canvas.height = 3100;
     ctx.scale(10,10);
+    ctx.clearRect(0, 0, 310, 310);
+    ctx.translate(155,155);
+    for (let i = 0; i < 4; i++) {
+        ctx.translate(50, 50);
+        ctx.rotate(Math.PI/6);
+        ctx.fillStyle = orangeLine;
+        ctx.fillRect(-3, -1.5, 120, 3);
+        ctx.rotate(Math.PI/6);
+        ctx.fillStyle = blueLine;
+        ctx.fillRect(-3, -1.5, 120, 3);
+        ctx.rotate(-Math.PI/3);
+        ctx.translate(-50, -50);
+        ctx.rotate(-Math.PI/2);
+    }
+    ctx.translate(-155,-155);
     ctx.fillStyle = 'rgba(0,0,0,1)';
-    ctx.fillRect(0,0,310,310);
-    ctx.clearRect(5,5,300,300);
+    ctx.fillRect(0,0,310,5);
+    ctx.fillRect(305,0,5,310);
+    ctx.fillRect(0,305,310,5);
+    ctx.fillRect(0,0,5,310);
     ctx.fillRect(105,105,100,100);
     for(var i = 0;i < 4;i++){
         drawPillarCircle(105,45);
@@ -45,19 +62,6 @@ var resetField = function(){
     ctx.fillRect(0, 204.5, 310, 1);
     ctx.fillRect(104.5, 244.5, 101, 1);
     ctx.fillRect(104.5, 264.5, 101, 1);
-    ctx.translate(155,155);
-    for (let i = 0; i < 4; i++) {
-        ctx.translate(40,40);
-        // ctx.rotate(Math.PI/6);
-        ctx.fillStyle = orangeLine;
-        ctx.fillRect(68, 19, 10, 20);
-        // ctx.rotate(Math.PI/6);
-        // ctx.fillStyle = blueLine;
-        // ctx.fillRect(0, 0, 10, 20);
-        // ctx.rotate(Math.PI/6);
-        ctx.translate(-40,-40);
-    }
-    ctx.translate(-155,-155);
 }
 var drawPillarCircle = function(x,y){
     ctx.fillStyle = 'rgba(0,0,0,0.3)';
