@@ -567,7 +567,7 @@ function showWallData() {
     for(let i = 0; i < 8; i++) {
         for(var j = 0;j < 34;j++){
             try{
-                ctx2.fillRect(i*34+                  j,77,1,data[i][j]);
+                ctx2.fillRect(i*34+                  j,78,1,data[i][j]);
             }
             catch(err){
                 appendLog("'data'", '#c4c4c4');
