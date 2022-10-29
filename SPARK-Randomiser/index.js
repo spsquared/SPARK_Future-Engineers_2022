@@ -13,6 +13,8 @@ var resetField = function(){
     canvas.height = 3100;
     ctx.scale(10,10);
     ctx.clearRect(0, 0, 310, 310);
+    ctx.fillStyle = 'rgba(255, 255, 255, 1)';
+    ctx.fillRect(0, 0, 310, 310);
     ctx.translate(155,155);
     for (let i = 0; i < 4; i++) {
         ctx.translate(50, 50);
