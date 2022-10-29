@@ -511,12 +511,6 @@ function drawLightBlob(blob,blobColor){
     ctx.fill();
     ctx.stroke();
 };
-function drawWallLines(){
-    var e = document.createElement('button');
-    e.id = "displayButton"
-    e.onclick = data
-    document.body.appendChild(e)
-};
 function addData(data){
     index = 0;
     // steering data
@@ -567,7 +561,7 @@ function showWallData() {
     for(let i = 0; i < 8; i++) {
         for(var j = 0;j < 34;j++){
             try{
-                ctx2.fillRect(i*34+                  j,77,1,data[i][j]);
+                ctx2.fillRect(i*34+                  j,78,1,data[i][j]);
             }
             catch(err){
                 appendLog("'data'", '#c4c4c4');
@@ -701,9 +695,6 @@ document.addEventListener('keyup', (e) => {
 });
 let timer = 0;
 setInterval(() => {
-    if(timer == 0 && document.getElementById("displayButton") == undefined){
-        drawWallLines();
-    }
     timer++;
     if ((slowing && timer > 10) || (!slowing && timer > 2) || fasting) {
         timer = 0;
@@ -722,10 +713,12 @@ document.getElementById('disconnect').onclick = async function() {
     autoReconnect = false;
     let rickrolls = [];
     let ready = 0;
-    for (let i = 0; i < 100; i++) {
-        let rickroll = new Audio('./null.mp3');
+    for (let i = 0; i < 50; i++) {
         // let rickroll = new Audio('./null.mp3');
+        let rickroll = new Audio('./07-The Magus.mp3');
         // let rickroll = new Audio('./127 - Official Meadow Guarder Song.mp3');
+        // let rickroll = new Audio('./The Meadow - Official Meadow Guarder Song.mp3');
+        // let rickroll = new Audio('./The Oasis - Official Meadow Guarder Song.mp3');
         rickroll.preload = true;
         rickroll.addEventListener('loadeddata', function() {
             ready++;
