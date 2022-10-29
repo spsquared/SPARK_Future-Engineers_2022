@@ -1,0 +1,166 @@
+/* Copyright (C) 2021 Radioactive64 */
+
+/* font */
+@font-face {
+    font-family: "Pixel";
+    src:url(./assets/miniset2-webfont.woff),
+        url(./assets/miniset2-webfont.woff2) format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html {
+    overflow: hidden;
+    font-family: 'Pixel';
+    font-size: 18px;
+    user-select: none;
+}
+.ui-lighttext {
+    font-family: 'Pixel';
+    font-size: 16px;
+    color: white;
+}
+.ui-darktext {
+    font-family: 'Pixel';
+    font-size: 16px;
+    color: black;
+}
+
+/* scrollbar */
+::-webkit-scrollbar {
+    width: 20px;
+    height: 20px;
+    cursor: default;
+}
+::-webkit-scrollbar-track {
+    background: rgba(40, 40, 40, 0.2); 
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(20, 20, 20, 0.5); 
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(25, 25, 25, 0.5); 
+}
+::-webkit-scrollbar-thumb:active {
+    background: rgba(15, 15, 15, 0.5); 
+}
+
+/* inputs */
+.button {
+    background-color: whitesmoke;
+    border: 2px solid black;
+    margin: 2px 2px;
+    font-family: 'Pixel';
+    font-size: 14px;
+    transition: 0.1s transform ease-in-out;
+    cursor: pointer;
+}
+.button:hover {
+    transform: translateY(-5px);
+}
+.button:active {
+    transform: translateY(10px);
+}
+.select {
+    background-color: whitesmoke;
+    border: 2px solid black;
+    margin: 2px 2px;
+    font-family: 'Pixel';
+    font-size: 14px;
+    cursor: pointer;
+}
+.text {
+    width: 50%;
+    background-color: whitesmoke;
+    border: 2px solid black;
+    margin: 2px 2px;
+    font-family: 'Pixel';
+    font-size: 14px;
+}
+.text-small {
+    width: 25%;
+    background-color: whitesmoke;
+    border: 2px solid black;
+    margin: 2px 2px;
+    font-family: 'Pixel';
+    font-size: 14px;
+}
+.checkBox {
+    width: 14px;
+    height: 14px;
+}
+.color {
+    width: 50px;
+    height: 28px;
+    border: none;
+    padding: 0px 0px;
+    margin: 0px 0px;
+    background-color: lightgray;
+    cursor: pointer;
+}
+
+/* view pane */
+#viewPane {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    bottom: 40px;
+    background-color: #eeeeee;
+}
+
+/* selection */
+#viewSelect {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 40px;
+    background-color: #ababab;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+    padding-left: 5px;
+}
+#viewSelect::-webkit-scrollbar {
+    height: 6px;
+    opacity: 0.2;
+}
+.viewSelector {
+    width: 100px;
+    height: 40px;
+    border: none;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    margin: 0px 5px;
+    padding-top: 0px;
+    font-family: 'Pixel';
+    font-size: 16px;
+    color: black;
+    transition: 0.1s linear;
+    background-color: #dddddd;
+    cursor: pointer;
+}
+.viewSelector:hover {
+    border-top: 4px solid #727272;
+}
+
+/* list */
+#assetList {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 400px;
+    height: 100%;
+    background-color: #efefef;
+    overflow-y: scroll;
+}
+
+/* edit */
+.editPane {
+    position: absolute;
+    top: 0px;
+    left: 400px;
+    right: 0px;
+    height: 100%;
+}

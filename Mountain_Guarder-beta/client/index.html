@@ -1,0 +1,1810 @@
+<!-- Copyright (C) 2022 Radioactive64 -->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Mountain Guarder</title>
+        <meta content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0, user-scalable=no">
+        <meta id="viewport" name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0, user-scalable=no">
+        <meta charset="utf-8">
+        <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self' 'unsafe-eval' 'unsafe-inline';
+        script-src 'self' 'unsafe-eval' 'unsafe-inline';
+        script-src-elem 'self' https://openfpcdn.io/fingerprintjs/v3 'unsafe-eval' 'unsafe-inline';
+        img-src 'self' data:;
+        frame-src 'self' https://www.youtube.com/ https://meadowguarderold.herokuapp.com/ https://www.herokucdn.com/error-pages/application-error.html 'unsafe-eval' 'unsafe-inline';
+        connect-src 'self' https://tls-use1.fpapi.io/ https://api.fpjs.io/ 'unsafe-eval' 'unsafe-inline';
+        ">
+        <meta name="title" content="Mountain Guarder">
+        <meta name="description" content="Mountain Guarder - A free-to-play indie RPG.">
+        <meta name="url" content="https://mountainguarderbeta.herokuapp.com">
+        <meta name="image" content="https://mountainguarderbeta.herokuapp.com/client/img/banner_small.png">
+        <link rel="icon" href="/client/assets/faviconbeta.ico" type="image/x-icon">
+        <noscript><meta http-equiv="refresh" content="0; url=/client/nojs.html"/></noscript>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>socket = io(); io = null; socket.connect = socket.disconnect;</script>
+        <script src="/client/tracker.js"></script>
+        <script>socket.emit('_0x7f0334', window._0x2b8cf2._0x442696);</script>
+        <script src="/client/index.js" defer></script>
+        <script src="/client/game.js" defer></script>
+        <script src="/client/entity.js" defer></script>
+        <script src="/client/inventory.js" defer></script>
+        <script src="/client/quest.js" defer></script>
+        <script src="/client/menu.js" defer></script>
+        <script src="/client/controller.js" defer></script>
+        <link rel="stylesheet" href="/client/assets/main.css">
+        <link rel="stylesheet" href="/client/assets/game.css">
+    </head>
+    <body>
+        <div id="menuContainer" class="noSelect">
+            <img id="backgroundImg" src="./client/img/Preview.png"></img>
+            <div id="backgroundShade"></div>
+            <div id="menuTitle">Mountain Guarder Beta</div>
+            <div id="stackLeft">
+                <div class="stack ui-block ui-lighttext">
+                    <form onsubmit="void(0);">
+                    <table><tbody>
+                            <tr>
+                                <td style="text-align: right;">
+                                    <label for="username">Username:</label><br>
+                                </td>
+                                <td>
+                                    <input type="text" id="username" class="ui-textInput" name="username" autocapitalize="off" required autocomplete="username" maxlength="20"><br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">
+                                    <label for="password">Password:</label><br>
+                                </td>
+                                <td>
+                                    <input type="password" id="password" class="ui-textInput" name="password" autocapitalize="off" required autocomplete="current-password" maxlength="100"><br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">
+                                    <label id="newpasswordLabel" for="newpassword" style="display: none;">New Password:</label>
+                                </td>
+                                <td>
+                                    <input type="password" id="newpassword" class="ui-textInput" name="newpassword" autocapitalize="off" autocomplete="new-password" style="display: none;">
+                                </td>
+                            </tr>
+                        </tbody></table>
+                    </form>
+                    <div style="margin-top: 8px;">
+                        <button id="signIn" class="ui-lightbutton" onclick="signIn();">Sign In</button>
+                        <!-- <button id="createAccount" class="ui-lightbutton" onclick="createAccount();">Create Account</button>
+                        <button id="deleteAccount" class="ui-lightbutton" onclick="deleteAccount();">Delete Account</button> -->
+                        <button id="changePassword" class="ui-lightbutton" onclick="changePassword();">Change Password</button>
+                        <div id="signInError"></div>
+                    </div>
+                </div>
+                <!-- <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        version - date
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        insert changes here
+                    </div>
+                </div> -->
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.12.0 - 7/21/22
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        After a long time, v0.12.0 is finally released! Includes a map expansion and some new resources and items, as well as lighting effects! Ialite can be used to craft a crystal that can harness the power of Purple.
+                        <ul>
+                            <li>Added the Abandoned Mineshaft and expanded map</li>
+                            <li>Added new monsters - found in the Abandoned Mineshaft</li>
+                            <li>Added Ialite</li>
+                            <li>Added lights</li>
+                            <li>Buffed Steel Bow & added Titanium Bow</li>
+                            <li>Revamped map to be more accurate to real life</li>
+                            <li>Added new resources</li>
+                            <li>Bob's forge can be used to craft steel items</li>
+                            <li>Added touch damage</li>
+                            <li>Added more death messages</li>
+                            <li>Fixed instant kills with melee weapons</li>
+                            <li>Added monster friendly fire</li>
+                            <li>Added "Optimized Particles" setting</li>
+                            <li>Added bridge tiles</li>
+                            <li>Fixed slowdowns</li>
+                            <li>Fixed layer rendering issues</li>
+                            <li>Monsters now have death particles again</li>
+                            <li>Added invincibility frames</li>
+                            <li>Patched absurdly high crit power</li>
+                            <li>Did not implement layer pathfinding</li>
+                            <li>Patched negative item taking</li>
+                            <li>Added physics inaccuracy property to ENV - lowers physics resolution to increase performance (higher is faster)</li>
+                            <li>Patched account spam - accounts must play for more than 5 minutes to be considered valid</li>
+                            <li>Optimizations</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.11.0 - 6/10/22
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        Sampleprovider(sp) made an oopsie! Anyways, bug fixes.
+                        <ul>
+                            <li>Switched to correct collision script</li>
+                            <li>Fixed pathfinding</li>
+                            <li>Patched negative item dropping</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.11.0 - 6/10/22
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        Mountain Guarder isn't dead!<br>Introducing crafting & shops! Another important update as well as multiple small changes and some fixes.
+                        <ul>
+                            <li>Added the Outpost Trader's Store (with Adicyte)</li>
+                            <li>Added stores and crafting</li>
+                            <li>Added (some) crafting materials (logs, planks)</li>
+                            <li>Changed inventory drag-and-drop to click-and-more-click</li>
+                            <li>Monsters no longer deaggro within 4 tiles of players</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/233" target="_blank">NPCs stop walking while in conversation (Issue #233)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/229" target="_blank">Fixed walking animations playing while in conversation (Issue #229)</a></li>
+                            <li>Fixed getting stuck in black screen while teleporting</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/237" target="_blank">Fixed username HTML injection (Issue #237)</a></li>
+                            <li>Particle movement speed is no longer dependent on fps</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/211" target="_blank">Fixed incorrect item highlighting (Issue #211)</a></li>
+                            <li>Patched bug related to changing regions with region sign still on screen</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/235" target="_blank">Patched memory leaks from undeleted sockets and players (Issue #235)</a></li>
+                            <li>Fixed physics</li>
+                            <li>Add autosave</li>
+                            <li>Optimizations</li>
+                            <li>Patched exploits related to spam checking</li>
+                            <li>Internal code formatting</li>
+                            <li>Fixed SEO</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.10.1 - 6/5/22
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        A VERY needed update patching account creation spam.
+                        <ul>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/234" target="_blank">Patched account creation spam with temporary IP tracking and browser fingerprinting (#234)</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.10.0 - 4/15/22
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        The Quest update! Bob now gives out a quest! Among that, other additions like experimental controller support, quality-of-life changes, and multiple security patches. As a sneek peak into the roadplan for v1.0.0, we'll just say that we plan on making shops and crafting soon, and using the coins as a currency. Happy Garudering!
+                        <ul>
+                            <li>Added quests</li>
+                            <li>Added Garuder Coins</li>
+                            <li>Some items can now stack</li>
+                            <li>Added tracked stats</li>
+                            <li>Added controller support</li>
+                            <li>Added Rare Steak</li>
+                            <li>Added hot-swapping to offhand item</li>
+                            <li>Walking animations now scale to movement speed</li>
+                            <li>Fixed Player/NPC walking animations</li>
+                            <li>Buffed cherrybombs</li>
+                            <li>Nerfed staffs</li>
+                            <li>Fixed lag while not on tab</li>
+                            <li>Added keybind for dropping items</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/225" target="_blank">Patched crashes from socket.emit (Issue #225)</a></li>
+                            <li>Fixed `/msg` command</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/226" target="_blank">Added custom cursor to fade overlay (Issue #226)</a></li>
+                            <li>Rebalanced items for more incentive to use melee</li>
+                            <li>Added JS Heap usage information of debug</li>
+                            <li>Mountain Guarder now tags computers with an id for security</li>
+                            <li>Fixed wierd inventory behavior</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/224" target="_blank">Fixed missing tree collisions (Issue #224)</a></li>
+                            <li>Added chat colors for devs and ops</li>
+                            <li>Allowed username 'sp'</li>
+                            <li>Updated region locations</li>
+                            <li>Changed monster spawning distributions</li>
+                            <li>Changed offhand to shield</li>
+                            <li>Updated <a href="https://mountainguarder.herokuapp.com/itemcreator" target="_blank">MGIC</a></li>
+                            <li>Fixed "invalid particle type undefined" errors</li>
+                            <li>Changed chat size</li>
+                            <li>Fixed server/client debug desync</li>
+                            <li>Added @s to debug</li>
+                            <li>Changed packet rate limiting</li>
+                            <li>Upgrade database user data column to 1,048,576 characters</li>
+                            <li>Replaced plaintext password chache in player objects with encrypted chache</li>
+                            <li>Multiple small optimizations</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.9.1 - 3/19/22
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        Quick patches and finishing some things.
+                        <ul>
+                            <li>Fixed inventory</li>
+                            <li>Keybinds now save</li>
+                            <li>Patched conflicting keybinds</li>
+                            <li>Patched particles drawing on all maps</li>
+                            <li>Changed movement from key-vector-based to vector-based</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.9.0 - 3/18/22
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        After exactly two months and a lot of pain, Mountain Guarder v0.9.0 is finished! It's a huge cumulative update with multiple typos, many new features, and lots of fixes and features are included. This update is chock-full of features and bug fixes, along with a complimentary bug or two. Have fun, and don't stop Garuding.
+                        <ul>
+                            <li>Added knockback</li>
+                            <li>Rewrote and optimized Rig collisions</li>
+                            <li>Added world map</li>
+                            <li>Fixed pathfinding and collisions causing server hangs</li>
+                            <li>Added editable keybinds</li>
+                            <li>Fixed bug involving layering issues with players on different layers</li>
+                            <li>Monsters now have a natural heal</li>
+                            <li>Added parallax effect to menu screen and shadow to title text</li>
+                            <li>Extended Preview.png</li>
+                            <li>Made arrows more consistently sized and fixed their hitbox</li>
+                            <li>Changed Snowy Outpost region size</li>
+                            <li>Added custom crosshair texture</li>
+                            <li>Smoothed out biome blending</li>
+                            <li>Changed monster drop lists</li>
+                            <li>Changed window close button to red</li>
+                            <li>Sliders and toggles are now square</li>
+                            <li>Fixed incorrect damage label on Wooden Bows</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/203" target="_blank">Fixed waypoint pathfinding getting stuck in a loop (Issue #203)</a></li>
+                            <li>Removed "double" projectile pattern</li>
+                            <li>Added debug view for dropped items</li>
+                            <li>Added frame time debug</li>
+                            <li>Added op, which is limited to just s commands</li>
+                            <li>Added help command to s</li>
+                            <li>Added server hang prevention correction</li>
+                            <li>Patched teleport to (0, 0) by socket.io exploits</li>
+                            <li>Fixed single pixel on snow cliff edge</li>
+                            <li>Added new stair direction</li>
+                            <li>Updated CSP</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.8.4 - 1/18/22
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        A patch against a security vulnerability exposed by Suvanth and Maitian352 which allowed anyone to get debug permissions through manipulation by someone with debug.
+                        <ul>
+                            <li>Patched major vulnerability caused by debug console permissions</li>
+                            <li>Removed #teamseas page</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.8.3 - 1/18/22
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        The reason why beta servers are needed. Some bugs that were presumed fixed were not, in fact, fixed. The discord live chat webhook has also been re-enabled after leaving it disabled from testing.
+                        <ul>
+                            <li>Re-enabled discord live chat webhook</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/164" target="_blank">Fixed typo causing items to drop in collisions (issue #164)</a></li>
+                            <li>Re-patched some bugs</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.8.2 - 1/17/22
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        v0.8.2 features big collision optimizations and fixes some bugs that don't fit into major or minor.
+                        <ul>
+                            <li>Optimized collisions</li>
+                            <li>Synced canvas draw to screen updates</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/218" target="_blank">Added high contrast mode (Issue #218)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/209" target="_blank">Fixed monster deaggro mechanics (Issue #209)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/215" target="_blank">Expanded profanity filter (Issue #215)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/164" target="_blank">Fixed item in collision prevention (Issue #164)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/210" target="_blank">Tooltip hides when you drop an item with "Q" (Issue #210)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/206" target="_blank">Fixed incorrect collisions in the "Foothills" (Issue #208/Issue #206)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/204" target="_blank">Made chunk rendering async to reduce draw lag (Issue #204)</a></li>
+                            <li>Changed chat spam limit</li>
+                            <li>Updated copyright year</li>
+                            <li>Modified issue templates</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.8.1 - 1/12/22
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        Bugfixes and more fixes because GitHub issues got cluttered.
+                        <ul>
+                            <li>Fixed tile layering issues</li>
+                            <li>Pressing "Q" will now drop the item hovered over</li>
+                            <li>Player will now face the mouse when not moving</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/199" target="_blank">Fixed collision issues at the bridge over the Icy River (Issue #199)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/194" target="_blank">Fixed DroppedItems not being visible to anyone (Issue #194)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/196" target="_blank">Fixed incorrect collision location in collision type 15 (Issue #196)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/198" target="_blank">Filled in missing collisions (Issue #198)</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.8.0 - 1/8/22
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        Do not fear, the Mountain is near! The new "Foothills" region is partially here! Collision layers are implemented and so have critical hits. Along with that slowdowns have been added in areas like stairs and teleportation mechanics have been tweaked. Along with that some strange bugfixes, like invisible entities.
+                        <ul>
+                            <li>Expanded map to add "Foothills" region</li>
+                            <li>Implemented critical hits</li>
+                            <li>Added "slowdowns" - areas where your speed decreases</li>
+                            <li>Changed teleportation mechanics</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/185" target="_blank">Fixed invisible entities at negative indexes (Issue #185)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/187" target="_blank">Patched infinite kicks for spamming (Issue #187)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/184" target="_blank">Patched particles in the void (Issue #184)</a></li>
+                            <li>Fixed inaccurate mouse position debug</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/191" target="_blank">changed collisions for some stumps and rocks (Issue #191)</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.7.3 - 1/4/22
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        A few bug fixes and optimizations on top of the addition of monsters dropping items that are only visible to the player that killed it.
+                        <ul>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/158" target="_blank">Monster drops are now only visible to the player that killed it (Issue #158)</a></li>
+                            <li>Added the Leather Hat to drop lists</li>
+                            <li>Removed wait time after teleporting</li>
+                            <li>Items despawn after 5 minutes instead of 20 now</li>
+                            <li>Optimized update packets</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/142" target="_blank">Fixed monsters going inactive at player gridx=0 (Issue #142)</a></li>
+                            <li>Added more trolls</li>
+                            <li>Patched unable to sign in after clicking sign in button</li>
+                            <li>Patched server crashes from sign up spam</li>
+                            <li>Improved local installation instructions</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.7.2 - 1/1/22
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        It's 2022! Starting off stronk with a bugfix. Couldn't delay the Discord webhook exploit that allows people to send anything, so here it is!
+                        <ul>
+                            <li>Patched Discord live chat webhook exploit</li>
+                            <li>Items only highlight when you are close to them</li>
+                            <li>Changed item pickup distance</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/180" target="_blank">Changed collision size for rocks (Issue #180)</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.7.1 - 12/31/21
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        The last Mountain Guarder update of 2021! Happy new years! To conclude the year there is a mass bugfix! We weren't able to fix all the bugs we wanted to, but there's still a lot!
+                        <ul>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/166" target="_blank">Added item highlighting (Issue #166)</a></li>
+                            <li>Added more information to tooltips</li>
+                            <li>Monsters now have a chance to not drop anything</li>
+                            <li>Items in your offhand no longer have any effects</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/175" target="_blank">Added new collision type for tree stumps, rocks, trees, etc. (Issue #175)</a></li>
+                            <li>Added a live chat feed to discord</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/160" target="_blank">Added "/help" command (Issue #160)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/170" target="_blank">Made the Steel Bow obtainable (Issue #170)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/172" target="_blank">Added snow to tree stumps (Issue #172)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/162" target="_blank">Fixed death particles flashing black (Issue #162)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/163" target="_blank">Patched monsters inactive until player approaches (0, 0) (Issue #163)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/161" target="_blank">Dropping an equip will now update your stats (Issue #161)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/169" target="_blank">Picking up items with a full inventory is no longer possible (Issue #169)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/164" target="_blank">Items no longer drop into collisions (Issue #164)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/178" target="_blank">Patched mouse position not updating (Issue #178)</a></li>
+                            <li>Tweaked chat broadcasts</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/177" target="_blank">Added another bush (Issue #177)</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.7.0 - 12/28/21
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        After much request (and complaints) dropped items have been added. Monsters will now drop their items instead of teleporting them into your inventory.
+                        <ul>
+                            <li>Items are now droppable</li>
+                            <li>Implemented tooltips</li>
+                            <li>Monsters drop items instead of teleporting them into your inventory</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/152" target="_blank">Fixed all items with the same id being linked (Issue #152)</a></li>
+                            <li>Fixed weapon effects not being calculated</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/156" target="_blank">Made aggro raycasting finer (Issue #156)</a></li>
+                            <li>Fixed permanent item dragging</li>
+                            <li>Improved preloading times</li>
+                            <li>Patched infinitely spinning snowballs</li>
+                            <li>Fixed monster aggro on damage</li>
+                            <li>Added position values to debug screen</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/111" target="_blank">Patched server crashes from double kicks (Issue #111)</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.6.4 - 12/24/21
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        <span style="animation: christmas 2s infinite">Merry Christmas from the Mountain Guarder devs!</span> Added the christmas2021 item "Season's Yeetings", a reference to <a href="https://www.youtube.com/watch?v=AlLquMhQiz4" target="_blank">BPS.space's rocket-propelled Christmas tree</a>!
+                        <ul>
+                            <li>Christmas update! Everone gets a special christmas staff!</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/155" target="_blank">Fixed Bob pathing into walls (Issue #155)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/129" target="_blank">Patched errors on account creation (Issue #129)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/151" target="_blank">Patched debug toggle not changing indicator text (Issue #151)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/150" target="_blank">Fixed tree clipping through bridge railings (Issue #150)</a></li>
+                            <li>Patched noclip magic orbs being invisible on client</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.6.3 - 12/23/21
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        More enhancements to the game to polish up existing things, and added the Titanium Staff.
+                        <ul>
+                            <li>Snowballs move faster when attacking</li>
+                            <li>Added the Titanium Staff</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/143" target="_blank">Added monster spawning particles (Issue #143)</a></li>
+                            <li>Balanced item rarity</li>
+                            <li>Nerfed cherry bomb blast radius</li>
+                            <li>Monsters will no longer circle to a point where they have no line of sight to players</li>
+                            <li>Particles have variable sizes now</li>
+                            <li>Fixed wierd texturing on purple orbs</li>
+                            <li>Fixed noclip problems with purple orbs</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/146" target="_blank">Patched monsters aggroing from any distance (Issue #146)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/144" target="_blank">Patched chat filter bypass (Issue #144)</a></li>
+                            <li>Added the invisible tables and chairs to the Outpost Inn</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.6.2 - 12/15/21
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        Patches and some tweaks, including better monster aggro mechanics and pathfinding improvements.
+                        <ul>
+                            <li>Monsters need a line of sight to detect you, and will lose track if they cannot see you for more than 5 seconds</li>
+                            <li>Fixed NPC pathfinding issues</li>
+                            <li>Improved monster pathfinding (less jittery now)</li>
+                            <li>Cherry bombs no longer explode instantly</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/141" target="_blank">Fixed double-sign in bug (Issue #141)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/133" target="_blank">Fixed profanity filters (Issue #133)</a></li>
+                            <li>Patched more socket.emit-related bugs</li>
+                            <li>Patched crashes caused by "socket.emit('error');" (Thanks @Suvanth-Erranki!)</li>
+                            <li>Added NPC waypoints to debug view and changed path visualization</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.6.1 - 12/1/21
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        Some patches to bugs like debug-induced crashes or chat issues. A credits HTML page was added as well as monsters fleeing when at low hp.
+                        <ul>
+                            <li>Patched debug command-induced crashes</li>
+                            <li>Monsters now flee when at low hp</li>
+                            <li>Melee damage hitboxes now follow your mouse</li>
+                            <li>Added license.html</li>
+                            <li>Added publicly available commands in chat (/msg)</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/136" target="_blank">Patched sign in spam (Issue #136)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/139" target="_blank">Patched talking in chat on menu (Issue #139)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/133" target="_blank">Added profanity filters (Issue #133)</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.6.0 - 11/28/21
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        Added NPCs, the first of which is Bob! Other things in the changelog includes optimizations, security fixes, quality-of-life changes, and multiple bug fixes. Mountain Guarder v0.6.0 feels much more polished than any previous version. Some additions include idle walk, death messages, and chunk border viewing. DDOS/DOS protections are added as well. Random bugs involving CSS and weird oversights, like player hitbox sizing, has been fixed also. This is a big update!
+                        <ul>
+                            <li>Added NPCs</li>
+                            <li>Added protection against DOS/DDOS attacks</li>
+                            <li>Optimized collision detection</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/115" target="_blank">Balanced weapons (Issue #115)</a></li>
+                            <li>Monster idle walk exists now</li>
+                            <li>Monsters will now try and leave no monster regions</li>
+                            <li>Added player death messages</li>
+                            <li>Increased CherryBomb explosion range</li>
+                            <li>Projectiles can now have patterns</li>
+                            <li>Melee damage hitboxes now follow the player and no longer float around</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/111" target="_blank">Added socket.emit() anticheat (Issue #111)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/119" target="_blank">Prevented autoclicking without autoclicker (Issue #119)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/117" target="_blank">Fixed attacking from clicking on windows (Issue #117)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/106" target="_blank">Items no longer go into the void (Issue #106)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/114" target="_blank">Removed scroll bars on game container (Issue #114)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/102" target="_blank">Added chat size setting (Issue #102)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/118" target="_blank">Patched highlighting of inventory (Issue #118)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/108" target="_blank">Patched client not receiving player id (Issue #108)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/101" target="_blank">Patched maps changing before screen fade complete (Issue #101)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/103" target="_blank">Fixed player hitbox sizing issue (Issue #103)</a></li>
+                            <li>Increased mana regen speed</li>
+                            <li>Chunk borders are now visible in debug</li>
+                            <li>Debug no longer shows hitboxes of entities on other maps</li>
+                            <li>Patched screen flashing when changing render quality</li>
+                            <li>Added some trees</li>
+                            <li>Updated preview image</li>
+                            <li>Fixed username character limit</li>
+                            <li>Replaced manhattan distance function with square distance function</li>
+                            <li>Fixed other minor bugs</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.5.4 - 11/13/21
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        Minor patches and additions, such as chat autoscroll, debug console, and players no longer defaulting to facing down.
+                        <ul>
+                            <li>Added chat autoscroll</li>
+                            <li>Added debug console in-game</li>
+                            <li>Added TPS and Ping to debug ui</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/91" target="_blank">Players now face in the last direction they moved in while standing (Issue #91)</a></li>
+                            <li>Windows will now move to stay on screen when zooming in</li>
+                            <li>Remapped chat key to "t"</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/97" target="_blank">Patched held items not clearing on unequip (Issue #97)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/100" target="_blank">Patched floating tooltip (Issue #100)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/95" target="_blank">Patched HP regen while dead (Issue #95)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/98" target="_blank">Fixed weird collisions in Outpost Inn (Issue #98)</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.5.3 - 11/13/21
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        The loading screen is here! Featuring a css-animated icon and new css-animated fade, the loading screen is better than Meadow Guarders!
+                        <ul>
+                            <li>Added a loading screen</li>
+                            <li>Added some more items</li>
+                            <li>Pressing "E" and "I" in chat no longer trigger the inventory</li>
+                            <li>Moved the chat so it isn't off-center by 1 pixel</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/86" target="_blank">Patched items not saving on server stops (Issue #86)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/89" target="_blank">Fixed inventory overfill (Issue #89)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/88" target="_blank">Fixed maps staying black after loading (Issue #88)</a></li>
+                            <li>Renamed "burst" enchantment to "swiftness"</li>
+                            <li>Added JavaScript disabled page</li>
+                            <li>Changed all fade effects to css transitions</li>
+                            <li>Added SECURITY.md</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.5.2 - 11/6/21
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        The inventory is almost complete. Items now actually do something! In the meantime, go support <a href="https://teamseas.org/" target="_blank">#TeamSeas</a> in their mission to remove 30,000,000 pounds of trash from the oceans! <a href="/client/teamSeas/" target="_blank">#TeamSeas!</a>
+                        <ul>
+                            <li>Equipped items now have an effect</li>
+                            <li>Item held is now visible (swords and staffs are a bit broken)</li>
+                            <li>Tweaked mana regeneration (0.5s since last use before regen starts)</li>
+                            <li>Added <a href="https://teamseas.org" target="_blank">#TeamSeas Announcement</a></li>
+                            <li>Players now regen automatically</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.5.1 - 11/4/21
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        The new <a href="./itemcreator/" target="_blank">Mountain Guarder Item Creator Tool (MGICTool)</a> is out! Easily create a range of items from weapons to armor! Make custom offhand items using the "offhand" slot type!<br>
+                        In other news, the inventory is now mostly complete, and player and monster stats now apply. Next update will be on the actual effects of items (so don't go spamming the issues about it!).
+                        <ul>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/85" target="_blank">Added the Mountain Guarder Item Creator Tool!</a></li>
+                            <li>Modified item stats and added more items</li>
+                            <li>Player and monster stats now apply</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/83" target="_blank">Items can only be equipped in their respective slot types now (Issue #83)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/77" target="_blank">Items no longer get visually duplicated when dragging (Issue #77)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/81" target="_blank">Added the rest of item images (Issue #81)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/84" target="_blank">Patched crash exploit through socket.io (Issue #84)</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.5.0 - 11/2/21
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        The complicated and very much needed inventory has been added! The mobs have a few drops, more items will be on the way along with an item creation tool for modders (and me). Currently items don't have any effect, that will be worked on. We just don't want to delay the update too much.
+                        <ul>
+                            <li>Added and implemented inventory</li>
+                            <li>Added equipping items (no effect yet)</li>
+                            <li>Added a few item drops</li><li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/75" target="_blank">Fixed settings not loading (Issue #75)</a></li>
+                            <li>Added Offline Mode for testing without corrupting database</li>
+                            <li>Patched some discrepancies</li>
+                            <li>Added some s commands</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.4.3 - 10/18/21
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        Added the chat (finally) and the disconnected button (finally).
+                        <ul>
+                            <li>Added chat</li>
+                            <li>Added disconnected button</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.4.2 - 10/17/21
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        The settings window has been done and has settings for performance and debug, done with fancy toggle switches! Players have nametags now, projectiles can go over water, and some account stuff was changed. Next on the list is items!
+                        <ul>
+                            <li>Added settings - render distance, render quality, debug, particles - with fancy toggles!</li>
+                            <li>Players now have nametags ingame</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/55" target="_blank">Projectiles can go over water (Issue #55)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/72" target="_blank">Signing in twice is now impossible (Issue #72)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/74" target="_blank">Patched players on menu screen visible ingame (Issue #74)</a></li>
+                            <li>Added monster path debug and tweaked monster circle code</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.4.1 - 10/14/21
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        Fixed the account system and changing passwords exists now.
+                        <ul>
+                            <li>Fixed database unresponsive</li>
+                            <li>Added change password function</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.4.0 - 10/13/21
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        Added the account system. Full login system is nearly complete. There is no inventory to save yet so that part is untested.
+                        <ul>
+                            <li>Implemented account system</li>
+                            <li>Added server log warns and force quits</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.3.2 - 10/10/21
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        Debug view can be enabled via the "backslash" (\) key. It allows players to view hitboxes, aggro range, aggro targets, and keypresses. Some random bugs were fixed as well. Some chat messages will be sent when joining and leaving.
+                        <ul>
+                            <li>Added debug info sent from server</li>
+                            <li>Adjusted monster aggro ranges</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/60" target="_blank">Fixed player animation getting stuck (Issue #60)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/52" target="_blank">Patched rubberbanding while changing maps (Issue #52)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/66" target="_blank">Fixed missing date (Issue #66)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/61" target="_blank">Fixed missing credits (Issue #61)</a></li>
+                            <li>Added chat messages for joining and leaving game</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.3.1 - 10/7/2021
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        Some improvements to existing monsters. Monsters will now circle players (a little buggy), cherry bomb explosion chains chain now, and some random bugs were fixed. Performance profiling was done as well.
+                        <ul>
+                            <li>Monsters now circle players when close enough</li>
+                            <li>Cherry bomb explosion chains are now chains</li>
+                            <li>Fixed monsters moving after losing aggro</li>
+                            <li>Did some performange profiling</li>
+                            <li>Fixed monster aggro</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/56" target="_blank">Patched projectiles spawning in collisions (Issue #56)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/52" target="_blank">Patched rubberbanding while changing maps (Issue #52)</a></li>
+                            <li>Fixed monsters spawning with max HP of 100</li>
+                            <li>Modified Cherry Bomb hitbox</li>
+                            <li>Removed triple equal signs</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.3.0 - 10/3/2021
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        Added more particles and fixed some more stuff. v0.3.1 will involve monsters...
+                        <ul>
+                            <li>Added particles</li>
+                            <li>Fixed getting damaged from projectiles on other maps</li>
+                            <li>Added "More Games" section</li>
+                            <li>Patched monsters moving indefinitely without aggro targets</li>
+                            <li>Improved monster aim variability</li>
+                            <li>Improved ninja star texture</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.2.1 - 10/2/2021
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        Fixed some stuff, particles are on the way!
+                        <ul>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/28" target="_blank">Patched monsters getting stuck on collisions (Issue #28)</a></li>
+                            <li>Patched player leg clipping through trees</li>
+                            <li>Fixed monsters unable to move</li>
+                            <li>Patched layering issue in cottages</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.2.0 - 9/27/2021
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        Added ability to change maps, so now there are interiors to the Outpost Cottages. Some of the empty space was filled in with the new "Icy River" region.
+                        <ul>
+                            <li>Added changing maps and two new maps</li>
+                            <li>Added "Icy River" Region</li>
+                            <li>Added offset layers</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/47" target="_blank">Patched player sprite clipping (Issue #47)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/49" target="_blank">Fixed typo in projectile angle calculation (Issue #49)</a></li>
+                            <li>Entities that don't move don't get processed anymore</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/50" target="_blank">Fixed cherrybomb infinite animation loop glitch (Issue #50)</a></li>
+                            <li>Fixed player animations</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.1.2 - 9/24/2021
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        Added player animations and healthbars, as well as some optimizing of chunks.
+                        <ul>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/19" target="_blank">Added health bars (Issue #19)</a></li>
+                            <li>Added health bars</li>
+                            <li>Optimized chunk loading; client now discards chunks outside of render distance</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/46" target="_blank">Fixed player tint lag (Issue #46)</a></li>
+                            <li>Retextured arrow to make it more pixel consistent</li>
+                            <li>Restructured movement AI to allow players and NPC to have ability to path</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.1.1 - 9/15/2021
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        Lots of bugfixes. Lots. Please don't spam.
+                        <ul>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/13" target="_blank">Fixed xp becoming <code>null</code> from killing a monster spawned by a spawner (Issue #13)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/17" target="_blank">Fixed monster shooting in noattack regions (Issue #17)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/20" target="_blank">Patched automove glitch (Issue #20)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/31" target="_blank">Fixed negative health (Issue #31)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/34" target="_blank">Fixed monsters crossing through nomonster regions (Issue #34)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/35" target="_blank">Fixed projectiles spawning very far from parent entity (Issue #35)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/40" target="_blank">Fixed missing collision on sign (Issue #40)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/42" target="_blank">Fixed a typo in the changelog (Issue #42)</a></li>
+                            <li>Changed region borders a bit</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.1.0 - 9/12/2021
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        First non-major update (or whatever you want to call it), introducing a menu screen, player textures, and slightly more filled-in UI. Among this the highly-requested heal ability is added.
+                        <ul>
+                            <li>Added menu screen</li>
+                            <li>Menu screen includes: changelog, announcements, credits/contributors, ads</li>
+                            <li>Changed "Snowy Tundra" region to have more stuff</li>
+                            <li>Spacebar can be used to heal and costs Mana</li>
+                            <li>Added player textures</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/9" target="_blank">Fixed errors in client console (Issue #9)</a></li>
+                            <li>Fixed monster non-deaggro bug</li>
+                            <li>Added more placeholders for draggable windows</li>
+                            <li>Windows now overlap each other in order of last clicked</li>
+                            <li>Add a little anticheat - respawning while alive kills you</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.0.9 - 9/8/2021
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        Regions are added and map is expanded. There is a death screen now and Cherry Bombs can trigger other Cherry Bombs to explode.
+                        <ul>
+                            <li>Added region name sign</li>
+                            <li>Expanded map and added "The Tundra" region</li>
+                            <li>Added death screen</li>
+                            <li>Cherry Bombs can now trigger and explode other Cherry Bombs</li>
+                            <li>Snowbirds now throw faster snowballs</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.0.8 - 9/5/2021
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        Diagonal projectile collisions are added. Snowballs have a better attack and all "bird" type monsters attack. UI was also partially filled in.
+                        <ul>
+                            <li>Added diagonal projectile collisions</li>
+                            <li>Filled in placeholders for some of the UI</li>
+                            <li>Fixed cherrybombs</li>
+                            <li>Holding the mouse button now continuously attacks</li>
+                            <li>Improved snowballs</li>
+                            <li>Birds and Snow Birds now attack</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.0.7 - 9/3/2021
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        Monster spawners and more monsters are added, as well as monster aggro when hit. Map was also expanded and projectile lag is fixed.
+                        <ul>
+                            <li>Added monster spawners</li>
+                            <li>Expanded map</li>
+                            <li>Most monsters attack now</li>
+                            <li>Monsters aggro on players when hit by them or their projectiles</li>
+                            <li>Added snowballs</li>
+                            <li>Projectiles can have patterns now</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/5" target="_blank">Fixed client not waiting for loading (Issue #5)</a></li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/7" target="_blank">Projectiles now despawn (Issue #7)</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.0.6 - 8/31/2021
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        Finally fixed the Heroku deploy.
+                        <ul>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/4" target="_blank">Fixed Heroku deploy for the last time (Issue #4)</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        0.0.5 - 8/31/2021
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        Chunk-based positions on client side and custom world are added. Full map drawing with layering is implemented and Heroku deploy is fixed again.
+                        <ul>
+                            <li>Add world</li>
+                            <li>Add chunk-based positions</li>
+                            <li>Implemented full map drawing</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/4" target="_blank">Fixed Heroku deploy again (Issue #4)</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.0.4 - 8/28/2021
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        Some monsters are added (including Cherry Bombs) and some attack. A collision corner bug is fixed and an attempt to fix the Heroku deploy is made.
+                        <ul>
+                            <li>Add monsters (they follow you around)</li>
+                            <li>Players and monsters can shoot arrows</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/2" target="_blank">Fixed getting stuck in corners of collisions (Issue #2)</a></li>
+                            <li>Fixed other collision issues</li>
+                            <li><a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/4" target="_blank">Fixed Heroku deploy again (Issue #4)</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.0.3 - 8/23/2021
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        Monster framework and projectiles are added. Players can now shoot missing textures.
+                        <ul>
+                            <li>Add projectiles (no textures)</li>
+                            <li>Fix Heroku deploy</li>
+                            <li>Add monster code</li>
+                            <li>Add issue templates</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.0.2 - 8/15/2021
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        The very important collision physics is added in v0.0.2.
+                        <ul>
+                            <li>Added collisions</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.0.1 - 8/9/2021
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        Multiplayer and movement is added.
+                        <ul>
+                            <li>Added base game functionality</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        v0.0.0 - 8/5/2021
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        Mountain Guarder's creation!
+                        <ul>
+                            <li>Created repository!</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div id="stackRight">
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        Announcements
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        <div class="stackSub">
+                            12/24/21
+                        </div>
+                        <div class="stackBody">
+                            <span style="animation: christmas 2s infinite">Merry Christmas from the Mountain Guarder devs!</span> Added the christmas2021 item "Season's Yeetings", a reference to <a href="https://www.youtube.com/watch?v=AlLquMhQiz4" target="_blank">BPS.space's rocket-propelled Christmas tree</a>! It'll be removed on the 27th so be quick! We hope you have a great Christmas and a happy new year!
+                        </div><br>
+                        <div class="stackSub">
+                            11/28/21
+                        </div>
+                        <div class="stackBody">
+                            New collision optimizations! Collisions will only be checked if the distance between two hitboxes is small enough for a collision to occur. Projectiles no longer recalculate the sin() and cos() values hundreds of times per tick as well, so the impact is huge.<br>
+                            Before: (reached 800 before crashing)<br>
+                            <img src="./client/img/announcements/11-25-21-a.png" class="announcementsImage"><br>
+                            After:<br>
+                            <img src="./client/img/announcements/11-25-21-b.png" class="announcementsImage"><br>
+                        </div><br>
+                        <div class="stackSub">
+                            11/27/21
+                        </div>
+                        <div class="stackBody">
+                            Update: Meadow Guarder is online again!
+                        </div><br>
+                        <div class="stackSub">
+                            11/27/21
+                        </div>
+                        <div class="stackBody">
+                            Update: Heroku had a bug where it would randomly suspend user accounts. <a href="https://status.heroku.com/incidents/2386" target="_blank">Link to incident report</a>.
+                        </div><br>
+                        <div class="stackSub">
+                            11/27/21
+                        </div>
+                        <div class="stackBody">
+                            <span style="color: red; font-size: 20px;">Meadow Guarder is experiencing problems!</span><br>Heroku has decided to suspend Maitian's account due to violations of their Acceptable Use Policy. We have (so far) not much more information on what exactly was violated. If you know what to do, please reach out to us, either on <a href="https://discord.gg/y2pMjrwZGr" target="_blank">Discord</a> or via email (good luck finding them).
+                        </div><br>
+                        <div class="stackSub">
+                            11/6/21
+                        </div>
+                        <div class="stackBody">
+                            <a href="./client/teamSeas/" target="_blank">#TeamSeas</a> Donate today at <a href="https://teamseas.org" target="_blank">teamseas.org</a>! Help raise $30,000,000 by the end of the year! Every dollar donated removes 1 pound of trash from the ocean!
+                        </div><br>
+                        <div class="stackSub">
+                            9/23/2021
+                        </div>
+                        <div class="stackBody">
+                            Please <b>do not</b> go around spamming bug reports about "random lag spikes". These can be caused by internet hiccups, sudden drops in performance (possibly by background update), and even just slow computers. Only post a bug report if you have evidence of a real bug, like errors and missing things.
+                        </div>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        Credits
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        Inspiration: Meadow Guarder | <a href="https://meadowguarderold.herokuapp.com/" target="_blank">Link</a>
+                        <br>
+                        Map Tilesets: Kinney | <a href="https://www.kenney.nl/" target="_blank">Link</a>
+                        <br>
+                        Item Images: Kyrise | <a href="https://kyrise.itch.io/kyrises-free-16x16-rpg-icon-pack" target="_blank">Link</a>
+                        <br>
+                        Window Code: Columbia.edu | <a href="https://www.columbia.edu/~njn2118/journal/2019/4/26.html" target="_blank">Link</a>
+                        <br>
+                        Player Sprites: Based on CouchFerret Makes Games | <a href="https://www.youtube.com/channel/UCp5WDvPDLCkSZWp9hP5xIvQ" target="_blank">Link</a>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        Contributors
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        Sampleprovider(sp): Lead Developer<br>
+                        suvanth: Bug/Vulnerability Finder<br>
+                        spuh: Bug Finder<br>
+                        <br>
+                        <a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder" target="_blank">GitHub repository</a><br>
+                        <a href="https://discord.gg/y2pMjrwZGr" target="_blank">Join our Discord!</a><br>
+                        <br>
+                        <a href="./client/license.html" target="_blank" class="ui-lighttext">Mountain Guarder Copyright &copy; Radioactive64 2022</a><br>
+                        <br>
+                        Would you like to contribute? Contributing can range from <a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/new?assignees=&labels=bug&template=bug-report.md&title=BUG+-+%5BSummary+here%5D" target="_blank">submitting a bug report</a> or <a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder/issues/new?assignees=&labels=suggestion&template=feature_request.md&title=SUGGESTION+-+%5BSummary+here%5D" target="_blank">creating a suggestion</a> to sending a pull request stating the reason the pull request was created and what it changes. For more information visit the <a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder" target="_blank">GitHub repository</a>.<br>
+                        <br>
+                        Support Mountain Guarder by <span style="color: deepskyblue;">Watching</span> and <span style="color: yellow">Starring</span> the <a href="https://github.com/definitely-nobody-is-here/Mountain_Guarder" target="_blank">GitHub repository</a>.
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        More Games!
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        Games by <a href="https://github.com/definitely-nobody-is-here/" target="_blank">Radioactive64</a> and <a href="https://github.com/maitian352/" target="_blank">Maitian</a>:
+                        <ul>
+                            <li><a href="https://mountainguarder.herokuapp.com/" target="_blank">Mountain Guarder</a></li>
+                            <li><a href="https://meadowguarder.herokuapp.com/" target="_blank">Meadow Guarder</a></li>
+                            <li><a href="https://meadowguarderold.herokuapp.com/" target="_blank">Meadow Guarder Old</a></li>
+                            <li><a href="https://bobguarder.herokuapp.com/" target="_blank">Bob Guarder</a></li>
+                            <li><a href="https://battleboxes.herokuapp.com/" target="_blank">BattleBoxes Multiplayer</a></li>
+                            <li><a href="https://cubieworld.herokuapp.com/" target="_blank">CubieWorld</a></li>
+                            <li><a href="https://platformertemplate.herokuapp.com/" target="_blank">Platformer Template</a></li>
+                            <li><a href="https://still-mesa-50010.herokuapp.com/" target="_blank">Maitian Game</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        Advertisements
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        <!-- <iframe src="https://www.youtube.com/embed/ih8MFqBU4L4" width="300" height="200"></iframe><br> -->
+                        <!-- <embed src="https://meadowguarderold.herokuapp.com/" width="540" height="400"><br> -->
+                        Wow! There's no ads here! Click <a href="https://forms.gle/aT2PKdByRTZz2ZcT6" target="_blank">here</a> to submit an ad request. Note: your ad may not be more than 200px tall when placed in an ad box. Not all ads will be displayed.
+                        <!-- Do YOU want to submit an ad? <a href="https://forms.gle/aT2PKdByRTZz2ZcT6" target="_blank">Click here!</a> -->
+                    </div>
+                </div>
+                <div class="stack ui-block ui-lighttext">
+                    <div class="ui-lighttext stackHeader">
+                        Dev Tools
+                    </div>
+                    <div class="ui-lighttext stackBody">
+                        Here are some tools (both internal and external) to help modders create assets easily.<br>
+                        <a href="./itemcreator/" target="_blank">Mountain Guarder Item Creator</a><br>
+                        <a href="https://thorbjorn.itch.io/tiled" target="_blank">Tiled</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="loadingContainer" class="noSelect">
+            <img id="loadingIcon" src="./client/img/assets/loading.png">
+            <div id="loadingBar">
+                <div id="loadingBarInner"></div>
+                <div id="loadingBarText" class="ui-lighttext">0/0 (0%)</div>
+            </div>
+        </div>
+        <div id="gameContainer">
+            <canvas id="canvas"></canvas>
+            <img id="crossHair" src="./client/img/assets/crosshair.png" class="noSelect">
+            <div id="bossBars" class="noSelect"></div>
+            <div id="regionName" class="ui-lighttext ui-block noSelect"></div>
+            <div id="promptContainer" class=" ui-lighttext ui-block noSelect">
+                <div id="promptText"></div>
+                <div id="promptChoices"></div>
+            </div>
+            <div id="fade"></div>
+            <div id="stats" class="ui-block noSelect">
+                <div id="statsHP">
+                    <div id="statsHPvalue"></div>
+                    <div id="statsHPtext" class="ui-lighttext">0/100</div>
+                </div>
+                <div id="statsXP">
+                    <div id="statsXPvalue"></div>
+                    <div id="statsXPtext" class="ui-lighttext">0/0</div>
+                </div>
+                <div id="statsMN">
+                    <div id="statsMNvalue"></div>
+                    <div id="statsMNtext" class="ui-lighttext">0/200</div>
+                </div>
+            </div>
+            <div id="bannerContainer" class="ui-lighttext noSelect"></div>
+            <div class="ui-lighttext noSelect">
+                <div id="version">v0.0.0</div>
+                <div id="fps" class="debugOverlay">FPS: 0</div>
+            </div>
+            <div id="debug" class="ui-lighttext noSelect">
+                <div id="tps" class="debugOverlay">TPS: 0</div>
+                <div id="ping" class="debugOverlay">Ping: 0ms</div>
+                <div id="frameTimes" class="debugOverlay">
+                    Draw Times
+                    <div id="drawTime">Frame: 0ms</div>
+                    <div id="entdrawTime">Entity: 0ms</div>
+                    <div id="mapdrawTime">Map: 0ms</div>
+                    <div id="debugdrawTime">Debug: 0ms</div>
+                </div>
+                <div id="tickTimes" class="debugOverlay">
+                    Tick Times
+                    <div id="tickTime">Tick: 0ms</div>
+                    <!-- <div id="enttickTime">Entity: 0ms</div>
+                    <div id="packtickTime">Packet Compile: 0ms</div> -->
+                </div>
+                <div id="serverHeap" class="debugOverlay">Server Heap: 0/0mB</div>
+                <div id="clientHeap" class="debugOverlay">Heap: 0/0mB</div>
+                <div id="position" class="debugOverlay">(0, 0)</div>
+                <div id="mousepos" class="debugOverlay">(0, 0)</div>
+                <div id="entCount" class="debugOverlay">
+                    <div id="enttotal">Ent: 0</div>
+                    <div id="entmonst">Mon: 0</div>
+                    <div id="entproj">Proj: 0</div>
+                    <div id="entpart">Part: 0</div>
+                </div>
+            </div>
+            <div id="chat" class="ui-darktext noSelect">
+                <div id="chatText"></div>
+                <input type="text" id="chatInput" class="ui-textInput" maxlength="128" autocomplete="off" spellcheck="false">
+            </div>
+            <div id="dropdownMenu" class="noSelect">
+                <button id="dMenuButton" class="ui-lightbutton" onclick="toggleDropdown();">Menu &#x25BC;</button>
+                <div id="dropdownMenuItems">
+                    <button id="inventoryButton" class="ui-lightbutton" onclick="openInventory();">Inventory</button>
+                    <button id="mapButton" class="ui-lightbutton" onclick="openMap();">Map</button>
+                    <button id="settingsButton" class="ui-lightbutton" onclick="openSettings();">Settings</button>
+                    <button id="debugConsoleButton" class="ui-lightbutton" style="display: none;" onclick="openDebugConsole();">Debug&nbsp;Console</button>
+                    <button id="logOutButton" class="ui-lightbutton" onclick="window.location.reload();">Log Out</button>
+                </div>
+            </div>
+            <div id="windows" class="noSelect">
+                <div id="inventory" class="window ui-block ui-lighttext noSelect">
+                    <div id="inventoryBar" class="window-bar ui-block">
+                        <span>Inventory</span>
+                        <span id="inventoryClose" class="window-close">
+                            <svg viewport="0 0 12 12" version="1.1" width="18" height="18" xmlns="http://www.w3.org/2000/svg">
+                                <line x1="2" y1="12" x2="12" y2="2" stroke="black" strokeWidth="5"/>
+                                <line x1="2" y1="2" x2="12" y2="12" stroke="black" strokeWidth="5"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <div id="inventoryItems" class="window-body">
+                        <div>Items</div>
+                        <div id="inventoryItemsBody" class="ui-block inventory-body"></div>
+                    </div>
+                    <div id="inventoryEquips" class="window-body inventory-right">
+                        <div>Equips</div>
+                        <div id="inventoryEquipsBody" class="ui-block inventory-body"></div>
+                    </div>
+                    <div id="inventoryCrafting" class="window-body inventory-right">
+                        <div>Crafting</div>
+                        <div id="inventoryCraftingBody" class="ui-block inventory-body"></div>
+                    </div>
+                    <div id="inventoryShop" class="window-body inventory-right">
+                        <div id="inventoryShopName">Shop Name</div>
+                        <div id="inventoryShopBody" class="ui-block inventory-body"></div>
+                    </div>
+                    <div id="inventorySelect" class="window-select">
+                        <button id="inventoryEquipsSelect" class="window-select-button ui-lightbutton">Equips</button>
+                        <button id="inventoryCraftingSelect" class="window-select-button ui-lightbutton">Crafting</button>
+                        <span id="inventoryShopSelect" style="display: none;"></span>
+                    </div>
+                </div>
+                <div id="map" class="window ui-block ui-lighttext noSelect">
+                    <div id="mapBar" class="window-bar ui-block">
+                        <span>World Map</span>
+                        <span id="mapClose" class="window-close">
+                            <svg viewport="0 0 12 12" version="1.1" width="18" height="18" xmlns="http://www.w3.org/2000/svg">
+                                <line x1="2" y1="12" x2="12" y2="2" stroke="black" strokeWidth="5"/>
+                                <line x1="2" y1="2" x2="12" y2="12" stroke="black" strokeWidth="5"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="window-body">
+                        <div id="mapContainer">
+                            <img id="worldMap">
+                        </div>
+                    </div>
+                    <div id="mapSelect"></div>
+                </div>
+                <div id="debugConsole" class="window ui-block ui-lighttext noSelect">
+                    <div id="debugConsoleBar" class="window-bar ui-block">
+                        <span>Debug Console</span>
+                        <span id="debugConsoleClose" class="window-close">
+                            <svg viewport="0 0 12 12" version="1.1" width="18" height="18" xmlns="http://www.w3.org/2000/svg">
+                                <line x1="2" y1="12" x2="12" y2="2" stroke="black" strokeWidth="5"/>
+                                <line x1="2" y1="2" x2="12" y2="12" stroke="black" strokeWidth="5"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="window-body">
+                        <div id="debugLog" class="ui-lighttext"></div>
+                        <input type="text" id="debugInput" class="ui-textInput" autocomplete="off" spellcheck="false"></input>
+                    </div>
+                    <div id="debugConsoleSelect" class="window-select"></div>
+                </div>
+                <div id="settings" class="window ui-block ui-lighttext noSelect">
+                    <div id="settingsBar" class="window-bar ui-block">
+                        <span>Settings</span>
+                        <span id="settingsClose" class="window-close">
+                            <svg viewport="0 0 12 12" version="1.1" width="18" height="18" xmlns="http://www.w3.org/2000/svg">
+                                <line x1="2" y1="12" x2="12" y2="2" stroke="black" strokeWidth="5"/>
+                                <line x1="2" y1="2" x2="12" y2="12" stroke="black" strokeWidth="5"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <div id="settingsGame" class="window-body" style="width: 366px; overflow-y: auto;">
+                        <table><tbody>
+                            <tr>
+                                <td style="text-align: right;">
+                                    Target FPS:
+                                </td>
+                                <td>
+                                    <input type="range" id="fpsSlider" class="ui-slider" min="20" max="120" step="10" value="60" oninput="slider('fps');">
+                                </td>
+                                <td>
+                                    <div id="fpsIndicator" class="ui-lighttext">60fps</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">
+                                    Render Distance:
+                                </td>
+                                <td>
+                                    <input type="range" id="renderDistanceSlider" class="ui-slider" min="1" max="10" value="1" oninput="slider('renderDistance');">
+                                </td>
+                                <td>
+                                    <div id="renderDistanceIndicator" class="ui-lighttext">1</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">
+                                    Render Quality:
+                                </td>
+                                <td>
+                                    <input type="range" id="renderQualitySlider" class="ui-slider" min="50" max="150" value="100" step="10" oninput="slider('renderQuality');">
+                                </td>
+                                <td>
+                                    <div id="renderQualityIndicator" class="ui-lighttext">100%</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">
+                                    Optimized Particles:
+                                </td>
+                                <td>
+                                    <label class="ui-toggle">
+                                        <input type="checkbox" id="optimizedParticlesToggle" class="ui-toggleInput" onclick="toggle('optimizedParticles');">
+                                        <span class="ui-toggleSlider"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <div id="optimizedParticlesIndicator" class="ui-lighttext">off</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">
+                                    Particles:
+                                </td>
+                                <td>
+                                    <label class="ui-toggle">
+                                        <input type="checkbox" id="particlesToggle" class="ui-toggleInput" onclick="toggle('particles');" checked>
+                                        <span class="ui-toggleSlider"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <div id="particlesIndicator" class="ui-lighttext">on</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">
+                                    Colored Lights:
+                                </td>
+                                <td>
+                                    <label class="ui-toggle">
+                                        <input type="checkbox" id="coloredLightsToggle" class="ui-toggleInput" onclick="toggle('coloredLights');" checked>
+                                        <span class="ui-toggleSlider"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <div id="coloredLightsIndicator" class="ui-lighttext">on</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">
+                                    Lights:
+                                </td>
+                                <td>
+                                    <label class="ui-toggle">
+                                        <input type="checkbox" id="lightsToggle" class="ui-toggleInput" onclick="toggle('lights');" checked>
+                                        <span class="ui-toggleSlider"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <div id="lightsIndicator" class="ui-lighttext">on</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">
+                                    Dialogue Speed:
+                                </td>
+                                <td>
+                                    <input type="range" id="dialogueSpeedSlider" class="ui-slider" min="1" max="10" value="5" step="1" oninput="slider('dialogueSpeed');">
+                                </td>
+                                <td>
+                                    <div id="dialogueSpeedIndicator" class="ui-lighttext"></div>
+                                </td>
+                            </tr>
+                            <!-- <tr>
+                                <td style="text-align: right;">
+                                    Pointer Lock:
+                                </td>
+                                <td>
+                                    <label class="ui-toggle">
+                                        <input type="checkbox" id="pointerLockToggle" class="ui-toggleInput" onclick="toggle('pointerLock');">
+                                        <span class="ui-toggleSlider"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <div id="pointerLockIndicator" class="ui-lighttext">off</div>
+                                </td>
+                            </tr> -->
+                            <tr>
+                                <td class="experimental" style="text-align: right;">
+                                    Use Controller:
+                                </td>
+                                <td class="experimental">
+                                    <label class="ui-toggle">
+                                        <input type="checkbox" id="useControllerToggle" class="ui-toggleInput" onclick="toggle('useController');">
+                                        <span class="ui-toggleSlider"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <div id="useControllerIndicator" class="ui-lighttext">off</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">
+                                    Chat Background:
+                                </td>
+                                <td>
+                                    <label class="ui-toggle">
+                                        <input type="checkbox" id="chatBackgroundToggle" class="ui-toggleInput" onclick="toggle('chatBackground');">
+                                        <span class="ui-toggleSlider"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <div id="chatBackgroundIndicator" class="ui-lighttext">off</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">
+                                    Chat Size:
+                                </td>
+                                <td>
+                                    <input type="range" id="chatSizeSlider" class="ui-slider" min="1" max="4" value="2" oninput="slider('chatSize');">
+                                </td>
+                                <td>
+                                    <div id="chatSizeIndicator" class="ui-lighttext">2</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">
+                                    High Contrast:
+                                </td>
+                                <td>
+                                    <label class="ui-toggle">
+                                        <input type="checkbox" id="highContrastToggle" class="ui-toggleInput" onclick="toggle('highContrast');">
+                                        <span class="ui-toggleSlider"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <div id="highContrastIndicator" class="ui-lighttext">off</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">
+                                    Debug:
+                                </td>
+                                <td>
+                                    <label class="ui-toggle">
+                                        <input type="checkbox" id="debugToggle" class="ui-toggleInput" onclick="toggle('debug');">
+                                        <span class="ui-toggleSlider"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <div id="debugIndicator" class="ui-lighttext">off</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">
+                                    Fullscreen:
+                                </td>
+                                <td>
+                                    <label class="ui-toggle">
+                                        <input type="checkbox" id="fullscreenToggle" class="ui-toggleInput" onclick="toggle('fullscreen');">
+                                        <span class="ui-toggleSlider"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <div id="fullscreenIndicator" class="ui-lighttext">off</div>
+                                </td>
+                            </tr>
+                        </tbody></table>
+                    </div>
+                    <div id="settingsPlayer" class="window-body">
+                        <div style="display: inline-block;">
+                            <canvas id="playerPreview" width="150" height="200"></canvas>
+                        </div>
+                        <div style="display: inline-block;">
+                            <table><tbody>
+                                <tr>
+                                    <td style="text-align: right;">
+                                        <label for="playerHairType">Hair:</label><br>
+                                    </td>
+                                    <td>
+                                        <input type="range" id="playerHairType" class="ui-slider" min="0" max="6" step="1"><br>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right;">
+                                        <label for="playerHairColor">Hair Color:</label><br>
+                                    </td>
+                                    <td>
+                                        <input type="color" id="playerHairColor" class="ui-colorSelect"><br>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right;">
+                                        <label for="playerSkinColor">Skin Color:</label><br>
+                                    </td>
+                                    <td>
+                                        <input type="color" id="playerSkinColor" class="ui-colorSelect"><br>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right;">
+                                        <label for="playerShirtColor">Shirt Color:</label><br>
+                                    </td>
+                                    <td>
+                                        <input type="color" id="playerShirtColor" class="ui-colorSelect"><br>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right;">
+                                        <label for="playerPantsColor">Pants Color:</label>
+                                    </td>
+                                    <td>
+                                        <input type="color" id="playerPantsColor" class="ui-colorSelect">
+                                    </td>
+                                </tr>
+                            </tbody></table>
+                        </div>
+                    </div>
+                    <div id="settingsKeybinds" class="window-body" style="width: 366px; overflow-y: auto;">
+                        <table>
+                            <tbody style="text-align: right;">
+                                <tr>
+                                    <td>
+                                        Move up&nbsp;
+                                    </td>
+                                    <td>
+                                        <button id="keybind_up" class="ui-lightbutton keyBindButton" onclick="changeKeybind('up');">W</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Move down&nbsp;
+                                    </td>
+                                    <td>
+                                        <button id="keybind_down" class="ui-lightbutton keyBindButton" onclick="changeKeybind('down');">S</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Move left&nbsp;
+                                    </td>
+                                    <td>
+                                        <button id="keybind_left" class="ui-lightbutton keyBindButton" onclick="changeKeybind('left');">A</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Move right&nbsp;
+                                    </td>
+                                    <td>
+                                        <button id="keybind_right" class="ui-lightbutton keyBindButton" onclick="changeKeybind('right');">D</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Heal&nbsp;
+                                    </td>
+                                    <td>
+                                        <button id="keybind_heal" class="ui-lightbutton keyBindButton" onclick="changeKeybind('heal');">SPACE</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Use Item&nbsp;
+                                    </td>
+                                    <td>
+                                        <button id="keybind_use" class="ui-lightbutton keyBindButton" onclick="changeKeybind('use');">LMB</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Use Secondary&nbsp;
+                                    </td>
+                                    <td>
+                                        <button id="keybind_second" class="ui-lightbutton keyBindButton" onclick="changeKeybind('second');">RMB</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Disable Secondaries&nbsp;
+                                    </td>
+                                    <td>
+                                        <button id="keybind_disableSecond" class="ui-lightbutton keyBindButton" onclick="changeKeybind('disableSecond');">RMB</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Hot-Swap Weapons&nbsp;
+                                    </td>
+                                    <td>
+                                        <button id="keybind_swap" class="ui-lightbutton keyBindButton" onclick="changeKeybind('swap');">TAB</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Drop Item&nbsp;
+                                    </td>
+                                    <td>
+                                        <button id="keybind_drop" class="ui-lightbutton keyBindButton" onclick="changeKeybind('drop');">Q</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Open chat&nbsp;
+                                    </td>
+                                    <td>
+                                        <button id="keybind_chat" class="ui-lightbutton keyBindButton" onclick="changeKeybind('chat');">T</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Settings&nbsp;
+                                    </td>
+                                    <td>
+                                        <button id="keybind_settings" class="ui-lightbutton keyBindButton" onclick="changeKeybind('settings');">&emsp;</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Toggle Inventory&nbsp;
+                                    </td>
+                                    <td>
+                                        <button id="keybind_inventory" class="ui-lightbutton keyBindButton" onclick="changeKeybind('inventory');">E</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Open Items&nbsp;
+                                    </td>
+                                    <td>
+                                        <button id="keybind_inventoryEquips" class="ui-lightbutton keyBindButton" onclick="changeKeybind('inventoryEquips');">I</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Open Crafting&nbsp;
+                                    </td>
+                                    <td>
+                                        <button id="keybind_inventoryCrafting" class="ui-lightbutton keyBindButton" onclick="changeKeybind('inventoryCrafting');">C</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        World Map&nbsp;
+                                    </td>
+                                    <td>
+                                        <button id="keybind_map" class="ui-lightbutton keyBindButton" onclick="changeKeybind('map');">M</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="settingsController" class="window-body" style="width: 366px; overflow-y: auto; display: none;">
+                        <table><tbody>
+                            <tr>
+                                <td style="text-align: right;">
+                                    Sensitivity:
+                                </td>
+                                <td>
+                                    <input type="range" id="sensitivitySlider" class="ui-slider" min="50" max="200" value="100" step="10" oninput="controllerSlider('sensitivity');">
+                                </td>
+                                <td>
+                                    <div id="sensitivityIndicator" class="ui-lighttext">100%</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">
+                                    Quadratic Sensitivity:
+                                </td>
+                                <td>
+                                    <label class="ui-toggle">
+                                        <input type="checkbox" id="quadraticSensitivityToggle" class="ui-toggleInput" onclick="controllerToggle('quadraticSensitivity');" checked>
+                                        <span class="ui-toggleSlider"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <div id="quadraticSensitivityIndicator" class="ui-lighttext">on</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">
+                                    Drift X:
+                                </td>
+                                <td>
+                                    <input type="range" id="driftXSlider" class="ui-slider" min="-20" max="20" value="0" step="1" oninput="controllerSlider('driftX');">
+                                </td>
+                                <td>
+                                    <div id="driftXIndicator" class="ui-lighttext">0%</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">
+                                    Drift Y:
+                                </td>
+                                <td>
+                                    <input type="range" id="driftYSlider" class="ui-slider" min="-20" max="20" value="0" step="1" oninput="controllerSlider('driftY');">
+                                </td>
+                                <td>
+                                    <div id="driftYIndicator" class="ui-lighttext">0%</div>
+                                </td>
+                            </tr>
+                        </tbody></table>
+                    </div>
+                    <div id="keybindsController" class="window-body" style="width: 366px; overflow-y: auto; display: none;">
+                        <table>
+                            <tbody style="text-align: right;">
+                                <tr>
+                                    <td>
+                                        Move&nbsp;
+                                    </td>
+                                    <td>
+                                        <button id="controllerKeybind_move" class="ui-lightbutton keyBindButton" onclick="changeControllerKeybind('move');">0 1</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Aim&nbsp;
+                                    </td>
+                                    <td>
+                                        <button id="controllerKeybind_aim" class="ui-lightbutton keyBindButton" onclick="changeControllerKeybind('aim');">2 3</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Heal&nbsp;
+                                    </td>
+                                    <td>
+                                        <button id="controllerKeybind_heal" class="ui-lightbutton keyBindButton" onclick="changeControllerKeybind('heal');">LS</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Use Item&nbsp;
+                                    </td>
+                                    <td>
+                                        <button id="controllerKeybind_use" class="ui-lightbutton keyBindButton" onclick="changeControllerKeybind('use');">LT</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Use Secondary&nbsp;
+                                    </td>
+                                    <td>
+                                        <button id="controllerKeybind_second" class="ui-lightbutton keyBindButton" onclick="changeControllerKeybind('second');">RT</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Hot-Swap Weapons&nbsp;
+                                    </td>
+                                    <td>
+                                        <button id="controllerKeybind_swap" class="ui-lightbutton keyBindButton" onclick="changeControllerKeybind('swap');">RS</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Drop Item&nbsp;
+                                    </td>
+                                    <td>
+                                        <button id="controllerKeybind_drop" class="ui-lightbutton keyBindButton" onclick="changeControllerKeybind('drop');">UP</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Open chat&nbsp;
+                                    </td>
+                                    <td>
+                                        <button id="controllerKeybind_chat" class="ui-lightbutton keyBindButton" onclick="changeControllerKeybind('chat');">X</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Settings&nbsp;
+                                    </td>
+                                    <td>
+                                        <button id="controllerKeybind_settings" class="ui-lightbutton keyBindButton" onclick="changeControllerKeybind('settings');">&emsp;</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Toggle Inventory&nbsp;
+                                    </td>
+                                    <td>
+                                        <button id="controllerKeybind_inventory" class="ui-lightbutton keyBindButton" onclick="changeControllerKeybind('inventory');">Y</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Menu&nbsp;
+                                    </td>
+                                    <td>
+                                        <button id="controllerKeybind_menu" class="ui-lightbutton keyBindButton" onclick="changeControllerKeybind('menu');">MENU</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="settingsSelect" class="window-select">
+                        <button id="settingsGameSelect" class="window-select-button ui-lightbutton">Settings</button>
+                        <button id="settingsPlayerSelect" class="window-select-button ui-lightbutton">Customize</button>
+                        <button id="settingsKeybindsSelect" class="window-select-button ui-lightbutton">Keybinds</button>
+                        <button id="settingsControllerSelect" class="window-select-button ui-lightbutton">Controller</button>
+                        <button id="keybindsControllerSelect" class="window-select-button ui-lightbutton">Controllerbinds</button>
+                    </div>
+                </div>
+            </div>
+            <div id="invHoverTooltip" class="ui-block ui-lighttext noSelect">Tooltip</div>
+            <div id="invDrag" class="noSelect">
+                <img id="invDragImg" class="invSlotImg noSelect">
+                <div id="invDragStackSize" class="ui-lighttext invSlotStackSize noSelect"></div>
+            </div>
+            <div id="deathScreen" class="noSelect">
+                <p id="youdied" class="ui-lighttext">You Died!</p>
+                <p id="respawnTimer" class="ui-lighttext">0</p>
+                <button id="respawnButton" class="ui-lightbutton" onclick="respawn();">Respawn</button>
+            </div>
+        </div>
+        <div id="disconnectedContainer" class="noSelect">
+            <button id="disconnected" class="noSelect" onclick="window.location.reload()">DISCONNECTED</button>
+        </div>
+        <div style="display: none;">
+            <a href="https://grandcanyonshuttles.com/uploads/5/5/6/7/5567194/custom_themes/136734914403232081/drift_hunter.html" target="_blank">DRIFT HUNTERS!!!</a>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,266 @@
+{
+    "bob1": [
+        {
+            "text": "Hello! I'm Bob, nice to meet you! Welcome to the Snowy Outpost!",
+            "options": [
+                {
+                    "text": "Hi!",
+                    "action": "continue"
+                },
+                {
+                    "text": "*End conversation*",
+                    "action": "close"
+                }
+            ]
+        },
+        {
+            "text": "Yonder east is the Mountain. Something strange is happening up there. Everybody that has gone up to find out has disappeared without a trace.",
+            "options": [
+                {
+                    "text": "...",
+                    "action": "continue"
+                }
+            ]
+        },
+        {
+            "text": "There's also been these wierd violent blobs of color appearing out of wierd blue portally things. They've wiped out all the animals here and steal things from us.",
+            "options": [
+                {
+                    "text": "...",
+                    "action": "continue"
+                }
+            ]
+        },
+        {
+            "text": "You should go kill some, you'll get your money's worth for it. Maybe you'll even get some loot.",
+            "options": [
+                {
+                    "text": "Start quest: `Bird Squishing`",
+                    "action": "quest_5birds"
+                },
+                {
+                    "text": "Nah, I'm fine.",
+                    "action": "continue"
+                }
+            ]
+        },
+        {
+            "text": "Okay then. Try not to die out there, okay?",
+            "options": [
+                {
+                    "text": "*End conversation*",
+                    "action": "close"
+                }
+            ]
+        }
+    ],
+    "bob2": [
+        {
+            "text": "Go kill those blobs!",
+            "options": [
+                {
+                    "text": "Ok.",
+                    "action": "close"
+                }
+            ]
+        }
+    ],
+    "bob3": [
+        {
+            "text": "Wow! You actually did it without dying! Last week someone named Spuh tried to hunt blobs and I haven't seen them since.",
+            "options": [
+                {
+                    "text": "???",
+                    "action": "continue"
+                },
+                {
+                    "text": "...",
+                    "action": "continue"
+                }
+            ]
+        },
+        {
+            "text": "Okay fine, here's your reward.",
+            "options": [
+                {
+                    "text": "End quest `Bird Squishing`",
+                    "action": "talkedwith_bob"
+                }
+            ]
+        }
+    ],
+    "adicyte": [
+        {
+            "text": "Welcome to the Outpost Trader! What can I do for you?",
+            "options": [
+                {
+                    "text": "*Buy items*",
+                    "action": "shop_adicyte:outposttrader"
+                },
+                {
+                    "text": "*Sell items*",
+                    "action": "sellshop_adicyte"
+                }
+            ]
+        }
+    ],
+    "tammy1": [
+        {
+            "text": "Uhhhh... hi?",
+            "options": [
+                {
+                    "text": "Hi.",
+                    "action": "continue"
+                },
+                {
+                    "text": "Hello.",
+                    "action": "continue"
+                },
+                {
+                    "text": "...",
+                    "action": "continue"
+                }
+            ]
+        },
+        {
+            "text": "You're not supposed to be here, but I have to tell you something...",
+            "options": [
+                {
+                    "text": "...",
+                    "action": "continue"
+                },
+                {
+                    "text": "No, no. I'll leave.",
+                    "action": "close"
+                }
+            ]
+        },
+        {
+            "text": "As you probably know, strange things have been happening around here. Recently, we had a Lodestone go missing. We definitely didn't misplace it, but who would want to steal it? It's so valuable!",
+            "options": [
+                {
+                    "text": "...",
+                    "action": "continue"
+                }
+            ]
+        },
+        {
+            "text": "Also, strange lights started coming from something a little bit higher up the mountain from the entrance of the old mineshaft after the Lodestone was stolen. I think the two are connected somehow.",
+            "options": [
+                {
+                    "text": "...",
+                    "action": "continue"
+                }
+            ]
+        },
+        {
+            "text": "Can you go over there and investigate? It would REALLY help.",
+            "options": [
+                {
+                    "text": "Sure!",
+                    "action": "continue"
+                },
+                {
+                    "text": "I don't think I can...",
+                    "action": "prompt_tammy1andahalf"
+                }
+            ]
+        },
+        {
+            "text": "Thank you so much! Head east up the mountain, a bit further than the abandoned mineshaft. Try and figure out what's going on. Oh! Try to bring back the Lodestone if you find it!",
+            "options": [
+                {
+                    "text": "Start quest: `Lodestone Mystery`",
+                    "action": "quest_sprock"
+                }
+            ]
+        }
+    ],
+    "tammy1andahalf": [
+        {
+            "text": "Oh. Okay.",
+            "options": [
+                {
+                    "text": "*End conversation*",
+                    "action": "close"
+                }
+            ]
+        }
+    ],
+    "tammy2": [
+        {
+            "text": "Head east past the abandoned mineshaft. That's where the strange stuff is happening.",
+            "options": [
+                {
+                    "text": "*End conversation*",
+                    "action": "close"
+                }
+            ]
+        }
+    ],
+    "tammy3": [
+        {
+            "text": "Why are you back? ",
+            "options": [
+                {
+                    "text": "I saw this really big rock. It was purple and tried to kill me! I think that's where the Lodestone is, something feels off.",
+                    "action": "continue"
+                }
+            ]
+        },
+        {
+            "text": "Then go and get the Lodestone! If the wrong people get it things will go bad really fast!",
+            "options": [
+                {
+                    "text": "*End conversation*",
+                    "action": "close"
+                }
+            ]
+        }
+    ],
+    "tammy4": [
+        {
+            "text": "Thank you so much!!! You brought back the Lodestone! I can't put into words how important it is to have it back here safe again.",
+            "options": [
+                {
+                    "text": "...",
+                    "action": "continue"
+                }
+            ]
+        },
+        {
+            "text": "Oh right. I didn't tell you. Lodestone is extremely difficult to obtain - it's made from ultra-rare forms of Garuderite and Ialite. One small Lodestone crystal can hold the power of hundreds of Ialite crystals.",
+            "options": [
+                {
+                    "text": "...",
+                    "action": "continue"
+                }
+            ]
+        },
+        {
+            "text": "You can probably see why it's so important that no evil gets their dirty hands on this. Imagine what horrors could happen if someone exploited it for their own selfish purposes!",
+            "options": [
+                {
+                    "text": "...",
+                    "action": "continue"
+                }
+            ]
+        },
+        {
+            "text": "Anyways, take this. It's the least I can do to thank you.",
+            "options": [
+                {
+                    "text": "End quest `Lodestone Mystery`",
+                    "action": "talkedwith_tammy"
+                }
+            ]
+        }
+    ],
+    "pingu": [
+        {
+            "text": "noot noot",
+            "options": [
+            ]
+        }
+    ]
+}

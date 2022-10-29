@@ -1,0 +1,741 @@
+{
+    "greenbird": {
+        "name": "Green Bird",
+        "spawnChance": 0.3,
+        "width": 44,
+        "height": 40,
+        "attackType": "bird",
+        "aggroRange": 12,
+        "deaggroTime": 5,
+        "boss": false,
+        "idleMove": "random",
+        "chaseTarget": true,
+        "circleTarget": true,
+        "circleDistance": 3,
+        "hp": 35,
+        "fleeThreshold": 15,
+        "swarm": false,
+        "moveSpeed": 5,
+        "touchDamage": 5,
+        "stats": {
+            "damageType": "ranged",
+            "projectileSpeed": 1,
+            "attack": 1,
+            "defense": 0,
+            "damageReduction": 0,
+            "knockbackResistance": 0,
+            "heal": 30,
+            "speed": 1,
+            "range": 1,
+            "accuracy": 0.15,
+            "critChance": 0,
+            "critPower": 1,
+            "knockback": 1,
+            "maxPierce": 0
+        },
+        "animationLength": 1,
+        "animationSpeed": 100,
+        "xpDrop": 5,
+        "drops": {
+            "chance": {
+                "nothing": 18,
+                "simplewoodenbow": 0.9,
+                "simplewoodensword": 0.9,
+                "steelbroadsword": 0.1,
+                "steelcutlass": 0.1
+            },
+            "amount": {
+                "coppercoin": 5
+            },
+            "constant": {}
+        }
+    },
+    "bluebird": {
+        "name": "Blue Bird",
+        "spawnChance": 0.3,
+        "width": 44,
+        "height": 40,
+        "attackType": "bird",
+        "aggroRange": 12,
+        "deaggroTime": 5,
+        "boss": false,
+        "idleMove": "random",
+        "chaseTarget": true,
+        "circleTarget": true,
+        "circleDistance": 3,
+        "hp": 40,
+        "fleeThreshold": 15,
+        "swarm": false,
+        "moveSpeed": 5,
+        "touchDamage": 5,
+        "stats": {
+            "damageType": "ranged",
+            "projectileSpeed": 1.1,
+            "attack": 1,
+            "defense": 0,
+            "damageReduction": 0,
+            "knockbackResistance": 0,
+            "heal": 30,
+            "speed": 1,
+            "range": 1,
+            "accuracy": 0.15,
+            "critChance": 0,
+            "critPower": 1,
+            "knockback": 1,
+            "maxPierce": 0
+        },
+        "animationLength": 1,
+        "animationSpeed": 100,
+        "xpDrop": 5,
+        "drops": {
+            "chance": {
+                "nothing": 18,
+                "simplewoodenbow": 0.8,
+                "simplewoodensword": 1.1,
+                "steelbow": 0.1
+            },
+            "amount": {
+                "coppercoin": 5
+            },
+            "constant": {}
+        }
+    },
+    "snowbird": {
+        "name": "Snow Bird",
+        "spawnChance": 1,
+        "width": 44,
+        "height": 40,
+        "attackType": "snowbird",
+        "aggroRange": 16,
+        "deaggroTime": 6,
+        "boss": false,
+        "idleMove": "random",
+        "chaseTarget": true,
+        "circleTarget": true,
+        "circleDistance": 4,
+        "hp": 60,
+        "fleeThreshold": 20,
+        "swarm": false,
+        "moveSpeed": 5,
+        "touchDamage": 5,
+        "stats": {
+            "damageType": "ranged",
+            "projectileSpeed": 1.3,
+            "attack": 1,
+            "defense": 0,
+            "damageReduction": 5,
+            "knockbackResistance": 0.05,
+            "heal": 40,
+            "speed": 1,
+            "range": 0.5,
+            "accuracy": 0.4,
+            "critChance": 0.1,
+            "critPower": 1.1,
+            "knockback": 2,
+            "maxPierce": 0
+        },
+        "animationLength": 1,
+        "animationSpeed": 100,
+        "xpDrop": 10,
+        "drops": {
+            "chance": {
+                "nothing": 40,
+                "simplewoodenstaff": 1,
+                "leatherarmor": 0.9,
+                "steelstaff": 0.4,
+                "titaniumstaff": 0.1
+            },
+            "amount": {
+                "coppercoin": 20
+            },
+            "constant": {}
+        }
+    },
+    "cherrybomb": {
+        "name": "Cherry Bomb",
+        "spawnChance": 0.5,
+        "width": 48,
+        "height": 40,
+        "attackType": "cherrybomb",
+        "aggroRange": 10,
+        "deaggroTime": 3,
+        "boss": false,
+        "idleMove": "random",
+        "chaseTarget": true,
+        "circleTarget": false,
+        "circleDistance": 0,
+        "hp": 80,
+        "fleeThreshold": 0,
+        "swarm": false,
+        "moveSpeed": 12,
+        "touchDamage": 0,
+        "stats": {
+            "damageType": "magic",
+            "projectileSpeed": 1,
+            "attack": 1000000000000,
+            "defense": 0,
+            "damageReduction": 0,
+            "knockbackResistance": 0,
+            "heal": 0,
+            "speed": 1,
+            "range": 1,
+            "accuracy": 0,
+            "critChance": 0,
+            "critPower": 1,
+            "knockback": 20,
+            "maxPierce": 0
+        },
+        "animationLength": 1,
+        "animationSpeed": 200,
+        "xpDrop": 20,
+        "drops": {
+            "chance": {
+                "nothing": 15,
+                "coins": 8,
+                "woodenhelmet": 0.4,
+                "steelhelmet": 0.1,
+                "steelarmor": 0.1
+            },
+            "amount": {
+                "coppercoin": 50
+            },
+            "constant": {}
+        }
+    },
+    "snowball": {
+        "name": "Snowball",
+        "spawnChance": 0.4,
+        "width": 44,
+        "height": 44,
+        "attackType": "snowball",
+        "aggroRange": 16,
+        "deaggroTime": 5,
+        "boss": false,
+        "idleMove": "none",
+        "chaseTarget": true,
+        "circleTarget": true,
+        "circleDistance": 6,
+        "hp": 100,
+        "fleeThreshold": 25,
+        "swarm": false,
+        "moveSpeed": 10,
+        "touchDamage": 5,
+        "stats": {
+            "damageType": "ranged",
+            "projectileSpeed": 1,
+            "attack": 1.5,
+            "defense": 0,
+            "damageReduction": 3,
+            "knockbackResistance": 0.1,
+            "heal": 0,
+            "speed": 1,
+            "range": 1,
+            "accuracy": 1,
+            "critChance": 0,
+            "critPower": 1,
+            "knockback": 2,
+            "maxPierce": 0
+        },
+        "animationLength": 0,
+        "animationSpeed": 100,
+        "xpDrop": 10,
+        "drops": {
+            "chance": {
+                "nothing": 16,
+                "leatherhood": 2.5,
+                "leatherhat": 2.5,
+                "whitefabrichood": 0.4,
+                "simplewizardhat": 0.4,
+                "titaniumbow": 0.1
+            },
+            "amount": {
+                "coppercoin": 80
+            },
+            "constant": {}
+        }
+    },
+    "cavebird": {
+        "name": "Cave Bird",
+        "spawnChance": 0.1,
+        "width": 44,
+        "height": 40,
+        "attackType": "cavebird",
+        "aggroRange": 10,
+        "deaggroTime": 5,
+        "boss": false,
+        "idleMove": "none",
+        "chaseTarget": true,
+        "circleTarget": true,
+        "circleDistance": 2,
+        "hp": 50,
+        "fleeThreshold": 0,
+        "swarm": false,
+        "moveSpeed": 8,
+        "touchDamage": 5,
+        "stats": {
+            "damageType": "ranged",
+            "projectileSpeed": 1.3,
+            "attack": 1,
+            "defense": 0.1,
+            "damageReduction": 2,
+            "knockbackResistance": 0.1,
+            "heal": 40,
+            "speed": 1,
+            "range": 0.5,
+            "accuracy": 0.5,
+            "critChance": 0.1,
+            "critPower": 1.1,
+            "knockback": 1.5,
+            "maxPierce": 0
+        },
+        "animationLength": 1,
+        "animationSpeed": 150,
+        "xpDrop": 15,
+        "drops": {
+            "chance": {
+                "nothing": 20,
+                "stone": 30,
+                "ironore": 3,
+                "coal": 8,
+                "quartz": 1
+            },
+            "amount": {
+                "coppercoin": 40,
+                "silvercoin": 1
+            },
+            "constant": {}
+        }
+    },
+    "sentientrock": {
+        "name": "Sentient Rock",
+        "spawnChance": 1,
+        "width": 40,
+        "height": 40,
+        "attackType": "ram",
+        "aggroRange": 4,
+        "deaggroTime": 20,
+        "boss": false,
+        "idleMove": "none",
+        "chaseTarget": true,
+        "circleTarget": false,
+        "circleDistance": 0,
+        "hp": 200,
+        "fleeThreshold": 0,
+        "swarm": true,
+        "moveSpeed": 3,
+        "touchDamage": 40,
+        "stats": {
+            "damageType": "melee",
+            "projectileSpeed": 1,
+            "attack": 1,
+            "defense": 0.3,
+            "damageReduction": 0,
+            "knockbackResistance": 0.5,
+            "heal": 0,
+            "speed": 1,
+            "range": 1,
+            "accuracy": 0,
+            "critChance": 0.02,
+            "critPower": 2,
+            "knockback": 0.8,
+            "maxPierce": 0
+        },
+        "animationLength": 0,
+        "animationSpeed": 100,
+        "xpDrop": 40,
+        "drops": {
+            "chance": {
+                "nothing": 40,
+                "ironore": 8,
+                "coal": 30,
+                "quartz": 3,
+                "ialiteshard": 1
+            },
+            "amount": {
+                "coppercoin": 30,
+                "silvercoin": 1
+            },
+            "constant": {}
+        }
+    },
+    "rockturret": {
+        "name": "Rock Turret",
+        "spawnChance": 0.1,
+        "width": 36,
+        "height": 64,
+        "attackType": "rockturret",
+        "aggroRange": 40,
+        "deaggroTime": 30,
+        "boss": false,
+        "idleMove": "none",
+        "chaseTarget": false,
+        "circleTarget": false,
+        "circleDistance": 0,
+        "hp": 200,
+        "fleeThreshold": 0,
+        "swarm": true,
+        "moveSpeed": 0,
+        "touchDamage": 40,
+        "stats": {
+            "damageType": "ranged",
+            "projectileSpeed": 1,
+            "attack": 1,
+            "defense": 0.5,
+            "damageReduction": 0,
+            "knockbackResistance": 1,
+            "heal": 0,
+            "speed": 1,
+            "range": 1,
+            "accuracy": 0.8,
+            "critChance": 0.05,
+            "critPower": 1.8,
+            "knockback": 1,
+            "maxPierce": 0
+        },
+        "animationLength": 7,
+        "animationSpeed": 50,
+        "xpDrop": 50,
+        "drops": {
+            "chance": {
+                "nothing": 10,
+                "iron": 5,
+                "quartz": 9,
+                "stoneshield": 1
+            },
+            "amount": {
+                "coppercoin": 80,
+                "silvercoin": 1
+            },
+            "constant": {}
+        }
+    },
+    "sprock": {
+        "name": "The Rock of SP",
+        "spawnChance": 0,
+        "width": 400,
+        "height": 200,
+        "attackType": "",
+        "aggroRange": 128,
+        "deaggroTime": 60,
+        "boss": true,
+        "bossData": {
+            "stages": [
+                {
+                    "endTrigger": {
+                        "type": "hp",
+                        "data": {
+                            "min": 800
+                        }
+                    },
+                    "moveSpeed": 2,
+                    "stats": {
+                        "damageType": "",
+                        "projectileSpeed": 1,
+                        "attack": 1,
+                        "defense": 0.4,
+                        "damageReduction": 2,
+                        "knockbackResistance": 0.95,
+                        "heal": 8,
+                        "speed": 1,
+                        "range": 1,
+                        "accuracy": 0.2,
+                        "critChance": 0,
+                        "critPower": 1,
+                        "knockback": 1,
+                        "maxPierce": 0
+                    },
+                    "attacks": [
+                        {
+                            "chance": 1,
+                            "action": {
+                                "type": "monsters",
+                                "formation": "surround",
+                                "data": {
+                                    "amount": 5,
+                                    "id": "sentientrock"
+                                }
+                            },
+                            "time": 200
+                        },
+                        {
+                            "chance": 80,
+                            "action": {
+                                "type": "projectiles",
+                                "formation": "player",
+                                "data": {
+                                    "id": "spike",
+                                    "warning": 5,
+                                    "stats": {
+                                        "damageType": "",
+                                        "projectileSpeed": 1,
+                                        "attack": 38,
+                                        "defense": 0.4,
+                                        "damageReduction": 2,
+                                        "knockbackResistance": 0.95,
+                                        "heal": 8,
+                                        "speed": 1,
+                                        "range": 1,
+                                        "critChance": 0,
+                                        "critPower": 1,
+                                        "knockback": 1,
+                                        "maxPierce": 0
+                                    }
+                                }
+                            },
+                            "time": 10
+                        },
+                        {
+                            "chance": 150,
+                            "action": {
+                                "type": "projectiles",
+                                "formation": "random",
+                                "data": {
+                                    "id": "spike",
+                                    "warning": 5,
+                                    "amount": 15,
+                                    "stats": {
+                                        "damageType": "",
+                                        "projectileSpeed": 1,
+                                        "attack": 30,
+                                        "defense": 0.4,
+                                        "damageReduction": 2,
+                                        "knockbackResistance": 0.95,
+                                        "heal": 8,
+                                        "speed": 1,
+                                        "range": 1,
+                                        "critChance": 0,
+                                        "critPower": 1,
+                                        "knockback": 1,
+                                        "maxPierce": 0
+                                    }
+                                }
+                            },
+                            "time": 2
+                        }
+                    ]
+                },
+                {
+                    "endTrigger": {
+                        "type": "step",
+                        "data": {}
+                    },
+                    "moveSpeed": 2,
+                    "stats": {
+                        "damageType": "",
+                        "projectileSpeed": 1,
+                        "attack": 1,
+                        "defense": 0.7,
+                        "damageReduction": 2,
+                        "knockbackResistance": 0.95,
+                        "heal": 10,
+                        "speed": 1,
+                        "range": 1,
+                        "accuracy": 0.2,
+                        "critChance": 0,
+                        "critPower": 1,
+                        "knockback": 1,
+                        "maxPierce": 0
+                    },
+                    "attacks": [
+                        {
+                            "chance": 1,
+                            "action": {
+                                "type": "monsters",
+                                "formation": "map",
+                                "data": {
+                                    "name": "sprock2",
+                                    "id": "rockturret"
+                                }
+                            },
+                            "time": 0
+                        },
+                        {
+                            "chance": 1,
+                            "action": {
+                                "type": "cameraShake",
+                                "formation": "cameraShake",
+                                "data": {
+                                    "intensity": 20,
+                                    "time": 40
+                                }
+                            },
+                            "time": 0
+                        }
+                    ]
+                },
+                {
+                    "endTrigger": {
+                        "type": "hp",
+                        "data": {
+                            "min": 0
+                        }
+                    },
+                    "moveSpeed": 2,
+                    "stats": {
+                        "damageType": "",
+                        "projectileSpeed": 1,
+                        "attack": 1,
+                        "defense": 0.7,
+                        "damageReduction": 2,
+                        "knockbackResistance": 0.95,
+                        "heal": 10,
+                        "speed": 1,
+                        "range": 1,
+                        "accuracy": 0.2,
+                        "critChance": 0,
+                        "critPower": 1,
+                        "knockback": 1,
+                        "maxPierce": 0
+                    },
+                    "attacks": [
+                        {
+                            "chance": 1,
+                            "action": {
+                                "type": "monsters",
+                                "formation": "surround",
+                                "data": {
+                                    "amount": 6,
+                                    "id": "sentientrock"
+                                }
+                            },
+                            "time": 200
+                        },
+                        {
+                            "chance": 1,
+                            "action": {
+                                "type": "monsters",
+                                "formation": "map",
+                                "data": {
+                                    "name": "sprock1",
+                                    "id": "sentientrock"
+                                }
+                            },
+                            "time": 400
+                        },
+                        {
+                            "chance": 1,
+                            "action": {
+                                "type": "monsters",
+                                "formation": "map",
+                                "data": {
+                                    "name": "sprock2",
+                                    "id": "rockturret"
+                                }
+                            },
+                            "time": 200
+                        },
+                        {
+                            "chance": 50,
+                            "action": {
+                                "type": "projectiles",
+                                "formation": "player",
+                                "data": {
+                                    "id": "spike",
+                                    "warning": 5,
+                                    "stats": {
+                                        "damageType": "",
+                                        "projectileSpeed": 1,
+                                        "attack": 38,
+                                        "defense": 0.7,
+                                        "damageReduction": 2,
+                                        "knockbackResistance": 0.95,
+                                        "heal": 10,
+                                        "speed": 1,
+                                        "range": 1,
+                                        "critChance": 0,
+                                        "critPower": 1,
+                                        "knockback": 1,
+                                        "maxPierce": 0
+                                    }
+                                }
+                            },
+                            "time": 10
+                        },
+                        {
+                            "chance": 150,
+                            "action": {
+                                "type": "projectiles",
+                                "formation": "random",
+                                "data": {
+                                    "id": "spike",
+                                    "warning": 5,
+                                    "amount": 20,
+                                    "stats": {
+                                        "damageType": "",
+                                        "projectileSpeed": 1,
+                                        "attack": 30,
+                                        "defense": 0.7,
+                                        "damageReduction": 2,
+                                        "knockbackResistance": 0.95,
+                                        "heal": 10,
+                                        "speed": 1,
+                                        "range": 1,
+                                        "critChance": 0,
+                                        "critPower": 1,
+                                        "knockback": 1,
+                                        "maxPierce": 0
+                                    }
+                                }
+                            },
+                            "time": 1
+                        },
+                        {
+                            "chance": 20,
+                            "action": {
+                                "type": "cameraShake",
+                                "formation": "cameraShake",
+                                "data": {
+                                    "intensity": 10,
+                                    "time": 15
+                                }
+                            },
+                            "time": 0
+                        }
+                    ]
+                }
+            ]
+        },
+        "idleMove": "none",
+        "chaseTarget": true,
+        "circleTarget": false,
+        "circleDistance": 0,
+        "hp": 1400,
+        "fleeThreshold": 0,
+        "moveSpeed": 2,
+        "touchDamage": 80,
+        "stats": {
+            "damageType": "",
+            "projectileSpeed": 1,
+            "attack": 1,
+            "defense": 0.4,
+            "damageReduction": 2,
+            "knockbackResistance": 0.95,
+            "heal": 10,
+            "speed": 1,
+            "range": 1,
+            "accuracy": 0.2,
+            "critChance": 0,
+            "critPower": 1,
+            "knockback": 1,
+            "maxPierce": 0
+        },
+        "animationLength": 0,
+        "animationSpeed": 500,
+        "xpDrop": 200,
+        "drops": {
+            "chance": {
+                "nothing": 1,
+                "ialiteshard": 2,
+                "quartz": 1
+            },
+            "amount": {
+                "coppercoin": 30,
+                "silvercoin": 10
+            },
+            "constant": {
+                "ialitekey": 1,
+                "lodestone": 1
+            }
+        }
+    }
+}

@@ -1,0 +1,20 @@
+{
+    "useLocalDatabase": true,
+    "useDiscordWebhook": false,
+    "enableGaruderAPI": true,
+    "ops": [
+        "Sampleprovider(sp)",
+        "sp",
+        "suvanth"
+    ],
+    "respawnTeleport": true,
+    "pvp": false,
+    "monsterFriendlyFire": true,
+    "broadcastMonsterDeaths": false,
+    "physicsInaccuracy": 1,
+    "maxPathfindRange": 32,
+    "pathfindBuffer": 6,
+    "pathfindUpdateSpeed": 10,
+    "itemDespawnTime": 5,
+    "autoSaveInterval": 5
+}

@@ -1,0 +1,303 @@
+javascript:
+const hacks = document.createElement('div');
+hacks.innerHTML = `
+<div style="display: block; position: absolute; top: 100px;">
+<div>
+<button id="Mtracers" class="ui-lightbutton" style="background-color: #FFFFFFAA; color: black;" onclick="toggleMTracers();">Monster Tracers</button>
+<button id="Mattack" class="ui-lightbutton" style="background-color: #FFFFFFAA; color: black;" onclick="cycleMAttack();">Auto Kill - off</button>
+</div>
+<div>
+<button id="autopickup" class="ui-lightbutton" style="background-color: #FFFFFFAA; color: black;" onclick="toggleItemPickup();">Auto Pickup</button>
+<button id="skiptpwait" class="ui-lightbutton" style="background-color: #FFFFFFAA; color: black;" onclick="toggleSkipTpWait();">Skip TP Fade</button>
+<button id="skiptextscroll" class="ui-lightbutton" style="background-color: #FFFFFFAA; color: black;" onclick="toggleSkipTextScroll();">No Dialogue Scroll</button>
+</div>
+<div>
+<button id="autoheal" class="ui-lightbutton" style="background-color: #FFFFFFAA; color: black;" onclick="toggleHeal();">Auto Heal</button>
+<button id="autorespawn" class="ui-lightbutton" style="background-color: #FFFFFFAA; color: black;" onclick="toggleRespawn();">Auto Respawn</button>
+</div>
+<div>
+<button id="unlockcrafts" class="ui-lightbutton" style="background-color: #FFFFFFAA; color: black;" onclick="unlockCrafts();">Unlock All Crafts</button>
+</div>
+</div>`;
+document.getElementById('gameContainer').appendChild(hacks);
+var mTracers = false;
+var mAttack = 0;
+var autopickup = false;
+var skiptpwait = false;
+var skiptextscroll = false;
+var autoheal = false;
+var autorespawn = false;
+function toggleMTracers() {
+    if (mTracers) {
+        document.getElementById('Mtracers').style.backgroundColor = '#FFFFFFAA';
+        document.getElementById('Mtracers').style.color = '#000000';
+        mTracers = false;
+    } else {
+        document.getElementById('Mtracers').style.backgroundColor = '#000000AA';
+        document.getElementById('Mtracers').style.color = '#FFFFFF';
+        mTracers = true;
+    }
+};
+function cycleMAttack() {
+    mAttack++;
+    if (mAttack > 2) mAttack = 0;
+    if (mAttack) {
+        document.getElementById('Mattack').style.backgroundColor = '#000000AA';
+        document.getElementById('Mattack').style.color = '#FFFFFF';
+        if (mAttack == 1) {
+            document.getElementById('Mattack').innerText = 'Auto Kill - closest';
+        } else if (mAttack == 2) {
+            document.getElementById('Mattack').innerText = 'Auto Kill - highest HP';
+        }
+    } else {
+        document.getElementById('Mattack').style.backgroundColor = '#FFFFFFAA';
+        document.getElementById('Mattack').style.color = '#000000';
+        document.getElementById('Mattack').innerText = 'Auto Kill - off';
+    }
+};
+function toggleItemPickup() {
+    if (autopickup) {
+        document.getElementById('autopickup').style.backgroundColor = '#FFFFFFAA';
+        document.getElementById('autopickup').style.color = '#000000';
+        autopickup = false;
+    } else {
+        document.getElementById('autopickup').style.backgroundColor = '#000000AA';
+        document.getElementById('autopickup').style.color = '#FFFFFF';
+        autopickup = true;
+    }
+}
+function toggleSkipTpWait() {
+    if (skiptpwait) {
+        document.getElementById('skiptpwait').style.backgroundColor = '#FFFFFFAA';
+        document.getElementById('skiptpwait').style.color = '#000000';
+        skiptpwait = false;
+    } else {
+        document.getElementById('skiptpwait').style.backgroundColor = '#000000AA';
+        document.getElementById('skiptpwait').style.color = '#FFFFFF';
+        skiptpwait = true;
+    }
+}
+function toggleSkipTextScroll() {
+    if (skiptextscroll) {
+        document.getElementById('skiptextscroll').style.backgroundColor = '#FFFFFFAA';
+        document.getElementById('skiptextscroll').style.color = '#000000';
+        settings.dialogueSpeed = settings.old_dialogueSpeed;
+        updateSetting('dialogueSpeed');
+        skiptextscroll = false;
+    } else {
+        document.getElementById('skiptextscroll').style.backgroundColor = '#000000AA';
+        document.getElementById('skiptextscroll').style.color = '#FFFFFF';
+        settings.old_dialogueSpeed = settings.dialogueSpeed;
+        settings.dialogueSpeed = 11;
+        updateSetting('dialogueSpeed');
+        skiptextscroll = true;
+    }
+}
+function toggleHeal() {
+    if (autoheal) {
+        document.getElementById('autoheal').style.backgroundColor = '#FFFFFFAA';
+        document.getElementById('autoheal').style.color = '#000000';
+        socket.emit('keyPress', { key: 'heal', state: false });
+        autoheal = false;
+    } else {
+        document.getElementById('autoheal').style.backgroundColor = '#000000AA';
+        document.getElementById('autoheal').style.color = '#FFFFFF';
+        autoheal = true;
+    }
+};
+function toggleRespawn() {
+    if (autorespawn) {
+        document.getElementById('autorespawn').style.backgroundColor = '#FFFFFFAA';
+        document.getElementById('autorespawn').style.color = '#000000';
+        autorespawn = false;
+    } else {
+        document.getElementById('autorespawn').style.backgroundColor = '#000000AA';
+        document.getElementById('autorespawn').style.color = '#FFFFFF';
+        autorespawn = true;
+    }
+};
+function unlockCrafts() {
+    for (var i in Crafting.slots) {
+        Crafting.slots[i].showWhenCraftable = false;
+        Crafting.slots[i].updateMaterials();
+    }
+    document.getElementById('unlockcrafts').remove();
+};
+MGHC = function () {
+    if (mTracers) {
+        CTX.save();
+        CTX.translate((window.innerWidth / 2) - player.x, (window.innerHeight / 2) - player.y);
+        for (var i in Monster.list) {
+            switch (Monster.list[i].type) {
+                case ('greenbird'):
+                    CTX.lineWidth = 2;
+                    CTX.strokeStyle = '#00DD00';
+                    break;
+                case ('bluebird'):
+                    CTX.lineWidth = 2;
+                    CTX.strokeStyle = '#00DD00';
+                    break;
+                case ('snowbird'):
+                    CTX.lineWidth = 4;
+                    CTX.strokeStyle = '#EEEEEE';
+                    break;
+                case ('cherrybomb'):
+                    CTX.lineWidth = 6;
+                    CTX.strokeStyle = '#FF0000';
+                    break;
+                case ('snowball'):
+                    CTX.lineWidth = 6;
+                    CTX.strokeStyle = '#EEEEEE';
+                    break;
+                default:
+                    CTX.lineWidth = 2;
+                    CTX.strokeStyle = '#000000';
+                    break;
+            }
+            CTX.beginPath();
+            CTX.moveTo(player.x + OFFSETX, player.y + OFFSETY);
+            CTX.lineTo(Monster.list[i].x + OFFSETX, Monster.list[i].y + OFFSETY);
+            CTX.stroke();
+        }
+        CTX.restore();
+    }
+    if (mAttack) {
+        var lowest = null;
+        for (var i in Monster.list) {
+            if (lowest == null && Monster.list[i].map == player.map) lowest = i;
+            if (mAttack == 1) {
+                if (lowest) if (Monster.list[i].map == player.map && getDistance(Monster.list[i]) < getDistance(Monster.list[lowest])) lowest = i;
+            } else if (mAttack == 2) {
+                if (lowest) if (Monster.list[i].map == player.map && Monster.list[i].hp > Monster.list[lowest].hp) lowest = i;
+            }
+        }
+        if (lowest) {
+            socket.emit('click', { button: 'left', x: Monster.list[lowest].x - player.x, y: Monster.list[lowest].y - player.y, state: true });
+        }
+    }
+    if (autopickup) {
+        for (var i in DroppedItem.list) {
+            var localdroppeditem = DroppedItem.list[i];
+            if (getDistance(localdroppeditem) < 256) {
+                var x = localdroppeditem.x - player.x + OFFSETX;
+                var y = localdroppeditem.y - player.y + OFFSETY;
+                socket.emit('click', { button: 'right', x: x, y: y, state: true });
+            }
+        }
+    }
+    if (autoheal) socket.emit('keyPress', { key: 'heal', state: true });
+};
+function getDistance(entity) {
+    return Math.sqrt(Math.pow(player.x - entity.x, 2) + Math.pow(player.y - entity.y, 2));
+};
+document.onmousemove = function (e) {
+    if (loaded && !mAttack) {
+        if (!e.isTrusted) {
+            socket.emit('timeout');
+        }
+        if (pointerLocked) {
+            mouseX += e.movementX;
+            mouseY += e.movementY;
+            mouseX = Math.max(-window.innerWidth / 2, Math.min(mouseX, window.innerWidth / 2));
+            mouseY = Math.max(-window.innerHeight / 2, Math.min(mouseY, window.innerHeight / 2));
+            document.getElementById('crossHair').style.left = mouseX + window.innerWidth / 2 - 11 + 'px';
+            document.getElementById('crossHair').style.top = mouseY + window.innerHeight / 2 - 11 + 'px';
+        } else {
+            mouseX = e.clientX - window.innerWidth / 2;
+            mouseY = e.clientY - window.innerHeight / 2;
+        }
+    }
+};
+socket.off('teleport1');
+socket.on('teleport1', function () {
+    if (skiptpwait) {
+        socket.emit('teleport');
+    } else {
+        document.getElementById('fade').style.display = 'block';
+        document.getElementById('fade').style.animationName = 'fadeIn';
+        document.getElementById('fade').onanimationend = function () {
+            socket.emit('teleport');
+            document.getElementById('fade').onanimationend = function () { };
+        };
+    }
+});
+socket.off('teleport2');
+socket.on('teleport2', function (pos) {
+    player.map = pos.map;
+    player.x = pos.x;
+    player.y = pos.y;
+    if (skiptpwait) {
+    } else {
+        player.map = pos.map;
+        player.x = pos.x;
+        player.y = pos.y;
+        document.getElementById('fade').style.animationName = 'fadeOut';
+        document.getElementById('fade').onanimationend = function () {
+            document.getElementById('fade').style.display = 'none';
+            socket.emit('teleport2');
+            document.getElementById('fade').onanimationend = function () { };
+        };
+    }
+});
+socket.off('playerDied');
+socket.on('playerDied', function () {
+    if (autorespawn) {
+        setTimeout(function () {
+            respawn();
+        }, 500);
+    } else {
+        document.getElementById('respawnButton').style.display = 'none';
+        document.getElementById('deathScreen').style.display = 'block';
+        if (controllerConnected) document.getElementById('respawnButton').innerText = 'Press A to Respawn';
+        var time = 5;
+        document.getElementById('respawnTimer').innerText = time;
+        var timer = setInterval(function () {
+            time--;
+            document.getElementById('respawnTimer').innerText = time;
+            if (time == 0) {
+                clearInterval(timer);
+                document.getElementById('respawnButton').style.display = 'block';
+            }
+        }, 1000);
+    }
+});
+drawFrame = function () {
+    if (loaded && player) {
+        if (settings.debug) frameStart = Date.now();
+        for (var i = 0; i < MAPS[player.map].layerCount; i++) {
+            if (LAYERS.entitylayers[i] == null) {
+                LAYERS.entitylayers[i] = createCanvas();
+                LAYERS.elayers[i] = LAYERS.entitylayers[i].getContext('2d');
+                LAYERS.entitylayers[i].width = window.innerWidth * SCALE;
+                LAYERS.entitylayers[i].height = window.innerHeight * SCALE;
+                LAYERS.elayers[i].scale(SCALE, SCALE);
+                resetCanvas(LAYERS.entitylayers[i]);
+            }
+        }
+        CTX.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        OFFSETX = 0;
+        OFFSETY = 0;
+        if (MAPS[player.map].width * 64 > window.innerWidth) OFFSETX = -Math.max((window.innerWidth / 2) - (player.x - MAPS[player.map].offsetX), Math.min((MAPS[player.map].offsetX + (MAPS[player.map].width * 64)) - player.x - (window.innerWidth / 2), 0));
+        if (MAPS[player.map].height * 64 > window.innerHeight) OFFSETY = -Math.max((window.innerHeight / 2) - (player.y - MAPS[player.map].offsetY), Math.min((MAPS[player.map].offsetY + (MAPS[player.map].height * 64)) - player.y - (window.innerHeight / 2), 0));
+        OFFSETX += lsdX;
+        OFFSETY += lsdY;
+        updateCameraShake();
+        drawMap();
+        DroppedItem.updateHighlight();
+        Entity.draw();
+        CTX.drawImage(LAYERS.map0, 0, 0, window.innerWidth, window.innerHeight);
+        for (var i = 0; i < MAPS[player.map].layerCount + 1; i++) {
+            if (LAYERS.entitylayers[i]) CTX.drawImage(LAYERS.entitylayers[i], 0, 0, window.innerWidth, window.innerHeight);
+            if (LAYERS.mapvariables[i]) CTX.drawImage(LAYERS.mapvariables[i], 0, 0, window.innerWidth, window.innerHeight);
+        }
+        CTX.drawImage(LAYERS.map1, 0, 0, window.innerWidth, window.innerHeight);
+        CTX.drawImage(LAYERS.entity1, 0, 0, window.innerWidth, window.innerHeight);
+        drawDebug();
+        MGHC();
+        if (settings.debug) {
+            var current = Date.now();
+            frameTimeCounter = current - frameStart;
+        }
+        if (!controllerConnected && !mAttack) socket.emit('mouseMove', { x: mouseX - OFFSETX, y: mouseY - OFFSETY });
+    }
+};

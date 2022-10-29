@@ -1,0 +1,77 @@
+{
+    "maps": {
+        "The Village": [],
+        "The Docks": [
+            "greenBird","blueBird","blueBall","redCherryBomb","blueCherryBomb"
+        ],
+        "The River": [
+            "greenBird","blueBird"
+        ],
+        "Lilypad Pathway Part 1": [
+            "redCherryBomb","blueCherryBomb","snowBall"
+        ],
+        "The Forest": [
+            "greenBird","blueBird","blueBall"
+        ],
+        "Lilypad Pathway Part 2": [
+            "greenLizard"
+        ],
+        "The Weeping Forest": [
+            "ghost","lostSpirit"
+        ],
+        "The Graveyard": [
+            "lostSpirit"
+        ],
+        "The Arena": [
+            "redBird","greenLizard","lightningLizard","ghost","lostSpirit"
+        ],
+        "Lilypad Temple Room 1": [
+            "lightningTurret","lightningRammer"
+        ],
+        "The Outskirts": [
+            "sandBird"
+        ],
+        "Town Cave": [
+            "sandBird"
+        ],
+        "Lilypad Temple Room 2": [
+            "waterRammer","deathBomb"
+        ],
+        "The Flaming Sea": [
+            "charredBird"
+        ],
+        "The Rocky Ascent": [
+            "rocopter"
+        ],
+        "The Foothills": [
+            "rocopter"
+        ],
+        "Gordon Peak": [
+            "rocopter"
+        ],
+        "The Sandy Beach": [
+            "crab"
+        ],
+        "Pine Tree Forest": [
+            "crab"
+        ],
+        "Garage": [
+            "greenBird","blueBird"
+        ],
+        "Secret Tunnel Part 1": [
+            "snowBall"
+        ],
+        "The Dripping Caverns": [
+            "cyanBeetle"
+        ],
+        "The Pathway": [
+            "greenBird","blueBall"
+        ],
+        "Forest Dungeon Room 1": [
+            "forestBird"
+        ],
+        "Riverside Dungeon Room 1": [
+            "waterLizard"
+        ]
+    }
+}

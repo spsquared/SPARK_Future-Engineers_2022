@@ -1,0 +1,93 @@
+{
+    "greenbird": {
+        "name": "Green Bird",
+        "width": 44,
+        "height": 52,
+        "rawWidth": 11,
+        "rawHeight": 13,
+        "offsetX": 0,
+        "offsetY": -6,
+        "displayBossBar": false
+    },
+    "bluebird": {
+        "name": "Blue Bird",
+        "width": 44,
+        "height": 52,
+        "rawWidth": 11,
+        "rawHeight": 13,
+        "offsetX": 0,
+        "offsetY": -6,
+        "displayBossBar": false
+    },
+    "snowbird": {
+        "name": "Snow Bird",
+        "width": 44,
+        "height": 52,
+        "rawWidth": 11,
+        "rawHeight": 13,
+        "offsetX": 0,
+        "offsetY": -6,
+        "displayBossBar": false
+    },
+    "cherrybomb": {
+        "name": "Cherry Bomb",
+        "width": 64,
+        "height": 64,
+        "rawWidth": 16,
+        "rawHeight": 16,
+        "offsetX": 0,
+        "offsetY": 0,
+        "displayBossBar": false
+    },
+    "snowball": {
+        "name": "Snowball",
+        "width": 44,
+        "height": 44,
+        "rawWidth": 11,
+        "rawHeight": 11,
+        "offsetX": 0,
+        "offsetY": 0,
+        "displayBossBar": false
+    },
+    "cavebird": {
+        "name": "Cave Bird",
+        "width": 44,
+        "height": 52,
+        "rawWidth": 11,
+        "rawHeight": 13,
+        "offsetX": 0,
+        "offsetY": -6,
+        "displayBossBar": false
+    },
+    "sentientrock": {
+        "name": "Sentient Rock",
+        "width": 40,
+        "height": 40,
+        "rawWidth": 10,
+        "rawHeight": 10,
+        "offsetX": 0,
+        "offsetY": 0,
+        "displayBossBar": false
+    },
+    "rockturret": {
+        "name": "Rock Turret",
+        "width": 36,
+        "height": 64,
+        "rawWidth": 9,
+        "rawHeight": 16,
+        "offsetX": 0,
+        "offsetY": 0,
+        "displayBossBar": false
+    },
+    "sprock": {
+        "name": "The Rock of SP",
+        "width": 400,
+        "height": 400,
+        "rawWidth": 10,
+        "rawHeight": 10,
+        "offsetX": 0,
+        "offsetY": -100,
+        "displayBossBar": true,
+        "bossBarColor": "#B420B4"
+    }
+}

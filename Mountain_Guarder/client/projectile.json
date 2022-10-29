@@ -1,0 +1,210 @@
+{
+    "arrow": {
+        "width": 120,
+        "height": 15,
+        "rawWidth": 40,
+        "rawHeight": 5,
+        "offsetX": 0,
+        "offsetY": 0,
+        "glow": false,
+        "above": false
+    },
+    "piercingarrow": {
+        "width": 120,
+        "height": 15,
+        "rawWidth": 40,
+        "rawHeight": 5,
+        "offsetX": 0,
+        "offsetY": 0,
+        "glow": false,
+        "above": false
+    },
+    "magicball": {
+        "width": 36,
+        "height": 36,
+        "rawWidth": 9,
+        "rawHeight": 9,
+        "offsetX": 0,
+        "offsetY": 0,
+        "glow": {
+            "radius": 48,
+            "color": {
+                "r": 200,
+                "g": 100,
+                "b": 220
+            },
+            "intensity": 0.2
+        },
+        "above": false
+    },
+    "magicballnoclip": {
+        "width": 36,
+        "height": 36,
+        "rawWidth": 9,
+        "rawHeight": 9,
+        "offsetX": 0,
+        "offsetY": 0,
+        "glow": {
+            "radius": 48,
+            "color": {
+                "r": 190,
+                "g": 60,
+                "b": 240
+            },
+            "intensity": 0.2
+        },
+        "above": true
+    },
+    "homingmagicball": {
+        "width": 36,
+        "height": 36,
+        "rawWidth": 9,
+        "rawHeight": 9,
+        "offsetX": 0,
+        "offsetY": 0,
+        "glow": {
+            "radius": 48,
+            "color": {
+                "r": 200,
+                "g": 100,
+                "b": 220
+            },
+            "intensity": 0.2
+        },
+        "above": false
+    },
+    "homingmagicballnoclip": {
+        "width": 36,
+        "height": 36,
+        "rawWidth": 9,
+        "rawHeight": 9,
+        "offsetX": 0,
+        "offsetY": 0,
+        "glow": {
+            "radius": 48,
+            "color": {
+                "r": 190,
+                "g": 60,
+                "b": 240
+            },
+            "intensity": 0.2
+        },
+        "above": true
+    },
+    "meleedamage": {
+        "width": 0,
+        "height": 0,
+        "rawWidth": 0,
+        "rawHeight": 0,
+        "offsetX": 0,
+        "offsetY": 0,
+        "glow": false,
+        "above": false
+    },
+    "spike": {
+        "width": 36,
+        "height": 81,
+        "rawWidth": 12,
+        "rawHeight": 27,
+        "offsetX": 0,
+        "offsetY": -20,
+        "glow": false,
+        "above": false
+    },
+    "aiminglaser": {
+        "width": 1024,
+        "height": 3,
+        "rawWidth": 1,
+        "rawHeight": 1,
+        "offsetX": 0,
+        "offsetY": 0,
+        "glow": false,
+        "above": false
+    },
+    "explosive": {
+        "width": 40,
+        "height": 40,
+        "rawWidth": 10,
+        "rawHeight": 10,
+        "offsetX": 0,
+        "offsetY": 0,
+        "glow": false,
+        "above": false
+    },
+    "ninjastar": {
+        "width": 22,
+        "height": 22,
+        "rawWidth": 11,
+        "rawHeight": 11,
+        "offsetX": 0,
+        "offsetY": 0,
+        "glow": false,
+        "above": false
+    },
+    "snowball": {
+        "width": 18,
+        "height": 18,
+        "rawWidth": 9,
+        "rawHeight": 9,
+        "offsetX": 0,
+        "offsetY": 0,
+        "glow": false,
+        "above": false
+    },
+    "fastsnowball": {
+        "width": 18,
+        "height": 18,
+        "rawWidth": 9,
+        "rawHeight": 9,
+        "offsetX": 0,
+        "offsetY": 0,
+        "glow": false,
+        "above": false
+    },
+    "rock": {
+        "width": 24,
+        "height": 24,
+        "rawWidth": 12,
+        "rawHeight": 12,
+        "offsetX": 0,
+        "offsetY": 0,
+        "glow": false,
+        "above": false
+    },
+    "explodingrock": {
+        "width": 30,
+        "height": 30,
+        "rawWidth": 12,
+        "rawHeight": 12,
+        "offsetX": 0,
+        "offsetY": 0,
+        "glow": {
+            "radius": 16,
+            "color": {
+                "r": 255,
+                "g": 130,
+                "b": 0
+            },
+            "intensity": 0.1
+        },
+        "above": false
+    },
+    "christmas2021": {
+        "width": 60,
+        "height": 20,
+        "rawWidth": 15,
+        "rawHeight": 5,
+        "offsetX": 0,
+        "offsetY": 0,
+        "glow": {
+            "radius": 64,
+            "color": {
+                "r": 255,
+                "g": 200,
+                "b": 40
+            },
+            "intensity": 0.3
+        },
+        "above": true
+    }
+}

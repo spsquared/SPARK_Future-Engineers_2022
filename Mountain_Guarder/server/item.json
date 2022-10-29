@@ -1,0 +1,818 @@
+{
+    "missing": {
+        "slotType": "none",
+        "rarity": "missing",
+        "maxStackSize": 1000000,
+        "effects": [],
+        "enchantments": [],
+        "usable": false
+    },
+    "coppercoin": {
+        "slotType": "coin",
+        "rarity": "coin",
+        "maxStackSize": 100000,
+        "effects": [],
+        "enchantments": [],
+        "usable": false
+    },
+    "silvercoin": {
+        "slotType": "coin",
+        "rarity": "coin",
+        "maxStackSize": 100000,
+        "effects": [],
+        "enchantments": [],
+        "usable": false
+    },
+    "goldcoin": {
+        "slotType": "coin",
+        "rarity": "coin",
+        "maxStackSize": 100000,
+        "effects": [],
+        "enchantments": [],
+        "usable": false
+    },
+    "blucoin": {
+        "slotType": "coin",
+        "rarity": "blucoin",
+        "maxStackSize": 100,
+        "effects": [],
+        "enchantments": [],
+        "usable": false
+    },
+    "wood": {
+        "slotType": "material",
+        "rarity": 0,
+        "maxStackSize": 200,
+        "effects": [],
+        "enchantments": [],
+        "usable": false
+    },
+    "planks": {
+        "slotType": "material",
+        "rarity": 0,
+        "maxStackSize": 400,
+        "effects": [],
+        "enchantments": [],
+        "usable": false
+    },
+    "sticks": {
+        "slotType": "material",
+        "rarity": 0,
+        "maxStackSize": 800,
+        "effects": [],
+        "enchantments": [],
+        "usable": false
+    },
+    "stone": {
+        "slotType": "material",
+        "rarity": 0,
+        "maxStackSize": 80,
+        "effects": [],
+        "enchantments": [],
+        "usable": false
+    },
+    "quartz": {
+        "slotType": "material",
+        "rarity": 3,
+        "maxStackSize": 80,
+        "effects": [],
+        "enchantments": [],
+        "usable": false
+    },
+    "coal": {
+        "slotType": "material",
+        "rarity": 1,
+        "maxStackSize": 50,
+        "effects": [],
+        "enchantments": [],
+        "usable": false
+    },
+    "ironore": {
+        "slotType": "material",
+        "rarity": 1,
+        "maxStackSize": 50,
+        "effects": [],
+        "enchantments": [],
+        "usable": false
+    },
+    "iron": {
+        "slotType": "material",
+        "rarity": 1,
+        "maxStackSize": 50,
+        "effects": [],
+        "enchantments": [],
+        "usable": false
+    },
+    "lodestone": {
+        "slotType": "item",
+        "rarity": -3,
+        "maxStackSize": 50,
+        "effects": [],
+        "enchantments": [],
+        "usable": true,
+        "useScript": "function(self) {self.openGaruderWarpMenu();}"
+    },
+    "simplewoodenbow": {
+        "slotType": "weapon",
+        "rarity": 0,
+        "projectile": "arrow",
+        "projectilePattern": "single",
+        "projectileSpeed": 1,
+        "projectileRange": 0.8,
+        "accuracy": 0.3,
+        "damage": 8,
+        "damageType": "ranged",
+        "critChance": 0.02,
+        "critPower": 0.02,
+        "knockback": 1,
+        "maxPierce": 0,
+        "useTime": 10,
+        "manaCost": 0,
+        "maxStackSize": 1,
+        "effects": [],
+        "enchantments": [
+            "swiftness",
+            "speed",
+            "power"
+        ],
+        "usable": false
+    },
+    "simplewoodensword": {
+        "slotType": "weapon",
+        "rarity": 0,
+        "projectile": "meleedamage",
+        "projectilePattern": "single",
+        "projectileSpeed": 1,
+        "projectileRange": 0.2,
+        "accuracy": 0.6,
+        "damage": 10,
+        "damageType": "melee",
+        "critChance": 0.1,
+        "critPower": 0.15,
+        "knockback": 1,
+        "maxPierce": 0,
+        "useTime": 15,
+        "manaCost": 0,
+        "maxStackSize": 1,
+        "effects": [],
+        "enchantments": [
+            "swiftness",
+            "speed"
+        ],
+        "usable": false
+    },
+    "simplewoodenstaff": {
+        "slotType": "weapon",
+        "rarity": 0,
+        "projectile": "magicball",
+        "projectilePattern": "single",
+        "projectileSpeed": 0.8,
+        "projectileRange": 0.6,
+        "accuracy": 0,
+        "damage": 7,
+        "damageType": "magic",
+        "critChance": 0.05,
+        "critPower": 0.1,
+        "knockback": 1,
+        "maxPierce": 0,
+        "useTime": 10,
+        "manaCost": 10,
+        "maxStackSize": 1,
+        "effects": [],
+        "enchantments": [
+            "swiftness",
+            "speed",
+            "sorcery"
+        ],
+        "usable": false
+    },
+    "leatherhood": {
+        "slotType": "helmet",
+        "rarity": 0,
+        "maxStackSize": 1,
+        "effects": [
+            {
+                "id": "rangedDamage",
+                "value": 1.02
+            },
+            {
+                "id": "meleeDamage",
+                "value": 0.98
+            },
+            {
+                "id": "magicDamage",
+                "value": 0.7
+            },
+            {
+                "id": "range",
+                "value": 1.1
+            },
+            {
+                "id": "critChance",
+                "value": 0.1
+            }
+        ],
+        "enchantments": [
+            "swiftness",
+            "protection"
+        ],
+        "usable": false
+    },
+    "leatherhat": {
+        "slotType": "helmet",
+        "rarity": 0,
+        "maxStackSize": 1,
+        "effects": [
+            {
+                "id": "rangedDamage",
+                "value": 0.8
+            },
+            {
+                "id": "meleeDamage",
+                "value": 0.92
+            },
+            {
+                "id": "magicDamage",
+                "value": 1.02
+            },
+            {
+                "id": "critChance",
+                "value": 0.1
+            },
+            {
+                "id": "critPower",
+                "value": 0.03
+            }
+        ],
+        "enchantments": [
+            "swiftness",
+            "protection"
+        ],
+        "usable": false
+    },
+    "woodenhelmet": {
+        "slotType": "helmet",
+        "rarity": 0,
+        "maxStackSize": 1,
+        "effects": [
+            {
+                "id": "rangedDamage",
+                "value": 0.95
+            },
+            {
+                "id": "meleeDamage",
+                "value": 1.05
+            },
+            {
+                "id": "magicDamage",
+                "value": 0.95
+            },
+            {
+                "id": "critChance",
+                "value": 0.1
+            },
+            {
+                "id": "damageReduction",
+                "value": 1
+            }
+        ],
+        "enchantments": [
+            "swiftness",
+            "protection"
+        ],
+        "usable": false
+    },
+    "leatherarmor": {
+        "slotType": "armor",
+        "rarity": 0,
+        "maxStackSize": 1,
+        "effects": [
+            {
+                "id": "damageReduction",
+                "value": 1
+            },
+            {
+                "id": "defense",
+                "value": 0.05
+            }
+        ],
+        "enchantments": [
+            "swiftness",
+            "protection"
+        ],
+        "usable": false
+    },
+    "woodenshield": {
+        "slotType": "shield",
+        "rarity": 0,
+        "maxStackSize": 1,
+        "knockbackResistance": 0.2,
+        "blockAngle": 90,
+        "projectileReflectChance": 0,
+        "effects": [],
+        "enchantments": [],
+        "usable": false
+    },
+    "steelbow": {
+        "slotType": "weapon",
+        "rarity": 1,
+        "projectile": "arrow",
+        "projectilePattern": "single",
+        "projectileSpeed": 1.2,
+        "projectileRange": 1,
+        "accuracy": 0.35,
+        "damage": 12,
+        "damageType": "ranged",
+        "critChance": 0.04,
+        "critPower": 0.1,
+        "knockback": 1.5,
+        "maxPierce": 0,
+        "useTime": 10,
+        "manaCost": 0,
+        "maxStackSize": 1,
+        "effects": [],
+        "enchantments": [
+            "swiftness",
+            "speed",
+            "power"
+        ],
+        "usable": false
+    },
+    "steelbroadsword": {
+        "slotType": "weapon",
+        "rarity": 1,
+        "projectile": "meleedamage",
+        "projectilePattern": "single",
+        "projectileSpeed": 1,
+        "projectileRange": 0.2,
+        "accuracy": 0.8,
+        "damage": 12,
+        "damageType": "melee",
+        "critChance": 0.15,
+        "critPower": 0.2,
+        "knockback": 1,
+        "maxPierce": 3,
+        "useTime": 12,
+        "manaCost": 0,
+        "maxStackSize": 1,
+        "effects": [],
+        "enchantments": [
+            "swiftness",
+            "speed",
+            "sharpness"
+        ],
+        "usable": false
+    },
+    "steelcutlass": {
+        "slotType": "weapon",
+        "rarity": 1,
+        "projectile": "meleedamage",
+        "projectilePattern": "single",
+        "projectileSpeed": 1,
+        "projectileRange": 0.5,
+        "accuracy": 0.4,
+        "damage": 16,
+        "damageType": "melee",
+        "critChance": 0.15,
+        "critPower": 0.18,
+        "knockback": 1,
+        "maxPierce": 5,
+        "useTime": 30,
+        "manaCost": 0,
+        "maxStackSize": 1,
+        "effects": [],
+        "enchantments": [
+            "swiftness",
+            "speed",
+            "sharpness"
+        ],
+        "usable": false
+    },
+    "steelstaff": {
+        "slotType": "weapon",
+        "rarity": 1,
+        "projectile": "magicball",
+        "projectilePattern": "line",
+        "projectileSpeed": 1.2,
+        "projectileRange": 0.8,
+        "accuracy": 0.2,
+        "damage": 11,
+        "damageType": "magic",
+        "critChance": 0.1,
+        "critPower": 0.08,
+        "knockback": 1,
+        "maxPierce": 0,
+        "useTime": 10,
+        "manaCost": 9,
+        "maxStackSize": 1,
+        "effects": [],
+        "enchantments": [
+            "swiftness",
+            "speed",
+            "efficiency",
+            "sorcery"
+        ],
+        "usable": false
+    },
+    "simplewizardhat": {
+        "slotType": "helmet",
+        "rarity": 1,
+        "maxStackSize": 1,
+        "effects": [
+            {
+                "id": "rangedDamage",
+                "value": 0.95
+            },
+            {
+                "id": "meleeDamage",
+                "value": 0.86
+            },
+            {
+                "id": "magicDamage",
+                "value": 1.1
+            },
+            {
+                "id": "critPower",
+                "value": 0.1
+            }
+        ],
+        "enchantments": [
+            "swiftness",
+            "focus",
+            "protection",
+            "smashing"
+        ],
+        "usable": false
+    },
+    "whitefabrichood": {
+        "slotType": "helmet",
+        "rarity": 1,
+        "maxStackSize": 1,
+        "effects": [
+            {
+                "id": "rangedDamage",
+                "value": 1.1
+            },
+            {
+                "id": "meleeDamage",
+                "value": 0.9
+            },
+            {
+                "id": "magicDamage",
+                "value": 0.95
+            }
+        ],
+        "enchantments": [
+            "swiftness",
+            "protection",
+            "smashing"
+        ],
+        "usable": false
+    },
+    "steelhelmet": {
+        "slotType": "helmet",
+        "rarity": 1,
+        "maxStackSize": 1,
+        "effects": [
+            {
+                "id": "rangedDamage",
+                "value": 0.9
+            },
+            {
+                "id": "meleeDamage",
+                "value": 1.15
+            },
+            {
+                "id": "magicDamage",
+                "value": 0.9
+            },
+            {
+                "id": "damageReduction",
+                "value": 2
+            },
+            {
+                "id": "defense",
+                "value": 0.1
+            }
+        ],
+        "enchantments": [
+            "swiftness",
+            "protection",
+            "smashing"
+        ],
+        "usable": false
+    },
+    "steelarmor": {
+        "slotType": "armor",
+        "rarity": 1,
+        "maxStackSize": 1,
+        "effects": [
+            {
+                "id": "meleeDamage",
+                "value": 1.08
+            },
+            {
+                "id": "damageReduction",
+                "value": 3
+            },
+            {
+                "id": "defense",
+                "value": 0.1
+            }
+        ],
+        "enchantments": [
+            "swiftness",
+            "protection",
+            "smashing"
+        ],
+        "usable": false
+    },
+    "steelshield": {
+        "slotType": "shield",
+        "rarity": 1,
+        "maxStackSize": 1,
+        "knockbackResistance": 0.3,
+        "blockAngle": 105,
+        "projectileReflectChance": 0.02,
+        "effects": [],
+        "enchantments": [
+            "toughness"
+        ],
+        "usable": false
+    },
+    "stoneshield": {
+        "slotType": "shield",
+        "rarity": 1,
+        "maxStackSize": 1,
+        "knockbackResistance": 0.5,
+        "blockAngle": 105,
+        "projectileReflectChance": 0.01,
+        "effects": [
+            {
+                "id": "speed",
+                "value": 0.9
+            }
+        ],
+        "enchantments": [
+            "toughness"
+        ],
+        "usable": false
+    },
+    "titaniumbow": {
+        "slotType": "weapon",
+        "rarity": 2,
+        "projectile": "piercingarrow",
+        "projectilePattern": "single",
+        "projectileSpeed": 1.5,
+        "projectileRange": 1.2,
+        "accuracy": 0.45,
+        "damage": 14,
+        "damageType": "ranged",
+        "critChance": 0.04,
+        "critPower": 0.15,
+        "knockback": 1.5,
+        "maxPierce": 2,
+        "useTime": 11,
+        "manaCost": 0,
+        "maxStackSize": 1,
+        "effects": [],
+        "enchantments": [
+            "swiftness",
+            "speed",
+            "power",
+            "piercing"
+        ],
+        "usable": false
+    },
+    "titaniumstaff": {
+        "slotType": "weapon",
+        "rarity": 2,
+        "projectile": "magicballnoclip",
+        "projectilePattern": "triangle",
+        "projectileSpeed": 1.5,
+        "projectileRange": 1,
+        "accuracy": 0.35,
+        "damage": 14,
+        "damageType": "magic",
+        "critChance": 0.1,
+        "critPower": 0.3,
+        "knockback": 1,
+        "useTime": 8,
+        "maxPierce": 0,
+        "manaCost": 10,
+        "maxStackSize": 1,
+        "effects": [],
+        "enchantments": [
+            "swiftness",
+            "speed",
+            "efficiency",
+            "focus"
+        ],
+        "usable": false
+    },
+    "quartzcrystal": {
+        "slotType": "crystal",
+        "rarity": 3,
+        "maxStackSize": 1,
+        "projectile": "spike",
+        "projectilePattern": "nearest",
+        "projectileSpeed": 1,
+        "projectileRange": 1,
+        "damage": 6,
+        "damageType": "melee",
+        "critChance": 0,
+        "critPower": 0,
+        "knockback": 1,
+        "maxPierce": 20,
+        "useTime": 40,
+        "manaCost": 5,
+        "effects": [
+            {
+                "id": "meleeDamage",
+                "value": 1.05
+            },
+            {
+                "id": "critPower",
+                "value": 1.02
+            }
+        ],
+        "enchantments": [],
+        "usable": false
+    },
+    "ialiteshard": {
+        "slotType": "material",
+        "rarity": 4,
+        "maxStackSize": 20,
+        "effects": [],
+        "enchantments": [],
+        "usable": false
+    },
+    "ialitecrystal": {
+        "slotType": "crystal",
+        "rarity": 4,
+        "maxStackSize": 1,
+        "projectile": "magicball",
+        "projectilePattern": "ring",
+        "projectileSpeed": 1.5,
+        "projectileRange": 1,
+        "damage": 24,
+        "damageType": "magic",
+        "critChance": 0.2,
+        "critPower": 0.2,
+        "knockback": 1,
+        "maxPierce": 0,
+        "useTime": 30,
+        "manaCost": 12,
+        "effects": [
+            {
+                "id": "health",
+                "value": 1.05
+            },
+            {
+                "id": "damage",
+                "value": 1.02
+            },
+            {
+                "id": "magicDamage",
+                "value": 1.02
+            },
+            {
+                "id": "critPower",
+                "value": 1.01
+            }
+        ],
+        "enchantments": [
+            "efficiency",
+            "unlocking"
+        ],
+        "usable": false
+    },
+    "ialitekey": {
+        "slotType": "key",
+        "rarity": 3,
+        "maxStackSize": 1,
+        "manaIncrease": 10,
+        "manaRegenerationSpeed": 5,
+        "manaRegenerationAmount": 2,
+        "effects": [],
+        "enchantments": [],
+        "usable": false
+    },
+    "yeetstick": {
+        "slotType": "weapon",
+        "rarity": 2,
+        "maxStackSize": 1,
+        "projectile": "meleedamage",
+        "projectilePattern": "single",
+        "projectileSpeed": 1,
+        "projectileRange": 1,
+        "accuracy": -2,
+        "damage": 1,
+        "damageType": "melee",
+        "critChance": 0,
+        "critPower": 0,
+        "knockback": 1000,
+        "useTime": 20,
+        "manaCost": 0,
+        "effects": [
+            {
+                "id": "speed",
+                "value": 1.5
+            }
+        ],
+        "enchantments": [],
+        "usable": false
+    },
+    "raresteak": {
+        "slotType": "weapon",
+        "rarity": 2,
+        "projectile": "meleedamage",
+        "projectilePattern": "ring",
+        "projectileSpeed": 1,
+        "projectileRange": 0.2,
+        "accuracy": 0,
+        "damage": 18,
+        "damageType": "melee",
+        "critChance": 0.2,
+        "critPower": 0.3,
+        "knockback": 1.5,
+        "useTime": 5,
+        "manaCost": 0,
+        "maxStackSize": 1,
+        "effects": [
+            {
+                "id": "health",
+                "value": 0.9
+            },
+            {
+                "id": "speed",
+                "value": 0.8
+            }
+        ],
+        "enchantments": [
+            "speed",
+            "sweepingedge"
+        ],
+        "usable": false
+    },
+    "christmas2021": {
+        "slotType": "weapon",
+        "rarity": -1,
+        "projectile": "christmas2021",
+        "projectilePattern": "ring",
+        "projectileSpeed": 1,
+        "projectileRange": 1,
+        "accuracy": 0,
+        "damage": 1,
+        "damageType": "magic",
+        "critChance": 0.01,
+        "critPower": 0.5,
+        "knockback": 1,
+        "useTime": 30,
+        "manaCost": 40,
+        "maxStackSize": 1,
+        "effects": [
+            {
+                "id": "damageReduction",
+                "value": -10
+            }
+        ],
+        "enchantments": [
+            "swiftness",
+            "speed",
+            "accuracy",
+            "power",
+            "efficiency",
+            "sorcery",
+            "focus"
+        ],
+        "usable": false
+    },
+    "anniversary": {
+        "slotType": "weapon",
+        "rarity": -2,
+        "maxStackSize": 1,
+        "projectile": "explosive",
+        "projectilePattern": "triangle",
+        "projectileSpeed": 1,
+        "projectileRange": 2,
+        "accuracy": 0.7,
+        "damage": 20,
+        "damageType": "ranged",
+        "critChance": 0,
+        "critPower": 0,
+        "knockback": 1,
+        "useTime": 20,
+        "manaCost": 0,
+        "effects": [
+            {
+                "id": "defense",
+                "value": 0.1
+            }
+        ],
+        "enchantments": [
+            "swiftness"
+        ],
+        "usable": false
+    }
+}

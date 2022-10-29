@@ -1,0 +1,854 @@
+/* Copyright (C) 2022 Radioactive64 */
+
+/* game container */
+#gameContainer {
+    display: none;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    padding: 0px 0px;
+    margin: 0px 0px;
+    width: 100vw;
+    height: 100vh;
+    overflow: clip;
+}
+
+/* canvas */
+#canvas {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    cursor: url('/client/img/assets/crosshair.png') 11 11, crosshair;
+    z-index: 0;
+}
+
+/* crossHair */
+#crossHair {
+    display: none;
+    position: absolute;
+    top: -22px;
+    left: -22px;
+    z-index: 100;
+}
+
+/* bossbars */
+#bossBars {
+    position: absolute;
+    text-align: center;
+    z-index: 4;
+}
+.bossBar {
+    width: 70vw;
+    height: 40px;
+    margin: 4px;
+    border: 2px solid black;
+    font-family: 'Pixel';
+    font-size: 30px;
+    color: white;
+    text-align: center;
+}
+.bossBar-value {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    background-color: red;
+}
+.bossBar-text {
+    padding-top: -2px;
+}
+
+/* region name */
+#regionName {
+    display: none;
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 60px;
+    color: #362b20;
+    background-color: #725640;
+    border: 2px solid #000000;
+    margin-right: -50%;
+    padding: 8px 20px;
+    animation-duration: 1s;
+    cursor: url('/client/img/assets/crosshair.png') 11 11, crosshair;
+    z-index: 1;
+}
+
+/* dialogue box */
+#promptContainer {
+    display: none;
+    position: absolute;
+    bottom: 10%;
+    left: 25%;
+    width: 50%;
+    z-index: 5;
+    --transitionSpeed: 30ms;
+}
+#promptText {
+    margin: 4px 8px;
+}
+.promptChoice {
+    width: calc(100% - 28px);
+    margin: 8px 8px;
+    text-align: left;
+}
+.promptFade {
+    animation: promptFade var(--transitionSpeed);
+}
+@keyframes promptFade {
+    from {
+        color: transparent;
+    }
+    to {
+        color: white;
+    }
+}
+
+/* fade */
+#fade {
+    display: none;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    animation-duration: 0.5s;
+    cursor: none;
+    z-index: 2;
+}
+
+/* stats */
+#stats {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    cursor: url('/client/img/assets/crosshair.png') 11 11, crosshair;
+    width: 160px;
+    height: 80px;
+    z-index: 4;
+}
+#statsHP {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 150px;
+    height: 20px;
+    background-color: black;
+}
+#statsHPvalue {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 20px;
+    background-color: red;
+}
+#statsHPtext {
+    position: absolute;
+    left: 0px;
+    top: -2px;
+    width: 150px;
+    height: 20px;
+    text-align: center;
+}
+#statsXP {
+    position: absolute;
+    top: 30px;
+    left: 5px;
+    width: 150px;
+    height: 20px;
+    background-color: black;
+}
+#statsXPvalue {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 20px;
+    background-color: #CCCC00;
+}
+#statsXPtext {
+    position: absolute;
+    left: 0px;
+    top: -2px;
+    width: 150px;
+    height: 20px;
+    text-align: center;
+}
+#statsMN {
+    position: absolute;
+    top: 55px;
+    left: 5px;
+    width: 150px;
+    height: 20px;
+    background-color: black;
+}
+#statsMNvalue {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 20px;
+    background-color: #FF9900;
+}
+#statsMNtext {
+    position: absolute;
+    left: 0px;
+    top: -2px;
+    width: 150px;
+    height: 20px;
+    text-align: center;
+}
+
+/* banners */
+#bannerContainer {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    cursor: url('/client/img/assets/crosshair.png') 11 11, crosshair;
+    width: 258px;
+    z-index: 4;
+}
+.banner {
+    width: 240px;
+    min-height: 18px;
+    margin: 4px 4px;
+    padding: 4px 4px;
+    font-size: 14px;
+    transition: 0.2s linear all;
+    animation: 0.5s ease banner-in;
+}
+@keyframes banner-in {
+    from {
+        transform: translateX(258px);
+    }
+    to {
+        transform: none;
+    }
+}
+@keyframes banner-out {
+    from {
+        transform: none;
+    }
+    to {
+        transform: translateX(258px);
+    }
+}
+
+/* quest banners */
+.quest-title {
+    color: cyan;
+}
+.quest-progress {
+    width: 236px;
+    height: 18px;
+    border: 2px solid whitesmoke;
+    margin-top: 4px;
+    background-color: #555555;
+    text-align: center;
+}
+.quest-progressinner {
+    width: 0%;
+    height: 18px;
+    animation: 2s ease-in-out progressbar alternate infinite;
+    transition: 0.1s linear width;
+}
+.quest-progresstext {
+    font-size: 12px;
+    transform: translateY(-18px);
+}
+@keyframes progressbar {
+    from {
+        background-color: darkgreen;
+    }
+    to {
+        background-color: forestgreen;
+    }
+}
+
+/* version label */
+#version {
+    position: absolute;
+    bottom: 4px;
+    left: 4px;
+    font-size: 10px;
+    color: black;
+    cursor: url('/client/img/assets/crosshair.png') 11 11, crosshair;
+    z-index: 4;
+}
+
+/* debug */
+.debugOverlay {
+    color: white;
+    background-color: #00000055;
+    padding: 2px 4px;
+    padding-right: 2px;
+    cursor: url('/client/img/assets/crosshair.png') 11 11, crosshair;
+    z-index: 4;
+}
+#debug {
+    display: none;
+}
+#fps {
+    position: absolute;
+    bottom: 20px;
+    left: 16px;
+}
+#tps {
+    position: absolute;
+    bottom: 46px;
+    left: 16px;
+}
+#ping {
+    position: absolute;
+    bottom: 72px;
+    left: 16px;
+}
+#frameTimes {
+    position: absolute;
+    bottom: 102px;
+    left: 16px;
+}
+#tickTimes {
+    position: absolute;
+    bottom: 222px;
+    left: 16px;
+}
+#serverHeap {
+    position: absolute;
+    bottom: 300px;
+    left: 16px;
+}
+#clientHeap {
+    position: absolute;
+    bottom: 274px;
+    left: 16px;
+}
+
+#mousepos {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+}
+#position {
+    position: absolute;
+    top: 42px;
+    right: 16px;
+}
+#entCount {
+    position: absolute;
+    top: 72px;
+    right: 16px;
+    text-align: right;
+}
+
+/* chat */
+#chat {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    width: 30vw;
+    height: 160px;
+    border: 1px solid black;
+    padding: 0px 4px;
+    cursor: url('/client/img/assets/crosshair.png') 11 11, crosshair;
+    z-index: 4;
+}
+#chatText {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 40vw;
+    height: 140px;
+    padding: 0px 4px;
+    overflow-y: scroll;
+    overflow-x: clip;
+    overflow-wrap: break-word;
+}
+#chatInput {
+    position: absolute;
+    bottom: -1px;
+    left: -1px;
+    width: 40vw;
+    padding: 0px 4px;
+    border: 1px solid black;
+}
+@keyframes special {
+    0% {
+        color: red
+    }
+    50% {
+        color: #FF9900
+    }
+    100% {
+        color: red;
+    }
+}
+
+/* dropdown menu */
+#dropdownMenu {
+    position: absolute;
+    top: 0px;
+    left: 165px;
+    width: 80px;
+    z-index: 4;
+}
+#dropdownMenuItems {
+    display: none;
+}
+
+/* windows */
+.window {
+    display: none;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 900px;
+    height: 600px;
+    pointer-events: all;
+    z-index: 6;
+}
+.window-bar {
+    padding-left: 6px;
+    padding-top: 3px;
+    height: 24px;
+    background-color: #2c2216;
+    border: none;
+    border-bottom: 1px solid black;
+    cursor: move;
+}
+.window-close {
+    cursor: pointer;
+    display: inline-block;
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background-color: crimson;
+    width: 16px;
+    height: 16px;
+    padding-left: 2px;
+    padding-top: 2px;
+}
+.window-body {
+    position: absolute;
+    top: 36px;
+    left: 8px;
+    max-height: calc(100% - 44px);
+}
+.window-select {
+    position: absolute;
+    top: 32px;
+    right: 8px;
+    border: 1px solid black;
+    width: 106px;
+    height: 558px;
+}
+.window-select-button {
+    position: relative;
+    top: 3px;
+    left: 1px;
+    width: 103px;
+    height: 30px;
+    margin-bottom: 4px;
+    margin-right: 1px;
+}
+
+/* window container */
+#windows {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    padding: 0px 0px;
+    margin: 0px 0px;
+    width: 100%;
+    height: 100%;
+    overflow: clip;
+    pointer-events: none;
+}
+
+/* inventory */
+#inventoryItems {
+    width: 460px;
+    height: 524px;
+}
+.inventory-body {
+    margin-top: 8px;
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+.inventory-right {
+    left: 478px;
+    width: 296px;
+    height: 524px;
+}
+
+/* inventory slot structure */
+.invSlot {
+    display: inline-block;
+    position: relative;
+    top: 0px;
+    left: 0px;
+    width: 70px;
+    height: 70px;
+    margin: 8px 8px;
+    background-color: #362A1E;
+    border: 1px solid black;
+}
+.invSlotStackSize {
+    position: absolute;
+    bottom: 0px;
+    right: 4px;
+    pointer-events: none;
+}
+.invSlotImg {
+    position: relative;
+    top: 3px;
+    left: 3px;
+    width: 64px;
+    height: 64px;
+    padding: 0px 0px;
+    -webkit-user-drag: none;
+    cursor: grab;
+}
+.invSlotImgNoGrab {
+    position: relative;
+    top: 3px;
+    left: 3px;
+    width: 64px;
+    height: 64px;
+    -webkit-user-drag: none;
+}
+
+/* inventory drag/hover blocks */
+#invHoverTooltip {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    max-width: 200px;
+    opacity: 0;
+    padding: 0px 4px;
+    padding-bottom: 4px;
+    transition: opacity 0.2s linear;
+    pointer-events: none;
+    z-index: 7;
+}
+#invDrag {
+    display: none;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 64px;
+    height: 64px;
+    pointer-events: none;
+    cursor: grabbing;
+    z-index: 7;
+}
+#invDragImg {
+    cursor: grabbing;
+    pointer-events: none;
+}
+#invDragStackSize {
+    cursor: grabbing;
+    pointer-events: none;
+}
+
+/* inventory equip slots */
+#invSlotEquipweapon {
+    position: absolute;
+    top: 123px;
+    left: 19px;
+    transform: scaleX(-1);
+}
+#invSlotEquipweapon2 {
+    position: absolute;
+    top: 123px;
+    left: 191px;
+}
+#invSlotEquiphelmet {
+    position: absolute;
+    top: 80px;
+    left: 105px;
+}
+#invSlotEquiparmor {
+    position: absolute;
+    top: 166px;
+    left: 105px;
+}
+#invSlotEquipboots {
+    position: absolute;
+    top: 252px;
+    left: 105px;
+}
+#invSlotEquipshield {
+    position: absolute;
+    top: 338px;
+    left: 191px;
+}
+#invSlotEquipkey {
+    position: absolute;
+    top: 338px;
+    left: 19px;
+}
+#invSlotEquipcrystal {
+    position: absolute;
+    top: 338px;
+    left: 105px;
+}
+
+/* inventory crafting */
+.craftingTile {
+    display: inline-block;
+    position: relative;
+    top: 0px;
+    left: 0px;
+    width: 58px;
+    height: 58px;
+    margin: 6px 6px;
+    margin-right: 1px;
+    margin-bottom: 1px;
+}
+.craftingImage {
+    position: relative;
+    top: 5px;
+    left: 5px;
+    width: 48px;
+    height: 48px;
+    cursor: grab;
+}
+.craftingAmount {
+    position: absolute;
+    bottom: 0px;
+    right: 4px;
+    font-size: 14px;
+    pointer-events: none;
+}
+
+/* shops */
+.shopBlock {
+    width: 260px;
+    height: 54px;
+    display: block;
+    border: 1px solid black;
+    margin: 8px 8px;
+}
+.shopCosts {
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    width: 162px;
+    height: 54px;
+    border-right: 1px solid black;
+}
+.costItemBlock {
+    display: flex;
+    width: 48px;
+    height: fit-content;
+    margin: auto;
+    margin-left: 2px;
+    margin-right: 2px;
+    aspect-ratio: 1;
+    border: 1px solid black;
+}
+.costItemImg {
+    width: 48px;
+}
+.shopArrow {
+    display: inline-block;
+    position: relative;
+    right: -12px;
+    width: 0px;
+    height: 0px;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 10px solid white;
+    margin-top: auto;
+    margin-bottom: auto;
+    transform: translate(12px, -5px);
+}
+.shopArrow::before {
+    content: '';
+    display: inline-block;
+    width: 14px;
+    height: 4px;
+    background-color: white;
+    transform: translate(-24px, -16px);
+}
+.shopItemBlock {
+    display: inline-flex;
+    position: relative;
+    right: -34px;
+    width: 48px;
+    height: 48px;
+    margin: 2px 2px;
+    aspect-ratio: 1;
+    border: 1px solid black;
+    cursor: grab;
+}
+.shopItemImg {
+    width: 48px;
+}
+.shopCount {
+    position: relative;
+    bottom: -28px;
+    left: -16px;
+    text-align: right;
+}
+
+/* world map */
+#map {
+    width: 600px;
+    background-color: transparent;
+    background-image: url(/client/img/assets/window_map.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    border-color: transparent;
+    image-rendering: pixelated;
+}
+#mapBar {
+    background-color: #362A1E55;
+    border-color: transparent;
+}
+#mapContainer {
+    position: absolute;
+    top: 20px;
+    left: 48px;
+    width: 488px;
+    height: 488px;
+    overflow: clip;
+    cursor: grab;
+}
+#worldMap {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    transform: scale(1);
+}
+
+/* settings */
+#settings {
+    width: 500px;
+    height: 300px;
+}
+#settingsSelect {
+    height: 258px;
+}
+#playerPreview {
+    width: 120px;
+    height: 200px;
+    border: 2px solid black;
+}
+.keyBindButton {
+    min-width: 80px;
+}
+
+/* debug console */
+#debugConsole {
+    width: 400px;
+    height: 600px;
+    background-color: #111111AA;
+}
+#debugLog {
+    width: 376px;
+    height: 522px;
+    margin-bottom: 8px;
+    overflow-y: scroll;
+    overflow-x: clip;
+    overflow-wrap: break-word;
+}
+#debugInput {
+    width: 376px;
+}
+#debugConsoleSelect {
+    display: none;
+}
+
+/* experimental tooltip */
+.experimental {
+    color: yellow;
+}
+.experimental::after {
+    content: 'Experimental!';
+    position: absolute;
+    height: 24px;
+    color: red;
+    background-color: black;
+    opacity: 0;
+    transition: opacity 0.2s linear;
+    border-radius: 5px;
+    padding: 4px 4px;
+    margin-left: 4px;
+    z-index: 4170000000;
+    pointer-events: none;
+}
+.experimental:hover::after {
+    opacity: 1;
+}
+
+/* spuhctator div */
+#deathScreen {
+    display: none;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 100vh;
+    background-color: #FF000055;
+    z-index: 3;
+}
+#youdied {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    font-size: 60px;
+    transform: translate(-50%, -250%);
+}
+#respawnTimer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    font-size: 30px;
+    transform: translate(-50%, -220%);
+}
+#respawnButton {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: 20px;
+    opacity: 0.75;
+    background-color: #555555;
+    border: 4px outset grey;
+    transform: translate(-50%, -50%);
+}
+#respawnButton:hover {
+    opacity: 1;
+}
+#respawnButton:active {
+    opacity: 1;
+    border: 4px inset grey;
+}
+
+/* christmas2021 */
+@keyframes christmas {
+    0% {
+        color: red;
+    }
+    49% {
+        color: red;
+    }
+    50% {
+        color: green;
+    }
+    100% {
+        color: green;
+    }
+}

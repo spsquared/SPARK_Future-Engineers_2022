@@ -1,0 +1,183 @@
+/* Copyright (C) 2021 Radioactive64 */
+
+/* font */
+@font-face {
+    font-family: "Pixel";
+    src:url(./assets/miniset2-webfont.woff),
+        url(./assets/miniset2-webfont.woff2) format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html {
+    overflow: hidden;
+    font-family: 'Pixel';
+    font-size: 18px;
+    user-select: none;
+}
+
+/* stacks */
+#header {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 5%;
+    color: white;
+    font-size: 100%;
+    background-color: black;
+}
+#stackLeft {
+    position: absolute;
+    top: 5%;
+    left: 0%;
+    width: 23%;
+    height: 91%;
+    background-color: lightgray;
+    padding: 1% 1%;
+    overflow-y: scroll;
+}
+#itemPreview {
+    position: absolute;
+    top: 5%;
+    left: 25%;
+    width: 50%;
+    height: 95%;
+    background-color: gray;
+}
+#stackRight {
+    position: absolute;
+    top: 5%;
+    left: 75%;
+    width: 23%;
+    height: 91%;
+    background-color: lightgray;
+    padding: 1% 1%;
+    overflow-y: scroll;
+}
+
+/* inputs */
+.button {
+    background-color: whitesmoke;
+    border: 2px solid black;
+    margin: 2px 2px;
+    font-family: 'Pixel';
+    font-size: 14px;
+    transition: 0.1s transform ease-in-out;
+    cursor: pointer;
+}
+.button:hover {
+    transform: translateY(-5px);
+}
+.button:active {
+    transform: translateY(10px);
+}
+.select {
+    background-color: whitesmoke;
+    border: 2px solid black;
+    margin: 2px 2px;
+    font-family: 'Pixel';
+    font-size: 14px;
+    cursor: pointer;
+}
+.text {
+    width: 50%;
+    background-color: whitesmoke;
+    border: 2px solid black;
+    margin: 2px 2px;
+    font-family: 'Pixel';
+    font-size: 14px;
+}
+.text-small {
+    width: 25%;
+    background-color: whitesmoke;
+    border: 2px solid black;
+    margin: 2px 2px;
+    font-family: 'Pixel';
+    font-size: 14px;
+}
+.checkBox {
+    width: 14px;
+    height: 14px;
+}
+.color {
+    width: 50px;
+    height: 28px;
+    border: none;
+    padding: 0px 0px;
+    margin: 0px 0px;
+    background-color: lightgray;
+    cursor: pointer;
+}
+#name {
+    position: relative;
+    top: 10%;
+    width: 400px;
+    height: 80%;
+    border: none;
+    margin: 0px 0px;
+    padding: 0px 5px;
+}
+#id {
+    position: relative;
+    top: 10%;
+    width: 250px;
+    height: 80%;
+    border: none;
+    margin: 0px 0px;
+    padding: 0px 5px;
+}
+#imageUpload {
+    position: relative;
+    top: 10%;
+}
+#offhandEffect {
+    width: 100%;
+    height: 100px;
+}
+#enchantments {
+    background-color: whitesmoke;
+    padding-left: 4px;
+}
+#generateServerItem {
+    position: relative;
+    top: 10px;
+    width: 100%;
+    font-size: 24px;
+    background-color: red;
+}
+#generateClientItem {
+    position: relative;
+    top: 25px;
+    width: 100%;
+    font-size: 24px;
+    background-color: green;
+}
+
+/* preview */
+#itemPreviewItem {
+    position: relative;
+    top: 5%;
+    left: 50%;
+    width: 300px;
+    height: 300px;
+    transform: translateX(-50%);
+    text-align: center;
+}
+#itemPreviewSlot {
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    width: 100%;
+    height: 100%;
+    background-color: #362A1E;
+    border: 6px solid black;
+}
+#itemPreviewImg {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    width: 90%;
+    height: 90%;
+    image-rendering: pixelated;
+}

@@ -1,0 +1,29 @@
+<!-- Copyright (C) 2021 Radioactive64 -->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Editor - Mountain Guarder</title>
+        <meta content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0, user-scalable=no">
+        <meta id="viewport" name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0, user-scalable=no">
+        <meta charset="utf-8">
+        <link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
+        <script src="/Editor/index.js" defer></script>
+        <link rel="stylesheet" href="/Editor/main.css">
+    </head>
+    <body>
+        <div id="mainView" class="ui-darktext">
+            <div id="assetList"></div>
+            <div id="editPanes">
+                <div id="itemsPane" class="editPane"></div>
+                <div id="monstersPane" class="editPane"></div>
+                <div id="projectilesPane" class="editPane"></div>
+            </div>
+        </div>
+        <div id="viewSelect" class="ui-darktext">
+            <button class="viewSelector" selectpane = "items">Items</button>
+            <button class="viewSelector" selectpane = "monsters">Monsters</button>
+            <button class="viewSelector" selectpane = "projectiles">Projectiles</button>
+        </div>
+    </body>
+</html>

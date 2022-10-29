@@ -1,0 +1,525 @@
+{
+    "missing": {
+        "name": "Missing Item",
+        "description": "Invalid item!",
+        "slotType": "none",
+        "rarity": "missing",
+        "effects": []
+    },
+    "coppercoin": {
+        "name": "Copper Coin",
+        "description": "A coin minted from copper. Not the most valuable.",
+        "slotType": "coin",
+        "rarity": "coin",
+        "effects": []
+    },
+    "silvercoin": {
+        "name": "Silver Coin",
+        "description": "A coin minted from silver. Holds a little value.",
+        "slotType": "coin",
+        "rarity": "coin",
+        "effects": []
+    },
+    "goldcoin": {
+        "name": "Gold Coin",
+        "description": "A coin minted from gold. Worth a lot.",
+        "slotType": "coin",
+        "rarity": "coin",
+        "effects": []
+    },
+    "blucoin": {
+        "name": "BluCoin",
+        "description": "A special coin made from ultra-rare Montan Blu. Worth a huge amount.",
+        "slotType": "coin",
+        "rarity": "blucoin",
+        "effects": []
+    },
+    "wood": {
+        "name": "Wood",
+        "description": "Some raw uncut lumber, ready for crafting",
+        "slotType": "material",
+        "rarity": 0,
+        "effects": []
+    },
+    "planks": {
+        "name": "Planks",
+        "description": "Standard wood planks",
+        "slotType": "material",
+        "rarity": 0,
+        "effects": []
+    },
+    "sticks": {
+        "name": "Sticks",
+        "description": "It would probably be more fitting to call it a rod",
+        "slotType": "material",
+        "rarity": 0,
+        "effects": []
+    },
+    "stone": {
+        "name": "Stone",
+        "description": "A chunk of stone.",
+        "slotType": "material",
+        "rarity": 0,
+        "effects": []
+    },
+    "coal": {
+        "name": "Coal",
+        "description": "Bituminous coal, good for smelting",
+        "slotType": "material",
+        "rarity": 0,
+        "effects": []
+    },
+    "ironore": {
+        "name": "Iron Ore",
+        "description": "Raw iron in the form of a lump",
+        "slotType": "material",
+        "rarity": 0,
+        "effects": []
+    },
+    "iron": {
+        "name": "Iron Ingot",
+        "description": "A 5 lb cast iron ingot",
+        "slotType": "material",
+        "rarity": 0,
+        "effects": []
+    },
+    "simplewoodenbow": {
+        "name": "Simple Wooden Bow",
+        "description": "A cheap, simple bow of standard wood",
+        "slotType": "weapon",
+        "rarity": 0,
+        "damage": 8,
+        "damageType": "ranged",
+        "critChance": 0.02,
+        "critPower": 0.02,
+        "knockback": 0.1,
+        "useTime": "10",
+        "manaCost": "0",
+        "heldAngle": -45,
+        "heldDistance": 32,
+        "effects": []
+    },
+    "simplewoodensword": {
+        "name": "Simple Wooden Sword",
+        "description": "A trusty sword made of wood. Not much, but it'll do",
+        "slotType": "weapon",
+        "rarity": 0,
+        "damage": 10,
+        "damageType": "melee",
+        "critChance": 0.1,
+        "critPower": 0.15,
+        "knockback": 4,
+        "useTime": 15,
+        "manaCost": 0,
+        "heldAngle": 45,
+        "heldDistance": 64,
+        "effects": []
+    },
+    "simplewoodenstaff": {
+        "name": "Simple Wooden Staff",
+        "description": "A trusty wooden staff. Not the most powerful but will do",
+        "slotType": "weapon",
+        "rarity": 0,
+        "damage": 7,
+        "damageType": "magic",
+        "critChance": 0.05,
+        "critPower": 0.1,
+        "knockback": 0.2,
+        "useTime": 10,
+        "manaCost": 10,
+        "heldAngle": 45,
+        "heldDistance": 64,
+        "effects": []
+    },
+    "leatherhood": {
+        "name": "Leather Hood",
+        "description": "A hood. Attached to nothing. Made of leather",
+        "slotType": "helmet",
+        "rarity": 0,
+        "effects": [
+            {
+                "id": "rangedDamage",
+                "value": 1.1
+            },
+            {
+                "id": "meleeDamage",
+                "value": 0.9
+            },
+            {
+                "id": "magicDamage",
+                "value": 0.7
+            },
+            {
+                "id": "critChance",
+                "value": 0.1
+            }
+        ]
+    },
+    "leatherhat": {
+        "name": "Leather Hat",
+        "description": "A nice hat made of leather",
+        "slotType": "helmet",
+        "rarity": 0,
+        "effects": [
+            {
+                "id": "rangedDamage",
+                "value": 0.8
+            },
+            {
+                "id": "meleeDamage",
+                "value": 0.9
+            },
+            {
+                "id": "magicDamage",
+                "value": 1.1
+            },
+            {
+                "id": "critChance",
+                "value": 0.1
+            },
+            {
+                "id": "critPower",
+                "value": 0.03
+            }
+        ]
+    },
+    "woodenhelmet": {
+        "name": "Wooden Helmet",
+        "description": "A helmet made of wood?",
+        "slotType": "helmet",
+        "rarity": 0,
+        "effects": [
+            {
+                "id": "rangedDamage",
+                "value": 0.8
+            },
+            {
+                "id": "meleeDamage",
+                "value": 1.1
+            },
+            {
+                "id": "magicDamage",
+                "value": 0.8
+            },
+            {
+                "id": "critChance",
+                "value": 0.1
+            },
+            {
+                "id": "damageReduction",
+                "value": 5
+            }
+        ]
+    },
+    "leatherarmor": {
+        "name": "Leather Armor",
+        "description": "Simple armor made from leather",
+        "slotType": "armor",
+        "rarity": 0,
+        "effects": [
+            {
+                "id": "damageReduction",
+                "value": 1
+            },
+            {
+                "id": "defense",
+                "value": 0.05
+            }
+        ]
+    },
+    "steelbow": {
+        "name": "Steel Bow",
+        "description": "A simple bow forged from steel",
+        "slotType": "weapon",
+        "rarity": 1,
+        "damage": 12,
+        "damageType": "ranged",
+        "critChance": 0.04,
+        "critPower": 0.1,
+        "knockback": 1.5,
+        "useTime": 10,
+        "manaCost": 0,
+        "heldAngle": -45,
+        "heldDistance": 32,
+        "effects": []
+    },
+    "steelbroadsword": {
+        "name": "Steel Broadsword",
+        "description": "A decent broadsword forged from pure steel",
+        "slotType": "weapon",
+        "rarity": 1,
+        "damage": 12,
+        "damageType": "melee",
+        "critChance": 0.15,
+        "critPower": 0.2,
+        "knockback": 3,
+        "useTime": 12,
+        "manaCost": 0,
+        "heldAngle": 45,
+        "heldDistance": 64,
+        "effects": []
+    },
+    "steelcutlass": {
+        "name": "Steel Cutlass",
+        "description": "A thick-bladed heavy cutlass of steel",
+        "slotType": "weapon",
+        "rarity": 1,
+        "damage": 16,
+        "damageType": "melee",
+        "critChance": 0.15,
+        "critPower": 0.18,
+        "knockback": 2,
+        "useTime": 20,
+        "manaCost": 0,
+        "heldAngle": 45,
+        "heldDistance": 64,
+        "effects": []
+    },
+    "steelstaff": {
+        "name": "Steel Staff",
+        "description": "A nice steel staff that can better harness mana power",
+        "slotType": "weapon",
+        "rarity": 1,
+        "damage": 11,
+        "damageType": "magic",
+        "critChance": 0.1,
+        "critPower": 0.08,
+        "knockback": 0,
+        "useTime": 8,
+        "manaCost": 9,
+        "heldAngle": 45,
+        "heldDistance": 64,
+        "effects": []
+    },
+    "simplewizardhat": {
+        "name": "Simple Wizard's Hat",
+        "description": "A simple hat fit for a young wizard",
+        "slotType": "helmet",
+        "rarity": 1,
+        "effects": [
+            {
+                "id": "rangedDamage",
+                "value": 0.9
+            },
+            {
+                "id": "meleeDamage",
+                "value": 0.9
+            },
+            {
+                "id": "magicDamage",
+                "value": 1.2
+            },
+            {
+                "id": "critPower",
+                "value": 0.1
+            }
+        ]
+    },
+    "whitefabrichood": {
+        "name": "White Fabric Hood",
+        "description": "An archers hood, partly cotton, dyed white",
+        "slotType": "helmet",
+        "rarity": 1,
+        "effects": [
+            {
+                "id": "rangedDamage",
+                "value": 1.2
+            },
+            {
+                "id": "meleeDamage",
+                "value": 0.8
+            },
+            {
+                "id": "magicDamage",
+                "value": 0.9
+            }
+        ]
+    },
+    "steelhelmet": {
+        "name": "Steel Helmet",
+        "description": "A decent, lightweight helmet of steel",
+        "slotType": "helmet",
+        "rarity": 1,
+        "effects": [
+            {
+                "id": "rangedDamage",
+                "value": 0.9
+            },
+            {
+                "id": "meleeDamage",
+                "value": 1.2
+            },
+            {
+                "id": "magicDamage",
+                "value": 0.9
+            },
+            {
+                "id": "damageReduction",
+                "value": 3
+            },
+            {
+                "id": "defense",
+                "value": 0.1
+            }
+        ]
+    },
+    "steelarmor": {
+        "name": "Steel Chestplate",
+        "description": "Sturdy, \"lightweight\" steel armor great for close-combat fighting",
+        "slotType": "armor",
+        "rarity": 1,
+        "effects": [
+            {
+                "id": "meleeDamage",
+                "value": 1.08
+            },
+            {
+                "id": "damageReduction",
+                "value": 3
+            },
+            {
+                "id": "defense",
+                "value": 0.1
+            }
+        ]
+    },
+    "titaniumbow": {
+        "name": "Titanium Bow",
+        "description": "A titanium cast of the Steel Bow. The higher quality allows it to shoot fast piercing arrows.",
+        "slotType": "weapon",
+        "rarity": 2,
+        "damage": 14,
+        "damageType": "ranged",
+        "critChance": 0.04,
+        "critPower": 0.15,
+        "knockback": 1.5,
+        "useTime": 11,
+        "manaCost": 0,
+        "heldAngle": -45,
+        "heldDistance": 32,
+        "effects": []
+    },
+    "titaniumstaff": {
+        "name": "Titanium Staff",
+        "description": "A titanium version of the Steel Staff. The higher quality allows the Purple to phase through solid matter.",
+        "slotType": "weapon",
+        "rarity": 2,
+        "damage": 14,
+        "damageType": "magic",
+        "critChance": 0.1,
+        "critPower": 0.3,
+        "knockback": 0,
+        "useTime": 8,
+        "manaCost": 10,
+        "heldAngle": 45,
+        "heldDistance": 64,
+        "effects": []
+    },
+    "ialiteshard": {
+        "name": "Ialite Shard",
+        "description": "A mysterious piece of an unknown sort of crystal. It seems to have some Purple essence...",
+        "slotType": "material",
+        "rarity": 3,
+        "effects": []
+    },
+    "ialitecrystal": {
+        "name": "Ialite Crystal",
+        "description": "A powerful crystal made of Purple-infused Ialite. When used, the crystal blasts waves of Purple.",
+        "slotType": "crystal",
+        "rarity": 3,
+        "damage": 24,
+        "damageType": "magic",
+        "critChance": 0.2,
+        "critPower": 0.2,
+        "knockback": 1,
+        "useTime": 30,
+        "manaCost": 12,
+        "heldAngle": -45,
+        "heldDistance": 32,
+        "effects": [
+            {
+                "id": "health",
+                "value": 1.05
+            },
+            {
+                "id": "damage",
+                "value": 1.02
+            },
+            {
+                "id": "magicDamage",
+                "value": 1.02
+            },
+            {
+                "id": "critPower",
+                "value": 1.01
+            }
+        ]
+    },
+    "yeetstick": {
+        "name": "Yeet",
+        "description": "definitely a normal stick",
+        "slotType": "weapon",
+        "rarity": 2,
+        "damage": 1,
+        "damageType": "melee",
+        "critChance": 0,
+        "critPower": 0,
+        "knockback": 100,
+        "useTime": 20,
+        "manaCost": 0,
+        "heldAngle": 45,
+        "heldDistance": 48,
+        "effects": [
+            {
+                "id": "speed",
+                "value": 1.5
+            }
+        ]
+    },
+    "raresteak": {
+        "name": "Rare Steak",
+        "description": "Oh wait it's just raw",
+        "slotType": "weapon",
+        "rarity": 2,
+        "damage": 18,
+        "damageType": "melee",
+        "critChance": 0.2,
+        "critPower": 0.3,
+        "knockback": 1.5,
+        "useTime": 5,
+        "manaCost": 0,
+        "heldAngle": 45,
+        "heldDistance": 56,
+        "effects": [
+            {
+                "id": "health",
+                "value": 0.9
+            },
+            {
+                "id": "speed",
+                "value": 0.8
+            }
+        ]
+    },
+    "christmas2021": {
+        "name": "Season's Yeetings",
+        "description": "Merry Christmas from the Mountain Guarder devs! - Yeetmas 2021",
+        "slotType": "weapon",
+        "rarity": -1,
+        "damage": 1,
+        "damageType": "magic",
+        "critChance": 0.01,
+        "critPower": 0.5,
+        "knockback": 4,
+        "useTime": 20,
+        "manaCost": 8,
+        "heldAngle": 90,
+        "heldDistance": 48,
+        "effects": [
+            {
+                "id": "damageReduction",
+                "value": -10
+            }
+        ]
+    }
+}
