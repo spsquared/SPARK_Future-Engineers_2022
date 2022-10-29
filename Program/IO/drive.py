@@ -18,8 +18,8 @@ strMAX = 47
 strMIN = 28
 strTRIM = 8
 # throttle feathering
-thrFeaFREQ = 10
-thrFeaDiv = 20
+# thrFeaFREQ = 10
+# thrFeaDiv = 20
 targetThrottle = 0
 targetSteering = 0
 currThrottle = 0
@@ -40,16 +40,18 @@ def start():
         s.start((strMIN+strMAX)/2)
         def loop():
             try:
-                global running, t, s, currThrottle, currSteering, targetThrottle, targetSteering, thrFeaFREQ, thrFeaDiv, tickrate
-                timer = 0
+                # global running, t, s, currThrottle, currSteering, targetThrottle, targetSteering, thrFeaFREQ, thrFeaDiv, tickrate
+                global running, t, s, currThrottle, currSteering, targetThrottle, targetSteering, tickrate
+                # timer = 0
                 while running:
                     start = time.time()
                     # convert throttle to active time
-                    thrFeaACT = math.floor(abs(targetThrottle)/20)/thrFeaDiv
-                    if timer >= 1: timer = 0
-                    if timer <= thrFeaACT and thrFeaACT < 1 and targetThrottle > 10: currThrottle = 100
-                    elif targetThrottle < -10 or thrFeaACT >= 1: currThrottle = targetThrottle
-                    else: currThrottle = 0
+                    # thrFeaACT = math.floor(abs(targetThrottle)/20)/thrFeaDiv
+                    # if timer >= 1: timer = 0
+                    # if timer <= thrFeaACT and thrFeaACT < 1 and targetThrottle > 10: currThrottle = 100
+                    # elif targetThrottle < -10 or thrFeaACT >= 1: currThrottle = targetThrottle
+                    # else: currThrottle = 0
+                    currThrottle = targetThrottle
                     # PID for steering (TODO)
                     currSteering = targetSteering
                     # apply throttle and steering
@@ -57,7 +59,7 @@ def start():
                     else: t.ChangeDutyCycle((currThrottle/100)*(thrMAX-thrMIN)+thrMIN)
                     s.ChangeDutyCycle((currSteering/100)*((strMAX-strMIN)/2)+((strMIN+strMAX)/2)+(strTRIM/10))
                     # advance timer
-                    timer += thrFeaFREQ/tickrate
+                    # timer += thrFeaFREQ/tickrate
                     time.sleep(max((1/tickrate)-(time.time()-start), 0))
             except Exception as err:
                 print(err)
