@@ -511,12 +511,6 @@ function drawLightBlob(blob,blobColor){
     ctx.fill();
     ctx.stroke();
 };
-function drawWallLines(){
-    var e = document.createElement('button');
-    e.id = "displayButton"
-    e.onclick = data
-    document.body.appendChild(e)
-};
 function addData(data){
     index = 0;
     // steering data
@@ -701,9 +695,6 @@ document.addEventListener('keyup', (e) => {
 });
 let timer = 0;
 setInterval(() => {
-    if(timer == 0 && document.getElementById("displayButton") == undefined){
-        drawWallLines();
-    }
     timer++;
     if ((slowing && timer > 10) || (!slowing && timer > 2) || fasting) {
         timer = 0;
