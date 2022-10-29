@@ -16,7 +16,7 @@ rM = redMax = (25, 255, 255)
 # rm = redMin = (150, 75, 100)
 # rM = redMax = (180, 255, 255)
 gm = greenMin = (30, 30, 80)
-gM = greenMax = (110, 255, 255)
+gM = greenMax = (100, 255, 255)
 # gM = greenMax = (85, 140, 95)
 # gm = greenMin = (60, 65, 10)
 # wM = wallMax = (90, 75, 85)
@@ -152,7 +152,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         pillarSteering = 0
 
         # decide steering for each signal that will collide
-        reducedSteering = 20
+        reducedSteering = 0
         if doPillars == True:
             if brKps != 0:
                 if bgKps != 0:
@@ -161,7 +161,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                         steeringReason += "red pillar "
                         # steeringArray.append(brKps.size ** 2 * 0.2)
                     else:
-                        pillarSteering = (getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size - reducedSteering) * (bgKps.size - 3) ** 2 * 0.012
+                        pillarSteering = (getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size - reducedSteering) * (bgKps.size - 3) ** 2 * 0.017
                         steeringReason += "green pillar "
                         # steeringArray.append(-bgKps.size ** 2 * 0.2)
                 else:
@@ -169,12 +169,12 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                     steeringReason += "red pillar "
                     # steeringArray.append(brKps.size ** 2 * 0.2)
             elif bgKps != 0:
-                pillarSteering = (getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size - reducedSteering) * (bgKps.size - 3) ** 2 * 0.012
+                pillarSteering = (getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size - reducedSteering) * (bgKps.size - 3) ** 2 * 0.017
                 steeringReason += "green pillar "
                 # steeringArray.append(-bgKps.size ** 2 * 0.2)
             passedPillar *= 0.9
             if pillarSteering != 0:
-                pillarSteering += passedPillar * 0.5
+                pillarSteering += passedPillar * 0.9
                 passedPillar = pillarSteering
             else:
                 pillarSteering = passedPillar
@@ -182,7 +182,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         ################# WALL STEERING #################
 
         # crop for wall detection
-        wallStart = 77
+        wallStart = 79
         wallEnd = 125
         croppedEdgesImg = numpy.concatenate((edgesImage[wallStart:wallEnd], numpy.full((2,272),1,dtype=int)), axis=0)
 
@@ -214,16 +214,16 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
 
         for i in range(8):
             wallDifferences[i] = numpy.diff(wallHeightsRaw[i],n=10)
-            wallDifferences2[i] = numpy.diff(wallHeightsRaw[i],n=1)
-            wallSlopes[i] = statistics.median(wallSlopes)
-            wallHeights[i] = statistics.median(wallHeightsRaw[i])
+            wallDifferences2[i] = numpy.diff(wallHeightsRaw[i])
+            wallSlopes[i] = statistics.mean(wallSlopes)
+            wallHeights[i] = statistics.mean(wallHeightsRaw[i])
         
         wallLabels = [0,0,0,0,0,0,0,0]
 
         for i in range(8):
-            if wallSlopes[i] < -0.2:
+            if wallSlopes[i] < -0.1:
                 wallLabels[i] = LEFT
-            elif wallSlopes[i] > 0.2:
+            elif wallSlopes[i] > 0.1:
                 wallLabels[i] = RIGHT
             else:
                 wallLabels[i] = CENTER
@@ -232,7 +232,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         for i in range(7):
             if jumped == True:
                 wallLabels[i + 1] = RIGHT
-            if wallHeights[i + 1] - wallHeights[i] > 8:
+            if wallHeights[i + 1] - wallHeights[i] > 4:
                 wallLabels[i + 1] = RIGHT
                 jumped = True
         
@@ -240,7 +240,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         for i in range(7):
             if jumped == True:
                 wallLabels[i] = LEFT
-            if wallHeights[i] - wallHeights[i + 1] > 8:
+            if wallHeights[i] - wallHeights[i + 1] > 4:
                 wallLabels[i] = LEFT
                 jumped = True
         
@@ -255,32 +255,36 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
             hitPillarLeft = False
             for i in range(4):
                 for j in range(len(wallDifferences2[i])):
-                    if j != 0:
-                        if wallDifferences2[i][j - 1] - wallDifferences2[i][j] > 4:
-                            if wallDifferences2[i][j - 1] - wallDifferences2[i][j] > jumpedLeft:
-                                jumpedLeft = wallDifferences2[i][j - 1] - wallDifferences2[i][j]
-                        if wallDifferences2[i][j - 1] - wallDifferences2[i][j] < -6:
-                            hitPillarLeft = True
-                            break
+                    # print(wallDifferences2[i][j - 1] - wallDifferences2[i][j])
+                    if wallDifferences2[i][j] * -1 > 4:
+                        if wallDifferences2[i][j] * -1 > jumpedLeft:
+                            jumpedLeft = wallDifferences2[i][j] * -1
+                    if wallDifferences2[i][j] > 2:
+                        hitPillarLeft = True
+                        break
                 if hitPillarLeft == True:
                     break
             jumpedRight = 0
             hitPillarRight = False
             for i in range(4):
                 for j in range(len(wallDifferences2[7 - i])):
-                    if j != 0:
-                        if wallDifferences2[7 - i][len(wallDifferences2[7 - i]) - j] - wallDifferences2[7 - i][len(wallDifferences2[7 - i]) - j - 1] > 4:
-                            if wallDifferences2[7 - i][len(wallDifferences2[7 - i]) - j] - wallDifferences2[7 - i][len(wallDifferences2[7 - i]) - j - 1] > jumpedRight:
-                                jumpedRight = wallDifferences2[7 - i][len(wallDifferences2[7 - i]) - j] - wallDifferences2[7 - i][len(wallDifferences2[7 - i]) - j - 1]
-                        if wallDifferences2[7 - i][len(wallDifferences2[7 - i]) - j] - wallDifferences2[7 - i][len(wallDifferences2[7 - i]) - j - 1] < -6:
-                            hitPillarRight = True
-                            break
+                    if wallDifferences2[7 - i][j] > 4:
+                        if wallDifferences2[7 - i][j] > jumpedRight:
+                            jumpedRight = wallDifferences2[7 - i][j]
+                    if wallDifferences2[7 - i][j] < -2:
+                        hitPillarRight = True
+                        break
                 if hitPillarRight == True:
                     break
             if jumpedRight > jumpedLeft:
                 counterClockwise = 1
-            else:
+            elif jumpedRight < jumpedLeft:
                 counterClockwise = -1
+            else:
+                if wallHeightsRaw[0][0] > wallHeightsRaw[7][len(wallHeightsRaw[7]) - 1]:
+                    counterClockwise = 1
+                else:
+                    counterClockwise = -1
             print(counterClockwise)
             print(jumpedLeft)
             print(jumpedRight)
@@ -380,8 +384,6 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         #     turnsMade += 1
         #     # justTurned = True
         #     print(turnsMade)
-        
-        
 
         leftSteering = 0
         centerSteering = 0
@@ -390,22 +392,22 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         for i in range(8):
             if wallLabels[i] == LEFT:
                 if wallHeights[i] > 19:
-                    steering = 10
+                    steering = 15
                     if i <= 3:
-                        steering += 5 * (4 - i)
-                    steering += wallHeights[i] * 2
+                        steering += 3 * (4 - i)
+                    steering += wallHeights[i]
                     leftSteering += steering
             elif wallLabels[i] == CENTER:
-                if wallHeights[i] > 14:
-                    steering = 40
-                    steering += wallHeights[i] * 2
+                if wallHeights[i] > 10:
+                    steering = 60
+                    steering += wallHeights[i]
                     centerSteering += steering * counterClockwise
             else:
                 if wallHeights[i] > 19:
-                    steering = 10
+                    steering = 15
                     if i >= 4:
-                        steering += 5 * (i - 3)
-                    steering += wallHeights[i] * 2
+                        steering += 3 * (i - 3)
+                    steering += wallHeights[i]
                     rightSteering -= steering
 
         # send images to SPARK Control
@@ -438,25 +440,29 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                 wallSteering = leftSteering
                 steeringReason += "left wall"
                 turning = max(turning - 1,0)
-            else:
+            elif centerSteering != 0:
                 wallSteering = centerSteering
                 steeringReason += "center wall"
                 turning += 1
                 if turning > 5 and turnCooldown < 0:
+                    turning = 0
                     turnsMade += 1
-                    turnCooldown = 120
+                    turnCooldown = 180
+                    print(turnsMade)
         else:
             if abs(rightSteering) > abs(centerSteering):
                 wallSteering = rightSteering
                 steeringReason += "right wall"
                 turning = max(turning - 1,0)
-            else:
+            elif centerSteering != 0:
                 wallSteering = centerSteering
                 steeringReason += "center wall"
                 turning += 1
                 if turning > 5 and turnCooldown < 0:
+                    turning = 0
                     turnsMade += 1
-                    turnCooldown = 120
+                    turnCooldown = 180
+                    print(turnsMade)
         turnCooldown -= 1
         
         if turnsMade >= 12:
