@@ -23,6 +23,8 @@ gM = greenMax = (100, 255, 255)
 # wm = wallMin = (0, 0, 0)
 # sM = greyMax = 65
 # sm = greyMin = 0
+bm = bluMin = (95, 80, 70)
+bM = bluMax = (120, 255, 255)
 
 LEFT = 0
 CENTER = 1
@@ -45,6 +47,7 @@ def filter(imgIn: numpy.ndarray):
         rMask = cv2.bitwise_or(rMask1, rMask2)
         # gMask = cv2.inRange(imgIn, greenMin, greenMax)
         gMask = cv2.inRange(hsv, greenMin, greenMax)
+        bMask = cv2.inRange(hsv, bluMin, bluMax)
         blurredR = cv2.medianBlur(rMask, 5)
         blurredG = cv2.medianBlur(gMask, 5)
         # colorWallMask = cv2.inRange(imgIn, wallMin, wallMax)
@@ -55,7 +58,7 @@ def filter(imgIn: numpy.ndarray):
         gray_image = cv2.cvtColor(imgIn, cv2.COLOR_RGB2GRAY)
         blurredImg = cv2.GaussianBlur(gray_image, (3,3),0)
         edgesImage = cv2.Canny(blurredImg, 50, 125, 3)
-        filteredImg = cv2.merge((edgesImage, blurredG, blurredR))
+        filteredImg = cv2.merge((edgesImage, blurredG, blurredR, bMask))
         return filteredImg
     except Exception as err:
         print(err)
@@ -66,12 +69,11 @@ doPillars = True
 counterClockwise = 0
 turnsMade = 0
 turnCooldown = 40
-turning = 0
 passedPillar = 0
 lastSend = 0
 totalSteering = 0
 def predict(imgIn: numpy.ndarray, server = None, infinite = False):
-    global redMax, redMin, greenMax, greenMin, lastSend, rightOnRed, counterClockwise, turnsMade, turnCooldown, passedPillar, turning, totalSteering
+    global redMax, redMin, greenMax, greenMin, lastSend, rightOnRed, counterClockwise, turnsMade, turnCooldown, passedPillar, totalSteering
     try:
         # useless thing
         if infinite: turnsMade = 0
@@ -90,7 +92,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
 
         # filter to colors and split
         blurredImg = filter(imgIn)
-        edgesImage, gImg, rImg = cv2.split(blurredImg)
+        edgesImage, gImg, rImg, bImg = cv2.split(blurredImg)
 
         # steering reason
         steeringReason = ""
@@ -290,102 +292,6 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
             print(jumpedLeft)
             print(jumpedRight)
 
-        # find wall heights
-        # def getWallHeights(offset):
-        #     wallHeightsMax = []
-        #     wallHeightsDiff = []
-        #     for i in range(20):
-        #         i += offset
-        #         nonzeroList = numpy.nonzero(croppedEdgesImg[i])[0]
-        #         if len(nonzeroList) >= 2:
-        #             firstNonzero = nonzeroList[0]
-        #             secondNonzero = nonzeroList[1]
-        #             index = 2
-        #             minimumValue = 7
-        #             if offset == 20:
-        #                 minimumValue = 5
-        #             while secondNonzero - firstNonzero < minimumValue:
-        #                 if len(nonzeroList) <= index:
-        #                     secondNonzero = 50
-        #                     break
-        #                 secondNonzero = nonzeroList[index]
-        #                 index += 1
-        #         elif len(nonzeroList) == 1:
-        #             firstNonzero = nonzeroList[0]
-        #             secondNonzero = 50
-        #         else:
-        #             firstNonzero = 0
-        #             secondNonzero = 50
-        #         wallHeightsDiff.append(secondNonzero - firstNonzero)
-        #         wallHeightsMax.append(firstNonzero)
-        #     if len(wallHeightsDiff) > 0:
-        #         return [max(wallHeightsMax),wallHeightsMax,statistics.median(wallHeightsDiff),wallHeightsDiff]
-        #     else:
-        #         return [max(wallHeightsMax),wallHeightsMax,0,[]]
-
-        # wallHeightsLeft = getWallHeights(0)
-        # wallMaximumLeft = wallHeightsLeft[0]
-        # wallHeightsMaxLeft = wallHeightsLeft[1]
-        # wallHeightLeft = wallHeightsLeft[2]
-        # filteredWallHeightsDiffLeft = wallHeightsLeft[3]
-        # wallHeightsCenter = getWallHeights(20)
-        # wallMaximumCenter = wallHeightsCenter[0]
-        # wallHeightsMaxCenter = wallHeightsCenter[1]
-        # wallHeightCenter = wallHeightsCenter[2]
-        # filteredWallHeightsDiffCenter = wallHeightsCenter[3]
-        # wallHeightsRight = getWallHeights(40)
-        # wallMaximumRight = wallHeightsRight[0]
-        # wallHeightsMaxRight = wallHeightsRight[1]
-        # wallHeightRight = wallHeightsRight[2]
-        # filteredWallHeightsDiffRight = wallHeightsRight[3]
-    
-
-        # decide steering for each wall section
-        # counterClockwise += wallHeightRight - wallHeightLeft
-
-        # counterClockwise *= 0.95
-
-        # counterClockwise = 1
-
-        # def centerWallCalculations(left,center,right,direction):
-        #     global counterClockwise
-        #     nonlocal centerSteering
-        #     if center > 15 and right > 15:
-        #         if left > 20:
-        #             steering = min(center,right) ** 2 * 0.15 * direction
-        #             steeringArray.append(steering)
-        #             centerSteering = steering
-        #         else:
-        #             steering = min(center,right) ** 2 * 0.3 * direction
-        #             steeringArray.append(steering)
-        #             centerSteering = steering
-        #         counterClockwise *= 2
-        
-        # if counterClockwise >= 0:
-        #     centerWallCalculations(wallHeightLeft,wallHeightCenter,wallHeightRight,-1)
-        # else:
-        #     centerWallCalculations(wallHeightRight,wallHeightCenter,wallHeightLeft,1)
-        # if wallHeightRight > 18:
-        #     steering = -wallHeightRight ** 2 * 0.045
-        #     steeringArray.append(steering)
-        #     rightSteering = steering
-        # if wallHeightLeft > 18:
-        #     steering = wallHeightLeft ** 2 * 0.045
-        #     steeringArray.append(steering)
-        #     leftSteering = steering
-        
-        # # very far, just turned
-
-        # justTurned = False
-
-        # if wallHeights[3] < 11 and wallHeights[4] < 11 and turnCooldown <= 0:
-        #     if turnOnStart >= 0:
-        #         turnOnStart = -1
-        #     turnCooldown = 140
-        #     turnsMade += 1
-        #     # justTurned = True
-        #     print(turnsMade)
-
         leftSteering = 0
         centerSteering = 0
         rightSteering = 0
@@ -410,6 +316,31 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                         steering += 3 * (i - 3)
                     steering += wallHeights[i]
                     rightSteering -= steering
+        
+        # decide final steering
+
+        wallSteering = 0
+        if abs(leftSteering) > abs(rightSteering):
+            if abs(leftSteering) > abs(centerSteering):
+                wallSteering = leftSteering
+                steeringReason += "left wall"
+            elif centerSteering != 0:
+                wallSteering = centerSteering
+                steeringReason += "center wall"
+        else:
+            if abs(rightSteering) > abs(centerSteering):
+                wallSteering = rightSteering
+                steeringReason += "right wall"
+            elif centerSteering != 0:
+                wallSteering = centerSteering
+                steeringReason += "center wall"
+        
+        if numpy.count_nonzero(bImg) > 50 and turnCooldown <= 0:
+            turnsMade += 1
+            turnCooldown = 180
+            print(turnsMade)
+
+        turnCooldown -= 1
 
         # send images to SPARK Control
         if server != None and blurredImg.all() != None:
@@ -432,40 +363,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                     server.broadcast('blobs',[0,arrayR,[bgKps.pt[0],bgKps.pt[1],bgKps.size],arrayG])
                 else:
                     server.broadcast('blobs',[0,arrayR,0,arrayG])
-        
-        # decide final steering
 
-        wallSteering = 0
-        if abs(leftSteering) > abs(rightSteering):
-            if abs(leftSteering) > abs(centerSteering):
-                wallSteering = leftSteering
-                steeringReason += "left wall"
-                turning = max(turning - 1,0)
-            elif centerSteering != 0:
-                wallSteering = centerSteering
-                steeringReason += "center wall"
-                turning += 1
-                if turning > 3 and turnCooldown < 0:
-                    turning = 0
-                    turnsMade += 1
-                    turnCooldown = 180
-                    print(turnsMade)
-        else:
-            if abs(rightSteering) > abs(centerSteering):
-                wallSteering = rightSteering
-                steeringReason += "right wall"
-                turning = max(turning - 1,0)
-            elif centerSteering != 0:
-                wallSteering = centerSteering
-                steeringReason += "center wall"
-                turning += 1
-                if turning > 3 and turnCooldown < 0:
-                    turning = 0
-                    turnsMade += 1
-                    turnCooldown = 180
-                    print(turnsMade)
-        turnCooldown -= 1
-        
         if turnsMade >= 12:
             return "stop"
 
@@ -535,3 +433,99 @@ def setDefaultColors():
     print(rM, rm)
     print(gM, gm)
     return [rM[2], gM[2], wM[2], rM[1], gM[1], wM[1], rM[0], gM[0], wM[0], rm[2], gm[2], wm[2], rm[1], gm[1], wm[1], rm[0], gm[0], wm[0]]
+
+# find wall heights
+# def getWallHeights(offset):
+#     wallHeightsMax = []
+#     wallHeightsDiff = []
+#     for i in range(20):
+#         i += offset
+#         nonzeroList = numpy.nonzero(croppedEdgesImg[i])[0]
+#         if len(nonzeroList) >= 2:
+#             firstNonzero = nonzeroList[0]
+#             secondNonzero = nonzeroList[1]
+#             index = 2
+#             minimumValue = 7
+#             if offset == 20:
+#                 minimumValue = 5
+#             while secondNonzero - firstNonzero < minimumValue:
+#                 if len(nonzeroList) <= index:
+#                     secondNonzero = 50
+#                     break
+#                 secondNonzero = nonzeroList[index]
+#                 index += 1
+#         elif len(nonzeroList) == 1:
+#             firstNonzero = nonzeroList[0]
+#             secondNonzero = 50
+#         else:
+#             firstNonzero = 0
+#             secondNonzero = 50
+#         wallHeightsDiff.append(secondNonzero - firstNonzero)
+#         wallHeightsMax.append(firstNonzero)
+#     if len(wallHeightsDiff) > 0:
+#         return [max(wallHeightsMax),wallHeightsMax,statistics.median(wallHeightsDiff),wallHeightsDiff]
+#     else:
+#         return [max(wallHeightsMax),wallHeightsMax,0,[]]
+
+# wallHeightsLeft = getWallHeights(0)
+# wallMaximumLeft = wallHeightsLeft[0]
+# wallHeightsMaxLeft = wallHeightsLeft[1]
+# wallHeightLeft = wallHeightsLeft[2]
+# filteredWallHeightsDiffLeft = wallHeightsLeft[3]
+# wallHeightsCenter = getWallHeights(20)
+# wallMaximumCenter = wallHeightsCenter[0]
+# wallHeightsMaxCenter = wallHeightsCenter[1]
+# wallHeightCenter = wallHeightsCenter[2]
+# filteredWallHeightsDiffCenter = wallHeightsCenter[3]
+# wallHeightsRight = getWallHeights(40)
+# wallMaximumRight = wallHeightsRight[0]
+# wallHeightsMaxRight = wallHeightsRight[1]
+# wallHeightRight = wallHeightsRight[2]
+# filteredWallHeightsDiffRight = wallHeightsRight[3]
+
+
+# decide steering for each wall section
+# counterClockwise += wallHeightRight - wallHeightLeft
+
+# counterClockwise *= 0.95
+
+# counterClockwise = 1
+
+# def centerWallCalculations(left,center,right,direction):
+#     global counterClockwise
+#     nonlocal centerSteering
+#     if center > 15 and right > 15:
+#         if left > 20:
+#             steering = min(center,right) ** 2 * 0.15 * direction
+#             steeringArray.append(steering)
+#             centerSteering = steering
+#         else:
+#             steering = min(center,right) ** 2 * 0.3 * direction
+#             steeringArray.append(steering)
+#             centerSteering = steering
+#         counterClockwise *= 2
+
+# if counterClockwise >= 0:
+#     centerWallCalculations(wallHeightLeft,wallHeightCenter,wallHeightRight,-1)
+# else:
+#     centerWallCalculations(wallHeightRight,wallHeightCenter,wallHeightLeft,1)
+# if wallHeightRight > 18:
+#     steering = -wallHeightRight ** 2 * 0.045
+#     steeringArray.append(steering)
+#     rightSteering = steering
+# if wallHeightLeft > 18:
+#     steering = wallHeightLeft ** 2 * 0.045
+#     steeringArray.append(steering)
+#     leftSteering = steering
+
+# # very far, just turned
+
+# justTurned = False
+
+# if wallHeights[3] < 11 and wallHeights[4] < 11 and turnCooldown <= 0:
+#     if turnOnStart >= 0:
+#         turnOnStart = -1
+#     turnCooldown = 140
+#     turnsMade += 1
+#     # justTurned = True
+#     print(turnsMade)
