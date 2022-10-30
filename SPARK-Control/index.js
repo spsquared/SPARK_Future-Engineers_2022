@@ -695,9 +695,6 @@ document.addEventListener('keyup', (e) => {
 });
 let timer = 0;
 setInterval(() => {
-    if(timer == 0 && document.getElementById("displayButton") == undefined){
-        drawWallLines();
-    }
     timer++;
     if ((slowing && timer > 10) || (!slowing && timer > 2) || fasting) {
         timer = 0;
