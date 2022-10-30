@@ -801,10 +801,11 @@ let logodraw = setInterval(function() {
             logocanvas.style.backgroundColor = 'transparent';
         }
     }
-    if (timer > 2600 && fadeX != 1) {
+    if (timer > 2600 && fadeX != -1) {
         fadeXSpeed *= 1.1;
-        fadeX = Math.min(fadeX+fadeXSpeed, 1);
-        if (fadeXSpeed == 1) {
+        fadeX = Math.max(fadeX+fadeXSpeed, -1);
+        console.log(fadeX)
+        if (fadeX == -1) {
             clearInterval(logodraw);
             logocanvas.remove();
         }
