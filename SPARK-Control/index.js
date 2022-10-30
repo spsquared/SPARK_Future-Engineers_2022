@@ -511,12 +511,6 @@ function drawLightBlob(blob,blobColor){
     ctx.fill();
     ctx.stroke();
 };
-function drawWallLines(){
-    var e = document.createElement('button');
-    e.id = "displayButton"
-    e.onclick = data
-    document.body.appendChild(e)
-};
 function addData(data){
     index = 0;
     // steering data
