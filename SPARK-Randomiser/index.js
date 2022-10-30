@@ -804,7 +804,6 @@ let logodraw = setInterval(function() {
     if (timer > 2600 && fadeX != -1) {
         fadeXSpeed *= 1.1;
         fadeX = Math.max(fadeX+fadeXSpeed, -1);
-        console.log(fadeX)
         if (fadeX == -1) {
             clearInterval(logodraw);
             logocanvas.remove();
