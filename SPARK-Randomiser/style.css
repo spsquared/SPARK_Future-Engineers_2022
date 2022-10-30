@@ -70,3 +70,13 @@ img {
     height: 100%;
     aspect-ratio: 1 / 1;
 }
+
+#logocanvas {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    z-index: 1000;
+}
