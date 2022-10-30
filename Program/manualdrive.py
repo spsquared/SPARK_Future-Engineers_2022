@@ -27,7 +27,7 @@ def main():
             global __forward, __backward, __left, __right
             key = data['key']
             if key == 'w':
-                __forward = 100
+                __forward = 70
             elif key == 'W':
                 __forward = 0
             elif key == 's':
@@ -45,7 +45,7 @@ def main():
             drive.throttle(__forward+__backward)
             drive.steer(__left+__right)
         def joystick(data):
-            __forward = max(data['throttle'], 0)
+            __forward = max(min(data['throttle'], 70), 0)
             __backward = min(data['throttle'], 0)
             __left = min(data['steering'], 0)
             __right = max(data['steering'], 0)

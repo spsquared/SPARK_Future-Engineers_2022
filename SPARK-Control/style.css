@@ -361,3 +361,13 @@ img {
 #disconnect:active {
     border-style: inset;
 }
+
+#logocanvas {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    z-index: 1000;
+}
