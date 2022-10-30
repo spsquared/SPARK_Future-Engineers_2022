@@ -794,14 +794,14 @@ let logodraw = setInterval(function() {
         logoX = Math.min(logoX+logoXSpeed, 1);
         if (logoX == 1) cameraShake = 20;
     }
-    if (timer > 1600 && fadeY != 1) {
+    if (timer > 2000 && fadeY != 1) {
         fadeY = Math.ceil(Math.min(fadeY+(1-fadeY)*0.2, 1)*100)/100;
         if (fadeY == 1) {
             draw = false;
             logocanvas.style.backgroundColor = 'transparent';
         }
     }
-    if (timer > 2400 && fadeX != 1) {
+    if (timer > 2600 && fadeX != 1) {
         fadeXSpeed *= 1.1;
         fadeX = Math.min(fadeX+fadeXSpeed, 1);
         if (fadeXSpeed == 1) {
