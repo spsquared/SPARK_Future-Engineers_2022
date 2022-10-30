@@ -1,5 +1,4 @@
 import asyncio
-from shutil import ExecError
 import websockets
 import json as JSON
 import typing
