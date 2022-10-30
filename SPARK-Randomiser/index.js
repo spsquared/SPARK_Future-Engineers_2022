@@ -783,16 +783,16 @@ let logodraw = setInterval(function() {
     logoctx.imageSmoothingEnabled = false;
     logoctx.webkitImageSmoothingEnabled = false;
     logoctx.mozImageSmoothingEnabled = false;
-    cameraShake *= 0.8;
+    cameraShake *= 0.95;
     if (timer > 200 && logoY != 1) {
         logoYSpeed *= 1.2;
         logoY = Math.min(logoY+logoYSpeed, 1);
-        if (logoY == 1) cameraShake = 10;
+        if (logoY == 1) cameraShake = 40;
     }
     if (timer > 800 && logoX != 1) {
         logoXSpeed *= 1.2;
         logoX = Math.min(logoX+logoXSpeed, 1);
-        if (logoX == 1) cameraShake = 20;
+        if (logoX == 1) cameraShake = 80;
     }
     if (timer > 2000 && fadeY != 1) {
         fadeY = Math.ceil(Math.min(fadeY+(1-fadeY)*0.2, 1)*100)/100;
@@ -818,7 +818,7 @@ let logodraw = setInterval(function() {
         logoctx.save();
         logoctx.translate(Math.random()*cameraShake*2-cameraShake, Math.random()*cameraShake*2-cameraShake);
         logoctx.translate(window.innerWidth/2, window.innerHeight/2);
-        logoctx.rotate(Math.random()*cameraShake*0.004-cameraShake*0.002);
+        logoctx.rotate(Math.random()*cameraShake*0.4-cameraShake*0.2);
         logoctx.translate(-window.innerWidth/2, -window.innerHeight/2);
         logoctx.fillStyle = '#47D89F';
         logoctx.fillRect(pxw*2-pxh, pxh*4.5, pxh, pxh);
