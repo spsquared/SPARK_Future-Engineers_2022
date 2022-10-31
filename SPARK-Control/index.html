@@ -37,6 +37,8 @@
                     <td>Red HSV</td>
                     <td></td>
                     <td>Green HSV</td>
+                    <td></td>
+                    <td>Blue HSV</td>
                 </tr>
                 <tr>
                     <td>H max</td>
@@ -46,6 +48,10 @@
                     <td>H max</td>
                     <td>
                         <input type="range" class="slider sliderH" min="0" max="180" step="2" id="greenHMax" oninput="updateSlider(1);">
+                    </td>
+                    <td>H max</td>
+                    <td>
+                        <input type="range" class="slider sliderH" min="0" max="180" step="2" id="blueHMax" oninput="updateSlider(1);">
                     </td>
                 </tr>
                 <tr>
@@ -57,6 +63,10 @@
                     <td>
                         <input type="range" class="slider sliderS" min="0" max="255" step="5" id="greenSMax" oninput="updateSlider(3);">
                     </td>
+                    <td>S max</td>
+                    <td>
+                        <input type="range" class="slider sliderS" min="0" max="255" step="5" id="blueSMax" oninput="updateSlider(3);">
+                    </td>
                 </tr>
                 <tr>
                     <td>V max</td>
@@ -66,6 +76,10 @@
                     <td>V max</td>
                     <td>
                         <input type="range" class="slider sliderV" min="0" max="255" step="5" id="greenVMax" oninput="updateSlider(5);">
+                    </td>
+                    <td>V max</td>
+                    <td>
+                        <input type="range" class="slider sliderV" min="0" max="255" step="5" id="blueVMax" oninput="updateSlider(5);">
                     </td>
                 </tr>
                 <tr>
@@ -77,6 +91,10 @@
                     <td>
                         <input type="range" class="slider sliderH" min="0" max="180" step="2" id="greenHMin" oninput="updateSlider(7);">
                     </td>
+                    <td>H min</td>
+                    <td>
+                        <input type="range" class="slider sliderH" min="0" max="180" step="2" id="blueHMin" oninput="updateSlider(7);">
+                    </td>
                 </tr>
                 <tr>
                     <td>S min</td>
@@ -87,6 +105,10 @@
                     <td>
                         <input type="range" class="slider sliderS" min="0" max="255" step="5" id="greenSMin" oninput="updateSlider(9);">
                     </td>
+                    <td>S min</td>
+                    <td>
+                        <input type="range" class="slider sliderS" min="0" max="255" step="5" id="blueSMin" oninput="updateSlider(9);">
+                    </td>
                 </tr>
                 <tr>
                     <td>V min</td>
@@ -96,6 +118,10 @@
                     <td>V min</td>
                     <td>
                         <input type="range" class="slider sliderV" min="0" max="255" step="5" id="greenVMin" oninput="updateSlider(11);">
+                    </td>
+                    <td>V min</td>
+                    <td>
+                        <input type="range" class="slider sliderV" min="0" max="255" step="5" id="blueVMin" oninput="updateSlider(11);">
                     </td>
                 </tr>
                 <tr>
@@ -113,6 +139,13 @@
                         <span id="greenSMaxindicator">0</span>
                         <span id="greenVMaxindicator">0</span>
                     </td>
+                    <td>Max:</td>
+                    <td>
+                        <span>HSV: </span>
+                        <span id="blueHMaxindicator">0</span>
+                        <span id="blueSMaxindicator">0</span>
+                        <span id="blueVMaxindicator">0</span>
+                    </td>
                 </tr>
                 <tr>
                     <td>Min:</td>
@@ -128,6 +161,13 @@
                         <span id="greenHMinindicator">0</span>
                         <span id="greenSMinindicator">0</span>
                         <span id="greenVMinindicator">0</span>
+                    </td>
+                    <td>Min:</td>
+                    <td>
+                        <span>HSV: </span>
+                        <span id="blueHMinindicator">0</span>
+                        <span id="blueSMinindicator">0</span>
+                        <span id="blueVMinindicator">0</span>
                     </td>
                 </tr>
             </tbody>
@@ -211,6 +251,16 @@
                     <td><span id="wallHeightCenter">C: 0</span></td>
                     <td><span id="wallHeightRight">R: 0</span></td>
                 </tr>
+                <tr>
+                    <td colspan="3">
+                        <button id="emergencyStop">STOP</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <button id="disconnect">DISCONNECT</button>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -219,8 +269,6 @@
         <div id="sliderX"></div>
         <div id="sliderY"></div>
     </div>
-    <button id="emergencyStop">STOP</button>
-    <button id="disconnect">DISCONNECT</button>
     <canvas id="logocanvas"></canvas>
     <script src="./../logoIntro.js"></script>
 </body>

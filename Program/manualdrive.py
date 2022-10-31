@@ -62,6 +62,7 @@ def main():
             filter.setColors(data, server=server)
             camera.capture(filter=filter, server=server, drive=drive)
         def captureFilterStream(data):
+            filter.setColors(data['colors'])
             if data['state'] == True:
                 camera.startSaveStream(filter=filter, server=server, drive=drive)
             else:
@@ -91,6 +92,7 @@ def main():
                     server.broadcast('message', 'Ended stream')
         def filterstream(data):
             global streamThread2, streaming2
+            filter.setColors(data['colors'])
             if data['state'] == True:
                 if streaming2 == False:
                     streaming2 = True

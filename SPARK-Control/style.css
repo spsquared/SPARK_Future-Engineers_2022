@@ -332,10 +332,7 @@ img {
 }
 
 #emergencyStop {
-    position: absolute;
-    top: 16px;
-    right: 320px;
-    width: 200px;
+    width: 100%;
     height: 48px;
     font: 20px sans-serif;
     font-weight: bolder;
@@ -347,10 +344,7 @@ img {
     border-style: inset;
 }
 #disconnect {
-    position: absolute;
-    top: 80px;
-    right: 320px;
-    width: 200px;
+    width: 100%;
     height: 48px;
     font: 20px sans-serif;
     font-weight: bolder;
