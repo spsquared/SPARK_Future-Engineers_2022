@@ -411,8 +411,8 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext("2d");
 const canvas2 = document.getElementById('canvas2');
 const ctx2 = canvas2.getContext("2d");
-const imgRenderCanvas = new OffScreenCanvas();
-const imgRenderCtx = imgRenderCanvas.getContext('2d');
+// const imgRenderCanvas = document.createElement('canvas');
+// const imgRenderCtx = imgRenderCanvas.getContext('2d');
 const historySlider = document.getElementById('historySlider');
 const FPS = document.getElementById('fps');
 const strPredict = document.getElementById('strPredict');
@@ -430,14 +430,35 @@ canvas.width = 272;
 canvas.height = 154;
 canvas2.width = 272;
 canvas2.height = 154;
-imgRenderCanvas.width = 272;
-imgRenderCanvas.height = 154;
+// imgRenderCanvas.width = 272;
+// imgRenderCanvas.height = 154;
 let displayTimer = 0;
 let drawn = false;
 let displayDelay = 5;
+window.onresize = () => {
+    canvas.width = 272;
+    canvas.height = 154;
+    canvas2.width = 272;
+    canvas2.height = 154;
+    // imgRenderCanvas.width = 272;
+    // imgRenderCanvas.height = 154;
+};
 function addCapture(img) {
-    imgRenderCtx.clearRect(0, 0, 272, 154);
-    imgRenderCtx
+    // imgRenderCtx.clearRect(0, 0, 272, 154);
+    // const tempImg = new Image();
+    // tempImg.src = 'data:image/png;base64,'+img;
+    // tempImg.onload = () => {
+    //     imgRenderCtx.drawImage(tempImg, 0, 0);
+    //     // imgRenderCtx.fillStyle = '#FF0000'
+    //     // imgRenderCtx.fillRect(0, 0, 272, 154)
+    //     const imgData = imgRenderCtx.getImageData(0, 0, 272, 154);
+    //     console.log(imgData)
+    //     for (let i = 3; i < 167552; i += 4) { // 272 * 154 * 4
+    //         imgData.data[i] = 255;
+    //     }
+    //     imgRenderCtx.putImageData(imgData, 0, 0);
+    //     let procImg = imgRenderCanvas.toDataURL('image/png');
+    // };
     history.unshift({
         img: 'data:image/png;base64,'+img,
         blobs: [[], [], [], []],
