@@ -51,7 +51,7 @@ def capture(filter = None, server = None, drive = None):
     try:
         name = str(round(time.time()*1000))
         if filter != None:
-            filteredImg = filter.filter(currentImage)
+            filteredImg = filter.filter(currentImage, False)
             cv2.imwrite('filtered_out/' + name + '.png', filteredImg)
             if server != None:
                 server.broadcast('message', 'Captured (filtered) ' + name + '.png')
@@ -103,7 +103,7 @@ def startSaveStream(filter = None, server = None, drive = None):
                 while streaming:
                     start = time.time()
                     if filter != None:
-                        filteredImg = filter.filter(currentImage)
+                        filteredImg = filter.filter(currentImage, False)
                         cv2.imwrite('filtered_out/' + name + '/' + str(index) + '.png', filteredImg)
                         if server != None:
                             encoded = base64.b64encode(cv2.imencode('.png', filteredImg)[1]).decode()

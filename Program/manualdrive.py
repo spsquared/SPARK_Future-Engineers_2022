@@ -99,7 +99,7 @@ def main():
                         try:
                             while streaming2 and running:
                                 start = time.time()
-                                encoded = base64.b64encode(cv2.imencode('.png', filter.filter(camera.read()))[1]).decode()
+                                encoded = base64.b64encode(cv2.imencode('.png', filter.filter(camera.read(), False))[1]).decode()
                                 server.broadcast('capture', encoded)
                                 time.sleep(max(0.05-(time.time()-start), 0))
                         except Exception as err:
@@ -117,7 +117,7 @@ def main():
             server.broadcast('capture', encoded)
         def viewFilter(data):
             filter.setColors(data)
-            encoded = base64.b64encode(cv2.imencode('.png', filter.filter(camera.read()))[1]).decode()
+            encoded = base64.b64encode(cv2.imencode('.png', filter.filter(camera.read(), False))[1]).decode()
             server.broadcast('capture', encoded)
         def prediction(data):
             filter.predict(camera.read(), server, False)

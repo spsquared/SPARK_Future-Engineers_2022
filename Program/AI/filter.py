@@ -1,3 +1,4 @@
+from xmlrpc.client import boolean
 from IO import io
 import numpy
 import cv2
@@ -9,29 +10,19 @@ import json
 # preprocessing filter module with cv prediction
 
 # colors
-# rm = redMin1 = (175, 0, 0)
-# rM = redMax1 = (140, 140, 255)
 rm = redMin = (0, 95, 75)
 rM = redMax = (25, 255, 255)
-# rm = redMin = (150, 75, 100)
-# rM = redMax = (180, 255, 255)
 gm = greenMin = (30, 30, 80)
 gM = greenMax = (100, 255, 255)
-# gM = greenMax = (85, 140, 95)
-# gm = greenMin = (60, 65, 10)
-# wM = wallMax = (90, 75, 85)
-# wm = wallMin = (0, 0, 0)
-# sM = greyMax = 65
-# sm = greyMin = 0
-bm = bluMin = (95, 80, 70)
-bM = bluMax = (120, 255, 255)
+bm = blueMin = (95, 80, 70)
+bM = blueMax = (120, 255, 255)
 
 LEFT = 0
 CENTER = 1
 RIGHT = 2
 
-def filter(imgIn: numpy.ndarray):
-    global redMax, redMin, greenMax, greenMin, wallMax, wallMin
+def filter(imgIn: numpy.ndarray, checkBlue: bool):
+    global redMax, redMin, greenMax, greenMin, blueMax, blueMin
     try:
         hsv = cv2.cvtColor(imgIn, cv2.COLOR_BGR2HSV)
         # rMask = cv2.inRange(imgIn, redMin1, redMax1)
@@ -47,7 +38,7 @@ def filter(imgIn: numpy.ndarray):
         rMask = cv2.bitwise_or(rMask1, rMask2)
         # gMask = cv2.inRange(imgIn, greenMin, greenMax)
         gMask = cv2.inRange(hsv, greenMin, greenMax)
-        bMask = cv2.inRange(hsv, bluMin, bluMax)
+        bMask = cv2.inRange(hsv, blueMin, blueMax)
         blurredR = cv2.medianBlur(rMask, 5)
         blurredG = cv2.medianBlur(gMask, 5)
         # colorWallMask = cv2.inRange(imgIn, wallMin, wallMax)
@@ -58,7 +49,11 @@ def filter(imgIn: numpy.ndarray):
         gray_image = cv2.cvtColor(imgIn, cv2.COLOR_RGB2GRAY)
         blurredImg = cv2.GaussianBlur(gray_image, (3,3),0)
         edgesImage = cv2.Canny(blurredImg, 50, 125, 3)
-        filteredImg = cv2.merge((edgesImage, blurredG, blurredR, bMask))
+        if checkBlue:
+            filteredImg = cv2.merge((edgesImage, blurredG, blurredR, bMask))
+        else:
+            filteredImg
+            filteredImg = cv2.merge((edgesImage, blurredG, blurredR))
         return filteredImg
     except Exception as err:
         print(err)
@@ -352,7 +347,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
             lastSend += 1
             if (lastSend > 2):
                 lastSend = 0
-                encoded = base64.b64encode(cv2.imencode('.png', blurredImg)[1]).decode()
+                encoded = base64.b64encode(cv2.imencode('.png', cv2.merge((edgesImage, gImg, rImg)))[1]).decode()
                 server.broadcast('capture', encoded)
                 arrayR = []
                 for i in range(len(rKps)):
@@ -407,18 +402,21 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         io.error()
 
 def setColors(data, server = None):
-    global redMax, redMin, greenMax, greenMin
+    global redMax, redMin, greenMax, greenMin, blueMax, blueMin
     redMax = (int(data[0]), int(data[2]), int(data[4]))
     greenMax = (int(data[1]), int(data[3]), int(data[5]))
     redMin = (int(data[6]), int(data[8]), int(data[10]))
     greenMin = (int(data[7]), int(data[9]), int(data[11]))
+    blueMax = (int(data[12]), int(data[13]), int(data[14]))
+    blueMin = (int(data[15]), int(data[16]), int(data[17]))
     print('-- New ----------')
     print(redMax, redMin)
     print(greenMax, greenMin)
+    print(blueMax, blueMin)
     if server != None:
         server.broadcast('colors', getColors())
 def getColors():
-    global redMax, redMin, greenMax, greenMin
+    global redMax, redMin, greenMax, greenMin, blueMax, blueMin
     array = []
     for i in range(6):
         if i % 2 == 0:
@@ -432,11 +430,12 @@ def getColors():
             array.append(greenMin[math.floor(i/2)])
     return array
 def setDefaultColors():
-    global rM, rm, gM, gm
+    global rM, rm, gM, gm, bM, bm
     print('-- New ----------')
     print(rM, rm)
     print(gM, gm)
-    return [rM[2], gM[2], wM[2], rM[1], gM[1], wM[1], rM[0], gM[0], wM[0], rm[2], gm[2], wm[2], rm[1], gm[1], wm[1], rm[0], gm[0], wm[0]]
+    print(bM, bm)
+    return [rM[2], gM[2], bM[2], rM[1], gM[1], bM[1], rM[0], gM[0], bM[0], rm[2], gm[2], bm[2], rm[1], gm[1], bm[1], rm[0], gm[0], bm[0]]
 
 # find wall heights
 # def getWallHeights(offset):
