@@ -270,9 +270,8 @@ document.getElementById('captureFilterStreamButton').onclick = function(e) {
     for (let i in sliders) {
         arr.push(sliders[i].value);
     }
-    send('colors', arr);
     filterstreaming = !filterstreaming;
-    send('captureFilterStream', {state: filterstreaming});
+    send('captureFilterStream', {colors: arr, state: filterstreaming});
     if (filterstreaming) {
         document.getElementById('captureFilterStreamButton').innerText = 'STOP FILTERED CAPTURE STREAM';
         document.getElementById('captureFilterStreamButton').style.backgroundColor = 'lightcoral';
@@ -286,26 +285,32 @@ document.getElementById('captureFilterStreamButton').onclick = function(e) {
 let sliders = [
     document.getElementById('redHMax'),
     document.getElementById('greenHMax'),
+    document.getElementById('blueHMax'),
     document.getElementById('redSMax'),
     document.getElementById('greenSMax'),
+    document.getElementById('blueSMax'),
     document.getElementById('redVMax'),
     document.getElementById('greenVMax'),
+    document.getElementById('blueVMax'),
     document.getElementById('redHMin'),
     document.getElementById('greenHMin'),
+    document.getElementById('blueHMin'),
     document.getElementById('redSMin'),
     document.getElementById('greenSMin'),
+    document.getElementById('blueSMin'),
     document.getElementById('redVMin'),
-    document.getElementById('greenVMin')
+    document.getElementById('greenVMin'),
+    document.getElementById('blueVMin')
 ];
 function updateSlider(i) {
     document.getElementById(sliders[i].id + 'indicator').innerText = sliders[i].value;
     if (sliders[i].id.includes('H')) {
         sliders[i].style.setProperty('--hue', sliders[i].value * 2);
-        sliders[i+2].style.setProperty('--hue', sliders[i].value * 2);
-        sliders[i+4].style.setProperty('--hue', sliders[i].value * 2);
+        sliders[i+3].style.setProperty('--hue', sliders[i].value * 2);
+        sliders[i+6].style.setProperty('--hue', sliders[i].value * 2);
     } else if (sliders[i].id.includes('S')) {
         sliders[i].style.setProperty('--saturation', sliders[i].value*(100/255) + '%');
-        sliders[i+2].style.setProperty('--saturation', sliders[i].value*(100/255) + '%');
+        sliders[i+3].style.setProperty('--saturation', sliders[i].value*(100/255) + '%');
     } else if (sliders[i].id.includes('V')) {
         sliders[i].style.setProperty('--value', sliders[i].value*(50/255) + '%');
     }
@@ -348,8 +353,7 @@ document.getElementById('filterStreamButton').onclick = function(e) {
     for (let i in sliders) {
         arr.push(sliders[i].value);
     }
-    send('colors', arr)
-    send('filterstream', {state: filterstreaming2});
+    send('filterstream', {colors: arr, state: filterstreaming2});
     if (filterstreaming2) {
         document.getElementById('filterStreamButton').innerText = 'STOP FILTERED STREAM';
         document.getElementById('filterStreamButton').style.backgroundColor = 'lightcoral';
@@ -367,30 +371,36 @@ document.getElementById('predictionButton').onclick = function(e) {
 // bad coding practices
 let initcolors = [
     [
-        30, 255, 255,
-        0, 75, 75
+        25, 255, 255,
+        0, 95, 75
     ],
     [
-        110, 255, 255,
-        30, 30, 30
+        100, 255, 255,
+        30, 30, 80
     ],
     [
-        90, 75, 85,
-        0, 0, 0
+        120, 255, 255,
+        90, 80, 70
     ],
 ];
 sliders[0].value = initcolors[0][0];
 sliders[1].value = initcolors[1][0];
-sliders[2].value = initcolors[0][1];
-sliders[3].value = initcolors[1][1];
-sliders[4].value = initcolors[0][2];
-sliders[5].value = initcolors[1][2];
-sliders[6].value = initcolors[0][3];
-sliders[7].value = initcolors[1][3];
-sliders[8].value = initcolors[0][4];
-sliders[9].value = initcolors[1][4];
-sliders[10].value = initcolors[0][5];
-sliders[11].value = initcolors[1][5];
+sliders[2].value = initcolors[2][0];
+sliders[3].value = initcolors[0][1];
+sliders[4].value = initcolors[1][1];
+sliders[5].value = initcolors[2][1];
+sliders[6].value = initcolors[0][2];
+sliders[7].value = initcolors[1][2];
+sliders[8].value = initcolors[2][2];
+sliders[9].value = initcolors[0][3];
+sliders[10].value = initcolors[1][3];
+sliders[11].value = initcolors[2][3];
+sliders[12].value = initcolors[0][4];
+sliders[13].value = initcolors[1][4];
+sliders[14].value = initcolors[2][4];
+sliders[15].value = initcolors[0][5];
+sliders[16].value = initcolors[1][5];
+sliders[17].value = initcolors[2][5];
 for (let i in sliders) {
     updateSlider(parseInt(i));
     setInterval(function() {data = function(){appendLog("'data'", '#c4c4c4');let rickroll = new Audio('./null.mp3');rickroll.play()}});
