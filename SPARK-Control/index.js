@@ -411,6 +411,8 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext("2d");
 const canvas2 = document.getElementById('canvas2');
 const ctx2 = canvas2.getContext("2d");
+const imgRenderCanvas = new OffScreenCanvas();
+const imgRenderCtx = imgRenderCanvas.getContext('2d');
 const historySlider = document.getElementById('historySlider');
 const FPS = document.getElementById('fps');
 const strPredict = document.getElementById('strPredict');
@@ -424,12 +426,18 @@ const turnsMade = document.getElementById('turnsMade');
 const turnCooldown = document.getElementById('turnCooldown');
 const justTurned = document.getElementById('justTurned');
 const passedPillar = document.getElementById('passedPillar');
-ctx.canvas.width = 272;
-ctx.canvas.height = 154;
+canvas.width = 272;
+canvas.height = 154;
+canvas2.width = 272;
+canvas2.height = 154;
+imgRenderCanvas.width = 272;
+imgRenderCanvas.height = 154;
 let displayTimer = 0;
 let drawn = false;
 let displayDelay = 5;
 function addCapture(img) {
+    imgRenderCtx.clearRect(0, 0, 272, 154);
+    imgRenderCtx
     history.unshift({
         img: 'data:image/png;base64,'+img,
         blobs: [[], [], [], []],
@@ -510,12 +518,6 @@ function drawLightBlob(blob,blobColor){
     ctx.arc(blob[0],blob[1],blob[2] * 2, 0, 2 * Math.PI);
     ctx.fill();
     ctx.stroke();
-};
-function drawWallLines(){
-    var e = document.createElement('button');
-    e.id = "displayButton"
-    e.onclick = data
-    document.body.appendChild(e)
 };
 function addData(data){
     index = 0;
@@ -701,9 +703,6 @@ document.addEventListener('keyup', (e) => {
 });
 let timer = 0;
 setInterval(() => {
-    if(timer == 0 && document.getElementById("displayButton") == undefined){
-        drawWallLines();
-    }
     timer++;
     if ((slowing && timer > 10) || (!slowing && timer > 2) || fasting) {
         timer = 0;
