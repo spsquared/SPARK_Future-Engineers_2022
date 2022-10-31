@@ -52,7 +52,6 @@ def filter(imgIn: numpy.ndarray, checkBlue: bool):
         if checkBlue:
             filteredImg = cv2.merge((edgesImage, blurredG, blurredR, bMask))
         else:
-            filteredImg
             filteredImg = cv2.merge((edgesImage, blurredG, blurredR))
         return filteredImg
     except Exception as err:
@@ -85,7 +84,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         blobs = cv2.SimpleBlobDetector_create(params)
 
         # filter to colors and split
-        blurredImg = filter(imgIn)
+        blurredImg = filter(imgIn,True)
         edgesImage, gImg, rImg, bImg = cv2.split(blurredImg)
 
         # steering reason
@@ -296,7 +295,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         
         for i in range(8):
             if wallLabels[i] == LEFT:
-                if wallHeights[i] > 14:
+                if wallHeights[i] > 15:
                     steering = 15
                     if i <= 3:
                         steering += 3 * (4 - i)
@@ -308,7 +307,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                     steering += wallHeights[i]
                     centerSteering += steering * counterClockwise
             else:
-                if wallHeights[i] > 14:
+                if wallHeights[i] > 15:
                     steering = 15
                     if i >= 4:
                         steering += 3 * (i - 3)
