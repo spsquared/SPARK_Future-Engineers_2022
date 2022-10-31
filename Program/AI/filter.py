@@ -71,9 +71,8 @@ turnsMade = 0
 turnCooldown = 40
 passedPillar = 0
 lastSend = 0
-totalSteering = 0
 def predict(imgIn: numpy.ndarray, server = None, infinite = False):
-    global redMax, redMin, greenMax, greenMin, lastSend, rightOnRed, counterClockwise, turnsMade, turnCooldown, passedPillar, totalSteering
+    global redMax, redMin, greenMax, greenMin, lastSend, rightOnRed, counterClockwise, turnsMade, turnCooldown, passedPillar
     try:
         # useless thing
         if infinite: turnsMade = 0
@@ -234,17 +233,21 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         jumped = False
         for i in range(7):
             if jumped == True:
-                wallLabels[i + 1] = RIGHT
+                if wallLabels[i + 1] == CENTER:
+                    wallLabels[i + 1] = RIGHT
             if wallHeights[i + 1] - wallHeights[i] > 4:
-                wallLabels[i + 1] = RIGHT
+                if wallLabels[i + 1] == CENTER:
+                    wallLabels[i + 1] = RIGHT
                 jumped = True
         
         jumped = False
         for i in range(7):
             if jumped == True:
-                wallLabels[i] = LEFT
+                if wallLabels[i] == CENTER:
+                    wallLabels[i] = LEFT
             if wallHeights[i] - wallHeights[i + 1] > 4:
-                wallLabels[i] = LEFT
+                if wallLabels[i] == CENTER:
+                    wallLabels[i] = LEFT
                 jumped = True
         
         wallLabels[0] = LEFT
@@ -271,10 +274,10 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
             hitPillarRight = False
             for i in range(4):
                 for j in range(len(wallDifferences2[7 - i])):
-                    if wallDifferences2[7 - i][j] > 4:
-                        if wallDifferences2[7 - i][j] > jumpedRight:
-                            jumpedRight = wallDifferences2[7 - i][j]
-                    if wallDifferences2[7 - i][j] < -2:
+                    if wallDifferences2[7 - i][len(wallDifferences2[7 - i]) - j - 1] > 4:
+                        if wallDifferences2[7 - i][len(wallDifferences2[7 - i]) - j - 1] > jumpedRight:
+                            jumpedRight = wallDifferences2[7 - i][len(wallDifferences2[7 - i]) - j - 1]
+                    if wallDifferences2[7 - i][len(wallDifferences2[7 - i]) - j - 1] < -2:
                         hitPillarRight = True
                         break
                 if hitPillarRight == True:
@@ -298,19 +301,19 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         
         for i in range(8):
             if wallLabels[i] == LEFT:
-                if wallHeights[i] > 19:
+                if wallHeights[i] > 14:
                     steering = 15
                     if i <= 3:
                         steering += 3 * (4 - i)
                     steering += wallHeights[i]
                     leftSteering += steering
             elif wallLabels[i] == CENTER:
-                if wallHeights[i] > 10:
+                if wallHeights[i] > 8:
                     steering = 60
                     steering += wallHeights[i]
                     centerSteering += steering * counterClockwise
             else:
-                if wallHeights[i] > 19:
+                if wallHeights[i] > 14:
                     steering = 15
                     if i >= 4:
                         steering += 3 * (i - 3)
@@ -335,7 +338,9 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                 wallSteering = centerSteering
                 steeringReason += "center wall"
         
-        if numpy.count_nonzero(bImg) > 50 and turnCooldown <= 0:
+        # BLU #
+        
+        if numpy.count_nonzero(bImg[wallStart:]) > 100 and turnCooldown <= 0:
             turnsMade += 1
             turnCooldown = 180
             print(turnsMade)
@@ -364,7 +369,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                 else:
                     server.broadcast('blobs',[0,arrayR,0,arrayG])
 
-        if turnsMade >= 12:
+        if turnsMade >= 13:
             return "stop"
 
         finalSteering = wallSteering
@@ -391,7 +396,6 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                     finalSteering += pillarSteering * 3 / 2
                 else:
                     finalSteering += pillarSteering / 2
-        totalSteering += finalSteering
         if server != None:
             serailzed=[[],[],[],[],[],[],[],[]]
             for i in range(8):
