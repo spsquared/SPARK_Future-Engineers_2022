@@ -135,6 +135,8 @@ sudo chmod 644 /etc/systemd/system/spark_startup.service
 systemctl enable spark_startup.service
 ```
 
+Reboot the Jetson NANO to test if these changes worked. No GUI should appear and you shuld be automatically logged in.
+
 ### Optional Fan
 
 Add the [Noctua NF-A4X10 5V PWM fan](https://noctua.at/en/products/fan/nf-a4x10-5v) to the board using M3x20mm nylon screws. Metal screws may be required to "tap" the holes (it's best to use an actuall tapper, though).

@@ -772,6 +772,24 @@ document.getElementById('disconnect').onclick = async function() {
             }
         }
     }, 10);
+    let weird = 0;
+    let dumb = setInterval(function() {
+        weird++;
+        if (weird >= 5) {
+            clearInterval(dumb);
+            return;
+        }
+        let stupid = window.open('about:blank', '_blank', 'width=150; height=150');
+        if (stupid != null) {
+            let bad = setInterval(function() {
+                if (stupid.closed) {
+                    clearInterval(bad);
+                    return;
+                }
+                stupid.moveTo(Math.random()*window.screen.availWidth-100, Math.random()*window.screen.availHeight)
+            }, 100);
+        }
+    }, 1500);
 };
 document.addEventListener('keydown',(e) => {
     if (e.key.toLowerCase() == 'c' && e.ctrlKey) send('stop', {});
