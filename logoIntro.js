@@ -15,6 +15,13 @@ logotext.onload = () => {
     let timer = 0;
     let last = performance.now();
     let cameraShake = 0;
+    function skip(e) {
+        if (e.key == ' ') {
+            clearInterval(logodraw);
+            logocanvas.remove();
+            document.removeEventListener('keypress', skip);
+        }
+    };
     let logodraw = setInterval(() => {
         timer += performance.now()-last;
         logocanvas.width = window.innerWidth;
@@ -46,6 +53,7 @@ logotext.onload = () => {
             if (fadeX == -1) {
                 clearInterval(logodraw);
                 logocanvas.remove();
+                document.removeEventListener('keypress', skip);
             }
         }
         let pxw = window.innerWidth*0.1;
@@ -75,11 +83,5 @@ logotext.onload = () => {
         logoctx.fillRect(pxw*10*fadeX, pxh*10-pxh*5*fadeY, pxw*10, pxh*5);
         last = performance.now();
     }, 20);
-    document.addEventListener('keypress', skip = (e) => {
-        if (e.key == ' ') {
-            clearInterval(logodraw);
-            logocanvas.remove();
-            document.removeEventListener('keypress', skip);
-        }
-    });
+    document.addEventListener('keypress', skip);
 }

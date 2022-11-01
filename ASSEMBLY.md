@@ -66,9 +66,78 @@ ensure that power, ground, and PWM wires are labeled
 
 ## Jetson NANO
 
-TODO: attach fan, follow instructions to set up OS, create task to run startup.py on startup, switch to text-only mode
+### Board Setup, SSHFS, and Static IP
 
-Add the [Noctua NF-A4X10 5V PWM fan](https://noctua.at/en/products/fan/nf-a4x10-5v) to the board using M3x20mm nylon screws
+Visit [Yahboom](http://www.yahboom.net/)'s [setup and tutorial repository](http://www.yahboom.net/study/jetson-nano) to begin setting up the [Jetson NANO 4GB](https://category.yahboom.net/collections/jetson/products/jetson-nano-sub). Follow steps 1.1-1.7 in "Development setup > SUB Version".
+
+After setting up the board, follow step 2.1 in section "Basic Settings" to log into your Jetson NANO. Keep PuTTY open, as it will be used for the rest of the setup process. Also keep the IP. For remote file transfer, install sshfs (linux only), or use [sshfs-win](https://github.com/winfsp/sshfs-win) from WinFsp. Follow instructions to mount the Jetson NANO to a network drive. Now upload all contents of the `/Program/` folder into a new folder on the Jetson NANO. Remember the directory of the folder, this will be used later.
+
+Make sure a static IP is set to the board to make SSH and file transfer easier. Go to your router settings and [assign a DHCP reservation (PCmag)](https://www.pcmag.com/how-to/how-to-set-up-a-static-ip-address) (or a straight static IP) to your Jetson NANO. Save this IP in your PuTTY settings and SSHFS mounting.
+
+### Enable GPIO and PWM
+
+Next, setting up the board for the application. First, enable GPIO and PWM. Create a new user group, and add your user to it (this is the user running the commands).
+
+```
+sudo groupadd -f -r gpio
+sudo usermod -a -G gpio your_user_name
+```
+
+Copy the `99-gpio.rules` file from the `/Program/` folder to `/etc/udev/rules.d/` on the Jetson NANO (use sshfs or ). Then enable the rule.
+
+```
+sudo udevadm control --reload-rules && sudo udevadm trigger
+```
+
+Now enable PWM. Run the options file for jetson-GPIO.
+
+```
+sudo /opt/nvidia/jetson-io/jetson-io.py
+```
+
+Go down to "Configure 40-pin expansion header" and enter that submenu. Find `pwm0` and `pwm`, and enable them by selecting them and pressing "Enter". Now exit the tool. GPIO and PWM have been enabled.
+
+### Text-Only, Auto-Login, and Run on Startup
+
+Switch the Jetson NANO to text-only mode (gui is almost useless for this application and only causes unneccesary slowness).
+
+```
+sudo systemctl set-default multi-user.target
+```
+
+Autologin must be done to avoid having to plug in a monitor and keyboard to start ssh and run programs. The following accomplishes it:
+
+```
+sudo systemctl edit getty@tty1
+```
+
+A temporary editer will appear. Place the following text in it, replacing "your_user_name" with your user name.
+
+```
+[Service]
+ExecStart=
+ExecStart=-/sbin/agetty -o '-p -f your_user_name' -a your_user_name --noclear %I $TERM
+```
+
+Save and close the editor with `:qa`.
+
+To run the program on startup, first obtain the directory of the program folder uploaded earlier. Create `spark_startup.service` in `/etc/systemd/system` and place the following in the contents, replacing "/filepath/" with the directory of the folder.
+
+```
+[Service]
+ExecStart=/bin/bash /filepath/startup.py
+```
+
+Save the file and add permissions to it.
+
+```
+sudo chmod 644 /etc/systemd/system/spark_startup.service
+systemctl enable spark_startup.service
+```
+
+### Optional Fan
+
+Add the [Noctua NF-A4X10 5V PWM fan](https://noctua.at/en/products/fan/nf-a4x10-5v) to the board using M3x20mm nylon screws. Metal screws may be required to "tap" the holes (it's best to use an actuall tapper, though).
 
 ## Platform Standoffs
 

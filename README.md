@@ -66,7 +66,7 @@ Here is a simple electromechanical schematic for how the electronics are wired:
 
 ***
 
-### 6 (perspective) Views
+### 6 (perspective) Views (outdated)
 | | |
 | ------------------------- | --------------------------- |
 | ![front](./Documentation/img/front.png) | ![back](./Documentation/img/rear.png)     |
