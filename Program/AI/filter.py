@@ -86,6 +86,14 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         blurredImg = filter(imgIn,True)
         edgesImage, gImg, rImg, bImg = cv2.split(blurredImg)
 
+        # send images to SPARK Control
+        if server != None and blurredImg.all() != None:
+            lastSend += 1
+            if (lastSend > 2):
+                lastSend = 0
+                encoded = base64.b64encode(cv2.imencode('.png', cv2.merge((edgesImage, gImg, rImg)))[1]).decode()
+                server.broadcast('capture', encoded)
+
         # steering reason
         steeringReason = ""
 
@@ -340,28 +348,6 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
 
         turnCooldown -= 1
 
-        # send images to SPARK Control
-        if server != None and blurredImg.all() != None:
-            lastSend += 1
-            if (lastSend > 2):
-                lastSend = 0
-                encoded = base64.b64encode(cv2.imencode('.png', cv2.merge((edgesImage, gImg, rImg)))[1]).decode()
-                server.broadcast('capture', encoded)
-                arrayR = []
-                for i in range(len(rKps)):
-                    arrayR.append([rKps[i].pt[0],rKps[i].pt[1],rKps[i].size])
-                arrayG = []
-                for i in range(len(gKps)):
-                    arrayG.append([gKps[i].pt[0],gKps[i].pt[1],gKps[i].size])
-                if brKps != 0 and bgKps != 0:
-                    server.broadcast('blobs',[[brKps.pt[0],brKps.pt[1],brKps.size],arrayR,[bgKps.pt[0],bgKps.pt[1],bgKps.size],arrayG])
-                elif brKps != 0:
-                    server.broadcast('blobs',[[brKps.pt[0],brKps.pt[1],brKps.size],arrayR,0,arrayG])
-                elif bgKps != 0:
-                    server.broadcast('blobs',[0,arrayR,[bgKps.pt[0],bgKps.pt[1],bgKps.size],arrayG])
-                else:
-                    server.broadcast('blobs',[0,arrayR,0,arrayG])
-
         if turnsMade >= 13:
             return "stop"
 
@@ -394,6 +380,20 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
             for i in range(8):
                 serailzed[i] = json.dumps(wallHeightsRaw[i].tolist())
             server.broadcast('values', [[str(finalSteering),steeringReason,str(wallSteering),str(pillarSteering)],serailzed])
+            arrayR = []
+            for i in range(len(rKps)):
+                arrayR.append([rKps[i].pt[0],rKps[i].pt[1],rKps[i].size])
+            arrayG = []
+            for i in range(len(gKps)):
+                arrayG.append([gKps[i].pt[0],gKps[i].pt[1],gKps[i].size])
+            if brKps != 0 and bgKps != 0:
+                server.broadcast('blobs',[[brKps.pt[0],brKps.pt[1],brKps.size],arrayR,[bgKps.pt[0],bgKps.pt[1],bgKps.size],arrayG])
+            elif brKps != 0:
+                server.broadcast('blobs',[[brKps.pt[0],brKps.pt[1],brKps.size],arrayR,0,arrayG])
+            elif bgKps != 0:
+                server.broadcast('blobs',[0,arrayR,[bgKps.pt[0],bgKps.pt[1],bgKps.size],arrayG])
+            else:
+                server.broadcast('blobs',[0,arrayR,0,arrayG])
         return finalSteering
     except Exception as err:
         print(err)
