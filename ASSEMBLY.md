@@ -99,6 +99,8 @@ Go down to "Configure 40-pin expansion header" and enter that submenu. Find `pwm
 
 ### Text-Only, Auto-Login, and Run on Startup
 
+<!-- TODO: add images -->
+
 Switch the Jetson NANO to text-only mode (gui is almost useless for this application and only causes unneccesary slowness).
 
 ```
@@ -136,6 +138,10 @@ systemctl enable spark_startup.service
 ```
 
 Reboot the Jetson NANO to test if these changes worked. No GUI should appear and you shuld be automatically logged in.
+
+Enable run-on-startup by editing `run-on-startup.txt` in the folder. Replace the first line with `true`.
+
+Reboot the Jetson NANO again
 
 ### Optional Fan
 
