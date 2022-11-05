@@ -14,7 +14,6 @@ logotext.onload = () => {
     let fadeXSpeed = -0.01;
     let draw = true;
     let timer = 0;
-    let last = performance.now();
     let cameraShake = 0;
     function skip(e) {
         if (e.key == ' ') {
@@ -24,7 +23,7 @@ logotext.onload = () => {
         }
     };
     let logodraw = setInterval(() => {
-        timer += performance.now()-last;
+        timer += 20;
         logocanvas.width = window.innerWidth;
         logocanvas.height = window.innerHeight;
         logoctx.imageSmoothingEnabled = false;
@@ -98,7 +97,6 @@ logotext.onload = () => {
         logoctx.fillStyle = '#202020';
         logoctx.fillRect(-pxw*10*fadeX, pxh*5*fadeY-pxh*5, pxw*10, pxh*5);
         logoctx.fillRect(pxw*10*fadeX, pxh*10-pxh*5*fadeY, pxw*10, pxh*5);
-        last = performance.now();
     }, 20);
     document.addEventListener('keypress', skip);
 }
