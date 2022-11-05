@@ -34,7 +34,7 @@
 * M3 nylon nuts
 * 6mm countersunk M3 screws
 * 6mm M3 nylon screws
-* 8mm M2.5 screws
+* 4mm M2.5 screws
 
 *Our build uses a different 25.5T brushless motor from HobbyWing but we had to modify our chassis to make it fit. The code will still work with the motor in this list.*
 

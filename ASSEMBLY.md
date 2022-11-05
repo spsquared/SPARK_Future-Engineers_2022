@@ -169,6 +169,11 @@ Place the [assembled Jetson NANO](#jetson-nano) on the [four brass standoffs (im
 
 ![platform with everything mounted](./Documentation/img/build-7.jpg)
 
+## Camera Setup
+Follow instructions to assemble the [Arducam IMX219 175 Degree camera](https://www.amazon.com/Arducam-Raspberry-Official-Megapixel-Replacement/dp/B083PW4BLH/). Use M2.5x4mm screws to mount the camera onto the front of camera bracket. Make sure the CSI slot is on the top side.
+
+Screw the camera bracket onto the [four brass standoffs (image 1, yellow)](#platform-standoffs) in the front of the car.
+
 ## Plugging it All In
 
 check wiring
