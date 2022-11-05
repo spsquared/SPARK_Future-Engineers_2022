@@ -345,8 +345,8 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
             lastSend += 1
             if (lastSend > 2):
                 lastSend = 0
-                encoded = base64.b64encode(cv2.imencode('.png', cv2.merge((edgesImage, gImg, rImg)))[1]).decode()
-                server.broadcast('capture', encoded)
+                # encoded = base64.b64encode(cv2.imencode('.png', cv2.merge((edgesImage, gImg, rImg, bImg)))[1]).decode()
+                # server.broadcast('capture', encoded)
                 arrayR = []
                 for i in range(len(rKps)):
                     arrayR.append([rKps[i].pt[0],rKps[i].pt[1],rKps[i].size])
