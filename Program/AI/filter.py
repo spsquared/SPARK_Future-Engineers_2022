@@ -254,9 +254,23 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                     if wallLabels[i + 1] == CENTER:
                         wallLabels[i + 1] = RIGHT
                 jumped = True
+
+        for i in range(7):
+            if wallLabels[i] == LEFT and wallLabels[i + 1] == RIGHT:
+                wallLabels[i] = CENTER
+                wallLabels[i + 1] = CENTER
         
         wallLabels[0] = LEFT
         wallLabels[1] = LEFT
+
+        if wallLabels[2] == RIGHT:
+            wallLabels[2] = CENTER
+        if wallLabels[3] == RIGHT:
+            wallLabels[3] = CENTER
+        if wallLabels[4] == LEFT:
+            wallLabels[4] = CENTER
+        if wallLabels[5] == LEFT:
+            wallLabels[5] = CENTER
 
         wallLabels[6] = RIGHT
         wallLabels[7] = RIGHT
@@ -345,9 +359,9 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         
         # BLU #
         
-        if numpy.count_nonzero(bImg[wallStart:]) > 120 and turnCooldown <= 0:
+        if numpy.count_nonzero(bImg[wallStart:]) > 150 and turnCooldown <= 0:
             turnsMade += 1
-            turnCooldown = 200
+            turnCooldown = 220
             print(turnsMade)
 
         turnCooldown -= 1
