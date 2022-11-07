@@ -12,8 +12,9 @@ if __name__ == '__main__':
     # in competition, wait for button press
     fd = open('./run_on_startup.txt', 'r')
     run_startup = fd.readlines()[0]
-    if run_startup == 'true':
-        GPIO.setmode(GPIO.BOARD)
+    if run_startup == 'true\n':
+        print('Run-on-startup enabled!')
+        GPIO.output(11, GPIO.HIGH)
         GPIO.setup(18, GPIO.IN)
         GPIO.wait_for_edge(18, GPIO.RISING)
         GPIO.wait_for_edge(18, GPIO.FALLING)
