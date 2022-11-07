@@ -54,11 +54,9 @@ On the output of the 7.4V regulator, solder two single-pin headers. Now, attach 
 
 ## Wiring
 
-soldering, crimping
 
-LIGHTS NO MORE
 
-![lights, indicators, jumpers, and a button](./Documentation/img/build-3.jpg)
+![indicators, jumpers, and a button](./Documentation/img/build-3.jpg)
 
 crimp indicators, button, jumpers, optional wifi stuff
 
@@ -98,8 +96,6 @@ sudo /opt/nvidia/jetson-io/jetson-io.py
 Go down to "Configure 40-pin expansion header" and enter that submenu. Find `pwm0` and `pwm`, and enable them by selecting them and pressing "Enter". Now exit the tool. GPIO and PWM have been enabled.
 
 ### Text-Only, Auto-Login, and Run on Startup
-
-<!-- TODO: add images -->
 
 Switch the Jetson NANO to text-only mode (gui is almost useless for this application and only causes unneccesary slowness).
 
@@ -168,6 +164,13 @@ Place the top platform assembly on top of the 25mm/20mm brass standoffs mentione
 Place the [assembled Jetson NANO](#jetson-nano) on the [four brass standoffs (image 2, blue)](#platform-standoffs) and secure with the provided M2.5x5mm screws. If there is a [WiFi card](https://www.newegg.com/p/0XM-009Y-001C7), route the antenna cables to the rear (right of image) and attach to the holders.
 
 ![platform with everything mounted](./Documentation/img/build-7.jpg)
+
+## Camera Setup
+Follow instructions to assemble the [Arducam IMX219 175 Degree camera](https://www.amazon.com/Arducam-Raspberry-Official-Megapixel-Replacement/dp/B083PW4BLH/). Use M2.5x4mm screws to mount the camera onto the front of camera bracket. Make sure the CSI slot is on the top side.
+
+Screw the camera bracket onto the [four brass standoffs (image 1, yellow)](#platform-standoffs) in the front of the car.
+
+Later, focus the camera and make it slightly blurry - this filters some far-away noise in the image without impacting performance.
 
 ## Plugging it All In
 

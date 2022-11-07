@@ -4,6 +4,7 @@ const logoctx = logocanvas.getContext('2d');
 const logotext = new Image();
 logotext.src = './../logoIntroText.png';
 logotext.onload = () => {
+    let infinite = false;
     let logoY = -0.9;
     let logoX = -0.1;
     let logoYSpeed = 0.01;
@@ -13,7 +14,6 @@ logotext.onload = () => {
     let fadeXSpeed = -0.01;
     let draw = true;
     let timer = 0;
-    let last = performance.now();
     let cameraShake = 0;
     function skip(e) {
         if (e.key == ' ') {
@@ -23,19 +23,19 @@ logotext.onload = () => {
         }
     };
     let logodraw = setInterval(() => {
-        timer += performance.now()-last;
+        timer += 20;
         logocanvas.width = window.innerWidth;
         logocanvas.height = window.innerHeight;
         logoctx.imageSmoothingEnabled = false;
         logoctx.webkitImageSmoothingEnabled = false;
         logoctx.mozImageSmoothingEnabled = false;
         cameraShake *= 0.8;
-        if (timer > 200 && logoY != 1) {
+        if (timer > 100 && logoY != 1) {
             logoYSpeed *= 1.2;
             logoY = Math.min(logoY+logoYSpeed, 1);
             if (logoY == 1) cameraShake = 10;
         }
-        if (timer > 800 && logoX != 1) {
+        if (timer > 600 && logoX != 1) {
             logoXSpeed *= 1.2;
             logoX = Math.min(logoX+logoXSpeed, 1);
             if (logoX == 1) cameraShake = 20;
@@ -43,17 +43,33 @@ logotext.onload = () => {
         if (timer > 2000 && fadeY != 1) {
             fadeY = Math.ceil(Math.min(fadeY+(1-fadeY)*0.2, 1)*100)/100;
             if (fadeY == 1) {
-                draw = false;
-                logocanvas.style.backgroundColor = 'transparent';
+                if (infinite) {
+                    logoY = -0.9;
+                    logoX = -0.1;
+                    logoYSpeed = 0;
+                    logoXSpeed = 0;
+                } else {
+                    draw = false;
+                    logocanvas.style.backgroundColor = 'transparent';
+                }
             }
         }
         if (timer > 2600 && fadeX != -1) {
             fadeXSpeed *= 1.1;
             fadeX = Math.max(fadeX+fadeXSpeed, -1);
             if (fadeX == -1) {
-                clearInterval(logodraw);
-                logocanvas.remove();
-                document.removeEventListener('keypress', skip);
+                if (infinite) {
+                    timer = 0;
+                    logoYSpeed = 0.01;
+                    logoXSpeed = 0.01;
+                    fadeX = 0;
+                    fadeY = -0.1;
+                    fadeXSpeed = -0.01;
+                } else {
+                    clearInterval(logodraw);
+                    logocanvas.remove();
+                    document.removeEventListener('keypress', skip);
+                }
             }
         }
         let pxw = window.innerWidth*0.1;
@@ -81,7 +97,6 @@ logotext.onload = () => {
         logoctx.fillStyle = '#202020';
         logoctx.fillRect(-pxw*10*fadeX, pxh*5*fadeY-pxh*5, pxw*10, pxh*5);
         logoctx.fillRect(pxw*10*fadeX, pxh*10-pxh*5*fadeY, pxw*10, pxh*5);
-        last = performance.now();
     }, 20);
     document.addEventListener('keypress', skip);
 }
