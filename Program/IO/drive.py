@@ -52,7 +52,7 @@ def start():
                     # elif targetThrottle < -10 or thrFeaACT >= 1: currThrottle = targetThrottle
                     # else: currThrottle = 0
                     currThrottle = targetThrottle
-                    currSteering = targetSteering*0.5 + currSteering*0.5
+                    currSteering = targetSteering*0.3 + currSteering*0.7
                     # apply throttle and steering
                     if (currThrottle < 0): t.ChangeDutyCycle((currThrottle/100)*(thrMIN-thrBACK)+thrMIN)
                     else: t.ChangeDutyCycle((currThrottle/100)*(thrMAX-thrMIN)+thrMIN)
