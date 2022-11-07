@@ -8,7 +8,7 @@
 
 # **Build Guide**
 
-This is the build guide for our 2022 WRO Future Engineers design - Spark Plugs. It is segmented into four main steps, with more detailed steps within.
+This is the build guide for our 2022 WRO Future Engineers design - Spark Plugs. It is segmented into 11 main steps, with more detailed steps within. It assumes you have necessary tools and miscellaneous materials including but not limited to: M2.5, M3 driver bits, 
 
 ## Print Parts
 
@@ -54,6 +54,9 @@ On the output of the 7.4V regulator, solder two single-pin headers. Now, attach 
 
 ## Wiring
 
+*This part of the instructions assumes that you have a dupont connector crimping set*
+
+Crimp connectors for servo power and PWM. Use 10cm lengths of 20-24 gauge wire.
 
 
 ![indicators, jumpers, and a button](./Documentation/img/build-3.jpg)
