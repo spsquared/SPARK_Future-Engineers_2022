@@ -7,13 +7,16 @@ import time
 # drive module for controlling throttle and steering output
 
 # setup
-t = GPIO.PWM(32, 200)
+t = GPIO.PWM(32, 500)
 s = GPIO.PWM(33, 200)
 
 # pwm min max and speed
-thrBACK = 28
-thrMIN = 30
-thrMAX = 32
+thrBACK = 70
+thrMIN = 75
+thrMAX = 80
+thrBACK2 = 140000000
+thrMIN2 = 150000000
+thrMAX2 = 155000000
 strMAX = 47
 strMIN = 28
 strTRIM = 8
@@ -24,10 +27,8 @@ targetThrottle = 0
 targetSteering = 0
 currThrottle = 0
 currSteering = 0
-# PID control loop
+# control loop
 tickrate = 200
-strkP = 1
-strkD = 0
 running = False
 controlThread = None
 
@@ -56,7 +57,9 @@ def start():
                     # apply throttle and steering
                     if (currThrottle < 0): t.ChangeDutyCycle((currThrottle/100)*(thrMIN-thrBACK)+thrMIN)
                     else: t.ChangeDutyCycle((currThrottle/100)*(thrMAX-thrMIN)+thrMIN)
-                    s.ChangeDutyCycle((currSteering/100)*((strMAX-strMIN)/2)+((strMIN+strMAX)/2)+(strTRIM/10))
+                    # if (currThrottle < 0): GPIO._set_pwm_duty_cycle(t._ch_info, (currThrottle/100)*(thrMIN2-thrBACK2)+thrMIN2)
+                    # else: GPIO._set_pwm_duty_cycle(t._ch_info, (currThrottle/100)*(thrMAX-thrMIN)+thrMIN)
+                    s.ChangeDutyCycle((currSteering/100.0)*((strMAX-strMIN)/2)+((strMIN+strMAX)/2)+(strTRIM/10))
                     # advance timer
                     # timer += thrFeaFREQ/tickrate
                     time.sleep(max((1/tickrate)-(time.time()-start), 0))
