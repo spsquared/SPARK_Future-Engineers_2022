@@ -17,6 +17,6 @@ if __name__ == '__main__':
         GPIO.output(11, GPIO.HIGH)
         GPIO.setup(18, GPIO.IN)
         GPIO.wait_for_edge(18, GPIO.RISING)
-        GPIO.wait_for_edge(18, GPIO.FALLING)
+        print('Button pressed - starting!')
         GPIO.cleanup()
         os.system('python3 autodrive.py')
