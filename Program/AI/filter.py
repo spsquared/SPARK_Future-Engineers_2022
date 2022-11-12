@@ -155,12 +155,12 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         pillarSteering = 0
 
         # decide steering for each signal that will collide
-        reducedSteering = 15
+        reducedSteering = 10
         if doPillars == True:
             if brKps != 0:
                 if bgKps != 0:
                     if brKps.size > bgKps.size:
-                        pillarSteering = -(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size - reducedSteering) * (brKps.size - 3) ** 2 * 0.017
+                        pillarSteering = -(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size - reducedSteering) * (brKps.size - 3) ** 2 * 0.02
                         steeringReason += "red pillar "
                         # steeringArray.append(brKps.size ** 2 * 0.2)
                     else:
@@ -168,7 +168,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                         steeringReason += "green pillar "
                         # steeringArray.append(-bgKps.size ** 2 * 0.2)
                 else:
-                    pillarSteering = -(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size - reducedSteering) * (brKps.size - 3) ** 2 * 0.017
+                    pillarSteering = -(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size - reducedSteering) * (brKps.size - 3) ** 2 * 0.02
                     steeringReason += "red pillar "
                     # steeringArray.append(brKps.size ** 2 * 0.2)
             elif bgKps != 0:
@@ -323,7 +323,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                 if wallHeights[i] > 15:
                     steering = 15
                     if i <= 3:
-                        steering += 3 * (4 - i)
+                        steering += 4 * (4 - i)
                     steering += (wallHeights[i] - 12) * 2
                     leftSteering += steering
             elif wallLabels[i] == CENTER:
@@ -335,7 +335,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                 if wallHeights[i] > 15:
                     steering = 15
                     if i >= 4:
-                        steering += 3 * (i - 3)
+                        steering += 4 * (i - 3)
                     steering += (wallHeights[i] - 12) * 2
                     rightSteering -= steering
         
@@ -360,9 +360,13 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         # BLU #
         
         print(numpy.count_nonzero(bImg[wallStart:]))
-        if numpy.count_nonzero(bImg[wallStart:]) > 500 and turnCooldown <= 0:
+        if numpy.count_nonzero(bImg[wallStart:]) >= 180 and turnCooldown <= 60 and turnsMade == 12:
             turnsMade += 1
-            turnCooldown = 180
+            turnCooldown = 140
+            print(turnsMade)
+        elif numpy.count_nonzero(bImg[wallStart:]) > 500 and turnCooldown <= 0:
+            turnsMade += 1
+            turnCooldown = 140
             print(turnsMade)
 
         turnCooldown -= 1

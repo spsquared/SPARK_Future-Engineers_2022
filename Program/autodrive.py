@@ -40,7 +40,7 @@ def main():
             print('stopped by 3 laps')
             exit(0)
         server.addListener('stop', stop)
-        drive.throttle(50)
+        drive.throttle(60)
         while running:
             image = camera.read()
             prediction = filter.predict(image,server, infinite)
