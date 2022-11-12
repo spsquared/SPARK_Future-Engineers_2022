@@ -45,7 +45,7 @@ def main():
             drive.throttle(__forward+__backward)
             drive.steer(__left+__right)
         def joystick(data):
-            __forward = max(min(data['throttle'], 70), 0)
+            __forward = max(data['throttle'], 0)
             __backward = min(data['throttle'], 0)
             __left = min(data['steering'], 0)
             __right = max(data['steering'], 0)

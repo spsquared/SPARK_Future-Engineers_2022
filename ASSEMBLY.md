@@ -56,10 +56,11 @@ On the output of the 7.4V regulator, solder two single-pin headers. Now, attach 
 
 *This part of the instructions assumes that you have a dupont connector crimping set*
 
-Crimp connectors for servo power and PWM. Use 10cm lengths of 20-24 gauge wire.
+Crimp connectors for servo power and PWM. Use 10cm lengths of 20-24 gauge wire. The servo connector should have a 3-pin male connector with 3 1-pin female connectors. The ESC connector has one male connector in a 3-pin connector and one female connector.
 
+If using LED indicators, identify the positive terminal on each of your red, green, and blue 5V LEDs.
 
-![indicators, jumpers, and a button](./Documentation/img/build-3.jpg)
+![indicators, connectors, and a button](./Documentation/img/build-3.jpg)
 
 crimp indicators, button, jumpers, optional wifi stuff
 

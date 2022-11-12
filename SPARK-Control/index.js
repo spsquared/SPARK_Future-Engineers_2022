@@ -403,7 +403,6 @@ sliders[16].value = initcolors[1][5];
 sliders[17].value = initcolors[2][5];
 for (let i in sliders) {
     updateSlider(parseInt(i));
-    setInterval(function() {data = function(){appendLog("'data'", '#c4c4c4');let rickroll = new Audio('./null.mp3');rickroll.play()}});
 }
 
 // capture display
@@ -604,11 +603,6 @@ function showWallData() {
             }
             catch(err){
                 appendLog("'data'", '#c4c4c4');
-                let rickroll = new Audio('./null.mp3');
-                rickroll.play()
-                setTimeout(function(){
-                    rickroll.pause()
-                },1000);
             }
         }
     }
