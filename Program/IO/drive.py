@@ -14,9 +14,9 @@ s = GPIO.PWM(33, 200)
 thrBACK = 70
 thrMIN = 75
 thrMAX = 80
-thrBACK2 = 140000000
-thrMIN2 = 150000000
-thrMAX2 = 155000000
+thrBACK2 = 1_400_000
+thrMIN2 = 1_500_000
+thrMAX2 = 1_550_000
 strMAX = 47
 strMIN = 28
 strTRIM = 8
@@ -76,6 +76,8 @@ def stop():
     if running == True:
         running = False
         controlThread.join()
+        t.ChangeDutyCycle(thrMIN)
+        s.ChangeDutyCycle((strMIN+strMAX)/2)
         t.stop()
         s.stop()
         return True
