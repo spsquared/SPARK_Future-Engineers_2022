@@ -56,15 +56,15 @@ On the output of the 7.4V regulator, solder two single-pin headers. Now, attach 
 
 *This part of the instructions assumes that you have a dupont connector crimping set*
 
-Crimp connectors for servo power and PWM. Use 10cm lengths of 20-24 gauge wire. The servo connector should have a 3-pin male connector with 3 1-pin female connectors. The ESC connector has one male connector in a 3-pin connector and one female connector.
+**Use the diagram in the image below for pin information.**
 
-If using LED indicators, identify the positive terminal on each of your red, green, and blue 5V LEDs.
+Crimp 10cm lengths of 20-24 gauge wire to create the servo and ESC connectors. Make sure that the wires are inserted into the connectors in the right order.
+
+Identify the positive and negative terminals of your LEDs if using them. Note that LED indicators are used and will be helpful. Crimp two wires for the negative terminal (-) of the red and green LEDs. Note that the blue power LED has a separate negative wire that leads to a two-pin connector separate from the three-pin connector for the other two, but still goes into the 8-pin connector on the LED end. Again, make sure the wires are in the correct order. Plug the LEDs directly into the 8-pin connector, ensuring correct polarity.
+
+The button must be soldered. The polarity doesn't matter, since it is a simple switch.
 
 ![indicators, connectors, and a button](./Documentation/img/build-3.jpg)
-
-crimp indicators, button, jumpers, optional wifi stuff
-
-ensure that power, ground, and PWM wires are labeled
 
 ## Jetson NANO
 
