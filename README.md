@@ -10,7 +10,9 @@
 
 Located below is the documentation, and a link to the build instructions.
 
-## Contents
+***
+
+# Contents
 * [Hardware Overview](#the-hardware)
     * [Parts List](#parts-list)
     * [Assembly Instructions](#assembly)
@@ -31,7 +33,7 @@ Located below is the documentation, and a link to the build instructions.
 
 # **The Hardware**
 
-### Parts List
+## Parts List
 * [Schumacher Atom 2 S2 1/12 GT12 Competition Pan Car Kit](https://www.amainhobbies.com/schumacher-atom-2-s2-1-12-gt12-competition-pan-car-kit-schk179/p1055346)
 * [HobbyWing QUICRUN 10BL60 Brushless ESC Sensored](https://www.hobbywingdirect.com/products/quicrun-10-sensored)
 * [Fantom ICON V2 Torque Edition - Sensored Brushless Motor 25.5T](https://fantomracing.com/shop/motors/spec-motors/25-5-icon-torque-works-edition/)
@@ -66,8 +68,7 @@ Located below is the documentation, and a link to the build instructions.
 * [Camera Mount](https://github.com/definitely-nobody-is-here/SPARK_Future-Engineers_2022/raw/master/Documentation/CAD/SPARK2022_cameramount.stl)
 * [Rear Wheel Rim](https://github.com/definitely-nobody-is-here/SPARK_Future-Engineers_2022/raw/master/Documentation/CAD/SPARK2022_rearwheelrim.stl) (if not using Xceed rear tires)
 <!-- * [Camera LED Clip](https://github.com/definitely-nobody-is-here/SPARK_Future-Engineers_2022/raw/master/Documentation/CAD/SPARK2022_cameraLEDmount.stl) -->
-
-### Assembly
+## Assembly
 
 We followed the instructions for the Atom 2 pan car kit, and then added the platform, wheels, and electronics. The ESC is VHB taped to the metal chassis, and the motor is mounted with the 12 tooth pinion gear. We swapped the stock 64 tooth spur gear to a new 78 tooth spur gear to lower our speed and give slightly more torque. The wires going to the voltage regulators can be soldered directly into the XT-60 connector with the ESC power leads. The voltage regulators and voltage meter can be screwed into standoffs with nylon screws on the upper platform.
 
@@ -78,8 +79,7 @@ The top platform is mounted onto existing locations on the car. In the rear two 
 The camera and LEDs are mounted on top of standoffs extending the top of front wheel plate.
 
 #### **For a detailed build guide, go to [ASSEMBLY.md](./ASSEMBLY.md)**
-
-### Electromechanical Diagram
+## Electromechanical Diagram
 
 Here is a simple electromechanical schematic for how the electronics are wired:
 
@@ -87,10 +87,10 @@ Here is a simple electromechanical schematic for how the electronics are wired:
 
 ***
 
-### Photos
+## Photos
 | | |
 | ------------------------- | --------------------------- |
-| ![front](./Documentation/img/front.png) | ![back](./Documentation/img/rear.png)     |
+| ![front](./Documentation/img/front.png) | ![back](./Documentation/img/back.png)     |
 | ![left](./Documentation/img/left.png)   | ![right](./Documentation/img/right.png)   |
 | ![top](./Documentation/img/top.png)     | ![bottom](./Documentation/img/bottom.png) |
 

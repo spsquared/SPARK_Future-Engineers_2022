@@ -23,10 +23,12 @@ strTRIM = 8
 # throttle feathering
 # thrFeaFREQ = 10
 # thrFeaDiv = 20
+# control variables
 targetThrottle = 0
 targetSteering = 0
 currThrottle = 0
 currSteering = 0
+steerSpeed = 0.3
 # control loop
 tickrate = 200
 running = False
@@ -42,7 +44,7 @@ def start():
         def loop():
             try:
                 # global running, t, s, currThrottle, currSteering, targetThrottle, targetSteering, thrFeaFREQ, thrFeaDiv, tickrate
-                global running, t, s, currThrottle, currSteering, targetThrottle, targetSteering, tickrate
+                global running, t, s, currThrottle, currSteering, targetThrottle, targetSteering, steerSpeed, tickrate
                 # timer = 0
                 while running:
                     start = time.time()
@@ -53,7 +55,7 @@ def start():
                     # elif targetThrottle < -10 or thrFeaACT >= 1: currThrottle = targetThrottle
                     # else: currThrottle = 0
                     currThrottle = targetThrottle
-                    currSteering = targetSteering*0.3 + currSteering*0.7
+                    currSteering = targetSteering*steerSpeed + currSteering*(1-steerSpeed)
                     # apply throttle and steering
                     if (currThrottle < 0): t.ChangeDutyCycle((currThrottle/100)*(thrMIN-thrBACK)+thrMIN)
                     else: t.ChangeDutyCycle((currThrottle/100)*(thrMAX-thrMIN)+thrMIN)
