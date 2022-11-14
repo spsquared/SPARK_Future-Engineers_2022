@@ -735,6 +735,7 @@ setInterval(() => {
         if (righting) displayFront();
     }
 }, 10);
+document.getElementById('displayBlock').onfullscreenchange = displayChange;
 
 // stop
 document.getElementById('emergencyStop').onclick = function() {

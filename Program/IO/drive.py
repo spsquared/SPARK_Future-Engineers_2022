@@ -1,12 +1,13 @@
 import Jetson.GPIO as GPIO
 from threading import Thread
 from IO import io
-import math
 import time
 
 # drive module for controlling throttle and steering output
 
 # setup
+if not io.isRunning():
+    raise Exception('ERROR: SETUP HAS DETECTED THAT SETUP IS CURRENTLY RUNNING. PLEASE CLOSE SETUP TO CONTINUE')
 t = GPIO.PWM(32, 500)
 s = GPIO.PWM(33, 200)
 
