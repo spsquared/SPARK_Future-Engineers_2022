@@ -8,7 +8,33 @@
 
 # **Build Guide**
 
-This is the build guide for our 2022 WRO Future Engineers design - Spark Plugs. It is segmented into 11 main steps, with more detailed steps within. It assumes you have necessary tools and miscellaneous materials including but not limited to: M2.5, M3 driver bits, 
+This is the build guide for our 2022 WRO Future Engineers design - Spark Plugs. It is segmented into 11 main steps, with more detailed steps within. It assumes you have necessary tools and miscellaneous materials including but not limited to: M2.5, M3 driver bits; a Dupont connector crimpange kit; a 3D printer; a soldering iron; 20-24 gauge wire; and M2.5, M3 flat/countersunk screws.
+
+Below is a list of all steps.
+
+***
+
+# Contents
+
+* [Print Parts](#print-parts)
+* [Assemble Chassis](#assemble-chassis-kit)
+* [ESC, Servo, & Motor](#attach-servo-esc-and-motor)
+* [Soldering Electricals](#solder-electrical-components)
+    * [Battery Connectors & Voltage Regulator Inputs](#battery-connectors--voltage-regulator-inputs)
+    * [Adjusting Voltage Regulators](#adjusting-voltage-regulators)
+    * [Voltage Regulator Outputs](#voltage-regulator-outputs)
+* [Wiring](#wiring)
+* [Jetson NANO Setup](#jetson-nano-setup)
+    * [Board Setup, SSHFS, Static IP](#board-setup-sshfs--static-ip)
+    * [Enable GPIO & PWM](#enable-gpio-and-pwm)
+    * [Remove GUI, Autologin, & Run-on-startup](#text-only-auto-login--run-on-startup)
+    * [Fan (optional)](#optional-fan)
+* [Standoffs](#platform-standoffs)
+* [Platform Assembly](#top-platform-assembly)
+* [Camera](#camera-setup)
+* [Final Assembly](#plugging-it-all-in)
+
+***
 
 ## Print Parts
 
@@ -16,7 +42,7 @@ Before starting assembly, be sure to 3D print all of the 3D-printed parts below:
 * [Platform](https://github.com/definitely-nobody-is-here/SPARK_Future-Engineers_2022/raw/master/Documentation/CAD/SPARK2022_platform.stl)
 * [Camera Mount](https://github.com/definitely-nobody-is-here/SPARK_Future-Engineers_2022/raw/master/Documentation/CAD/SPARK2022_cameramount.stl)
 * [Camera LED Clip](https://github.com/definitely-nobody-is-here/SPARK_Future-Engineers_2022/raw/master/Documentation/CAD/SPARK2022_cameraLEDmount.stl)
-* [Rear Wheel Rim](https://github.com/definitely-nobody-is-here/SPARK_Future-Engineers_2022/raw/master/Documentation/CAD/SPARK2022_rearwheelrim.stl) (if using the 1 in rubber tires)
+* [Rear Wheel Rim](https://github.com/definitely-nobody-is-here/SPARK_Future-Engineers_2022/raw/master/Documentation/CAD/SPARK2022_rearwheelrim.stl)
 
 You can start building while these are printing.
 
@@ -32,7 +58,7 @@ At this point, the car should look like the car on the box, except without wheel
 
 Take the rear rims and fit the tires onto them. Instructions to attaching wheels are in the kit's instruction packet; follow those to secure the wheels.
 
-## Attach Servo, ESC, and Motor
+## Attach Servo, ESC, & Motor
 
 Use the two included screws in the kit to mount the [Fantom ICON sensored brushless motor](https://fantomracing.com/shop/motors/spec-motors/25-5-icon-torque-works-edition/) to the motor bracket. Then, align the [12-tooth pinion gear](https://www.amazon.com/Traxxas-PINION-PITCH-SCREW-2428/dp/B00EFXMUO2) on the motor shaft and turn the set screw to lock it in place. The servo is placed in the servo bracket (specifics are included in the kit instructions). DO NOT tighten the servo horn to the gear yet, as it must first be centered in order for steering to work. The [HobbyWing Q10BL60 ESC](https://www.hobbywingdirect.com/products/quicrun-10-sensored) can be attached to the forward section using the VHB tape included with it. Make sure to solder the wires in the correct order, or the motor may not rotate. The capacitors for the ESC can be double-sided taped to the forward section as well.
 
@@ -42,11 +68,15 @@ Use the two included screws in the kit to mount the [Fantom ICON sensored brushl
 
 ## Solder Electrical Components
 
-#### Connectors and Voltage Regulator Adjusting
+### Battery Connectors & Voltage Regulator Inputs
 
-On the ends of the power leads of the ESC, solder a female XT60 connector and four 20-gauge wires - two on power and two on ground. Make sure it's polarized the same way as the batteries or you risk breaking things. Solder the 20-gauge wires to the inputs of the two [voltage regulators](https://www.amazon.com/Regulator-Adjustable-Converter-Electronic-Stabilizer/dp/B07PDGG84B/ref=sr_1_18). **Ensure that the polarity is correct while soldering.** Power the regulators by plugging a battery in to the XT60 connector, and change the output voltage of the regulators to 7.4V and 5V. For more information see [this guide by Robottronic](https://www.instructables.com/How-to-Use-DC-to-DC-Buck-Converter-LM2596/).
+On the ends of the power leads of the ESC, solder a female XT60 connector and four 20-gauge wires - two on power and two on ground. Make sure it's polarized the same way as the batteries or you risk breaking things. Solder the 20-gauge wires to the inputs of the two [voltage regulators](https://www.amazon.com/Regulator-Adjustable-Converter-Electronic-Stabilizer/dp/B07PDGG84B/ref=sr_1_18). **Ensure that the polarity is correct while soldering.**
 
-## Voltage Regulators
+### Adjusting Voltage Regulators
+
+Power the regulators by plugging a battery in to the XT60 connector, and change the output voltage of the regulators to 7.4V and 5V. For more information see [this guide by Robottronic](https://www.instructables.com/How-to-Use-DC-to-DC-Buck-Converter-LM2596/).
+
+### Voltage Regulator Outputs
 
 On the output of the 7.4V regulator, solder two single-pin headers. Now, attach the [digital voltometer](https://www.amazon.com/bayite-Digital-Voltmeter-Display-Motorcycle/dp/B00YALUXH0/). On the input, solder the ground wire (black) to the negative terminal, and the power and source wires (red and white) to the positive terminal. On the output of the 5V regulator, solder the [DC barrel jack](https://www.amazon.com/Pigtails-Female-Connector-Pigtail-Security/dp/B08PYWN3T7/) (again, making sure that the polarity is correct). The 7.4V regulator outputs should have two male Dupont connectors soldered to them, facing upwards. This is to make plugging the servos in easier.
 
@@ -56,19 +86,19 @@ On the output of the 7.4V regulator, solder two single-pin headers. Now, attach 
 
 *This part of the instructions assumes that you have a dupont connector crimping set*
 
-Crimp connectors for servo power and PWM. Use 10cm lengths of 20-24 gauge wire. The servo connector should have a 3-pin male connector with 3 1-pin female connectors. The ESC connector has one male connector in a 3-pin connector and one female connector.
+**Use the diagram in the image below for pin information.**
 
-If using LED indicators, identify the positive terminal on each of your red, green, and blue 5V LEDs.
+Crimp 10cm lengths of 20-24 gauge wire to create the servo and ESC connectors. Make sure that the wires are inserted into the connectors in the right order.
+
+Identify the positive and negative terminals of your LEDs if using them. Note that LED indicators are used and will be helpful. Crimp two wires for the negative terminal (-) of the red and green LEDs. Note that the blue power LED has a separate negative wire that leads to a two-pin connector separate from the three-pin connector for the other two, but still goes into the 8-pin connector on the LED end. Again, make sure the wires are in the correct order. Plug the LEDs directly into the 8-pin connector, ensuring correct polarity.
+
+The button must be soldered. The polarity doesn't matter, since it is a simple switch.
 
 ![indicators, connectors, and a button](./Documentation/img/build-3.jpg)
 
-crimp indicators, button, jumpers, optional wifi stuff
+## Jetson NANO Setup
 
-ensure that power, ground, and PWM wires are labeled
-
-## Jetson NANO
-
-### Board Setup, SSHFS, and Static IP
+### Board Setup, SSHFS, & Static IP
 
 Visit [Yahboom](http://www.yahboom.net/)'s [setup and tutorial repository](http://www.yahboom.net/study/jetson-nano) to begin setting up the [Jetson NANO 4GB](https://category.yahboom.net/collections/jetson/products/jetson-nano-sub). Follow steps 1.1-1.7 in "Development setup > SUB Version".
 
@@ -99,7 +129,7 @@ sudo /opt/nvidia/jetson-io/jetson-io.py
 
 Go down to "Configure 40-pin expansion header" and enter that submenu. Find `pwm0` and `pwm`, and enable them by selecting them and pressing "Enter". Now exit the tool. GPIO and PWM have been enabled.
 
-### Text-Only, Auto-Login, and Run on Startup
+### Text-Only, Auto-Login, & Run on Startup
 
 Switch the Jetson NANO to text-only mode (gui is almost useless for this application and only causes unneccesary slowness).
 

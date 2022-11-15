@@ -12,15 +12,21 @@ def main():
     global running
     try:
         infinite = False
+        wait = False
         for i, arg in enumerate(sys.argv):
             if i != 0:
                 if arg == 'infinite':
                     infinite = True
+                if arg == 'wait_for_button':
+                    wait = True
         if infinite:
             print('PROGRAM RUNNING IN INFINITE MODE!')
         drive.start()
         camera.start()
-        time.sleep(1)
+        if wait:
+            io.waitForButton()
+        else:
+            time.sleep(1)
         def stop(data):
             global running
             running = False

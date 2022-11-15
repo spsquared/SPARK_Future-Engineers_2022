@@ -1,12 +1,13 @@
 import Jetson.GPIO as GPIO
 from threading import Thread
 from IO import io
-import math
 import time
 
 # drive module for controlling throttle and steering output
 
 # setup
+if not io.isRunning():
+    raise Exception('ERROR: SETUP HAS DETECTED THAT SETUP IS CURRENTLY RUNNING. PLEASE CLOSE SETUP TO CONTINUE')
 t = GPIO.PWM(32, 500)
 s = GPIO.PWM(33, 200)
 
@@ -14,19 +15,21 @@ s = GPIO.PWM(33, 200)
 thrBACK = 70
 thrMIN = 75
 thrMAX = 80
-thrBACK2 = 140000000
-thrMIN2 = 150000000
-thrMAX2 = 155000000
+thrBACK2 = 1_400_000
+thrMIN2 = 1_500_000
+thrMAX2 = 1_550_000
 strMAX = 47
 strMIN = 28
 strTRIM = 8
 # throttle feathering
 # thrFeaFREQ = 10
 # thrFeaDiv = 20
+# control variables
 targetThrottle = 0
 targetSteering = 0
 currThrottle = 0
 currSteering = 0
+steerSpeed = 0.3
 # control loop
 tickrate = 200
 running = False
@@ -42,7 +45,7 @@ def start():
         def loop():
             try:
                 # global running, t, s, currThrottle, currSteering, targetThrottle, targetSteering, thrFeaFREQ, thrFeaDiv, tickrate
-                global running, t, s, currThrottle, currSteering, targetThrottle, targetSteering, tickrate
+                global running, t, s, currThrottle, currSteering, targetThrottle, targetSteering, steerSpeed, tickrate
                 # timer = 0
                 while running:
                     start = time.time()
@@ -53,7 +56,7 @@ def start():
                     # elif targetThrottle < -10 or thrFeaACT >= 1: currThrottle = targetThrottle
                     # else: currThrottle = 0
                     currThrottle = targetThrottle
-                    currSteering = targetSteering*0.3 + currSteering*0.7
+                    currSteering = targetSteering*steerSpeed + currSteering*(1-steerSpeed)
                     # apply throttle and steering
                     if (currThrottle < 0): t.ChangeDutyCycle((currThrottle/100)*(thrMIN-thrBACK)+thrMIN)
                     else: t.ChangeDutyCycle((currThrottle/100)*(thrMAX-thrMIN)+thrMIN)
@@ -76,6 +79,8 @@ def stop():
     if running == True:
         running = False
         controlThread.join()
+        t.ChangeDutyCycle(thrMIN)
+        s.ChangeDutyCycle((strMIN+strMAX)/2)
         t.stop()
         s.stop()
         return True

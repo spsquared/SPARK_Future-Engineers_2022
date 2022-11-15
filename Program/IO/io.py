@@ -12,15 +12,15 @@ def setup():
         running = True
         fd = open('./../lock.txt', 'w+')
         if fd.read() == '1':
-            print('ERROR: SETUP HAS DETECTED THAT SETUP IS CURRENTLY RUNNING. PLEASE CLOSE SETUP TO CONTINUE')
             error()
-            exit(1)
+            raise Exception('ERROR: SETUP HAS DETECTED THAT SETUP IS CURRENTLY RUNNING. PLEASE CLOSE SETUP TO CONTINUE')
         fd.write('1')
         fd.close()
         GPIO.setwarnings(False)
         GPIO.cleanup()
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup([11, 13, 32, 33], GPIO.OUT)
+        GPIO.setup(18, GPIO.IN)
         GPIO.output([11, 13], GPIO.LOW)
         # IO active indicator
         def blink():
@@ -51,6 +51,14 @@ def close():
         GPIO.cleanup()
         return True
     return False
+
+def isRunning():
+    fd = open('./../lock.txt', 'w+')
+    return fd.read() == '1'
+
+# button wait
+def waitForButton():
+    GPIO.wait_for_edge(18, GPIO.RISING)
 
 # error indicator
 errorRunning = False

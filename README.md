@@ -6,9 +6,34 @@
 
 ***
 
+**Official GitHub repository for WRO USA team SPARK Future Engineers 2022. All code, documentation, and files are located here.**
+
+Located below is the documentation, and a link to the build instructions.
+
+***
+
+# Contents
+* [Hardware Overview](#the-hardware)
+    * [Parts List](#parts-list)
+    * [Assembly Instructions](#assembly)
+    * [Electromechanical Diagram](#electromechanical-diagram)
+    * [Photos](#photos)
+* [Software Overview](#the-software)
+    * [Operating System](#operating-system)
+    * [Programming Language](#programming-language)
+    * [IO](#io)
+    * [Image Processing and Predictions](#image-predictions)
+        * [subtopic](#nonexistent)
+    * [SPARK Control Panel](#spark-control)
+* [Team Photos](#team-photos)
+* [Demonstration Video](#demonstration-video)
+* [LiPo Battery Safety Notice](#lipo-battery-safety-notice)
+
+***
+
 # **The Hardware**
 
-### Parts List
+## Parts List
 * [Schumacher Atom 2 S2 1/12 GT12 Competition Pan Car Kit](https://www.amainhobbies.com/schumacher-atom-2-s2-1-12-gt12-competition-pan-car-kit-schk179/p1055346)
 * [HobbyWing QUICRUN 10BL60 Brushless ESC Sensored](https://www.hobbywingdirect.com/products/quicrun-10-sensored)
 * [Fantom ICON V2 Torque Edition - Sensored Brushless Motor 25.5T](https://fantomracing.com/shop/motors/spec-motors/25-5-icon-torque-works-edition/)
@@ -43,8 +68,7 @@
 * [Camera Mount](https://github.com/definitely-nobody-is-here/SPARK_Future-Engineers_2022/raw/master/Documentation/CAD/SPARK2022_cameramount.stl)
 * [Rear Wheel Rim](https://github.com/definitely-nobody-is-here/SPARK_Future-Engineers_2022/raw/master/Documentation/CAD/SPARK2022_rearwheelrim.stl) (if not using Xceed rear tires)
 <!-- * [Camera LED Clip](https://github.com/definitely-nobody-is-here/SPARK_Future-Engineers_2022/raw/master/Documentation/CAD/SPARK2022_cameraLEDmount.stl) -->
-
-### Assembly
+## Assembly
 
 We followed the instructions for the Atom 2 pan car kit, and then added the platform, wheels, and electronics. The ESC is VHB taped to the metal chassis, and the motor is mounted with the 12 tooth pinion gear. We swapped the stock 64 tooth spur gear to a new 78 tooth spur gear to lower our speed and give slightly more torque. The wires going to the voltage regulators can be soldered directly into the XT-60 connector with the ESC power leads. The voltage regulators and voltage meter can be screwed into standoffs with nylon screws on the upper platform.
 
@@ -55,21 +79,18 @@ The top platform is mounted onto existing locations on the car. In the rear two 
 The camera and LEDs are mounted on top of standoffs extending the top of front wheel plate.
 
 #### **For a detailed build guide, go to [ASSEMBLY.md](./ASSEMBLY.md)**
-
-### Electromechanical Diagram
+## Electromechanical Diagram
 
 Here is a simple electromechanical schematic for how the electronics are wired:
-
-# **OUTDATED**
 
 ![Schematic](./Documentation/Schematic/schematic.png)
 
 ***
 
-### 6 (perspective) Views (outdated)
+## Photos
 | | |
 | ------------------------- | --------------------------- |
-| ![front](./Documentation/img/front.png) | ![back](./Documentation/img/rear.png)     |
+| ![front](./Documentation/img/front.png) | ![back](./Documentation/img/back.png)     |
 | ![left](./Documentation/img/left.png)   | ![right](./Documentation/img/right.png)   |
 | ![top](./Documentation/img/top.png)     | ![bottom](./Documentation/img/bottom.png) |
 
@@ -79,18 +100,18 @@ Here is a simple electromechanical schematic for how the electronics are wired:
 
 ## **Operating System**
 
-We used Jetson Nano's operating system, which is Ubuntu 18.04. We switched it to text-only mode since we encountered errors that prevented booting in GUI mode. We also added a startup script ([see Notes.md](./Notebook/Notes.md)) to run the program on startup, and it waits for two pins to be shorted. We're not sure if it's reliable yet.
+We used Jetson Nano's operating system, which is Ubuntu 18.04. It has been changed to text-only mode to remove the unneccesary GUI. We also added a startup script ([see "Board Setup" in Assembly.md](./ASSEMBLY.md#board-setup-sshfs-and-static-ip)) to run the program on startup, which waits for a button press before running the program.
 
 ## **Programming Language**
 
-All our code is in python (except the SPARK Control Panel and SPARK Randomizer, as those are HTML/JS/CSS pages that don't get uploaded or used for actual runs). We use `os`, `time`, `threading`, `numpy`, `cv2`, `base64`, `threading`, `asyncio`, `Jetson.GPIO`, `jetcam`, `json`, `websockets`.
+All our code is in python (except the SPARK Control Panel and SPARK Randomizer, those are HTML/JS/CSS documents that aren't uploaded or used in runs). We use `os`, `time`, `threading`, `numpy`, `cv2`, `base64`, `threading`, `asyncio`, `Jetson.GPIO`, `jetcam`, `json`, `websockets`.
 
 The **entire** `Program` directory must be uploaded in order for the program to run.
 
 ## **IO**
 The camera is handled by the `jetcam` library, which we can read the most recent frame into a `numpy` array, which we then process.
 
-The drivetrain of the car is handled separately by the controller in the servo and the ESC. We can feed two PWM signals of specific pulse widths to them to control their speed/angle. However, speed control is not as straightforwards as steering control. The ESC was designed for RC hobby use, so it has a "dead zone" in the forwards throttle range of 6%. Since we are running the motor way below its rated speed, the 6% dead zone actually takes up our entire desired throttle range, making the minimum speed too high to be usable. To solve this, we can "feather" the throttle, which is actually just another PWM on the PWM. After implementing and tuning this, we can go much slower.
+The drivetrain of the car is handled separately by the controller in the servo and the ESC. We feed them a pulse of a specific width (time) to control their speed/angle. However, due to a software limitation in the `Jetson.GPIO` library, we only jave 5 throttle steps, meaning we don't have as fine throttle control as desired. This can possibly be fixed with a solution that could be described as "hacky", however we haven't tried it.
 
 ***
 
@@ -121,9 +142,9 @@ Finally, it takes the sum of the pillar steering and wall steering and returns i
 ***
 
 ## **SPARK Control**
-SPARK Control is our own debugging and testing software. It consists of a WebSocket server running on the car, and a local HTML page on our computers. The page uses a WebSocket connection to communicate with the server on the car. The server can broadcast and recieve data in the form of JSON strings, which allows for the differentiation of events and complex data transfers. The system is modular and is simple to use. As long as the data can be converted to JSON, it can be sent. Broadcasting is as simple as specifying an event name and some data to be sent. To recieve messages, add an event listener, which is a function that is run when the specified event is recieved.
+SPARK Control is our own testing and debugging software. It consists of a WebSocket server running on the Jetson NANO, and a local HTML document on our computers. The page uses a WebSocket connection to communicate with the server. The server can broadcast and recieve data in the form of JSON strings, which allows for the differentiation of events and more complex data transfers. The system is modular and is simple to use. As long as the data can be converted to JSON, it can be sent. Broadcasting is as simple as specifying an event name and some data to be sent. To recieve messages, it is possible to add an event listener, which is a function that is run when the specified event is recieved.
 
-The client control panel consists of a log - which can be appended to by sending a `message` event and some text; filter tuning sliders for changing the ranges of the image filter; capture buttons to save and preview images; and a data display to view what's happening inside the programs running on the car, which will be explained later. The data display can show raw and filtered image streams from the car's camera, visualize the detected blobs and wall heights, and output various bits of data used within the code. By default, the last 500 frames of data are saved in history and can be replayed for debugging.
+The client control panel consists of a log, which is appended to by the `message` event; filter tuning sliders for changing the ranges of the image preprocessor; capture buttons to save and stream raw and filtered images, and the ability to control the vehicle when running in manual drive mode. The data display can show raw and filtered image streams from the car's camera, visualize the detected blobs and wall heights, and display output data from the code. By default, the last 500 frames of data are saved in history and can be replayed for debugging.
 <div align=center>
 
 ![SPARK Control Panel](./Documentation/img/SPARK_Control.png)
@@ -139,11 +160,15 @@ The client control panel consists of a log - which can be appended to by sending
 
 ***
 
-# **Demonstration Videos (YouTube)**
+# **Demonstration Video**
 
-[WRO 3 laps with pillars](https://youtu.be/0uMp_ExglOw)
+[Demo video: Display video](https://youtu.be/4ExFMHKP9r8)
 
-[WRO 3 laps without pillars](https://youtu.be/Jp8k1qW5pQU)
+[Demo video: No traffic signals, normal walls](https://youtu.be/QAQedR-BHWs)
+
+[Demo video: No traffic signals, extended walls](https://youtu.be/rsylY0rOz3Y)
+
+[Demo video: With traffic signals](https://youtu.be/jMQYSYyJUZc)
 
 # LiPo Battery Safety Notice
 
