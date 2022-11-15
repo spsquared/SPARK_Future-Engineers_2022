@@ -40,12 +40,12 @@ def main():
             print('stopped by 3 laps')
             exit(0)
         server.addListener('stop', stop)
-        drive.throttle(60)
+        drive.throttle(50)
         while running:
             image = camera.read()
             prediction = filter.predict(image,server, infinite)
             if prediction == "stop":
-                drive.throttle(-10)
+                drive.throttle(-100)
                 time.sleep(0.2)
                 stop2(1)
                 break
