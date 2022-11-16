@@ -122,21 +122,21 @@ The drivetrain of the car is handled separately by the controller in the servo a
 
 All the code for image filtering and predictions can be found in `/Program/AI/filter.py`.
 
-The filter function takes in a raw image and outputs a filtered image. This image is filtered based on 4 HSV values, `redMax`, `redMin`, `greenMin`, `greenMax`. Using `cv2.cvtColor`, we can convert the RGB image captured by the camera to a HSV image, and using `cv2.inRange`, we can filter the image based on these values, to get a mask of the pillars. There used to be another pass to filter in the walls, but that was phased out in favor of a new method. This method is unreliable in spaces with dark areas and places with a lot of glare. Instead, after using `cv2.cvtColor` to turn the image into a grayscale image, `cv2.GaussianBlur` to blur the image, we use `cv2.Canny` to get a black and white image highlighting edges.
+The filter function takes in a raw image and outputs a filtered image. This image is filtered based on 6 HSV values, `redMax`, `redMin`, `greenMin`, `greenMax`, `blueMin`, `blueMax`. Using `cv2.cvtColor`, we can convert the RGB image captured by the camera to a HSV image. HSV stands for hue, saturation, value. Using `cv2.inRange`, we can filter the image based on these values, to get a mask of the pillars. The blue mask is used to detect the blue lines on the ground. There used to be another pass to filter in the walls, but that was phased out in favor of a new method. This method is unreliable in spaces with dark areas and places with a lot of glare. Instead, after using `cv2.cvtColor` to turn the image into a grayscale image, `cv2.GaussianBlur` to blur the image, we use `cv2.Canny` to get a black and white image highlighting edges.
 
-The predict function is where all the predictions happen. There are two sections to it, pillar steering and wall steering.
+The predict function is where all the predictions happen. There are three sections to it, pillar steering, wall steering, and turn detection.
 
 Pillar steering starts by creating a blob detector using `cv2.SimpleBlobDetector` and using `SimpleBlobDetector_Params` to set the parameters. Using the filtered red and green images, the blob detector detects blobs to filter out random noise in the image and get the relative position and relative size of the pillars. We have two equations, `getRedEquation` and `getGreenEquation`. These calculate if we will hit a pillar or not, and we use it on all the blobs detected by the blob detector. If there are pillars detected, we take the largest pillar. Using a combination of the size of the pillar and the location of the pillar, we calculate a steering value on which direction we should turn. This is stored in `pillarSteering`. The steering value is also written in `passedPillar`, as `passedPillar` is used when we pass a pillar to prevent the back wheels from hitting the pillar.
 
-Next we have wall steering. First we start by cropping out the top 77 pixels. Due to the way the camera is placed, it is exactly the same height as the wall, so no matter where the wall is, the top line is nearly constant, and is around 77 pixels. After this, we swap the axes to prepare for wall height detection. Using `numpy.argmax` we find the bottom of the wall. We split the image into 8 sections. Taking the differences, we can find the slope of each section, and catagorize the sections. If the slope is less than -0.2, it is catagorized as a left wall. If the slope is more than 0.2, it is catagorized as a right wall. Otherwise, it is catagorized as a center wall. The first two sections on the left side are always left walls and the first two sections on the right side are always right walls. If there is a sudden jump in the height of the wall, we know the higher wall cannot be a center wall, and must either be a left wall or a right wall.
+Next we have wall steering. First we start by cropping out the top 79 pixels. Due to the way the camera is placed, it is exactly the same height as the wall, so no matter where the wall is, the top line is nearly constant, and is around 79 pixels. After this, we swap the axes to prepare for wall height detection. Using `numpy.argmax` we find the bottom of the wall. We split the image into 8 sections. Taking the differences, we can find the slope of each section, and catagorize the sections. If the slope is less than -0.2, it is catagorized as a left wall. If the slope is more than 0.2, it is catagorized as a right wall. Otherwise, it is catagorized as a center wall. The first two sections on the left side are always left walls and the first two sections on the right side are always right walls. If there is a sudden jump in the height of the wall, we know the higher wall cannot be a center wall, and must either be a left wall or a right wall.
 
 Now, we loop through all 8 wall sections. Based on the position and height of the wall, we calculate a steering value. At the end, we have 3 values, one for all the left walls, one for all the right walls, and one for all the center walls. We take the maximum.
 
-If the center wall is very tiny, the car knows it just turned and increases `turnsMade` by one, and if we have turned 12 times, or 3 laps, it returns "stop", causing the car to stop.
-
-We take the difference of the left wall height and the right wall height. This lets us know which direction we are turning. If we are turning counterclockwise, when the car is in the corner, it will detect a right wall but no left wall. Similiarly, if we are turning clockwise, when the car is in the corner, it will detect a left wall but no right wall.
+On the first frame, we look for a jump in either the left wall or the right wall. This tells us if we are driving clockwise or counterclockwise, as the side with the jump must have a gap in the wall.
 
 A negative steering value means we turn left, while a positive means turning right.
+
+Finally, we have turn detection. If there are more than 500 blue pixels on the screen we increase `turnsMade` by one, and if we have turned 12 times, or 3 laps, it returns "stop", causing the car to stop.
 
 After this, we send all this information to SPARK Control.
 
@@ -158,6 +158,12 @@ The client control panel consists of a log, which is appended to by the `message
 
 # Team Photos
 
+The one to the left is Jie Gao in 10th grade.
+
+The one to the right is Maitian Sha in 9th grade.
+
+We are both in West Windsor Plainsboro High School South.
+
 ![normal photo](./img/teamphoto.JPG)
 ![rick astley](./img/funnyteamphoto.JPG)
 
@@ -169,9 +175,13 @@ The client control panel consists of a log, which is appended to by the `message
 
 [Demo video: No traffic signals, normal walls](https://youtu.be/QAQedR-BHWs)
 
+[Demo video: No traffic signals, normal walls, video #2](https://youtu.be/lzBcYp8RJO0)
+
 [Demo video: No traffic signals, extended walls](https://youtu.be/rsylY0rOz3Y)
 
 [Demo video: With traffic signals](https://youtu.be/jMQYSYyJUZc)
+
+[Demo video: With traffic signals, video #2](https://youtu.be/7_S408GaNl4)
 
 # LiPo Battery Safety Notice
 
