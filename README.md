@@ -131,9 +131,9 @@ Now, we loop through all 8 wall sections. Based on the position and height of th
 
 On the first frame, we look for a jump in either the left wall or the right wall. This tells us if we are driving clockwise or counterclockwise, as the side with the jump must have a gap in the wall.
 
-If there are more than 500 blue pixels on the screen we increase `turnsMade` by one, and if we have turned 12 times, or 3 laps, it returns "stop", causing the car to stop.
-
 A negative steering value means we turn left, while a positive means turning right.
+
+Finally, we have turn detection. If there are more than 500 blue pixels on the screen we increase `turnsMade` by one, and if we have turned 12 times, or 3 laps, it returns "stop", causing the car to stop.
 
 After this, we send all this information to SPARK Control.
 
