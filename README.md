@@ -119,7 +119,7 @@ The drivetrain of the car is handled separately by the controller in the servo a
 
 All the code for image filtering and predictions can be found in `/Program/AI/filter.py`.
 
-The filter function takes in a raw image and outputs a filtered image. This image is filtered based on 6 HSV values, `redMax`, `redMin`, `greenMin`, `greenMax`, `blueMin`, `blueMax`. Using `cv2.cvtColor`, we can convert the RGB image captured by the camera to a HSV image, and using `cv2.inRange`, we can filter the image based on these values, to get a mask of the pillars. The blue mask is used to detect the blue lines on the ground. There used to be another pass to filter in the walls, but that was phased out in favor of a new method. This method is unreliable in spaces with dark areas and places with a lot of glare. Instead, after using `cv2.cvtColor` to turn the image into a grayscale image, `cv2.GaussianBlur` to blur the image, we use `cv2.Canny` to get a black and white image highlighting edges.
+The filter function takes in a raw image and outputs a filtered image. This image is filtered based on 6 HSV values, `redMax`, `redMin`, `greenMin`, `greenMax`, `blueMin`, `blueMax`. Using `cv2.cvtColor`, we can convert the RGB image captured by the camera to a HSV image. HSV stands for hue, saturation, value. Using `cv2.inRange`, we can filter the image based on these values, to get a mask of the pillars. The blue mask is used to detect the blue lines on the ground. There used to be another pass to filter in the walls, but that was phased out in favor of a new method. This method is unreliable in spaces with dark areas and places with a lot of glare. Instead, after using `cv2.cvtColor` to turn the image into a grayscale image, `cv2.GaussianBlur` to blur the image, we use `cv2.Canny` to get a black and white image highlighting edges.
 
 The predict function is where all the predictions happen. There are three sections to it, pillar steering, wall steering, and turn detection.
 
@@ -154,6 +154,12 @@ The client control panel consists of a log, which is appended to by the `message
 ***
 
 # Team Photos
+
+The one to the left is Jie Gao in 10th grade.
+
+The one to the right is Maitian Sha in 9th grade.
+
+We are both in West Windsor Plainsboro High School South.
 
 ![normal photo](./img/teamphoto.JPG)
 ![rick astley](./img/funnyteamphoto.JPG)
