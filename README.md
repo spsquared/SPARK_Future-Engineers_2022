@@ -164,11 +164,15 @@ The client control panel consists of a log, which is appended to by the `message
 
 [Demo video: Display video](https://youtu.be/4ExFMHKP9r8)
 
-[Demo video: No traffic signals, normal walls](https://youtu.be/QAQedR-BHWs, https://youtu.be/lzBcYp8RJO0)
+[Demo video: No traffic signals, normal walls](https://youtu.be/QAQedR-BHWs)
+
+[Demo video: No traffic signals, normal walls, video #2](https://youtu.be/lzBcYp8RJO0)
 
 [Demo video: No traffic signals, extended walls](https://youtu.be/rsylY0rOz3Y)
 
-[Demo video: With traffic signals](https://youtu.be/jMQYSYyJUZc, https://youtu.be/7_S408GaNl4)
+[Demo video: With traffic signals](https://youtu.be/jMQYSYyJUZc)
+
+[Demo video: With traffic signals, video #2](https://youtu.be/7_S408GaNl4)
 
 # LiPo Battery Safety Notice
 
