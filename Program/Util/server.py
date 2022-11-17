@@ -22,9 +22,13 @@ def broadcast(event: str, data: typing.Any):
     for arr in sendlist:
         arr.append(JSON.dumps({'event': event, 'data': data}))
 
-running = True
+running = False
 thread = None
 threadLoop = asyncio.new_event_loop()
+
+def open():
+    global running, thread, threadLoop
+    thread.start()
 
 def close():
     global running, thread, threadLoop
@@ -130,4 +134,3 @@ def __start():
     threadLoop.run_forever()
 
 thread = Thread(target = __start)
-thread.start()

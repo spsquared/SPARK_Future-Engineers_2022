@@ -13,14 +13,19 @@ def main():
     try:
         infinite = False
         wait = False
+        openServer = True
         for i, arg in enumerate(sys.argv):
             if i != 0:
                 if arg == 'infinite':
                     infinite = True
                 if arg == 'wait_for_button':
                     wait = True
+                if arg == 'no_server':
+                    openServer = False
         if infinite:
             print('PROGRAM RUNNING IN INFINITE MODE!')
+        if openServer:
+            server.open()
         drive.start()
         camera.start()
         if wait:
@@ -52,7 +57,9 @@ def main():
             prediction = filter.predict(image,server, infinite)
             if prediction == "stop":
                 drive.throttle(-100)
+                drive.steer(0)
                 time.sleep(0.2)
+                drive.throttle(0)
                 stop2(1)
                 break
             drive.steer(prediction)

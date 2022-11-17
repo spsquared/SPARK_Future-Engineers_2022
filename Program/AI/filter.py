@@ -11,10 +11,10 @@ import json
 # colors
 rm = redMin = (0, 95, 75)
 rM = redMax = (25, 255, 255)
-gm = greenMin = (30, 30, 80)
-gM = greenMax = (100, 255, 255)
-bm = blueMin = (95, 80, 70)
-bM = blueMax = (120, 255, 255)
+gm = greenMin = (30, 30, 40)
+gM = greenMax = (110, 255, 255)
+bm = blueMin = (90, 80, 70)
+bM = blueMax = (140, 255, 255)
 
 LEFT = 0
 CENTER = 1
@@ -121,7 +121,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
 
         # pillar calculations
         blobSizeRequirement = 0
-        dangerSize = 35
+        dangerSize = 45
         def getRedEquation(x):
             return x * -0.315 + 121 - dangerSize
         def getGreenEquation(x):
@@ -155,7 +155,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         pillarSteering = 0
 
         # decide steering for each signal that will collide
-        reducedSteering = 0
+        reducedSteering = 10
         if doPillars == True:
             if brKps != 0:
                 if bgKps != 0:
@@ -164,7 +164,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                         steeringReason += "red pillar "
                         # steeringArray.append(brKps.size ** 2 * 0.2)
                     else:
-                        pillarSteering = (getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size * 2 - reducedSteering) * (bgKps.size - 4) ** 2 * 0.02
+                        pillarSteering = (getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size * 2 - reducedSteering) * (bgKps.size - 4) ** 2 * 0.04
                         steeringReason += "green pillar "
                         # steeringArray.append(-bgKps.size ** 2 * 0.2)
                 else:
@@ -172,13 +172,14 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                     steeringReason += "red pillar "
                     # steeringArray.append(brKps.size ** 2 * 0.2)
             elif bgKps != 0:
-                pillarSteering = (getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size * 2 - reducedSteering) * (bgKps.size - 4) ** 2 * 0.02
+                pillarSteering = (getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size * 2 - reducedSteering) * (bgKps.size - 4) ** 2 * 0.04
                 steeringReason += "green pillar "
                 # steeringArray.append(-bgKps.size ** 2 * 0.2)
             passedPillar *= 0.95
             if pillarSteering != 0:
-                pillarSteering += passedPillar * 0.7
-                passedPillar = pillarSteering
+                pillarSteering += passedPillar * 0.9
+                if abs(passedPillar) < 50:
+                    passedPillar = pillarSteering
             else:
                 pillarSteering = passedPillar
 
@@ -321,22 +322,22 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         for i in range(8):
             if wallLabels[i] == LEFT:
                 if wallHeights[i] > 15:
-                    steering = 20
+                    steering = 10
                     if i <= 3:
                         steering += 3.5 * (4 - i)
-                    steering += (wallHeights[i] - 12) * 2
+                    steering += ((wallHeights[i] - 12) ** 1.5) * 1
                     leftSteering += steering
             elif wallLabels[i] == CENTER:
                 if wallHeights[i] > 11:
                     steering = 15
-                    steering += (wallHeights[i] - 10) * 2
+                    steering += ((wallHeights[i] - 10) ** 1.5) * 1
                     centerSteering += steering * counterClockwise
             else:
                 if wallHeights[i] > 15:
-                    steering = 20
+                    steering = 10
                     if i >= 4:
                         steering += 3.5 * (i - 3)
-                    steering += (wallHeights[i] - 12) * 2
+                    steering += ((wallHeights[i] - 12) ** 1.5) * 1
                     rightSteering -= steering
         
         # decide final steering
@@ -362,11 +363,11 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         print(numpy.count_nonzero(bImg[wallStart:]))
         if numpy.count_nonzero(bImg[wallStart:]) >= 180 and turnCooldown <= 60 and turnsMade == 12:
             turnsMade += 1
-            turnCooldown = 100
+            turnCooldown = 140
             print(turnsMade)
         elif numpy.count_nonzero(bImg[wallStart:]) > 500 and turnCooldown <= 0:
             turnsMade += 1
-            turnCooldown = 100
+            turnCooldown = 140
             print(turnsMade)
 
         turnCooldown -= 1

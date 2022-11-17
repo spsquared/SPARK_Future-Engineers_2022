@@ -21,4 +21,4 @@ if __name__ == '__main__':
         time.sleep(0.5)
         GPIO.cleanup()
         print('Button pressed - starting!')
-        os.system('python3 autodrive.py wait_for_button')
+        os.system('python3 autodrive.py wait_for_button no_server')
