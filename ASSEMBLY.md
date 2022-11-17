@@ -153,7 +153,7 @@ ExecStart=-/sbin/agetty -o '-p -f your_user_name' -a your_user_name --noclear %I
 
 Save and close the editor with `:wqa`.
 
-To run the program on startup, first obtain the directory of the program folder uploaded earlier. Create `spark_startup.service` in `/etc/systemd/system` and place the following in the contents, replacing "/filepath/" with the directory of the folder.
+To run the program on startup, first obtain the directory of the program folder uploaded earlier. Create `spark_startup.service` in `/etc/systemd/system` and place the following in the contents, replacing "/filepath/" with the absolute directory of the folder (begins with a "/").
 
 ```
 [Service]
@@ -170,6 +170,14 @@ systemctl enable spark_startup.service
 Reboot the Jetson NANO to test if these changes worked. No GUI should appear and you shuld be automatically logged in.
 
 Enable run-on-startup by editing `run-on-startup.txt` in the folder. Replace the first line with `true`.
+
+Go through `startup.py` and `/IO/io.py`, and change `path` to the absolute filepath of your directory (same as filepath in the previous steps)
+
+Example:
+
+```
+path = '/home/nano/Documents/SPARK_FutureEngineers_2022/'
+```
 
 Reboot the Jetson NANO again
 

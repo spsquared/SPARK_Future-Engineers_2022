@@ -82,7 +82,6 @@ The top platform is mounted onto existing locations on the car. In the rear two 
 The camera and LEDs are mounted on top of standoffs extending the top of front wheel plate.
 
 #### **For a detailed build guide, go to [ASSEMBLY.md](./ASSEMBLY.md)**
-## Electromechanical Diagram
 
 Here is a simple electromechanical schematic for how the electronics are wired:
 

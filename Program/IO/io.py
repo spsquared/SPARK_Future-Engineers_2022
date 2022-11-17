@@ -8,8 +8,9 @@ path = '/home/nano/Documents/SPARK_FutureEngineers_2022/'
 
 running = False
 thread = None
+statusBlink = False
 def setup():
-    global running, thread, path
+    global running, thread, path, statusBlink
     if running == False:
         running = True
         fd = open(path + '../lock.txt', 'w+')
@@ -25,12 +26,14 @@ def setup():
         GPIO.setup(18, GPIO.IN)
         GPIO.output([11, 13], GPIO.LOW)
         # IO active indicator
+        statusBlink = True
         def blink():
             global running
             while running:
                 GPIO.output(11, GPIO.HIGH)
                 time.sleep(0.5)
-                GPIO.output(11, GPIO.LOW)
+                if statusBlink:
+                    GPIO.output(11, GPIO.LOW)
                 time.sleep(0.5)
         try:
             thread = Thread(target = blink)
@@ -58,8 +61,13 @@ def close():
 def waitForButton():
     GPIO.wait_for_edge(18, GPIO.RISING)
 
-# error indicator
+# indicators
 errorRunning = False
+
+def setStatusBlink(blink: bool):
+    global statusBlink
+    statusBlink = blink
+
 def error():
     global errorRunning
     if errorRunning == False:
