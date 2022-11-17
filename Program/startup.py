@@ -10,7 +10,7 @@ if __name__ == '__main__':
     GPIO.output([11, 13], GPIO.LOW)
 
     # in competition, wait for button press
-    fd = open('./run_on_startup.txt', 'r')
+    fd = open('/home/nano/Documents/SPARK_Future_Engineers_2022/run_on_startup.txt', 'r')
     run_startup = fd.readlines()[0]
     if run_startup == 'true\n':
         print('Run-on-startup enabled!')
@@ -21,4 +21,4 @@ if __name__ == '__main__':
         time.sleep(0.5)
         GPIO.cleanup()
         print('Button pressed - starting!')
-        os.system('python3 autodrive.py wait_for_button')
+        os.system('python3 autodrive.py wait_for_button no_server')

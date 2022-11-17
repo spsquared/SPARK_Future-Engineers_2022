@@ -52,10 +52,6 @@ def close():
         return True
     return False
 
-def isRunning():
-    fd = open('./../lock.txt', 'w+')
-    return fd.read() == '1'
-
 # button wait
 def waitForButton():
     GPIO.wait_for_edge(18, GPIO.RISING)

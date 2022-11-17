@@ -21,6 +21,7 @@ streaming2 = False
 def main():
     global running
     try:
+        server.open()
         drive.start()
         camera.start()
         def keys(data):
