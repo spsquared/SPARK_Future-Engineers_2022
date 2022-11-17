@@ -19,19 +19,26 @@ def main():
                 if arg == 'infinite':
                     infinite = True
                 if arg == 'wait_for_button':
-                    wait = True
+                    wait = False
+                    #change back to true
                 if arg == 'no_server':
                     openServer = False
         if infinite:
             print('PROGRAM RUNNING IN INFINITE MODE!')
         if openServer:
             server.open()
+        print("start")
+        # time.sleep(10)
+        # print("10 seconds")
         drive.start()
         camera.start()
+        print("started")
         if wait:
+            print('Waiting for button')
             io.waitForButton()
         else:
             time.sleep(1)
+        print("after button")
         def stop(data):
             global running
             running = False
@@ -69,9 +76,9 @@ def main():
         camera.stop()
         drive.stop()
         io.close()
-    except Exception as err:
-        print(err)
-        io.error()
+    # except Exception as err:
+    #     print(err)
+    #     io.error()
 
 if __name__ == '__main__':
     main()

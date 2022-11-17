@@ -13,7 +13,7 @@ rm = redMin = (0, 95, 75)
 rM = redMax = (25, 255, 255)
 gm = greenMin = (30, 30, 40)
 gM = greenMax = (110, 255, 255)
-bm = blueMin = (90, 80, 70)
+bm = blueMin = (100, 65, 90)
 bM = blueMax = (140, 255, 255)
 
 LEFT = 0
@@ -51,7 +51,7 @@ def filter(imgIn: numpy.ndarray, checkBlue: bool):
         if checkBlue == True:
             filteredImg = cv2.merge((edgesImage, blurredG, blurredR, bMask))
         else:
-            filteredImg = cv2.merge((edgesImage, blurredG, blurredR))
+            filteredImg = cv2.merge((edgesImage, bMask, blurredR))
         return filteredImg
     except Exception as err:
         print(err)
@@ -155,7 +155,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         pillarSteering = 0
 
         # decide steering for each signal that will collide
-        reducedSteering = 10
+        reducedSteering = 20
         if doPillars == True:
             if brKps != 0:
                 if bgKps != 0:
@@ -361,11 +361,17 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         # BLU #
         
         print(numpy.count_nonzero(bImg[wallStart:]))
-        if numpy.count_nonzero(bImg[wallStart:]) >= 180 and turnCooldown <= 60 and turnsMade == 12:
-            turnsMade += 1
-            turnCooldown = 140
-            print(turnsMade)
-        elif numpy.count_nonzero(bImg[wallStart:]) > 500 and turnCooldown <= 0:
+        if counterClockwise == 1:
+            if turnCooldown <= 90 and turnsMade == 12:
+                turnsMade += 1
+                turnCooldown = 140
+                print(turnsMade)
+        else:
+            if turnCooldown <= 40 and turnsMade == 12:
+                turnsMade += 1
+                turnCooldown = 140
+                print(turnsMade)
+        if numpy.count_nonzero(bImg[wallStart:]) > 150 and turnCooldown <= 0:
             turnsMade += 1
             turnCooldown = 140
             print(turnsMade)

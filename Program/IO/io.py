@@ -4,13 +4,15 @@ import time
 
 # general io module
 
+path = '/home/nano/Documents/SPARK_FutureEngineers_2022/'
+
 running = False
 thread = None
 def setup():
-    global running, thread
+    global running, thread, path
     if running == False:
         running = True
-        fd = open('./../lock.txt', 'w+')
+        fd = open(path + '../lock.txt', 'w+')
         if fd.read() == '1':
             error()
             raise Exception('ERROR: SETUP HAS DETECTED THAT SETUP IS CURRENTLY RUNNING. PLEASE CLOSE SETUP TO CONTINUE')
@@ -39,9 +41,9 @@ def setup():
     return False
 
 def close():
-    global thread, running
+    global thread, running, path
     if running == True:
-        fd = open('./../lock.txt', 'w+')
+        fd = open(path + '../lock.txt', 'w+')
         fd.write('0')
         fd.close()
         running = False

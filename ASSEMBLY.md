@@ -151,7 +151,7 @@ ExecStart=
 ExecStart=-/sbin/agetty -o '-p -f your_user_name' -a your_user_name --noclear %I $TERM
 ```
 
-Save and close the editor with `:qa`.
+Save and close the editor with `:wqa`.
 
 To run the program on startup, first obtain the directory of the program folder uploaded earlier. Create `spark_startup.service` in `/etc/systemd/system` and place the following in the contents, replacing "/filepath/" with the directory of the folder.
 

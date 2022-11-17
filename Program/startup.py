@@ -2,7 +2,10 @@ import Jetson.GPIO as GPIO
 import time
 import os
 
+path = '/home/nano/Documents/SPARK_FutureEngineers_2022/'
+
 if __name__ == '__main__':
+    print("test")
     GPIO.setwarnings(False)
     GPIO.cleanup()
     GPIO.setmode(GPIO.BOARD)
@@ -10,7 +13,7 @@ if __name__ == '__main__':
     GPIO.output([11, 13], GPIO.LOW)
 
     # in competition, wait for button press
-    fd = open('/home/nano/Documents/SPARK_Future_Engineers_2022/run_on_startup.txt', 'r')
+    fd = open(path + 'run_on_startup.txt', 'r')
     run_startup = fd.readlines()[0]
     if run_startup == 'true\n':
         print('Run-on-startup enabled!')
@@ -21,4 +24,5 @@ if __name__ == '__main__':
         time.sleep(0.5)
         GPIO.cleanup()
         print('Button pressed - starting!')
-        os.system('python3 autodrive.py wait_for_button no_server')
+        # no_server
+        os.system('python3 ' + path + 'autodrive.py wait_for_button')

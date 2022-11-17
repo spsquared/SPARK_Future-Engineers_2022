@@ -8,21 +8,24 @@ import time
 
 # WebSocket server module for testing only
 
+running = False
+
 # listeners and broadcast
 callbacks = {}
 sendlist = []
 def addListener(event: str, cb: typing.Callable[[typing.Any], None]):
-    global callbacks
-    if event in callbacks:
-        callbacks[event].append(cb)
-    else:
-        callbacks[event] = [cb]
+    global callbacks, running
+    if running:
+        if event in callbacks:
+            callbacks[event].append(cb)
+        else:
+            callbacks[event] = [cb]
 def broadcast(event: str, data: typing.Any):
-    global sendlist
-    for arr in sendlist:
-        arr.append(JSON.dumps({'event': event, 'data': data}))
+    global sendlist, running
+    if running:
+        for arr in sendlist:
+            arr.append(JSON.dumps({'event': event, 'data': data}))
 
-running = False
 thread = None
 threadLoop = asyncio.new_event_loop()
 
