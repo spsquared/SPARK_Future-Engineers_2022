@@ -325,19 +325,19 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                     steering = 10
                     if i <= 3:
                         steering += 3.5 * (4 - i)
-                    steering += ((wallHeights[i] - 12) ** 1.5) * 1
+                    steering += ((wallHeights[i] - 12) ** 2) * 0.5
                     leftSteering += steering
             elif wallLabels[i] == CENTER:
                 if wallHeights[i] > 11:
                     steering = 15
-                    steering += ((wallHeights[i] - 10) ** 1.5) * 1
+                    steering += (wallHeights[i] - 10) * 2
                     centerSteering += steering * counterClockwise
             else:
                 if wallHeights[i] > 15:
                     steering = 10
                     if i >= 4:
                         steering += 3.5 * (i - 3)
-                    steering += ((wallHeights[i] - 12) ** 1.5) * 1
+                    steering += ((wallHeights[i] - 12) ** 2) * 0.5
                     rightSteering -= steering
         
         # decide final steering
