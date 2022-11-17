@@ -9,9 +9,9 @@ import sys
 
 running = True
 def main():
-    io.setStatusBlink(False)
     global running
     try:
+        io.setStatusBlink(0)
         infinite = False
         wait = False
         openServer = True
@@ -29,12 +29,13 @@ def main():
             server.open()
         drive.start()
         camera.start()
+        io.setStatusBlink(1)
         if wait:
             print('Waiting for button')
             io.waitForButton()
         else:
             time.sleep(1)
-        io.setStatusBlink(True)
+        io.setStatusBlink(2)
         def stop(data):
             global running
             running = False

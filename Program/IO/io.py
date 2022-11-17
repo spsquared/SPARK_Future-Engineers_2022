@@ -8,7 +8,7 @@ path = '/home/nano/Documents/SPARK_FutureEngineers_2022/'
 
 running = False
 thread = None
-statusBlink = False
+statusBlink = 0
 def setup():
     global running, thread, path, statusBlink
     if running == False:
@@ -30,9 +30,10 @@ def setup():
         def blink():
             global running
             while running:
-                GPIO.output(11, GPIO.HIGH)
+                if not statusBlink == 0:
+                    GPIO.output(11, GPIO.HIGH)
                 time.sleep(0.5)
-                if statusBlink:
+                if not statusBlink == 1:
                     GPIO.output(11, GPIO.LOW)
                 time.sleep(0.5)
         try:
@@ -64,8 +65,11 @@ def waitForButton():
 # indicators
 errorRunning = False
 
-def setStatusBlink(blink: bool):
+def setStatusBlink(blink: int):
     global statusBlink
+    # 0 = off
+    # 1 = solid
+    # 2 = green
     statusBlink = blink
 
 def error():
