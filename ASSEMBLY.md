@@ -157,7 +157,7 @@ To run the program on startup, first obtain the directory of the program folder 
 
 ```
 [Service]
-ExecStart=/bin/bash /filepath/startup.py
+ExecStart=/usr/bin/python3 /filepath/startup.py
 ```
 
 Save the file and add permissions to it.
