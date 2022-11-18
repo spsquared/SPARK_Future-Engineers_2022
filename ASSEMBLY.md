@@ -106,6 +106,8 @@ After setting up the board, follow step 2.1 in section "Basic Settings" to log i
 
 Make sure a static IP is set to the board to make SSH and file transfer easier. Go to your router settings and [assign a DHCP reservation (PCmag)](https://www.pcmag.com/how-to/how-to-set-up-a-static-ip-address) (or a straight static IP) to your Jetson NANO. Save this IP in your PuTTY settings and SSHFS mounting.
 
+Install `websockets` package with pip. <!-- add rest of stuff! -->
+
 ### Enable GPIO and PWM
 
 Next, setting up the board for the application. First, enable GPIO and PWM. Create a new user group, and add your user to it (this is the user running the commands).
@@ -153,11 +155,17 @@ ExecStart=-/sbin/agetty -o '-p -f your_user_name' -a your_user_name --noclear %I
 
 Save and close the editor with `:qa`.
 
-To run the program on startup, first obtain the directory of the program folder uploaded earlier. Create `spark_startup.service` in `/etc/systemd/system` and place the following in the contents, replacing "/filepath/" with the directory of the folder.
+To run the program on startup, first obtain the directory of the program folder uploaded earlier. Create `spark_startup.service` in `/etc/systemd/system` and place the following in the contents, replacing "/filepath/" with the directory of the folder and "user" as your user.
 
+<!-- specify filepath? -->
+<!-- switch to bashrc? -->
 ```
 [Service]
-ExecStart=/usr/bin/python3 /filepath/startup.py
+ExecStart=cd /filepath /usr/bin/python3 /filepath/startup.py
+User=username
+
+[Install]
+WantedBy=multi-user.target
 ```
 
 Save the file and add permissions to it.

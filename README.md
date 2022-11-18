@@ -148,11 +148,56 @@ Finally, it takes the sum of the pillar steering and wall steering and returns i
 SPARK Control is our own testing and debugging software. It consists of a WebSocket server running on the Jetson NANO, and a local HTML document on our computers. The page uses a WebSocket connection to communicate with the server. The server can broadcast and recieve data in the form of JSON strings, which allows for the differentiation of events and more complex data transfers. The system is modular and is simple to use. As long as the data can be converted to JSON, it can be sent. Broadcasting is as simple as specifying an event name and some data to be sent. To recieve messages, it is possible to add an event listener, which is a function that is run when the specified event is recieved.
 
 The client control panel consists of a log, which is appended to by the `message` event; filter tuning sliders for changing the ranges of the image preprocessor; capture buttons to save and stream raw and filtered images, and the ability to control the vehicle when running in manual drive mode. The data display can show raw and filtered image streams from the car's camera, visualize the detected blobs and wall heights, and display output data from the code. By default, the last 500 frames of data are saved in history and can be replayed for debugging.
+
 <div align=center>
 
 ![SPARK Control Panel](./Documentation/img/SPARK_Control.png)
 
 </div>
+
+To connect to the robot, obtain the IP address (set to static in the assembly instructions) of the robot, and open `/SPARK-Control/index.js`, and change line 1's value to the ip.
+
+Example:
+
+```
+const ip = '192.168.1.151';
+```
+
+It's possible to use SPARK Control to change the filter colors to adjust to the environment. Simply change the HSV sliders and use the "View Filtered Image" button to see the effects of your changes. Afterwards locate the color assignments in `/Program/AI/filter.py` and change them to match your environment.
+
+Example:
+
+```
+rm = redMin = (0, 95, 75)
+rM = redMax = (25, 255, 255)
+gm = greenMin = (30, 30, 40)
+gM = greenMax = (110, 255, 255)
+bm = blueMin = (90, 80, 70)
+bM = blueMax = (140, 255, 255)
+```
+
+You can update the defaults in `/SPARK-Control/index.js` as well in `initcolors`
+
+Example:
+
+```
+let initcolors = [
+    [
+        25, 255, 255,
+        0, 95, 75
+    ],
+    [
+        110, 255, 255,
+        30, 30, 40
+    ],
+    [
+        140, 255, 255,
+        90, 80, 70
+    ],
+];
+```
+
+**Don't forget to upload the `Program` folder again!**
 
 ***
 
