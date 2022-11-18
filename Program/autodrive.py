@@ -60,7 +60,7 @@ def main():
             image = camera.read()
             prediction = filter.predict(image,server, infinite)
             if prediction == "stop":
-                drive.throttle(-100)
+                drive.throttle(-20)
                 drive.steer(0)
                 time.sleep(0.2)
                 drive.throttle(0)

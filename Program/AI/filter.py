@@ -66,6 +66,9 @@ turnsMade = 0
 turnCooldown = 40
 passedPillar = 0
 lastSend = 0
+
+wobbleLess = True
+
 def predict(imgIn: numpy.ndarray, server = None, infinite = False):
     global redMax, redMin, greenMax, greenMin, lastSend, rightOnRed, counterClockwise, turnsMade, turnCooldown, passedPillar
     try:
@@ -338,21 +341,12 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                     rightSteering -= steering
         
         # decide final steering
-        wallSteering = 0
-        if abs(leftSteering) > abs(rightSteering):
-            if abs(leftSteering) > abs(centerSteering):
-                wallSteering = leftSteering
-                steeringReason += "left wall"
-            elif centerSteering != 0:
-                wallSteering = centerSteering
-                steeringReason += "center wall"
-        else:
-            if abs(rightSteering) > abs(centerSteering):
-                wallSteering = rightSteering
-                steeringReason += "right wall"
-            elif centerSteering != 0:
-                wallSteering = centerSteering
-                steeringReason += "center wall"
+        wallSteering = leftSteering + rightSteering
+        if abs(wallSteering) < abs(centerSteering):
+            wallSteering = centerSteering
+            steeringReason += "center wall"
+        elif wallSteering != 0:
+            steeringReason += "walls"
         
         # BLU #
         
