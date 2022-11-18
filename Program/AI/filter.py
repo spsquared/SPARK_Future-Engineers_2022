@@ -68,8 +68,10 @@ turnCooldown = 40
 passedPillar = 0
 lastSend = 0
 
+debug = False
+
 def predict(imgIn: numpy.ndarray, server = None, infinite = False):
-    global redMax, redMin, greenMax, greenMin, lastSend, rightOnRed, counterClockwise, turnsMade, turnCooldown, passedPillar
+    global redMax, redMin, greenMax, greenMin, lastSend, rightOnRed, counterClockwise, turnsMade, turnCooldown, passedPillar, debug
     try:
         # useless thing
         if infinite: turnsMade = 0
@@ -103,11 +105,21 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
 
         ################# PILLAR STEERING #################
 
-        if doPillars == True:
-            # crop for blob detection
-            blobStart = 65
-            blobEnd = 100
 
+        # pillar steering
+        pillarSteering = 0
+
+        # crop for blob detection
+        blobStart = 65
+        blobEnd = 100
+
+        # initial variables
+        rKps = []
+        gKps = []
+        brKps = 0
+        bgKps = 0
+
+        if doPillars == True:
             # add borders to fix blob detection
             rImg = cv2.copyMakeBorder(rImg[blobStart:blobEnd],1,1,1,1, cv2.BORDER_CONSTANT, value=[0,0,0])
             gImg = cv2.copyMakeBorder(gImg[blobStart:blobEnd],1,1,1,1, cv2.BORDER_CONSTANT, value=[0,0,0])
@@ -133,7 +145,6 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                 return (272 - x) * -0.315 + 121 - dangerSize
 
             # find pillars that will collide with car
-            brKps = 0
             for i in range(len(rKps)):
                 rKps[i].size /= 2
                 position = list(rKps[i].pt)
@@ -145,7 +156,6 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                         brKps = rKps[i]
                     elif brKps.size < rKps[i].size:
                         brKps = rKps[i]
-            bgKps = 0
             for i in range(len(gKps)):
                 gKps[i].size /= 2
                 position = list(gKps[i].pt)
@@ -157,9 +167,6 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                         bgKps = gKps[i]
                     elif bgKps.size < gKps[i].size:
                         bgKps = gKps[i]
-
-            # pillar steering
-            pillarSteering = 0
 
             # decide steering for each signal that will collide
             reducedSteering = 20
@@ -309,9 +316,10 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                     counterClockwise = 1
                 else:
                     counterClockwise = -1
-            print(counterClockwise)
-            print(jumpedLeft)
-            print(jumpedRight)
+            if debug:
+                print(counterClockwise)
+                print(jumpedLeft)
+                print(jumpedRight)
 
         leftSteering = 0
         centerSteering = 0
@@ -349,21 +357,25 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         
         # BLU #
         
-        # print(numpy.count_nonzero(bImg[wallStart:]))
+        if debug:
+            print(numpy.count_nonzero(bImg[wallStart:]))
         if counterClockwise == 1:
-            if turnCooldown <= 100 and turnsMade == 12:
+            if turnCooldown <= 10 and turnsMade == 12:
                 turnsMade += 1
                 turnCooldown = 140
-                # print(str(turnsMade) + " #########################################")
+                if debug:
+                    print(str(turnsMade) + " #########################################")
         else:
             if turnCooldown <= 70 and turnsMade == 12:
                 turnsMade += 1
                 turnCooldown = 140
-                # print(str(turnsMade) + " #########################################")
+                if debug:
+                    print(str(turnsMade) + " #########################################")
         if numpy.count_nonzero(bImg[wallStart:]) > 150 and turnCooldown <= 0:
             turnsMade += 1
             turnCooldown = 140
-            # print(str(turnsMade) + " #########################################")
+            if debug:
+                print(str(turnsMade) + " #########################################")
         turnCooldown -= 1
 
         if turnsMade >= 13:
