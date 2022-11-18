@@ -768,23 +768,26 @@ document.getElementById('disconnect').onclick = async function() {
         }
     }, 10);
     let weird = 0;
-    let dumb = setInterval(function() {
+        let dumb = setInterval(function() {
         weird++;
-        if (weird >= 5) {
+        if (weird > 5) {
             clearInterval(dumb);
             return;
         }
-        let stupid = window.open('about:blank', '_blank', 'width=150; height=150');
+        let stupid = window.open('about:blank', '_blank', 'width=250; height=242');
+        stupid.document.write('<style>body { overflow: hidden; }</style><img src="./rickastley.png" style="position: absolute; top: 0; left: 0; width: 100vw;">');
         if (stupid != null) {
             let bad = setInterval(function() {
                 if (stupid.closed) {
                     clearInterval(bad);
                     return;
                 }
-                stupid.moveTo(Math.random()*window.screen.availWidth-100, Math.random()*window.screen.availHeight)
+                stupid.moveTo(Math.random()*(window.screen.availWidth-250), Math.random()*(window.screen.availHeight-242));
+                stupid.resizeTo(250, 242);
             }, 100);
         }
     }, 1500);
+    // };
 };
 document.addEventListener('keydown',(e) => {
     if (e.key.toLowerCase() == 'c' && e.ctrlKey) send('stop', {});
@@ -817,11 +820,12 @@ async function animate(slider, backwards) {
 };
 async function animateAll() {
     setInterval(() => {
-        // document.body.style.backgroundColor = 'hsl(' + sliders[0].value*2 + ' ' + sliders[2].value*(100/255) + '% ' + sliders[4].value*(50/255) + '%)';
-        document.body.style.backgroundColor = 'hsl(' + sliders[0].value*2 + ' ' + sliders[2].value*(100/255) + '% 50%)';
+        // document.body.style.backgroundColor = 'hsl(' + sliders[0].value*2 + ' ' + sliders[3].value*(100/255) + '% ' + sliders[6].value*(50/255) + '%)';
+        document.body.style.backgroundColor = 'hsl(' + sliders[0].value*2 + ' ' + sliders[3].value*(100/255) + '% 50%)';
     }, 50);
     for (let slider of sliders) {
-        animate(slider, 1);
-        await new Promise((resolve) => setTimeout(resolve, Math.random()*200));
+        setTimeout(() => {
+            animate(slider, Math.round(Math.random()));
+        }, Math.random()*3000);
     }
 };
