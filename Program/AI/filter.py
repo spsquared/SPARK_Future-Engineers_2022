@@ -363,18 +363,18 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         if counterClockwise == 1:
             if turnCooldown <= 10 and turnsMade == 12:
                 turnsMade += 1
-                turnCooldown = 140
+                turnCooldown = 150
                 if debug:
                     print(str(turnsMade) + " #########################################")
         else:
             if turnCooldown <= 60 and turnsMade == 12:
                 turnsMade += 1
-                turnCooldown = 140
+                turnCooldown = 150
                 if debug:
                     print(str(turnsMade) + " #########################################")
         if numpy.count_nonzero(bImg[wallStart:]) > 150 and turnCooldown <= 0:
             turnsMade += 1
-            turnCooldown = 140
+            turnCooldown = 150
             if debug:
                 print(str(turnsMade) + " #########################################")
         turnCooldown -= 1
