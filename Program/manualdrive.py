@@ -21,6 +21,7 @@ streaming2 = False
 def main():
     global running
     try:
+        io.setStatusBlink(2)
         server.open()
         drive.start()
         camera.start()
@@ -144,6 +145,7 @@ def main():
         def stop(data):
             global running
             running = False
+            io.setStatusBlink(0)
             camera.stop()
             server.close()
             drive.stop()

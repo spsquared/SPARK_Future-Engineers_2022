@@ -39,6 +39,7 @@ def main():
         def stop(data):
             global running
             running = False
+            io.setStatusBlink(0)
             camera.stop()
             server.close()
             drive.stop()
@@ -48,6 +49,7 @@ def main():
         def stop2(data):
             global running
             running = False
+            io.setStatusBlink(0)
             camera.stop()
             server.close()
             drive.stop()
@@ -60,10 +62,11 @@ def main():
             image = camera.read()
             prediction = filter.predict(image,server, infinite)
             if prediction == "stop":
-                drive.throttle(-20)
+                # drive.throttle(-20)
                 drive.steer(0)
-                time.sleep(0.2)
+                # time.sleep(0.2)
                 drive.throttle(0)
+                time.sleep(0.2)
                 stop2(1)
                 break
             drive.steer(prediction)
