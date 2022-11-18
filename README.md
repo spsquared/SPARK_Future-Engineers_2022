@@ -15,8 +15,7 @@ Located below is the documentation, and a link to the build instructions.
 # Contents
 * [Hardware Overview](#the-hardware)
     * [Parts List](#parts-list)
-    * [Assembly Instructions](#assembly)
-    * [Electromechanical Diagram](#electromechanical-diagram)
+    * [Assembly Instructions & Diagrams](#assembly)
     * [Photos](#photos)
 * [Software Overview](#the-software)
     * [Operating System](#operating-system)
@@ -140,9 +139,9 @@ Pillar steering starts by creating a blob detector using `cv2.SimpleBlobDetector
 
 Next we have wall steering. First we start by cropping out the top 79 pixels. Due to the way the camera is placed, it is exactly the same height as the wall, so no matter where the wall is, the top line is nearly constant, and is around 79 pixels. After this, we swap the axes to prepare for wall height detection. Using `numpy.argmax` we find the bottom of the wall. We split the image into 8 sections. Taking the differences, we can find the slope of each section, and catagorize the sections. If the slope is less than -0.2, it is catagorized as a left wall. If the slope is more than 0.2, it is catagorized as a right wall. Otherwise, it is catagorized as a center wall. The first two sections on the left side are always left walls and the first two sections on the right side are always right walls. If there is a sudden jump in the height of the wall, we know the higher wall cannot be a center wall, and must either be a left wall or a right wall.
 
-#### **Final Steering**
-
 Now, we loop through all 8 wall sections. Based on the position and height of the wall, we calculate a steering value. At the end, we have 3 values, one for all the left walls, one for all the right walls, and one for all the center walls. We take the maximum.
+
+#### **Final Steering & Lap Direction**
 
 On the first frame, we look for a jump in either the left wall or the right wall. This tells us if we are driving clockwise or counterclockwise, as the side with the jump must have a gap in the wall.
 
