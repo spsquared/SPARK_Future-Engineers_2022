@@ -23,7 +23,10 @@ Located below is the documentation, and a link to the build instructions.
     * [Programming Language](#programming-language)
     * [IO](#io)
     * [Image Processing and Predictions](#image-predictions)
-        * [subtopic](#nonexistent)
+        * [Image Preprocessing](#image-preprocessing)
+        * [Wall Steering](#wall-steering)
+        * [Pillar Steering](#pillar-steering)
+        * [Final Steering](#final-steering)
     * [SPARK Control Panel](#spark-control)
 * [Team Photos](#team-photos)
 * [Demonstration Video](#demonstration-video)
@@ -121,13 +124,23 @@ The drivetrain of the car is handled separately by the controller in the servo a
 
 All the code for image filtering and predictions can be found in `/Program/AI/filter.py`.
 
+### **Image Preprocessing**
+
 The filter function takes in a raw image and outputs a filtered image. This image is filtered based on 6 HSV values, `redMax`, `redMin`, `greenMin`, `greenMax`, `blueMin`, `blueMax`. Using `cv2.cvtColor`, we can convert the RGB image captured by the camera to a HSV image. HSV stands for hue, saturation, value. Using `cv2.inRange`, we can filter the image based on these values, to get a mask of the pillars. The blue mask is used to detect the blue lines on the ground. There used to be another pass to filter in the walls, but that was phased out in favor of a new method. This method is unreliable in spaces with dark areas and places with a lot of glare. Instead, after using `cv2.cvtColor` to turn the image into a grayscale image, `cv2.GaussianBlur` to blur the image, we use `cv2.Canny` to get a black and white image highlighting edges.
+
+### **Image Predictions**
 
 The predict function is where all the predictions happen. There are three sections to it, pillar steering, wall steering, and turn detection.
 
+#### **Pillar Steering**
+
 Pillar steering starts by creating a blob detector using `cv2.SimpleBlobDetector` and using `SimpleBlobDetector_Params` to set the parameters. Using the filtered red and green images, the blob detector detects blobs to filter out random noise in the image and get the relative position and relative size of the pillars. We have two equations, `getRedEquation` and `getGreenEquation`. These calculate if we will hit a pillar or not, and we use it on all the blobs detected by the blob detector. If there are pillars detected, we take the largest pillar. Using a combination of the size of the pillar and the location of the pillar, we calculate a steering value on which direction we should turn. This is stored in `pillarSteering`. The steering value is also written in `passedPillar`, as `passedPillar` is used when we pass a pillar to prevent the back wheels from hitting the pillar.
 
+#### **Wall Steering**
+
 Next we have wall steering. First we start by cropping out the top 79 pixels. Due to the way the camera is placed, it is exactly the same height as the wall, so no matter where the wall is, the top line is nearly constant, and is around 79 pixels. After this, we swap the axes to prepare for wall height detection. Using `numpy.argmax` we find the bottom of the wall. We split the image into 8 sections. Taking the differences, we can find the slope of each section, and catagorize the sections. If the slope is less than -0.2, it is catagorized as a left wall. If the slope is more than 0.2, it is catagorized as a right wall. Otherwise, it is catagorized as a center wall. The first two sections on the left side are always left walls and the first two sections on the right side are always right walls. If there is a sudden jump in the height of the wall, we know the higher wall cannot be a center wall, and must either be a left wall or a right wall.
+
+#### **Final Steering**
 
 Now, we loop through all 8 wall sections. Based on the position and height of the wall, we calculate a steering value. At the end, we have 3 values, one for all the left walls, one for all the right walls, and one for all the center walls. We take the maximum.
 
