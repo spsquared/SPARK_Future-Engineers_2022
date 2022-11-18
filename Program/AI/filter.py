@@ -61,14 +61,14 @@ def filter(imgIn: numpy.ndarray, checkBlue: bool):
         io.error()
 
 rightOnRed = True
-doPillars = False
+doPillars = True
 counterClockwise = 0
 turnsMade = 0
 turnCooldown = 40
 passedPillar = 0
 lastSend = 0
 
-debug = False
+debug = True
 
 def predict(imgIn: numpy.ndarray, server = None, infinite = False):
     global redMax, redMin, greenMax, greenMin, lastSend, rightOnRed, counterClockwise, turnsMade, turnCooldown, passedPillar, debug
@@ -110,7 +110,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         pillarSteering = 0
 
         # crop for blob detection
-        blobStart = 65
+        blobStart = 79
         blobEnd = 100
 
         # initial variables
