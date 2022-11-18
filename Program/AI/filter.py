@@ -11,7 +11,7 @@ import json
 # colors
 rm = redMin = (0, 95, 75)
 rM = redMax = (25, 255, 255)
-gm = greenMin = (30, 30, 40)
+gm = greenMin = (30, 20, 30)
 gM = greenMax = (110, 255, 255)
 bm = blueMin = (100, 80, 70)
 bM = blueMax = (140, 255, 255)
@@ -68,7 +68,7 @@ turnCooldown = 40
 passedPillar = 0
 lastSend = 0
 
-debug = True
+debug = False
 
 def predict(imgIn: numpy.ndarray, server = None, infinite = False):
     global redMax, redMin, greenMax, greenMin, lastSend, rightOnRed, counterClockwise, turnsMade, turnCooldown, passedPillar, debug
@@ -138,7 +138,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
 
             # pillar calculations
             blobSizeRequirement = 0
-            dangerSize = 45
+            dangerSize = 55
             def getRedEquation(x):
                 return x * -0.315 + 121 - dangerSize
             def getGreenEquation(x):
@@ -169,21 +169,22 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                         bgKps = gKps[i]
 
             # decide steering for each signal that will collide
-            reducedSteering = 20
+            reducedSteering = 35
             if brKps != 0:
                 if bgKps != 0:
                     if brKps.size > bgKps.size:
-                        pillarSteering = -(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size * 2 - reducedSteering) * (brKps.size - 4) ** 2 * 0.02
+                        pillarSteering = -(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size * 2 - reducedSteering) * (brKps.size - 3) ** 2 * 0.05
                         steeringReason += "red pillar "
                     else:
-                        pillarSteering = (getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size * 2 - reducedSteering) * (bgKps.size - 4) ** 2 * 0.04
+                        pillarSteering = (getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size * 2 - reducedSteering) * (bgKps.size - 3) ** 2 * 0.05
                         steeringReason += "green pillar "
                 else:
-                    pillarSteering = -(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size * 2 - reducedSteering) * (brKps.size - 4) ** 2 * 0.02
+                    pillarSteering = -(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size * 2 - reducedSteering) * (brKps.size - 3) ** 2 * 0.05
                     steeringReason += "red pillar "
             elif bgKps != 0:
-                pillarSteering = (getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size * 2 - reducedSteering) * (bgKps.size - 4) ** 2 * 0.04
+                pillarSteering = (getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size * 2 - reducedSteering) * (bgKps.size - 3) ** 2 * 0.05
                 steeringReason += "green pillar "
+            # passedPillar += (pillarSteering - passedPillar) * 0.1
             passedPillar *= 0.95
             if pillarSteering != 0:
                 pillarSteering += passedPillar * 0.9
@@ -366,7 +367,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                 if debug:
                     print(str(turnsMade) + " #########################################")
         else:
-            if turnCooldown <= 70 and turnsMade == 12:
+            if turnCooldown <= 60 and turnsMade == 12:
                 turnsMade += 1
                 turnCooldown = 140
                 if debug:
