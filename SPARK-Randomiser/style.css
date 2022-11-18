@@ -71,12 +71,10 @@ img {
     aspect-ratio: 1 / 1;
 }
 
-#logocanvas {
+#rickastley {
+    display: none;
     position: absolute;
     top: 0px;
-    right: 0px;
-    width: 100vw;
+    left: 0px;
     height: 100vh;
-    background-color: black;
-    z-index: 1000;
 }

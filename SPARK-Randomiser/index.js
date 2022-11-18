@@ -188,10 +188,12 @@ images.push(new Image());
 images[images.length-1].src = './images/Preview.png';
 images.push(new Image());
 images[images.length-1].src = './images/World.png';
-// images.push(new Image());
-// images[images.length-1].src = './images/11-25-21-b.png';
+images.push(new Image());
+images[images.length-1].src = './images/11-25-21-b.png';
 images.push(new Image());
 images[images.length-1].src = './images/mountainguarder.png';
+images.push(new Image());
+images[images.length-1].src = './images/rickastley.png';
 var drawGaruderPillar = function(rotations,position){
     ctx.translate(155,155);
     ctx.rotate(0.5 * Math.PI * rotations);
@@ -758,3 +760,11 @@ randomiseGaruder.onclick = function(){
     }
 }
 reset.onclick = resetField;
+
+window.onresize = function() {
+    if (window.innerWidth > 3000) {
+        document.getElementById('rickastley').style.display = 'block';
+    } else {
+        document.getElementById('rickastley').style.display = 'none';
+    }
+}

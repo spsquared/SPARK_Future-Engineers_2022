@@ -1,5 +1,15 @@
 
-const logocanvas = document.getElementById('logocanvas');
+const logocanvas = document.createElement('canvas');
+logocanvas.style = `
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    z-index: 1000;
+`;
+document.body.appendChild(logocanvas);
 const logoctx = logocanvas.getContext('2d');
 const logotext = new Image();
 logotext.src = './../logoIntroText.png';
