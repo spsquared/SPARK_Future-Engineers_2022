@@ -104,6 +104,8 @@ Visit [Yahboom](http://www.yahboom.net/)'s [setup and tutorial repository](http:
 
 After setting up the board, follow step 2.1 in section "Basic Settings" to log into your Jetson NANO. Keep PuTTY open, as it will be used for the rest of the setup process. Also keep the IP. For remote file transfer, install sshfs (linux only), or use [sshfs-win](https://github.com/winfsp/sshfs-win) from WinFsp. Follow instructions to mount the Jetson NANO to a network drive. Now upload all contents of the `/Program/` folder into a new folder on the Jetson NANO. Remember the directory of the folder, this will be used later.
 
+*This method should be used to upload programs.*
+
 Make sure a static IP is set to the board to make SSH and file transfer easier. Go to your router settings and [assign a DHCP reservation (PCmag)](https://www.pcmag.com/how-to/how-to-set-up-a-static-ip-address) (or a straight static IP) to your Jetson NANO. Save this IP in your PuTTY settings and SSHFS mounting.
 
 Install `websockets` package with pip. <!-- add rest of stuff! -->
@@ -153,9 +155,9 @@ ExecStart=
 ExecStart=-/sbin/agetty -o '-p -f your_user_name' -a your_user_name --noclear %I $TERM
 ```
 
-Save and close the editor with `:qa`.
+Save and close the editor with `:wqa`.
 
-To run the program on startup, first obtain the directory of the program folder uploaded earlier. Create `spark_startup.service` in `/etc/systemd/system` and place the following in the contents, replacing "/filepath/" with the directory of the folder and "user" as your user.
+To run the program on startup, first obtain the directory of the program folder uploaded earlier. Create `spark_startup.service` in `/etc/systemd/system` and place the following in the contents, replacing "/filepath/" with the absolute directory of the folder (begins with a "/").
 
 <!-- specify filepath? -->
 <!-- switch to bashrc? -->
@@ -178,6 +180,14 @@ systemctl enable spark_startup.service
 Reboot the Jetson NANO to test if these changes worked. No GUI should appear and you shuld be automatically logged in.
 
 Enable run-on-startup by editing `run-on-startup.txt` in the folder. Replace the first line with `true`.
+
+Go through `startup.py` and `/IO/io.py`, and change `path` to the absolute filepath of your directory (same as filepath in the previous steps)
+
+Example:
+
+```
+path = '/home/nano/Documents/SPARK_FutureEngineers_2022/'
+```
 
 Reboot the Jetson NANO again
 

@@ -13,9 +13,10 @@ rm = redMin = (0, 95, 75)
 rM = redMax = (25, 255, 255)
 gm = greenMin = (30, 30, 40)
 gM = greenMax = (110, 255, 255)
-bm = blueMin = (90, 80, 70)
+bm = blueMin = (100, 80, 70)
 bM = blueMax = (140, 255, 255)
 
+# wall constants
 LEFT = 0
 CENTER = 1
 RIGHT = 2
@@ -23,8 +24,10 @@ RIGHT = 2
 def filter(imgIn: numpy.ndarray, checkBlue: bool):
     global redMax, redMin, greenMax, greenMin, blueMax, blueMin
     try:
+        # convert to HSV
         hsv = cv2.cvtColor(imgIn, cv2.COLOR_BGR2HSV)
-        # rMask = cv2.inRange(imgIn, redMin1, redMax1)
+        # red filter
+        # red is at 0 and also 180, accounting for HSV wraparound
         rMask1 = cv2.inRange(hsv, redMin, redMax)
         redMaxH = redMax[0]
         redMinList = list(redMin)
@@ -35,21 +38,21 @@ def filter(imgIn: numpy.ndarray, checkBlue: bool):
         redMax2 = tuple(redMaxList)
         rMask2 = cv2.inRange(hsv, redMin2, redMax2)
         rMask = cv2.bitwise_or(rMask1, rMask2)
-        # gMask = cv2.inRange(imgIn, greenMin, greenMax)
+        # green filter
         gMask = cv2.inRange(hsv, greenMin, greenMax)
+        # blue filter
         bMask = cv2.inRange(hsv, blueMin, blueMax)
+        # blur images to remove noise
         blurredR = cv2.medianBlur(rMask, 5)
         blurredG = cv2.medianBlur(gMask, 5)
-        # colorWallMask = cv2.inRange(imgIn, wallMin, wallMax)
-        # imgray = cv2.cvtColor(imgIn, cv2.COLOR_BGR2GRAY)
-        # grayscaleFilter = cv2.inRange(imgray, 0, 65)
-        # wMask = cv2.bitwise_and(colorWallMask, grayscaleFilter, mask = None)
-        # rawImg = cv2.merge((wMask, gMask, rMask))
+        blurredB = cv2.medianBlur(bMask, 3)
         gray_image = cv2.cvtColor(imgIn, cv2.COLOR_RGB2GRAY)
         blurredImg = cv2.GaussianBlur(gray_image, (3,3),0)
+        # edge detection
         edgesImage = cv2.Canny(blurredImg, 50, 125, 3)
+        # combine images
         if checkBlue == True:
-            filteredImg = cv2.merge((edgesImage, blurredG, blurredR, bMask))
+            filteredImg = cv2.merge((edgesImage, blurredG, blurredR, blurredB))
         else:
             filteredImg = cv2.merge((edgesImage, blurredG, blurredR))
         return filteredImg
@@ -58,12 +61,13 @@ def filter(imgIn: numpy.ndarray, checkBlue: bool):
         io.error()
 
 rightOnRed = True
-doPillars = True
+doPillars = False
 counterClockwise = 0
 turnsMade = 0
 turnCooldown = 40
 passedPillar = 0
 lastSend = 0
+
 def predict(imgIn: numpy.ndarray, server = None, infinite = False):
     global redMax, redMin, greenMax, greenMin, lastSend, rightOnRed, counterClockwise, turnsMade, turnCooldown, passedPillar
     try:
@@ -99,82 +103,80 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
 
         ################# PILLAR STEERING #################
 
-        # crop for blob detection
-        blobStart = 65
-        blobEnd = 100
-
-        # add borders to fix blob detection
-        rImg = cv2.copyMakeBorder(rImg[blobStart:blobEnd],1,1,1,1, cv2.BORDER_CONSTANT, value=[0,0,0])
-        gImg = cv2.copyMakeBorder(gImg[blobStart:blobEnd],1,1,1,1, cv2.BORDER_CONSTANT, value=[0,0,0])
-
-        # detect blobs
-        if rightOnRed == True:
-            blobs.empty()
-            rKps = blobs.detect(255 - rImg)
-            blobs.empty()
-            gKps = blobs.detect(255 - gImg)
-        else:
-            blobs.empty()
-            rKps = blobs.detect(255 - gImg)
-            blobs.empty()
-            gKps = blobs.detect(255 - rImg)
-
-        # pillar calculations
-        blobSizeRequirement = 0
-        dangerSize = 45
-        def getRedEquation(x):
-            return x * -0.315 + 121 - dangerSize
-        def getGreenEquation(x):
-            return (272 - x) * -0.315 + 121 - dangerSize
-
-        # find pillars that will collide with car
-        brKps = 0
-        for i in range(len(rKps)):
-            rKps[i].size /= 2
-            position = list(rKps[i].pt)
-            position[1] += blobStart
-            rKps[i].pt = tuple(position)
-            if rKps[i].pt[1] + rKps[i].size > getRedEquation(rKps[i].pt[0]) and rKps[i].pt[1] + rKps[i].size > 70 and rKps[i].size > blobSizeRequirement:
-                if brKps == 0:
-                    brKps = rKps[i]
-                elif brKps.size < rKps[i].size:
-                    brKps = rKps[i]
-        bgKps = 0
-        for i in range(len(gKps)):
-            gKps[i].size /= 2
-            position = list(gKps[i].pt)
-            position[1] += blobStart
-            gKps[i].pt = tuple(position)
-            if gKps[i].pt[1] + gKps[i].size > getGreenEquation(gKps[i].pt[0]) and gKps[i].pt[1] + gKps[i].size > 70 and gKps[i].size > blobSizeRequirement:
-                if bgKps == 0:
-                    bgKps = gKps[i]
-                elif bgKps.size < gKps[i].size:
-                    bgKps = gKps[i]
-
-        # pillar steering
-        pillarSteering = 0
-
-        # decide steering for each signal that will collide
-        reducedSteering = 10
         if doPillars == True:
+            # crop for blob detection
+            blobStart = 65
+            blobEnd = 100
+
+            # add borders to fix blob detection
+            rImg = cv2.copyMakeBorder(rImg[blobStart:blobEnd],1,1,1,1, cv2.BORDER_CONSTANT, value=[0,0,0])
+            gImg = cv2.copyMakeBorder(gImg[blobStart:blobEnd],1,1,1,1, cv2.BORDER_CONSTANT, value=[0,0,0])
+
+            # detect blobs
+            if rightOnRed == True:
+                blobs.empty()
+                rKps = blobs.detect(255 - rImg)
+                blobs.empty()
+                gKps = blobs.detect(255 - gImg)
+            else:
+                blobs.empty()
+                rKps = blobs.detect(255 - gImg)
+                blobs.empty()
+                gKps = blobs.detect(255 - rImg)
+
+            # pillar calculations
+            blobSizeRequirement = 0
+            dangerSize = 45
+            def getRedEquation(x):
+                return x * -0.315 + 121 - dangerSize
+            def getGreenEquation(x):
+                return (272 - x) * -0.315 + 121 - dangerSize
+
+            # find pillars that will collide with car
+            brKps = 0
+            for i in range(len(rKps)):
+                rKps[i].size /= 2
+                position = list(rKps[i].pt)
+                position[1] += blobStart
+                rKps[i].pt = tuple(position)
+                # get largest red pillar
+                if rKps[i].pt[1] + rKps[i].size > getRedEquation(rKps[i].pt[0]) and rKps[i].pt[1] + rKps[i].size > 70 and rKps[i].size > blobSizeRequirement:
+                    if brKps == 0:
+                        brKps = rKps[i]
+                    elif brKps.size < rKps[i].size:
+                        brKps = rKps[i]
+            bgKps = 0
+            for i in range(len(gKps)):
+                gKps[i].size /= 2
+                position = list(gKps[i].pt)
+                position[1] += blobStart
+                gKps[i].pt = tuple(position)
+                # get largest green pillar
+                if gKps[i].pt[1] + gKps[i].size > getGreenEquation(gKps[i].pt[0]) and gKps[i].pt[1] + gKps[i].size > 70 and gKps[i].size > blobSizeRequirement:
+                    if bgKps == 0:
+                        bgKps = gKps[i]
+                    elif bgKps.size < gKps[i].size:
+                        bgKps = gKps[i]
+
+            # pillar steering
+            pillarSteering = 0
+
+            # decide steering for each signal that will collide
+            reducedSteering = 20
             if brKps != 0:
                 if bgKps != 0:
                     if brKps.size > bgKps.size:
                         pillarSteering = -(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size * 2 - reducedSteering) * (brKps.size - 4) ** 2 * 0.02
                         steeringReason += "red pillar "
-                        # steeringArray.append(brKps.size ** 2 * 0.2)
                     else:
                         pillarSteering = (getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size * 2 - reducedSteering) * (bgKps.size - 4) ** 2 * 0.04
                         steeringReason += "green pillar "
-                        # steeringArray.append(-bgKps.size ** 2 * 0.2)
                 else:
                     pillarSteering = -(getRedEquation(brKps.pt[0]) - brKps.pt[1] - brKps.size * 2 - reducedSteering) * (brKps.size - 4) ** 2 * 0.02
                     steeringReason += "red pillar "
-                    # steeringArray.append(brKps.size ** 2 * 0.2)
             elif bgKps != 0:
                 pillarSteering = (getGreenEquation(bgKps.pt[0]) - bgKps.pt[1] - bgKps.size * 2 - reducedSteering) * (bgKps.size - 4) ** 2 * 0.04
                 steeringReason += "green pillar "
-                # steeringArray.append(-bgKps.size ** 2 * 0.2)
             passedPillar *= 0.95
             if pillarSteering != 0:
                 pillarSteering += passedPillar * 0.9
@@ -190,24 +192,13 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         wallEnd = 125
         croppedEdgesImg = numpy.concatenate((edgesImage[wallStart:wallEnd], numpy.full((2,272),1,dtype=int)), axis=0)
 
-        #flip wall
-        # croppedEdgesImg = numpy.flip(croppedEdgesImg,axis=1)
+        # flip wall
         croppedEdgesImg = numpy.swapaxes(croppedEdgesImg,0,1)
 
-        firstWallValues = (croppedEdgesImg!=0).argmax(axis=1)
+        # get wall heights by finding the bottom edge of the wall
+        wallHeightsAll = (croppedEdgesImg!=0).argmax(axis=1)
 
-        # zipX = numpy.arange(0,272)
-
-        # indices = numpy.dstack((zipX,firstWallValues))
-
-        # croppedEdgesImg[indices] = 0
-
-        # secondWallValues = (croppedEdgesImg!=0).argmax(axis=1)
-
-        # wallHeightsAll = firstWallValues - secondWallValues
-
-        wallHeightsAll = firstWallValues
-
+        # splitting the wall to 8 sections
         oneEighth = 34
         wallHeightsRaw = [wallHeightsAll[0:oneEighth],wallHeightsAll[oneEighth:oneEighth * 2],wallHeightsAll[oneEighth * 2:oneEighth * 3],wallHeightsAll[oneEighth * 3:oneEighth * 4],wallHeightsAll[oneEighth * 4:oneEighth * 5],wallHeightsAll[oneEighth * 5:oneEighth * 6],wallHeightsAll[oneEighth * 6:oneEighth * 7],wallHeightsAll[oneEighth * 7:oneEighth * 8]]
 
@@ -216,14 +207,17 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         wallSlopes = [0,0,0,0,0,0,0,0]
         wallHeights = [0,0,0,0,0,0,0,0]
 
+        # get difference and slope of wall sections
         for i in range(8):
             wallDifferences[i] = numpy.diff(wallHeightsRaw[i],n=10)
             wallDifferences2[i] = numpy.diff(wallHeightsRaw[i])
             wallSlopes[i] = statistics.mean(wallSlopes)
             wallHeights[i] = statistics.mean(wallHeightsRaw[i])
         
+        # wall labels
         wallLabels = [0,0,0,0,0,0,0,0]
 
+        # deteremine wall label based on slope
         for i in range(8):
             if wallSlopes[i] < -0.2:
                 wallLabels[i] = LEFT
@@ -232,6 +226,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
             else:
                 wallLabels[i] = CENTER
         
+        # change wall labels when a "jump" is detected in a wall, as it must be a different wall.
         jumped = False
         for i in range(7):
             if jumped == True:
@@ -261,6 +256,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                 wallLabels[i] = CENTER
                 wallLabels[i + 1] = CENTER
         
+        # hardcoding wall labels
         wallLabels[0] = LEFT
         wallLabels[1] = LEFT
 
@@ -276,12 +272,13 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         wallLabels[6] = RIGHT
         wallLabels[7] = RIGHT
         
+        # for the first frame, detect if we are going clockwise or counterclockwise
         if counterClockwise == 0:
             jumpedLeft = 0
             hitPillarLeft = False
+            # detect jump in the wall, if a jump is detected, it must be the way to pass through the wall
             for i in range(4):
                 for j in range(len(wallDifferences2[i])):
-                    # print(wallDifferences2[i][j - 1] - wallDifferences2[i][j])
                     if wallDifferences2[i][j] * -1 > 3:
                         if wallDifferences2[i][j] * -1 > jumpedLeft:
                             jumpedLeft = wallDifferences2[i][j] * -1
@@ -292,6 +289,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                     break
             jumpedRight = 0
             hitPillarRight = False
+            # detect jump in the wall, if a jump is detected, it must be the way to pass through the wall
             for i in range(4):
                 for j in range(len(wallDifferences2[7 - i])):
                     if wallDifferences2[7 - i][len(wallDifferences2[7 - i]) - j - 1] > 3:
@@ -319,6 +317,7 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         centerSteering = 0
         rightSteering = 0
         
+        # steer based on wall heights
         for i in range(8):
             if wallLabels[i] == LEFT:
                 if wallHeights[i] > 15:
@@ -341,66 +340,38 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
                     rightSteering -= steering
         
         # decide final steering
-
-        wallSteering = 0
-        if abs(leftSteering) > abs(rightSteering):
-            if abs(leftSteering) > abs(centerSteering):
-                wallSteering = leftSteering
-                steeringReason += "left wall"
-            elif centerSteering != 0:
-                wallSteering = centerSteering
-                steeringReason += "center wall"
-        else:
-            if abs(rightSteering) > abs(centerSteering):
-                wallSteering = rightSteering
-                steeringReason += "right wall"
-            elif centerSteering != 0:
-                wallSteering = centerSteering
-                steeringReason += "center wall"
+        wallSteering = leftSteering + rightSteering
+        if abs(wallSteering) < abs(centerSteering):
+            wallSteering += centerSteering
+            steeringReason += "center wall"
+        elif wallSteering != 0:
+            steeringReason += "walls"
         
         # BLU #
         
-        print(numpy.count_nonzero(bImg[wallStart:]))
-        if numpy.count_nonzero(bImg[wallStart:]) >= 180 and turnCooldown <= 60 and turnsMade == 12:
+        # print(numpy.count_nonzero(bImg[wallStart:]))
+        if counterClockwise == 1:
+            if turnCooldown <= 100 and turnsMade == 12:
+                turnsMade += 1
+                turnCooldown = 140
+                # print(str(turnsMade) + " #########################################")
+        else:
+            if turnCooldown <= 70 and turnsMade == 12:
+                turnsMade += 1
+                turnCooldown = 140
+                # print(str(turnsMade) + " #########################################")
+        if numpy.count_nonzero(bImg[wallStart:]) > 150 and turnCooldown <= 0:
             turnsMade += 1
             turnCooldown = 140
-            print(turnsMade)
-        elif numpy.count_nonzero(bImg[wallStart:]) > 500 and turnCooldown <= 0:
-            turnsMade += 1
-            turnCooldown = 140
-            print(turnsMade)
-
+            # print(str(turnsMade) + " #########################################")
         turnCooldown -= 1
 
         if turnsMade >= 13:
             return "stop"
 
-        finalSteering = wallSteering
-
-        if wallSteering > 0:
-            if pillarSteering > 0:
-                if wallSteering < pillarSteering and (wallSteering < 75 or pillarSteering >= 75):
-                    finalSteering += pillarSteering * 3 / 2
-                else:
-                    finalSteering += pillarSteering / 2
-            else:
-                if wallSteering < abs(pillarSteering) and (wallSteering < 75 or pillarSteering <= -75):
-                    finalSteering += pillarSteering * 3 / 2
-                else:
-                    finalSteering += pillarSteering / 2
-        else:
-            if pillarSteering > 0:
-                if abs(wallSteering) < pillarSteering and (abs(wallSteering) < 75 or pillarSteering >= 75):
-                    finalSteering += pillarSteering * 3 / 2
-                else:
-                    finalSteering += pillarSteering / 2
-            else:
-                if abs(wallSteering) < abs(pillarSteering) and (abs(wallSteering) < 75 or pillarSteering <= -75):
-                    finalSteering += pillarSteering * 3 / 2
-                else:
-                    finalSteering += pillarSteering / 2
         finalSteering = wallSteering + pillarSteering
         if server != None:
+            # send values
             serailzed=[[],[],[],[],[],[],[],[]]
             for i in range(8):
                 serailzed[i] = json.dumps(wallHeightsRaw[i].tolist())
@@ -463,99 +434,3 @@ def setDefaultColors():
     print(gM, gm)
     print(bM, bm)
     return [rM[2], gM[2], bM[2], rM[1], gM[1], bM[1], rM[0], gM[0], bM[0], rm[2], gm[2], bm[2], rm[1], gm[1], bm[1], rm[0], gm[0], bm[0]]
-
-# find wall heights
-# def getWallHeights(offset):
-#     wallHeightsMax = []
-#     wallHeightsDiff = []
-#     for i in range(20):
-#         i += offset
-#         nonzeroList = numpy.nonzero(croppedEdgesImg[i])[0]
-#         if len(nonzeroList) >= 2:
-#             firstNonzero = nonzeroList[0]
-#             secondNonzero = nonzeroList[1]
-#             index = 2
-#             minimumValue = 7
-#             if offset == 20:
-#                 minimumValue = 5
-#             while secondNonzero - firstNonzero < minimumValue:
-#                 if len(nonzeroList) <= index:
-#                     secondNonzero = 50
-#                     break
-#                 secondNonzero = nonzeroList[index]
-#                 index += 1
-#         elif len(nonzeroList) == 1:
-#             firstNonzero = nonzeroList[0]
-#             secondNonzero = 50
-#         else:
-#             firstNonzero = 0
-#             secondNonzero = 50
-#         wallHeightsDiff.append(secondNonzero - firstNonzero)
-#         wallHeightsMax.append(firstNonzero)
-#     if len(wallHeightsDiff) > 0:
-#         return [max(wallHeightsMax),wallHeightsMax,statistics.median(wallHeightsDiff),wallHeightsDiff]
-#     else:
-#         return [max(wallHeightsMax),wallHeightsMax,0,[]]
-
-# wallHeightsLeft = getWallHeights(0)
-# wallMaximumLeft = wallHeightsLeft[0]
-# wallHeightsMaxLeft = wallHeightsLeft[1]
-# wallHeightLeft = wallHeightsLeft[2]
-# filteredWallHeightsDiffLeft = wallHeightsLeft[3]
-# wallHeightsCenter = getWallHeights(20)
-# wallMaximumCenter = wallHeightsCenter[0]
-# wallHeightsMaxCenter = wallHeightsCenter[1]
-# wallHeightCenter = wallHeightsCenter[2]
-# filteredWallHeightsDiffCenter = wallHeightsCenter[3]
-# wallHeightsRight = getWallHeights(40)
-# wallMaximumRight = wallHeightsRight[0]
-# wallHeightsMaxRight = wallHeightsRight[1]
-# wallHeightRight = wallHeightsRight[2]
-# filteredWallHeightsDiffRight = wallHeightsRight[3]
-
-
-# decide steering for each wall section
-# counterClockwise += wallHeightRight - wallHeightLeft
-
-# counterClockwise *= 0.95
-
-# counterClockwise = 1
-
-# def centerWallCalculations(left,center,right,direction):
-#     global counterClockwise
-#     nonlocal centerSteering
-#     if center > 15 and right > 15:
-#         if left > 20:
-#             steering = min(center,right) ** 2 * 0.15 * direction
-#             steeringArray.append(steering)
-#             centerSteering = steering
-#         else:
-#             steering = min(center,right) ** 2 * 0.3 * direction
-#             steeringArray.append(steering)
-#             centerSteering = steering
-#         counterClockwise *= 2
-
-# if counterClockwise >= 0:
-#     centerWallCalculations(wallHeightLeft,wallHeightCenter,wallHeightRight,-1)
-# else:
-#     centerWallCalculations(wallHeightRight,wallHeightCenter,wallHeightLeft,1)
-# if wallHeightRight > 18:
-#     steering = -wallHeightRight ** 2 * 0.045
-#     steeringArray.append(steering)
-#     rightSteering = steering
-# if wallHeightLeft > 18:
-#     steering = wallHeightLeft ** 2 * 0.045
-#     steeringArray.append(steering)
-#     leftSteering = steering
-
-# # very far, just turned
-
-# justTurned = False
-
-# if wallHeights[3] < 11 and wallHeights[4] < 11 and turnCooldown <= 0:
-#     if turnOnStart >= 0:
-#         turnOnStart = -1
-#     turnCooldown = 140
-#     turnsMade += 1
-#     # justTurned = True
-#     print(turnsMade)

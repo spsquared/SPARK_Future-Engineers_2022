@@ -4,13 +4,16 @@ import time
 
 # general io module
 
+path = '/home/nano/Documents/SPARK_FutureEngineers_2022/'
+
 running = False
 thread = None
+statusBlink = 0
 def setup():
-    global running, thread
+    global running, thread, path, statusBlink
     if running == False:
         running = True
-        fd = open('./../lock.txt', 'w+')
+        fd = open(path + '../lock.txt', 'w+')
         if fd.read() == '1':
             error()
             raise Exception('ERROR: SETUP HAS DETECTED THAT SETUP IS CURRENTLY RUNNING. PLEASE CLOSE SETUP TO CONTINUE')
@@ -23,12 +26,15 @@ def setup():
         GPIO.setup(18, GPIO.IN)
         GPIO.output([11, 13], GPIO.LOW)
         # IO active indicator
+        statusBlink = True
         def blink():
             global running
             while running:
-                GPIO.output(11, GPIO.HIGH)
+                if not statusBlink == 0:
+                    GPIO.output(11, GPIO.HIGH)
                 time.sleep(0.5)
-                GPIO.output(11, GPIO.LOW)
+                if not statusBlink == 1:
+                    GPIO.output(11, GPIO.LOW)
                 time.sleep(0.5)
         try:
             thread = Thread(target = blink)
@@ -39,9 +45,9 @@ def setup():
     return False
 
 def close():
-    global thread, running
+    global thread, running, path
     if running == True:
-        fd = open('./../lock.txt', 'w+')
+        fd = open(path + '../lock.txt', 'w+')
         fd.write('0')
         fd.close()
         running = False
@@ -56,8 +62,16 @@ def close():
 def waitForButton():
     GPIO.wait_for_edge(18, GPIO.RISING)
 
-# error indicator
+# indicators
 errorRunning = False
+
+def setStatusBlink(blink: int):
+    global statusBlink
+    # 0 = off
+    # 1 = solid
+    # 2 = green
+    statusBlink = blink
+
 def error():
     global errorRunning
     if errorRunning == False:

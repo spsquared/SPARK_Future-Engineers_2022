@@ -11,6 +11,7 @@ running = True
 def main():
     global running
     try:
+        io.setStatusBlink(0)
         infinite = False
         wait = False
         openServer = True
@@ -28,10 +29,13 @@ def main():
             server.open()
         drive.start()
         camera.start()
+        io.setStatusBlink(1)
         if wait:
+            print('Waiting for button')
             io.waitForButton()
         else:
             time.sleep(1)
+        io.setStatusBlink(2)
         def stop(data):
             global running
             running = False
@@ -56,7 +60,7 @@ def main():
             image = camera.read()
             prediction = filter.predict(image,server, infinite)
             if prediction == "stop":
-                drive.throttle(-100)
+                drive.throttle(-20)
                 drive.steer(0)
                 time.sleep(0.2)
                 drive.throttle(0)
