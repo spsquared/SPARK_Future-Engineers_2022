@@ -5,7 +5,6 @@ import os
 path = '/home/nano/Documents/SPARK_FutureEngineers_2022/'
 
 if __name__ == '__main__':
-    print("test")
     GPIO.setwarnings(False)
     GPIO.cleanup()
     GPIO.setmode(GPIO.BOARD)

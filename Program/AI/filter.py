@@ -13,7 +13,7 @@ rm = redMin = (0, 95, 75)
 rM = redMax = (25, 255, 255)
 gm = greenMin = (30, 30, 40)
 gM = greenMax = (110, 255, 255)
-bm = blueMin = (100, 65, 90)
+bm = blueMin = (100, 80, 70)
 bM = blueMax = (140, 255, 255)
 
 # wall constants
@@ -45,13 +45,14 @@ def filter(imgIn: numpy.ndarray, checkBlue: bool):
         # blur images to remove noise
         blurredR = cv2.medianBlur(rMask, 5)
         blurredG = cv2.medianBlur(gMask, 5)
+        blurredB = cv2.medianBlur(bMask, 3)
         gray_image = cv2.cvtColor(imgIn, cv2.COLOR_RGB2GRAY)
         blurredImg = cv2.GaussianBlur(gray_image, (3,3),0)
         # edge detection
         edgesImage = cv2.Canny(blurredImg, 50, 125, 3)
         # combine images
         if checkBlue == True:
-            filteredImg = cv2.merge((edgesImage, blurredG, blurredR, bMask))
+            filteredImg = cv2.merge((edgesImage, blurredG, blurredR, blurredB))
         else:
             filteredImg = cv2.merge((edgesImage, blurredG, blurredR))
         return filteredImg
@@ -60,14 +61,12 @@ def filter(imgIn: numpy.ndarray, checkBlue: bool):
         io.error()
 
 rightOnRed = True
-doPillars = True
+doPillars = False
 counterClockwise = 0
 turnsMade = 0
 turnCooldown = 40
 passedPillar = 0
 lastSend = 0
-
-wobbleLess = True
 
 def predict(imgIn: numpy.ndarray, server = None, infinite = False):
     global redMax, redMin, greenMax, greenMin, lastSend, rightOnRed, counterClockwise, turnsMade, turnCooldown, passedPillar
@@ -104,66 +103,66 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
 
         ################# PILLAR STEERING #################
 
-        # crop for blob detection
-        blobStart = 65
-        blobEnd = 100
-
-        # add borders to fix blob detection
-        rImg = cv2.copyMakeBorder(rImg[blobStart:blobEnd],1,1,1,1, cv2.BORDER_CONSTANT, value=[0,0,0])
-        gImg = cv2.copyMakeBorder(gImg[blobStart:blobEnd],1,1,1,1, cv2.BORDER_CONSTANT, value=[0,0,0])
-
-        # detect blobs
-        if rightOnRed == True:
-            blobs.empty()
-            rKps = blobs.detect(255 - rImg)
-            blobs.empty()
-            gKps = blobs.detect(255 - gImg)
-        else:
-            blobs.empty()
-            rKps = blobs.detect(255 - gImg)
-            blobs.empty()
-            gKps = blobs.detect(255 - rImg)
-
-        # pillar calculations
-        blobSizeRequirement = 0
-        dangerSize = 45
-        def getRedEquation(x):
-            return x * -0.315 + 121 - dangerSize
-        def getGreenEquation(x):
-            return (272 - x) * -0.315 + 121 - dangerSize
-
-        # find pillars that will collide with car
-        brKps = 0
-        for i in range(len(rKps)):
-            rKps[i].size /= 2
-            position = list(rKps[i].pt)
-            position[1] += blobStart
-            rKps[i].pt = tuple(position)
-            # get largest red pillar
-            if rKps[i].pt[1] + rKps[i].size > getRedEquation(rKps[i].pt[0]) and rKps[i].pt[1] + rKps[i].size > 70 and rKps[i].size > blobSizeRequirement:
-                if brKps == 0:
-                    brKps = rKps[i]
-                elif brKps.size < rKps[i].size:
-                    brKps = rKps[i]
-        bgKps = 0
-        for i in range(len(gKps)):
-            gKps[i].size /= 2
-            position = list(gKps[i].pt)
-            position[1] += blobStart
-            gKps[i].pt = tuple(position)
-            # get largest green pillar
-            if gKps[i].pt[1] + gKps[i].size > getGreenEquation(gKps[i].pt[0]) and gKps[i].pt[1] + gKps[i].size > 70 and gKps[i].size > blobSizeRequirement:
-                if bgKps == 0:
-                    bgKps = gKps[i]
-                elif bgKps.size < gKps[i].size:
-                    bgKps = gKps[i]
-
-        # pillar steering
-        pillarSteering = 0
-
-        # decide steering for each signal that will collide
-        reducedSteering = 20
         if doPillars == True:
+            # crop for blob detection
+            blobStart = 65
+            blobEnd = 100
+
+            # add borders to fix blob detection
+            rImg = cv2.copyMakeBorder(rImg[blobStart:blobEnd],1,1,1,1, cv2.BORDER_CONSTANT, value=[0,0,0])
+            gImg = cv2.copyMakeBorder(gImg[blobStart:blobEnd],1,1,1,1, cv2.BORDER_CONSTANT, value=[0,0,0])
+
+            # detect blobs
+            if rightOnRed == True:
+                blobs.empty()
+                rKps = blobs.detect(255 - rImg)
+                blobs.empty()
+                gKps = blobs.detect(255 - gImg)
+            else:
+                blobs.empty()
+                rKps = blobs.detect(255 - gImg)
+                blobs.empty()
+                gKps = blobs.detect(255 - rImg)
+
+            # pillar calculations
+            blobSizeRequirement = 0
+            dangerSize = 45
+            def getRedEquation(x):
+                return x * -0.315 + 121 - dangerSize
+            def getGreenEquation(x):
+                return (272 - x) * -0.315 + 121 - dangerSize
+
+            # find pillars that will collide with car
+            brKps = 0
+            for i in range(len(rKps)):
+                rKps[i].size /= 2
+                position = list(rKps[i].pt)
+                position[1] += blobStart
+                rKps[i].pt = tuple(position)
+                # get largest red pillar
+                if rKps[i].pt[1] + rKps[i].size > getRedEquation(rKps[i].pt[0]) and rKps[i].pt[1] + rKps[i].size > 70 and rKps[i].size > blobSizeRequirement:
+                    if brKps == 0:
+                        brKps = rKps[i]
+                    elif brKps.size < rKps[i].size:
+                        brKps = rKps[i]
+            bgKps = 0
+            for i in range(len(gKps)):
+                gKps[i].size /= 2
+                position = list(gKps[i].pt)
+                position[1] += blobStart
+                gKps[i].pt = tuple(position)
+                # get largest green pillar
+                if gKps[i].pt[1] + gKps[i].size > getGreenEquation(gKps[i].pt[0]) and gKps[i].pt[1] + gKps[i].size > 70 and gKps[i].size > blobSizeRequirement:
+                    if bgKps == 0:
+                        bgKps = gKps[i]
+                    elif bgKps.size < gKps[i].size:
+                        bgKps = gKps[i]
+
+            # pillar steering
+            pillarSteering = 0
+
+            # decide steering for each signal that will collide
+            reducedSteering = 20
             if brKps != 0:
                 if bgKps != 0:
                     if brKps.size > bgKps.size:
@@ -343,29 +342,28 @@ def predict(imgIn: numpy.ndarray, server = None, infinite = False):
         # decide final steering
         wallSteering = leftSteering + rightSteering
         if abs(wallSteering) < abs(centerSteering):
-            wallSteering = centerSteering
+            wallSteering += centerSteering
             steeringReason += "center wall"
         elif wallSteering != 0:
             steeringReason += "walls"
         
         # BLU #
         
-        print(numpy.count_nonzero(bImg[wallStart:]))
+        # print(numpy.count_nonzero(bImg[wallStart:]))
         if counterClockwise == 1:
-            if turnCooldown <= 90 and turnsMade == 12:
+            if turnCooldown <= 100 and turnsMade == 12:
                 turnsMade += 1
                 turnCooldown = 140
-                print(turnsMade)
+                # print(str(turnsMade) + " #########################################")
         else:
-            if turnCooldown <= 40 and turnsMade == 12:
+            if turnCooldown <= 70 and turnsMade == 12:
                 turnsMade += 1
                 turnCooldown = 140
-                print(turnsMade)
+                # print(str(turnsMade) + " #########################################")
         if numpy.count_nonzero(bImg[wallStart:]) > 150 and turnCooldown <= 0:
             turnsMade += 1
             turnCooldown = 140
-            print(turnsMade)
-
+            # print(str(turnsMade) + " #########################################")
         turnCooldown -= 1
 
         if turnsMade >= 13:
