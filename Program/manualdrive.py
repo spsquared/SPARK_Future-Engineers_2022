@@ -29,7 +29,7 @@ def main():
             global __forward, __backward, __left, __right
             key = data['key']
             if key == 'w':
-                __forward = 70
+                __forward = 100
             elif key == 'W':
                 __forward = 0
             elif key == 's':

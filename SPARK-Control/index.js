@@ -449,6 +449,7 @@ window.onresize = () => {
     canvas.height = 154;
     canvas2.width = 272;
     canvas2.height = 154;
+    displayChange();
     // imgRenderCanvas.width = 272;
     // imgRenderCanvas.height = 154;
 };
@@ -664,7 +665,7 @@ function downloadSession() {
     const a = document.createElement('a');
     a.href = data;
     let current = new Date();
-    a.download = `SPARK-img_${current.getHours()}-${current.getMinutes()}_${current.getMonth()}-${current.getDay()}-${current.getFullYear()}.json`;
+    a.download = `SPARK-data_${current.getHours()}-${current.getMinutes()}_${current.getMonth()}-${current.getDay()}-${current.getFullYear()}.json`;
     a.click();
 };
 function importSession() {
@@ -713,6 +714,12 @@ document.addEventListener('keydown', (e) => {
         fasting = true;
     } else if (e.key == 'Shift') {
         slowing = true;
+    } else if (e.key.toLowerCase() == 's' && e.ctrlKey) {
+        downloadSession();
+        e.preventDefault();
+    } else if (e.key.toLowerCase() == 'o' && e.ctrlKey) {
+        importSession();
+        e.preventDefault();
     }
 });
 document.addEventListener('keyup', (e) => {
@@ -738,10 +745,10 @@ setInterval(() => {
 document.getElementById('displayBlock').onfullscreenchange = displayChange;
 
 // stop
-document.getElementById('emergencyStop').onclick = function() {
+document.getElementById('emergencyStop').onclick = () => {
     send('stop', {});
 };
-document.getElementById('disconnect').onclick = async function() {
+document.getElementById('disconnect').onclick = async () => {
     socket.close();
     toReconnect = false;
     autoReconnect = false;
@@ -754,12 +761,12 @@ document.getElementById('disconnect').onclick = async function() {
         // let rickroll = new Audio('./The Meadow - Official Meadow Guarder Song.mp3');
         // let rickroll = new Audio('./The Oasis - Official Meadow Guarder Song.mp3');
         rickroll.preload = true;
-        rickroll.addEventListener('loadeddata', function() {
+        rickroll.addEventListener('loadeddata', () => {
             ready++;
         });
         rickrolls.push(rickroll);
     }
-    let wait = setInterval(function() {
+    let wait = setInterval(() => {
         if (ready == rickrolls.length) {
             clearInterval(wait);
             for (let rickroll of rickrolls) {
@@ -767,8 +774,9 @@ document.getElementById('disconnect').onclick = async function() {
             }
         }
     }, 10);
+    let aaaaaaaaaaaa = [];
     let weird = 0;
-        let dumb = setInterval(function() {
+        let dumb = setInterval(() => {
         weird++;
         if (weird > 5) {
             clearInterval(dumb);
@@ -777,7 +785,8 @@ document.getElementById('disconnect').onclick = async function() {
         let stupid = window.open('about:blank', '_blank', 'width=250; height=242');
         stupid.document.write('<style>body { overflow: hidden; }</style><img src="./rickastley.png" style="position: absolute; top: 0; left: 0; width: 100vw;">');
         if (stupid != null) {
-            let bad = setInterval(function() {
+            aaaaaaaaaaaa.push(stupid);
+            let bad = setInterval(() => {
                 if (stupid.closed) {
                     clearInterval(bad);
                     return;
@@ -787,7 +796,12 @@ document.getElementById('disconnect').onclick = async function() {
             }, 100);
         }
     }, 1500);
-    // };
+    rickrolls[0].onended = () => {
+        for (let asdfasdf of aaaaaaaaaaaa) {
+            asdfasdf.close();
+        }
+        document.getElementById('disconnect').click();
+    };
 };
 document.addEventListener('keydown',(e) => {
     if (e.key.toLowerCase() == 'c' && e.ctrlKey) send('stop', {});
