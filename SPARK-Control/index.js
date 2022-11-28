@@ -420,8 +420,6 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext("2d");
 const canvas2 = document.getElementById('canvas2');
 const ctx2 = canvas2.getContext("2d");
-// const imgRenderCanvas = document.createElement('canvas');
-// const imgRenderCtx = imgRenderCanvas.getContext('2d');
 const historySlider = document.getElementById('historySlider');
 const FPS = document.getElementById('fps');
 const strPredict = document.getElementById('strPredict');
@@ -439,8 +437,6 @@ canvas.width = 272;
 canvas.height = 154;
 canvas2.width = 272;
 canvas2.height = 154;
-// imgRenderCanvas.width = 272;
-// imgRenderCanvas.height = 154;
 let displayTimer = 0;
 let drawn = false;
 let displayDelay = 5;
@@ -748,14 +744,19 @@ document.getElementById('displayBlock').onfullscreenchange = displayChange;
 document.getElementById('emergencyStop').onclick = () => {
     send('stop', {});
 };
+let rickrolled = false;
 document.getElementById('disconnect').onclick = async () => {
     socket.close();
     toReconnect = false;
     autoReconnect = false;
+    if (rickrolled) return;
+    rickrolled = true;
+    animateAll();
     let rickrolls = [];
     let ready = 0;
     for (let i = 0; i < 50; i++) {
         let rickroll = new Audio('./null.mp3');
+        // let rickroll = new Audio('./Minecraft_ Villager Sound Effect.mp3');
         // let rickroll = new Audio('./07-The Magus.mp3');
         // let rickroll = new Audio('./127 - Official Meadow Guarder Song.mp3');
         // let rickroll = new Audio('./The Meadow - Official Meadow Guarder Song.mp3');
@@ -796,10 +797,23 @@ document.getElementById('disconnect').onclick = async () => {
             }, 100);
         }
     }, 1500);
+    let badidea = setInterval(() => {
+        displayImg.src = './rickastley.png';
+        if (Math.random() < 0.1) {
+            let chars = 'AβCDEFGHIJKLMNOPQRSTUVWYZaβcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*()-=_+`~[]\\{}|;\':",./<>?';
+            let random = '';
+            for (let i = 0; i < 20; i++) {
+                random += chars.charAt(Math.floor(Math.random()*chars.length));
+            }
+            appendLog(random, `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`);
+        }
+    }, 2);
     rickrolls[0].onended = () => {
         for (let asdfasdf of aaaaaaaaaaaa) {
             asdfasdf.close();
         }
+        clearInterval(badidea);
+        rickrolled = false;
         document.getElementById('disconnect').click();
     };
 };
@@ -820,14 +834,14 @@ async function animate(slider, backwards) {
         for (let i = parseInt(slider.min); i <= parseInt(slider.max); i++) {
             slider.value = i;
             slider.oninput();
-            await new Promise((resolve) => setTimeout(resolve, Math.random()*10+5));
+            await new Promise((resolve) => setTimeout(resolve, Math.random()*10));
         }
         await animate(slider, false);
     } else {
         for (let i = parseInt(slider.max); i >= parseInt(slider.min); i--) {
             slider.value = i;
             slider.oninput();
-            await new Promise((resolve) => setTimeout(resolve, Math.random()*10+5));
+            await new Promise((resolve) => setTimeout(resolve, Math.random()*10));
         }
         await animate(slider, true);
     }
@@ -842,4 +856,27 @@ async function animateAll() {
             animate(slider, Math.round(Math.random()));
         }, Math.random()*3000);
     }
+    let angle = 0;
+    let distance = 0;
+    setInterval(() => {
+        // angle += Math.random()*0.8-0.4;
+        angle += Math.random()*0.5;
+        distance = Math.max(-110, Math.min(distance+Math.random()*20-10, 110));
+        let x = Math.cos(angle)*distance;
+        let y = Math.sin(angle)*distance;
+        joystickPin.style.bottom = 114-y + 'px';
+        joystickPin.style.right = 114-x + 'px';
+        sliderX.style.bottom = 140-y + 'px';
+        sliderY.style.right = 140-x + 'px';
+    }, 20);
+    let backwards = false;
+    setInterval(() => {
+        if (backwards) {
+            displayBack();
+        } else {
+            displayFront();
+        }
+        if (index == 0) backwards = true;
+        if (index == history.length-1) backwards = false;
+    }, 1);
 };
