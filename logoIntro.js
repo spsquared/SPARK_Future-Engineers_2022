@@ -33,6 +33,7 @@ logotext.onload = () => {
         }
     };
     let logodraw = setInterval(() => {
+        cameraShake = 200;
         timer += 20;
         logocanvas.width = window.innerWidth;
         logocanvas.height = window.innerHeight;
