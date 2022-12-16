@@ -30,6 +30,8 @@ logotext.onload = () => {
             clearInterval(logodraw);
             logocanvas.remove();
             document.removeEventListener('keypress', skip);
+        } else if (e.key.toLowerCase() == 'i') {
+            infinite = !infinite;
         }
     };
     let logodraw = setInterval(() => {
@@ -110,4 +112,4 @@ logotext.onload = () => {
         logoctx.fillRect(pxw*10*fadeX, pxh*10-pxh*5*fadeY, pxw*10, pxh*5);
     }, 20);
     document.addEventListener('keypress', skip);
-}
+};
