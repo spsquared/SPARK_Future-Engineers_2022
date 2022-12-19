@@ -756,6 +756,8 @@ document.getElementById('disconnect').onclick = async () => {
     let ready = 0;
     for (let i = 0; i < 50; i++) {
         let rickroll = new Audio('./null.mp3');
+        // let rickroll = new Audio('./Kitsune2 - Rainbow Tylenol.mp3');
+        // let rickroll = new Audio('./Rainbow Trololol.mp3');
         // let rickroll = new Audio('./Minecraft_ Villager Sound Effect.mp3');
         // let rickroll = new Audio('./07-The Magus.mp3');
         // let rickroll = new Audio('./127 - Official Meadow Guarder Song.mp3');
@@ -777,7 +779,7 @@ document.getElementById('disconnect').onclick = async () => {
     }, 10);
     let aaaaaaaaaaaa = [];
     let weird = 0;
-        let dumb = setInterval(() => {
+    let dumb = setInterval(() => {
         weird++;
         if (weird > 5) {
             clearInterval(dumb);
@@ -792,8 +794,12 @@ document.getElementById('disconnect').onclick = async () => {
                     clearInterval(bad);
                     return;
                 }
-                stupid.moveTo(Math.random()*(window.screen.availWidth-250), Math.random()*(window.screen.availHeight-242));
-                stupid.resizeTo(250, 242);
+                try {
+                    stupid.moveTo(Math.random()*(window.screen.availWidth-250), Math.random()*(window.screen.availHeight-242));
+                    stupid.resizeTo(250, 242);
+                } catch (err) {
+                    clearInterval(bad);
+                }
             }, 100);
         }
     }, 1500);

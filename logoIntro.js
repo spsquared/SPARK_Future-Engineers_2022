@@ -31,11 +31,11 @@ logotext.onload = () => {
             logocanvas.remove();
             document.removeEventListener('keypress', skip);
         } else if (e.key.toLowerCase() == 'i') {
-            infinite = !infinite;
+            infinite = true;
         }
     };
     let logodraw = setInterval(() => {
-        cameraShake = 200;
+        // cameraShake = 200;
         timer += 20;
         logocanvas.width = window.innerWidth;
         logocanvas.height = window.innerHeight;
