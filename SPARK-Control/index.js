@@ -756,6 +756,7 @@ document.getElementById('disconnect').onclick = async () => {
     let ready = 0;
     for (let i = 0; i < 50; i++) {
         let rickroll = new Audio('./null.mp3');
+        // let rickroll = new Audio('./SPARK.mp3');
         // let rickroll = new Audio('./Kitsune2 - Rainbow Tylenol.mp3');
         // let rickroll = new Audio('./Rainbow Trololol.mp3');
         // let rickroll = new Audio('./Minecraft_ Villager Sound Effect.mp3');
