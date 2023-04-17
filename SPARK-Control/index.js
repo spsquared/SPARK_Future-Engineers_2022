@@ -754,9 +754,10 @@ document.getElementById('disconnect').onclick = async () => {
     animateAll();
     let rickrolls = [];
     let ready = 0;
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 100; i++) {
         let rickroll = new Audio('./null.mp3');
         // let rickroll = new Audio('./SPARK.mp3');
+        // let rickroll = new Audio('./RUSH E.mp3');
         // let rickroll = new Audio('./Kitsune2 - Rainbow Tylenol.mp3');
         // let rickroll = new Audio('./Rainbow Trololol.mp3');
         // let rickroll = new Audio('./Minecraft_ Villager Sound Effect.mp3');
