@@ -147,7 +147,7 @@ Autologin must be done to avoid having to plug in a monitor and keyboard to star
 sudo systemctl edit getty@tty1
 ```
 
-A temporary editer will appear. Place the following text in it, replacing "your_user_name" with your user name.
+A temporary editor will appear. Place the following text in it, replacing "your_user_name" with your user name.
 
 ```
 [Service]
